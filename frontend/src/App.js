@@ -63,8 +63,8 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section - Exact match to the user's reference image */}
       <section className="relative h-screen bg-cover bg-center" 
-               style={{backgroundImage: `url('https://images.pexels.com/photos/17336549/pexels-photo-17336549.jpeg')`}}>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"></div>
+               style={{backgroundImage: `url('https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg')`}}>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60"></div>
         <div className="relative z-10 flex items-center justify-center h-full text-center text-stone-100 px-4">
           <div className="max-w-4xl">
             <h1 className="text-6xl md:text-8xl font-light mb-8 text-stone-100 tracking-wider leading-tight">
