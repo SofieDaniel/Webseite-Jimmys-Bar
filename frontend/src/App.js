@@ -7,25 +7,24 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   return (
-    <header className="bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900 text-amber-50 shadow-2xl relative">
-      <div className="absolute inset-0 bg-texture opacity-20"></div>
-      <div className="container mx-auto px-4 py-4 relative z-10">
+    <header className="bg-black bg-opacity-90 text-stone-100 shadow-2xl relative z-50">
+      <div className="container mx-auto px-6 py-4 relative z-10">
         <nav className="flex justify-between items-center">
-          <Link to="/" className="text-3xl font-serif font-bold text-amber-100 tracking-wide">
+          <Link to="/" className="text-2xl font-light text-stone-100 tracking-wider">
             JIMMY'S
-            <span className="block text-sm text-amber-300 tracking-[0.3em] font-sans">TAPAS BAR</span>
+            <span className="block text-xs text-stone-300 tracking-[0.4em] font-light">TAPAS BAR</span>
           </Link>
           
-          <div className="hidden md:flex space-x-8">
-            <Link to="/" className="hover:text-amber-300 transition-colors font-medium">Startseite</Link>
-            <Link to="/standorte" className="hover:text-amber-300 transition-colors font-medium">Standorte</Link>
-            <Link to="/speisekarte" className="hover:text-amber-300 transition-colors font-medium">Speisekarte</Link>
-            <Link to="/bewertungen" className="hover:text-amber-300 transition-colors font-medium">Bewertungen</Link>
-            <Link to="/ueber-uns" className="hover:text-amber-300 transition-colors font-medium">Über uns</Link>
-            <Link to="/kontakt" className="hover:text-amber-300 transition-colors font-medium">Kontakt</Link>
+          <div className="hidden md:flex space-x-12">
+            <Link to="/" className="hover:text-stone-300 transition-colors font-light tracking-wide">Startseite</Link>
+            <Link to="/standorte" className="hover:text-stone-300 transition-colors font-light tracking-wide">Standorte</Link>
+            <Link to="/speisekarte" className="hover:text-stone-300 transition-colors font-light tracking-wide">Speisekarte</Link>
+            <Link to="/bewertungen" className="hover:text-stone-300 transition-colors font-light tracking-wide">Bewertungen</Link>
+            <Link to="/ueber-uns" className="hover:text-stone-300 transition-colors font-light tracking-wide">Über uns</Link>
+            <Link to="/kontakt" className="hover:text-stone-300 transition-colors font-light tracking-wide">Kontakt</Link>
           </div>
           
-          <Link to="/speisekarte" className="hidden md:block bg-amber-600 hover:bg-amber-500 px-6 py-2 rounded-full transition-colors font-medium border border-amber-400">
+          <Link to="/speisekarte" className="hidden md:block border border-stone-300 hover:bg-stone-100 hover:text-black px-8 py-2 rounded-full transition-all duration-300 font-light tracking-wider text-sm">
             ZUR SPEISEKARTE
           </Link>
           
@@ -34,21 +33,21 @@ const Header = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <div className="w-6 h-6 flex flex-col justify-center space-y-1">
-              <div className="w-6 h-0.5 bg-amber-100"></div>
-              <div className="w-6 h-0.5 bg-amber-100"></div>
-              <div className="w-6 h-0.5 bg-amber-100"></div>
+              <div className="w-6 h-0.5 bg-stone-100"></div>
+              <div className="w-6 h-0.5 bg-stone-100"></div>
+              <div className="w-6 h-0.5 bg-stone-100"></div>
             </div>
           </button>
         </nav>
         
         {isMenuOpen && (
-          <div className="md:hidden mt-4 bg-amber-800 rounded-lg p-4">
-            <Link to="/" className="block py-2 hover:text-amber-300">Startseite</Link>
-            <Link to="/standorte" className="block py-2 hover:text-amber-300">Standorte</Link>
-            <Link to="/speisekarte" className="block py-2 hover:text-amber-300">Speisekarte</Link>
-            <Link to="/bewertungen" className="block py-2 hover:text-amber-300">Bewertungen</Link>
-            <Link to="/ueber-uns" className="block py-2 hover:text-amber-300">Über uns</Link>
-            <Link to="/kontakt" className="block py-2 hover:text-amber-300">Kontakt</Link>
+          <div className="md:hidden mt-4 bg-black bg-opacity-95 rounded-lg p-4">
+            <Link to="/" className="block py-3 hover:text-stone-300 font-light">Startseite</Link>
+            <Link to="/standorte" className="block py-3 hover:text-stone-300 font-light">Standorte</Link>
+            <Link to="/speisekarte" className="block py-3 hover:text-stone-300 font-light">Speisekarte</Link>
+            <Link to="/bewertungen" className="block py-3 hover:text-stone-300 font-light">Bewertungen</Link>
+            <Link to="/ueber-uns" className="block py-3 hover:text-stone-300 font-light">Über uns</Link>
+            <Link to="/kontakt" className="block py-3 hover:text-stone-300 font-light">Kontakt</Link>
           </div>
         )}
       </div>
@@ -61,100 +60,94 @@ const Home = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="min-h-screen bg-amber-50">
-      {/* Hero Section */}
-      <section className="relative h-screen bg-cover bg-center bg-gradient-to-b from-black/40 to-black/60" 
+    <div className="min-h-screen">
+      {/* Hero Section - Exact match to the image */}
+      <section className="relative h-screen bg-cover bg-center" 
                style={{backgroundImage: `url('https://images.pexels.com/photos/19250676/pexels-photo-19250676.jpeg')`}}>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/50"></div>
-        <div className="relative z-10 flex items-center justify-center h-full text-center text-white px-4">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80"></div>
+        <div className="relative z-10 flex items-center justify-center h-full text-center text-stone-100 px-4">
           <div className="max-w-4xl">
-            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-amber-100 drop-shadow-2xl">
+            <h1 className="text-6xl md:text-8xl font-light mb-8 text-stone-100 tracking-wider leading-tight">
               AUTHENTISCHE<br />
-              <span className="text-amber-300">TAPAS & WEIN</span>
+              <span className="text-stone-200">TAPAS & WEIN</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-amber-100 drop-shadow-xl">
-              Spanische Genüsse – Authentisch & Gemütlich
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
               <button 
                 onClick={() => navigate('/standorte')}
-                className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-xl"
+                className="border-2 border-stone-200 text-stone-100 hover:bg-stone-100 hover:text-black px-12 py-4 rounded-full text-lg font-light transition-all duration-500 tracking-wider"
               >
                 STANDORT WÄHLEN
               </button>
-              <button 
-                onClick={() => navigate('/speisekarte')}
-                className="border-2 border-amber-300 text-amber-100 hover:bg-amber-300 hover:text-amber-900 px-8 py-4 rounded-full text-lg font-medium transition-all duration-300"
-              >
-                ZUR SPEISEKARTE
-              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-amber-50">
+      {/* Features Section with dark theme */}
+      <section className="py-20 bg-stone-900">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
+          <h2 className="text-4xl font-light text-center text-stone-100 mb-16 tracking-wider">
+            Spanische Genüsse – Authentisch & Gemütlich
+          </h2>
+          <div className="grid md:grid-cols-3 gap-12">
             <div className="text-center">
-              <div className="w-20 h-20 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 border border-stone-400 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">🍷</span>
               </div>
-              <h3 className="text-xl font-serif font-bold text-amber-900 mb-2">Authentische Tapas</h3>
-              <p className="text-amber-800">Traditionelle spanische Küche mit frischen, hochwertigen Zutaten</p>
+              <h3 className="text-xl font-light text-stone-100 mb-4 tracking-wider">Authentische Tapas</h3>
+              <p className="text-stone-300 font-light leading-relaxed">Traditionelle spanische Küche mit frischen, hochwertigen Zutaten</p>
             </div>
             <div className="text-center">
-              <div className="w-20 h-20 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 border border-stone-400 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">🥘</span>
               </div>
-              <h3 className="text-xl font-serif font-bold text-amber-900 mb-2">Frische Paella</h3>
-              <p className="text-amber-800">Täglich frisch zubereitet mit den besten Meeresfrüchten und Zutaten</p>
+              <h3 className="text-xl font-light text-stone-100 mb-4 tracking-wider">Frische Paella</h3>
+              <p className="text-stone-300 font-light leading-relaxed">Täglich frisch zubereitet mit den besten Meeresfrüchten und Zutaten</p>
             </div>
             <div className="text-center">
-              <div className="w-20 h-20 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 border border-stone-400 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">🏖️</span>
               </div>
-              <h3 className="text-xl font-serif font-bold text-amber-900 mb-2">Zwei Standorte</h3>
-              <p className="text-amber-800">In Neustadt und Großenbrode direkt an der Ostsee</p>
+              <h3 className="text-xl font-light text-stone-100 mb-4 tracking-wider">Zwei Standorte</h3>
+              <p className="text-stone-300 font-light leading-relaxed">In Neustadt und Großenbrode direkt an der Ostsee</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Food Gallery */}
-      <section className="py-16 bg-gradient-to-b from-amber-100 to-amber-50">
+      {/* Food Gallery with dark theme */}
+      <section className="py-20 bg-stone-800">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-serif font-bold text-center text-amber-900 mb-12">
+          <h2 className="text-4xl font-light text-center text-stone-100 mb-16 tracking-wider">
             Unsere Spezialitäten
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-stone-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-stone-700">
               <img src="https://images.unsplash.com/photo-1565599837634-134bc3aadce8" alt="Patatas Bravas" className="w-full h-48 object-cover" />
-              <div className="p-4">
-                <h3 className="font-serif font-bold text-amber-900">Patatas Bravas</h3>
-                <p className="text-amber-700 text-sm">Klassische spanische Kartoffeln</p>
+              <div className="p-6">
+                <h3 className="font-light text-stone-100 text-lg tracking-wider">Patatas Bravas</h3>
+                <p className="text-stone-400 text-sm font-light">Klassische spanische Kartoffeln</p>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform">
+            <div className="bg-stone-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-stone-700">
               <img src="https://images.unsplash.com/photo-1630175860333-5131bda75071" alt="Paella" className="w-full h-48 object-cover" />
-              <div className="p-4">
-                <h3 className="font-serif font-bold text-amber-900">Paella Valenciana</h3>
-                <p className="text-amber-700 text-sm">Traditionelle spanische Paella</p>
+              <div className="p-6">
+                <h3 className="font-light text-stone-100 text-lg tracking-wider">Paella Valenciana</h3>
+                <p className="text-stone-400 text-sm font-light">Traditionelle spanische Paella</p>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform">
+            <div className="bg-stone-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-stone-700">
               <img src="https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg" alt="Tapas" className="w-full h-48 object-cover" />
-              <div className="p-4">
-                <h3 className="font-serif font-bold text-amber-900">Tapas Variation</h3>
-                <p className="text-amber-700 text-sm">Auswahl spanischer Köstlichkeiten</p>
+              <div className="p-6">
+                <h3 className="font-light text-stone-100 text-lg tracking-wider">Tapas Variation</h3>
+                <p className="text-stone-400 text-sm font-light">Auswahl spanischer Köstlichkeiten</p>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform">
+            <div className="bg-stone-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-stone-700">
               <img src="https://images.unsplash.com/photo-1588276552401-30058a0fe57b" alt="Seafood Paella" className="w-full h-48 object-cover" />
-              <div className="p-4">
-                <h3 className="font-serif font-bold text-amber-900">Paella Mariscos</h3>
-                <p className="text-amber-700 text-sm">Meeresfrüchte-Paella</p>
+              <div className="p-6">
+                <h3 className="font-light text-stone-100 text-lg tracking-wider">Paella Mariscos</h3>
+                <p className="text-stone-400 text-sm font-light">Meeresfrüchte-Paella</p>
               </div>
             </div>
           </div>
@@ -241,22 +234,22 @@ const Speisekarte = () => {
   };
 
   return (
-    <div className="min-h-screen bg-amber-50 py-8">
+    <div className="min-h-screen bg-stone-900 py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-serif font-bold text-center text-amber-900 mb-8">
+        <h1 className="text-5xl font-light text-center text-stone-100 mb-12 tracking-wider">
           Speisekarte
         </h1>
         
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map(category => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-4 py-2 rounded-full transition-colors ${
+              className={`px-6 py-3 rounded-full transition-all duration-300 font-light tracking-wide ${
                 selectedCategory === category.id
-                  ? 'bg-amber-600 text-white'
-                  : 'bg-white text-amber-800 hover:bg-amber-100'
+                  ? 'bg-stone-100 text-black'
+                  : 'border border-stone-400 text-stone-100 hover:bg-stone-100 hover:text-black'
               }`}
             >
               {category.name}
@@ -265,18 +258,18 @@ const Speisekarte = () => {
         </div>
 
         {/* Menu Items */}
-        <div className="grid gap-4 max-w-4xl mx-auto">
+        <div className="grid gap-6 max-w-5xl mx-auto">
           {getDisplayItems().map((item, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <div key={index} className="bg-stone-800 rounded-lg border border-stone-700 p-8 hover:bg-stone-750 transition-all duration-300">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
-                  <h3 className="text-xl font-serif font-bold text-amber-900 mb-2">{item.name}</h3>
-                  <p className="text-amber-700 mb-2">{item.description}</p>
-                  <span className="text-sm text-amber-600 capitalize">
+                  <h3 className="text-2xl font-light text-stone-100 mb-3 tracking-wide">{item.name}</h3>
+                  <p className="text-stone-300 mb-3 font-light leading-relaxed">{item.description}</p>
+                  <span className="text-sm text-stone-400 capitalize font-light tracking-wider">
                     {categories.find(c => c.id === item.category)?.name}
                   </span>
                 </div>
-                <div className="text-2xl font-bold text-amber-900 ml-4">
+                <div className="text-3xl font-light text-stone-100 ml-6 tracking-wider">
                   {item.price} €
                 </div>
               </div>
@@ -291,87 +284,91 @@ const Speisekarte = () => {
 // Locations Page Component
 const Standorte = () => {
   return (
-    <div className="min-h-screen bg-amber-50 py-8">
+    <div className="min-h-screen bg-stone-900 py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-serif font-bold text-center text-amber-900 mb-12">
+        <h1 className="text-5xl font-light text-center text-stone-100 mb-16 tracking-wider">
           Unsere Standorte
         </h1>
         
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-12">
           {/* Neustadt Location */}
-          <div className="bg-white rounded-lg shadow-xl overflow-hidden">
+          <div className="bg-stone-800 rounded-lg border border-stone-700 overflow-hidden">
             <img 
               src="https://images.unsplash.com/photo-1665758564776-f2aa6b41327e" 
               alt="Restaurant Neustadt" 
               className="w-full h-64 object-cover"
             />
-            <div className="p-6">
-              <h2 className="text-2xl font-serif font-bold text-amber-900 mb-4">
+            <div className="p-8">
+              <h2 className="text-3xl font-light text-stone-100 mb-6 tracking-wider">
                 Jimmy's Tapas Bar Neustadt
               </h2>
-              <div className="space-y-3 text-amber-800">
+              <div className="space-y-4 text-stone-300">
                 <div className="flex items-center">
-                  <span className="text-xl mr-3">📍</span>
+                  <span className="text-xl mr-4">📍</span>
                   <div>
-                    <p className="font-medium">Am Strande 21</p>
-                    <p>23730 Neustadt in Holstein</p>
+                    <p className="font-light text-lg">Am Strande 21</p>
+                    <p className="font-light">23730 Neustadt in Holstein</p>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <span className="text-xl mr-3">🕒</span>
+                  <span className="text-xl mr-4">🕒</span>
                   <div>
-                    <p className="font-medium">Öffnungszeiten:</p>
-                    <p>Täglich 12:00–22:00 Uhr (Sommersaison)</p>
-                    <p className="text-sm text-amber-600">Winterbetrieb unregelmäßig</p>
+                    <p className="font-light text-lg">Öffnungszeiten:</p>
+                    <p className="font-light">Täglich 12:00–22:00 Uhr (Sommersaison)</p>
+                    <p className="text-sm text-stone-400 font-light">Winterbetrieb unregelmäßig</p>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <span className="text-xl mr-3">📞</span>
-                  <p>Telefon: +49 (0) 4561 123456</p>
+                  <span className="text-xl mr-4">📞</span>
+                  <p className="font-light">Telefon: +49 (0) 4561 123456</p>
                 </div>
               </div>
-              <div className="mt-6 h-64 bg-amber-100 rounded-lg flex items-center justify-center">
-                <p className="text-amber-700">Google Maps Karte - Neustadt</p>
-                <p className="text-sm text-amber-600 ml-2">(Integration folgt)</p>
+              <div className="mt-8 h-64 bg-stone-700 rounded-lg flex items-center justify-center border border-stone-600">
+                <div className="text-center">
+                  <p className="text-stone-300 font-light">Google Maps Karte - Neustadt</p>
+                  <p className="text-sm text-stone-400 font-light mt-2">(Integration folgt)</p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Großenbrode Location */}
-          <div className="bg-white rounded-lg shadow-xl overflow-hidden">
+          <div className="bg-stone-800 rounded-lg border border-stone-700 overflow-hidden">
             <img 
               src="https://images.unsplash.com/photo-1665758564796-5162ff406254" 
               alt="Restaurant Großenbrode" 
               className="w-full h-64 object-cover"
             />
-            <div className="p-6">
-              <h2 className="text-2xl font-serif font-bold text-amber-900 mb-4">
+            <div className="p-8">
+              <h2 className="text-3xl font-light text-stone-100 mb-6 tracking-wider">
                 Jimmy's Tapas Bar Großenbrode
               </h2>
-              <div className="space-y-3 text-amber-800">
+              <div className="space-y-4 text-stone-300">
                 <div className="flex items-center">
-                  <span className="text-xl mr-3">📍</span>
+                  <span className="text-xl mr-4">📍</span>
                   <div>
-                    <p className="font-medium">Südstrand 54</p>
-                    <p>23755 Großenbrode</p>
+                    <p className="font-light text-lg">Südstrand 54</p>
+                    <p className="font-light">23755 Großenbrode</p>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <span className="text-xl mr-3">🕒</span>
+                  <span className="text-xl mr-4">🕒</span>
                   <div>
-                    <p className="font-medium">Öffnungszeiten:</p>
-                    <p>Täglich 12:00–22:00 Uhr (Sommersaison)</p>
-                    <p className="text-sm text-amber-600">Winterbetrieb unregelmäßig</p>
+                    <p className="font-light text-lg">Öffnungszeiten:</p>
+                    <p className="font-light">Täglich 12:00–22:00 Uhr (Sommersaison)</p>
+                    <p className="text-sm text-stone-400 font-light">Winterbetrieb unregelmäßig</p>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <span className="text-xl mr-3">📞</span>
-                  <p>Telefon: +49 (0) 4561 789012</p>
+                  <span className="text-xl mr-4">📞</span>
+                  <p className="font-light">Telefon: +49 (0) 4561 789012</p>
                 </div>
               </div>
-              <div className="mt-6 h-64 bg-amber-100 rounded-lg flex items-center justify-center">
-                <p className="text-amber-700">Google Maps Karte - Großenbrode</p>
-                <p className="text-sm text-amber-600 ml-2">(Integration folgt)</p>
+              <div className="mt-8 h-64 bg-stone-700 rounded-lg flex items-center justify-center border border-stone-600">
+                <div className="text-center">
+                  <p className="text-stone-300 font-light">Google Maps Karte - Großenbrode</p>
+                  <p className="text-sm text-stone-400 font-light mt-2">(Integration folgt)</p>
+                </div>
               </div>
             </div>
           </div>
@@ -384,32 +381,32 @@ const Standorte = () => {
 // About Us Page Component
 const UeberUns = () => {
   return (
-    <div className="min-h-screen bg-amber-50 py-8">
+    <div className="min-h-screen bg-stone-900 py-12">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-serif font-bold text-center text-amber-900 mb-12">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-5xl font-light text-center text-stone-100 mb-16 tracking-wider">
             Über uns
           </h1>
           
-          <div className="bg-white rounded-lg shadow-xl p-8 mb-8">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="bg-stone-800 rounded-lg border border-stone-700 p-10 mb-12">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <img 
                   src="https://images.unsplash.com/photo-1665758564802-f611df512d8d" 
                   alt="Jimmy" 
-                  className="w-full rounded-lg shadow-lg"
+                  className="w-full rounded-lg"
                 />
               </div>
               <div>
-                <h2 className="text-3xl font-serif font-bold text-amber-900 mb-4">
+                <h2 className="text-4xl font-light text-stone-100 mb-6 tracking-wider">
                   Jimmy Rodríguez
                 </h2>
-                <p className="text-amber-800 mb-4 leading-relaxed">
+                <p className="text-stone-300 mb-6 leading-relaxed font-light text-lg">
                   Seit über 15 Jahren bringe ich die authentischen Aromen Spaniens an die deutsche Ostseeküste. 
                   Meine Leidenschaft für die spanische Küche begann in den kleinen Tapas-Bars von Sevilla, 
                   wo ich die Geheimnisse traditioneller Rezepte erlernte.
                 </p>
-                <p className="text-amber-800 mb-4 leading-relaxed">
+                <p className="text-stone-300 mb-6 leading-relaxed font-light text-lg">
                   In Jimmy's Tapas Bar verwenden wir nur die besten Zutaten - von handverlesenem Olivenöl 
                   aus Andalusien bis hin zu frischen Meeresfrüchten aus der Ostsee. Jedes Gericht wird mit 
                   Liebe und Respekt vor der spanischen Tradition zubereitet.
@@ -418,25 +415,25 @@ const UeberUns = () => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <div className="text-4xl mb-4">🍷</div>
-              <h3 className="text-xl font-serif font-bold text-amber-900 mb-2">Qualität</h3>
-              <p className="text-amber-800">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-stone-800 rounded-lg border border-stone-700 p-8 text-center">
+              <div className="text-5xl mb-6">🍷</div>
+              <h3 className="text-2xl font-light text-stone-100 mb-4 tracking-wider">Qualität</h3>
+              <p className="text-stone-300 font-light leading-relaxed">
                 Nur die besten Zutaten für authentische spanische Geschmackserlebnisse
               </p>
             </div>
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <div className="text-4xl mb-4">❤️</div>
-              <h3 className="text-xl font-serif font-bold text-amber-900 mb-2">Gastfreundschaft</h3>
-              <p className="text-amber-800">
+            <div className="bg-stone-800 rounded-lg border border-stone-700 p-8 text-center">
+              <div className="text-5xl mb-6">❤️</div>
+              <h3 className="text-2xl font-light text-stone-100 mb-4 tracking-wider">Gastfreundschaft</h3>
+              <p className="text-stone-300 font-light leading-relaxed">
                 Herzliche Atmosphäre und persönlicher Service für jeden Gast
               </p>
             </div>
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <div className="text-4xl mb-4">🎉</div>
-              <h3 className="text-xl font-serif font-bold text-amber-900 mb-2">Lebensfreude</h3>
-              <p className="text-amber-800">
+            <div className="bg-stone-800 rounded-lg border border-stone-700 p-8 text-center">
+              <div className="text-5xl mb-6">🎉</div>
+              <h3 className="text-2xl font-light text-stone-100 mb-4 tracking-wider">Lebensfreude</h3>
+              <p className="text-stone-300 font-light leading-relaxed">
                 Spanische Lebensart und Genuss in gemütlicher Atmosphäre
               </p>
             </div>
@@ -485,36 +482,36 @@ const Bewertungen = () => {
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <span key={i} className={`text-2xl ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}>
+      <span key={i} className={`text-2xl ${i < rating ? 'text-yellow-400' : 'text-stone-600'}`}>
         ★
       </span>
     ));
   };
 
   return (
-    <div className="min-h-screen bg-amber-50 py-8">
+    <div className="min-h-screen bg-stone-900 py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-serif font-bold text-center text-amber-900 mb-12">
+        <h1 className="text-5xl font-light text-center text-stone-100 mb-16 tracking-wider">
           Bewertungen & Feedback
         </h1>
         
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
           {/* Public Reviews */}
           <div>
-            <h2 className="text-2xl font-serif font-bold text-amber-900 mb-6">
+            <h2 className="text-3xl font-light text-stone-100 mb-8 tracking-wider">
               Kundenbewertungen
             </h2>
-            <div className="space-y-6">
+            <div className="space-y-8">
               {reviews.map((review, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-lg p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-bold text-amber-900">{review.name}</h3>
-                    <span className="text-sm text-amber-600">{review.date}</span>
+                <div key={index} className="bg-stone-800 rounded-lg border border-stone-700 p-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="font-light text-stone-100 text-lg tracking-wide">{review.name}</h3>
+                    <span className="text-sm text-stone-400 font-light">{review.date}</span>
                   </div>
-                  <div className="flex mb-3">
+                  <div className="flex mb-4">
                     {renderStars(review.rating)}
                   </div>
-                  <p className="text-amber-800">{review.comment}</p>
+                  <p className="text-stone-300 font-light leading-relaxed">{review.comment}</p>
                 </div>
               ))}
             </div>
@@ -522,43 +519,43 @@ const Bewertungen = () => {
 
           {/* Feedback Form */}
           <div>
-            <h2 className="text-2xl font-serif font-bold text-amber-900 mb-6">
+            <h2 className="text-3xl font-light text-stone-100 mb-8 tracking-wider">
               Ihr Feedback
             </h2>
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <p className="text-amber-700 mb-4 text-sm">
+            <div className="bg-stone-800 rounded-lg border border-stone-700 p-8">
+              <p className="text-stone-400 mb-6 text-sm font-light">
                 Dieses Feedback wird intern gespeichert und nicht öffentlich angezeigt.
               </p>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">Name</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">Name</label>
                   <input
                     type="text"
                     value={feedback.name}
                     onChange={(e) => setFeedback({...feedback, name: e.target.value})}
-                    className="w-full p-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                    className="w-full p-4 bg-stone-700 border border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-stone-400 text-stone-100 font-light"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">E-Mail</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">E-Mail</label>
                   <input
                     type="email"
                     value={feedback.email}
                     onChange={(e) => setFeedback({...feedback, email: e.target.value})}
-                    className="w-full p-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                    className="w-full p-4 bg-stone-700 border border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-stone-400 text-stone-100 font-light"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">Bewertung</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">Bewertung</label>
                   <div className="flex space-x-2">
                     {[1,2,3,4,5].map(star => (
                       <button
                         key={star}
                         type="button"
                         onClick={() => setFeedback({...feedback, rating: star})}
-                        className={`text-3xl ${star <= feedback.rating ? 'text-yellow-400' : 'text-gray-300'} hover:text-yellow-400`}
+                        className={`text-3xl ${star <= feedback.rating ? 'text-yellow-400' : 'text-stone-600'} hover:text-yellow-400 transition-colors`}
                       >
                         ★
                       </button>
@@ -566,17 +563,17 @@ const Bewertungen = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">Kommentar</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">Kommentar</label>
                   <textarea
                     value={feedback.comment}
                     onChange={(e) => setFeedback({...feedback, comment: e.target.value})}
-                    className="w-full p-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400 h-32"
+                    className="w-full p-4 bg-stone-700 border border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-stone-400 h-32 text-stone-100 font-light"
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-amber-600 hover:bg-amber-500 text-white py-3 rounded-lg font-medium transition-colors"
+                  className="w-full bg-stone-100 hover:bg-stone-200 text-black py-4 rounded-lg font-light transition-colors tracking-wider"
                 >
                   Feedback senden
                 </button>
@@ -606,89 +603,89 @@ const Kontakt = () => {
   };
 
   return (
-    <div className="min-h-screen bg-amber-50 py-8">
+    <div className="min-h-screen bg-stone-900 py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-serif font-bold text-center text-amber-900 mb-12">
+        <h1 className="text-5xl font-light text-center text-stone-100 mb-16 tracking-wider">
           Kontakt
         </h1>
         
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
           {/* Contact Information */}
           <div>
-            <h2 className="text-2xl font-serif font-bold text-amber-900 mb-6">
+            <h2 className="text-3xl font-light text-stone-100 mb-8 tracking-wider">
               Kontaktinformationen
             </h2>
             
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <h3 className="text-xl font-bold text-amber-900 mb-4">Neustadt in Holstein</h3>
-              <div className="space-y-2 text-amber-800">
-                <p>📍 Am Strande 21, 23730 Neustadt in Holstein</p>
-                <p>📞 +49 (0) 4561 123456</p>
-                <p>✉️ neustadt@jimmys-tapasbar.de</p>
+            <div className="bg-stone-800 rounded-lg border border-stone-700 p-8 mb-8">
+              <h3 className="text-2xl font-light text-stone-100 mb-6 tracking-wider">Neustadt in Holstein</h3>
+              <div className="space-y-3 text-stone-300">
+                <p className="font-light">📍 Am Strande 21, 23730 Neustadt in Holstein</p>
+                <p className="font-light">📞 +49 (0) 4561 123456</p>
+                <p className="font-light">✉️ neustadt@jimmys-tapasbar.de</p>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <h3 className="text-xl font-bold text-amber-900 mb-4">Großenbrode</h3>
-              <div className="space-y-2 text-amber-800">
-                <p>📍 Südstrand 54, 23755 Großenbrode</p>
-                <p>📞 +49 (0) 4561 789012</p>
-                <p>✉️ grossenbrode@jimmys-tapasbar.de</p>
+            <div className="bg-stone-800 rounded-lg border border-stone-700 p-8 mb-8">
+              <h3 className="text-2xl font-light text-stone-100 mb-6 tracking-wider">Großenbrode</h3>
+              <div className="space-y-3 text-stone-300">
+                <p className="font-light">📍 Südstrand 54, 23755 Großenbrode</p>
+                <p className="font-light">📞 +49 (0) 4561 789012</p>
+                <p className="font-light">✉️ grossenbrode@jimmys-tapasbar.de</p>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-bold text-amber-900 mb-4">Allgemein</h3>
-              <div className="space-y-2 text-amber-800">
-                <p>🌐 www.jimmys-tapasbar.de</p>
-                <p>✉️ info@jimmys-tapasbar.de</p>
-                <p>🕒 Täglich 12:00–22:00 Uhr (Sommersaison)</p>
+            <div className="bg-stone-800 rounded-lg border border-stone-700 p-8">
+              <h3 className="text-2xl font-light text-stone-100 mb-6 tracking-wider">Allgemein</h3>
+              <div className="space-y-3 text-stone-300">
+                <p className="font-light">🌐 www.jimmys-tapasbar.de</p>
+                <p className="font-light">✉️ info@jimmys-tapasbar.de</p>
+                <p className="font-light">🕒 Täglich 12:00–22:00 Uhr (Sommersaison)</p>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
           <div>
-            <h2 className="text-2xl font-serif font-bold text-amber-900 mb-6">
+            <h2 className="text-3xl font-light text-stone-100 mb-8 tracking-wider">
               Nachricht senden
             </h2>
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="bg-stone-800 rounded-lg border border-stone-700 p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">Name *</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">Name *</label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full p-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                    className="w-full p-4 bg-stone-700 border border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-stone-400 text-stone-100 font-light"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">E-Mail *</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">E-Mail *</label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="w-full p-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                    className="w-full p-4 bg-stone-700 border border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-stone-400 text-stone-100 font-light"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">Telefon</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">Telefon</label>
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="w-full p-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                    className="w-full p-4 bg-stone-700 border border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-stone-400 text-stone-100 font-light"
                   />
                 </div>
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">Standort</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">Standort</label>
                   <select
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    className="w-full p-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                    className="w-full p-4 bg-stone-700 border border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-stone-400 text-stone-100 font-light"
                   >
                     <option value="neustadt">Neustadt in Holstein</option>
                     <option value="grossenbrode">Großenbrode</option>
@@ -696,25 +693,25 @@ const Kontakt = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-amber-900 font-medium mb-2">Nachricht *</label>
+                  <label className="block text-stone-100 font-light mb-3 tracking-wide">Nachricht *</label>
                   <textarea
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    className="w-full p-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400 h-32"
+                    className="w-full p-4 bg-stone-700 border border-stone-600 rounded-lg focus:ring-2 focus:ring-stone-400 focus:border-stone-400 h-32 text-stone-100 font-light"
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-amber-600 hover:bg-amber-500 text-white py-3 rounded-lg font-medium transition-colors"
+                  className="w-full bg-stone-100 hover:bg-stone-200 text-black py-4 rounded-lg font-light transition-colors tracking-wider"
                 >
                   Nachricht senden
                 </button>
               </form>
               
-              <div className="mt-6 pt-6 border-t border-amber-200">
-                <h4 className="font-bold text-amber-900 mb-2">Datenschutz</h4>
-                <p className="text-sm text-amber-700">
+              <div className="mt-8 pt-8 border-t border-stone-700">
+                <h4 className="font-light text-stone-100 mb-3 tracking-wide">Datenschutz</h4>
+                <p className="text-sm text-stone-400 font-light leading-relaxed">
                   Ihre Daten werden vertraulich behandelt und gemäß DSGVO verarbeitet. 
                   Weitere Informationen finden Sie in unserem Impressum.
                 </p>
@@ -730,31 +727,31 @@ const Kontakt = () => {
 // Footer Component
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900 text-amber-100 py-8">
+    <footer className="bg-black bg-opacity-90 text-stone-300 py-12">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-serif font-bold mb-4">Jimmy's Tapas Bar</h3>
-            <p className="text-amber-200">
+            <h3 className="text-xl font-light mb-4 tracking-wider text-stone-100">Jimmy's Tapas Bar</h3>
+            <p className="text-stone-400 font-light">
               Spanische Genüsse – Authentisch & Gemütlich
             </p>
           </div>
           <div>
-            <h4 className="font-bold mb-4">Standorte</h4>
-            <div className="space-y-2 text-amber-200">
+            <h4 className="font-light mb-4 tracking-wider text-stone-100">Standorte</h4>
+            <div className="space-y-2 text-stone-400 font-light">
               <p>Neustadt in Holstein</p>
               <p>Großenbrode</p>
             </div>
           </div>
           <div>
-            <h4 className="font-bold mb-4">Kontakt</h4>
-            <div className="space-y-2 text-amber-200">
+            <h4 className="font-light mb-4 tracking-wider text-stone-100">Kontakt</h4>
+            <div className="space-y-2 text-stone-400 font-light">
               <p>info@jimmys-tapasbar.de</p>
               <p>www.jimmys-tapasbar.de</p>
             </div>
           </div>
         </div>
-        <div className="border-t border-amber-700 mt-8 pt-4 text-center text-amber-300">
+        <div className="border-t border-stone-700 mt-8 pt-6 text-center text-stone-500 font-light">
           <p>&copy; 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten. | Impressum | Datenschutz</p>
         </div>
       </div>
