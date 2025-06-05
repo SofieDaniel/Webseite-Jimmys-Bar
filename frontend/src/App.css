@@ -119,6 +119,9 @@ body {
 .nav-link {
   position: relative;
   transition: all 0.3s ease;
+  color: var(--warm-beige);
+  text-decoration: none;
+  z-index: 100;
 }
 
 .nav-link::after {
@@ -135,6 +138,19 @@ body {
 
 .nav-link:hover::after {
   width: 100%;
+}
+
+/* Ensure navigation items are always visible */
+.hidden.md\\:flex {
+  display: flex !important;
+}
+
+@media (min-width: 768px) {
+  .hidden.md\\:flex {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 }
 
 /* Form styling */
