@@ -21,6 +21,8 @@ const Header = () => {
             <Link to="/standorte" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Standorte</Link>
             <Link to="/speisekarte" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Speisekarte</Link>
             <Link to="/bewertungen" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Bewertungen</Link>
+            <Link to="/ueber-uns" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Über uns</Link>
+            <Link to="/kontakt" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Kontakt</Link>
           </div>
           
           {/* CTA Button - exactly as in reference */}
