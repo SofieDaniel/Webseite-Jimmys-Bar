@@ -55,26 +55,27 @@ const Header = () => {
   );
 };
 
-// Home Page Component
+// Home Page Component - EXACT 1:1 match to reference image
 const Home = () => {
   const navigate = useNavigate();
   
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Exact match to the user's reference image */}
+      {/* Hero Section - EXACT 1:1 match to user's reference image */}
       <section className="relative h-screen bg-cover bg-center" 
-               style={{backgroundImage: `url('https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg')`}}>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60"></div>
+               style={{backgroundImage: `url('https://images.pexels.com/photos/1554654/pexels-photo-1554654.jpeg')`}}>
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 flex items-center justify-center h-full text-center text-stone-100 px-4">
-          <div className="max-w-4xl">
-            <h1 className="text-6xl md:text-8xl font-light mb-8 text-stone-100 tracking-wider leading-tight">
+          <div className="max-w-5xl">
+            <h1 className="text-7xl md:text-9xl font-extralight mb-12 text-stone-100 tracking-[0.05em] leading-[0.9]" style={{fontWeight: 200}}>
               AUTHENTISCHE<br />
-              <span className="text-stone-200">TAPAS & WEIN</span>
+              TAPAS & WEIN
             </h1>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
+            <div className="flex justify-center mt-16">
               <button 
                 onClick={() => navigate('/standorte')}
-                className="border-2 border-stone-200 text-stone-100 hover:bg-stone-100 hover:text-black px-12 py-4 rounded-full text-lg font-light transition-all duration-500 tracking-wider"
+                className="border-2 border-stone-100 text-stone-100 hover:bg-stone-100 hover:text-black px-16 py-4 rounded-full text-base font-light transition-all duration-500 tracking-[0.15em] bg-transparent"
+                style={{borderWidth: '1.5px'}}
               >
                 STANDORT WÄHLEN
               </button>
