@@ -168,13 +168,15 @@ const Home = () => {
             </p>
           </div>
           
-          {/* Clean Three Cards - Professional Layout */}
+          {/* Clean Three Cards - Professional Layout with Product Images */}
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
+              <img 
+                src="https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg" 
+                alt="Authentische Tapas" 
+                className="w-full h-48 object-cover"
+              />
               <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl">🍷</span>
-                </div>
                 <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Authentische Tapas</h3>
                 <p className="text-light-beige font-light leading-relaxed">
                   Traditionelle spanische Gerichte, mit Liebe zubereitet und perfekt zum Teilen
@@ -183,10 +185,12 @@ const Home = () => {
             </div>
             
             <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1694685367640-05d6624e57f1" 
+                alt="Frische Paella" 
+                className="w-full h-48 object-cover"
+              />
               <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl">🥘</span>
-                </div>
                 <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Frische Paella</h3>
                 <p className="text-light-beige font-light leading-relaxed">
                   Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn
@@ -195,10 +199,12 @@ const Home = () => {
             </div>
             
             <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
+              <img 
+                src="https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg" 
+                alt="Zwei Standorte" 
+                className="w-full h-48 object-cover"
+              />
               <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl">🏖️</span>
-                </div>
                 <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Zwei Standorte</h3>
                 <p className="text-light-beige font-light leading-relaxed">
                   In Grömitz und Neustadt an der Küste – immer in Strandnähe
