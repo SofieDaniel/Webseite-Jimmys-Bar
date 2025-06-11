@@ -398,13 +398,13 @@ main {
   }
 }
 
-/* Enhanced Menu Hover Tooltip with Details */
+/* Enhanced Menu Hover Tooltip with Details - ALWAYS ON TOP */
 .menu-image-tooltip {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 50000;
+  position: fixed !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 999999 !important;
   opacity: 0;
   transition: all 0.4s ease;
   pointer-events: none;
@@ -413,20 +413,21 @@ main {
 }
 
 .menu-item:hover .menu-image-tooltip {
-  opacity: 1;
-  z-index: 50001;
+  opacity: 1 !important;
+  z-index: 999999 !important;
 }
 
 .tooltip-content {
   box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.9),
-    0 15px 35px rgba(0, 0, 0, 0.7),
-    0 5px 15px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+    0 25px 50px rgba(0, 0, 0, 0.95),
+    0 15px 35px rgba(0, 0, 0, 0.8),
+    0 5px 15px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 3px solid var(--warm-beige) !important;
 }
 
-/* Screenshot-Style Menu Items - Enhanced */
+/* Menu container should not create stacking context */
 .menu-item {
   background: rgba(45, 31, 26, 0.85);
   border: 1px solid rgba(245, 230, 211, 0.15);
@@ -435,6 +436,7 @@ main {
   transition: all 0.3s ease;
   position: relative;
   overflow: visible;
+  z-index: 1;
 }
 
 .menu-item:hover {
@@ -444,6 +446,7 @@ main {
   box-shadow: 
     0 15px 35px rgba(0, 0, 0, 0.4),
     0 8px 20px rgba(0, 0, 0, 0.3);
+  z-index: 999998 !important;
 }
 
 /* Scroll to Top Button */
