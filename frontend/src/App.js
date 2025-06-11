@@ -690,7 +690,8 @@ const AdminPanel = () => {
                 { id: 'standorte', name: 'Standorte' },
                 { id: 'bewertungen', name: 'Bewertungen' },
                 { id: 'ueber-uns', name: 'Über uns' },
-                { id: 'kontakt', name: 'Kontakt' }
+                { id: 'kontakt', name: 'Kontakt' },
+                { id: 'einstellungen', name: 'Einstellungen' }
               ].map(item => (
                 <button
                   key={item.id}
