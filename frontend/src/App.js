@@ -446,7 +446,7 @@ const Header = () => {
               onClick={toggleLanguage}
               className="border border-stone-300 text-stone-100 hover:bg-stone-100 hover:text-black px-3 py-1 rounded text-xs font-light tracking-wider transition-all duration-300"
             >
-              {currentLanguage === 'de' ? 'EN' : 'DE'}
+              {currentLanguage === 'de' ? 'EN' : currentLanguage === 'en' ? 'ES' : 'DE'}
             </button>
           </div>
         </nav>
