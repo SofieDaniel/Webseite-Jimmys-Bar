@@ -360,11 +360,11 @@ const Speisekarte = () => {
       { name: 'Kartoffel', description: 'Traditionelle Kartoffel-Kroketten', price: '5,50', details: 'Klassische Kartoffelkroketten mit Kräutern und Gewürzen.' }
     ],
     'pasta': [
-      { name: 'Spaghetti Aglio e Olio', description: 'Klassisch mit Knoblauch und Olivenöl', price: '12,90', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5' },
-      { name: 'Spaghetti Bolognese', description: 'Mit hausgemachter Fleischsauce', price: '14,90', image: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb' },
-      { name: 'Pasta Brokkoli Gorgonzola', description: 'Cremige Gorgonzola-Sauce mit Brokkoli', price: '14,90', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5' },
-      { name: 'Pasta Verdura', description: 'Mit frischem Saisongemüse', price: '14,90', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
-      { name: 'Pasta Garnelen', description: 'Mit frischen Garnelen und Knoblauch', price: '16,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' }
+      { name: 'Spaghetti Aglio e Olio', description: 'Klassisch mit Knoblauch und Olivenöl', price: '12,90', details: 'Al dente gekochte Spaghetti mit bestem Olivenöl, frischem Knoblauch und Peperoncini.' },
+      { name: 'Spaghetti Bolognese', description: 'Mit hausgemachter Fleischsauce', price: '14,90', details: 'Traditionelle Bolognese-Sauce mit Rinderhack, langsam geschmort mit Rotwein und Kräutern.' },
+      { name: 'Pasta Brokkoli Gorgonzola', description: 'Cremige Gorgonzola-Sauce mit Brokkoli', price: '14,90', details: 'Frischer Brokkoli in cremiger Gorgonzola-Sauce mit gerösteten Pinienkernen.' },
+      { name: 'Pasta Verdura', description: 'Mit frischem Saisongemüse', price: '14,90', details: 'Mediterranes Gemüse der Saison mit Olivenöl und frischen Kräutern.' },
+      { name: 'Pasta Garnelen', description: 'Mit frischen Garnelen und Knoblauch', price: '16,90', details: 'Saftige Garnelen in Knoblauch-Weißwein-Sauce mit Kirschtomaten und Basilikum.' }
     ],
     'pizza': [
       { name: 'Margherita', description: 'Tomaten, Mozzarella, Basilikum', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
