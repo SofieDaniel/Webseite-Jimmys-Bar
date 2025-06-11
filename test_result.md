@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Update Jimmy's Tapas Bar website design to match the provided reference image: remove icons from category buttons, apply dark background globally, enhance mouseover effects with proper shadows, add background image to menu header, and update homepage hero image"
+user_problem_statement: "Teste das erweiterte CMS-Backend für Jimmy's Tapas Bar Admin-System. Das Backend wurde gerade stark erweitert mit einem kompletten Content Management System."
 
 backend:
   - task: "Root endpoint GET /api/"
@@ -179,6 +179,186 @@ backend:
       - working: true
         agent: "testing"
         comment: "Fixed CORS configuration by adding explicit OPTIONS route handler and updating the CORS middleware configuration. Also updated the test to send proper CORS preflight request headers. All CORS headers are now being returned correctly."
+        
+  - task: "Authentication - POST /api/auth/login"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully authenticated with admin credentials (username='admin', password='jimmy2024'). Response contains valid JWT token and token type. The token is properly formatted and can be used for authenticated requests."
+
+  - task: "Authentication - GET /api/auth/me"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully retrieved user profile using the JWT token. Response contains all required user fields (id, username, email, role). The user profile correctly shows the admin role and other user details."
+
+  - task: "Content Management - GET /api/content/home"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully retrieved home page content. Response is a valid JSON array. Initially empty as no content sections have been created yet."
+
+  - task: "Content Management - PUT /api/content/home/hero"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully updated home hero section with authenticated request. Created content with title, subtitle, and description. Response contains all required fields including the updated content and metadata (updated_by, updated_at)."
+
+  - task: "Menu Management - GET /api/menu/items"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully retrieved menu items. Response is a valid JSON array. Initially empty as no menu items have been created yet."
+
+  - task: "Menu Management - POST /api/menu/items"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully created new menu item with authenticated request. Created 'Patatas Bravas Especiales' with description, price, category, and dietary flags. Response contains all required fields and correctly reflects the input data."
+
+  - task: "Review Management - POST /api/reviews"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully created new review without authentication (public endpoint). Created review with customer name, 5-star rating, and Spanish comment. Response contains all required fields and the review is correctly marked as not approved by default."
+
+  - task: "Review Management - GET /api/admin/reviews/pending"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully retrieved pending reviews with authenticated request. Response is a valid JSON array containing the newly created review. All reviews are correctly marked as not approved, and the response contains all required fields."
+
+  - task: "Contact Messages - POST /api/contact"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully created new contact message without authentication (public endpoint). Created message with name, email, phone, subject, and message content. Response contains all required fields and the message is correctly marked as not read and not responded by default."
+
+  - task: "Contact Messages - GET /api/admin/contact"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully retrieved contact messages with authenticated request. Response is a valid JSON array containing the newly created message. The response contains all required fields including read status."
+
+  - task: "Maintenance Mode - GET /api/maintenance"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully retrieved maintenance status without authentication (public endpoint). Response contains all required fields (is_active, message). Maintenance mode is initially inactive with default message."
+
+  - task: "Maintenance Mode - PUT /api/admin/maintenance"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully updated maintenance mode with authenticated admin request. Activated maintenance mode with custom message. Response contains all required fields including who activated it and when. Successfully restored maintenance mode to original state after testing."
+
+  - task: "User Management - GET /api/users"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully retrieved users with authenticated admin request. Response is a valid JSON array containing at least the default admin user. The response contains all required user fields including role and active status."
+
+  - task: "User Management - POST /api/users"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully created new user with authenticated admin request. Created editor user with username, email, password, and role. Response contains all required fields and the user is correctly marked as active by default."
+
+  - task: "Authentication - Unauthorized Access"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Protected endpoints are returning 403 Forbidden instead of 401 Unauthorized when accessed without authentication. This is a minor issue as the endpoints are still protected, but the status code should be 401 for unauthenticated requests and 403 for authenticated requests with insufficient permissions."
 
 frontend:
   - task: "Homepage Hero Image Update"
