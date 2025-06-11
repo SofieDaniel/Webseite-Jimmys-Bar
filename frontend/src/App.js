@@ -200,14 +200,14 @@ const Home = () => {
             
             <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
               <img 
-                src="https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg" 
-                alt="Zwei Standorte" 
+                src="https://images.pexels.com/photos/12180257/pexels-photo-12180257.jpeg" 
+                alt="Strandpromenade Großenbrode" 
                 className="w-full h-48 object-cover"
               />
               <div className="p-8 text-center">
-                <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Zwei Standorte</h3>
+                <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Strandnähe</h3>
                 <p className="text-light-beige font-light leading-relaxed">
-                  In Grömitz und Neustadt an der Küste – immer in Strandnähe
+                  Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden
                 </p>
               </div>
             </div>
