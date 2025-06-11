@@ -273,6 +273,7 @@ const Header = () => {
 // Home Page Component - Professional high-end design
 const Home = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   return (
     <div className="min-h-screen">
@@ -284,15 +285,14 @@ const Home = () => {
           <div className="max-w-4xl">
             {/* Clean Main Headline with proper spacing */}
             <h1 className="hero-headline font-serif text-warm-beige mb-8 tracking-wide leading-tight drop-shadow-text" style={{fontSize: 'clamp(2.5rem, 8vw, 6rem)', lineHeight: '1.1', marginTop: '40px'}}>
-              AUTÉNTICO<br />
-              SABOR ESPAÑOL<br />
-              <span className="font-light opacity-90" style={{fontSize: 'clamp(1.8rem, 5vw, 4rem)'}}>an der Ostsee</span>
+              {t('home.heroTitle')}<br />
+              <span className="font-light opacity-90" style={{fontSize: 'clamp(1.8rem, 5vw, 4rem)'}}>{t('home.heroSubtitle')}</span>
             </h1>
             
             {/* Simple Subtitle */}
             <p className="text-xl md:text-2xl text-warm-beige font-light mb-12 max-w-3xl mx-auto leading-relaxed opacity-95">
-              Genießen Sie authentische spanische Spezialitäten<br/>
-              <span className="text-lg opacity-80">direkt an der malerischen Ostseeküste</span>
+              {t('home.heroDescription')}<br/>
+              <span className="text-lg opacity-80">{t('home.heroLocation')}</span>
             </p>
             
             {/* Clean CTA Buttons */}
@@ -301,13 +301,13 @@ const Home = () => {
                 onClick={() => navigate('/speisekarte')}
                 className="bg-warm-beige text-dark-brown hover:bg-light-beige px-10 py-4 rounded-lg text-lg font-medium transition-all duration-300 tracking-wide shadow-lg hover:shadow-xl"
               >
-                Speisekarte ansehen
+                {t('home.menuButton')}
               </button>
               <button 
                 onClick={() => navigate('/standorte')}
                 className="border-2 border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-10 py-4 rounded-lg text-lg font-medium transition-all duration-300 tracking-wide shadow-lg hover:shadow-xl"
               >
-                Standorte entdecken
+                {t('home.locationsButton')}
               </button>
             </div>
           </div>
