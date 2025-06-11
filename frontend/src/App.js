@@ -255,55 +255,56 @@ const Home = () => {
 const Speisekarte = () => {
   const [selectedCategory, setSelectedCategory] = useState('alle');
   
-  // Complete menu data with authentic, dish-specific images
+  // Complete menu data with detailed descriptions for hover tooltips
   const menuItems = {
     'inicio': [
-      { name: 'Aioli', description: 'Spanische Knoblauch-Mayonnaise', price: '3,50', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
-      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90', image: 'https://images.unsplash.com/photo-1714583357992-98f0ad946902' },
-      { name: 'Extra Brot', description: 'Frisches spanisches Brot', price: '1,90', image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73' },
-      { name: 'Hummus', description: 'Cremiger Kichererbsen-Dip', price: '3,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
-      { name: 'Guacamole', description: 'Frische Avocado-Creme', price: '3,90', image: 'https://images.unsplash.com/photo-1553909489-cd47e0ef937f' },
-      { name: 'Spanischer Käseteller', description: 'Auswahl spanischer Käsesorten', price: '8,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
-      { name: 'Schinken-Käse-Wurst Teller', description: 'Spanische Charcuterie-Platte', price: '11,90', image: 'https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg' },
-      { name: 'Jamón Serrano Teller', description: 'Hochwertiger spanischer Schinken', price: '9,90', image: 'https://images.pexels.com/photos/24706530/pexels-photo-24706530.jpeg' },
-      { name: 'Boquerones en Vinagre', description: 'Sardellen in Essig eingelegt', price: '8,90', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828' },
-      { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', image: 'https://images.unsplash.com/photo-1598989519542-077da0f51c09' },
-      { name: 'Tres (Hummus, Avocado Cream, Aioli mit Brot)', description: 'Drei köstliche Dips mit Brot', price: '10,90', image: 'https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg' }
+      { name: 'Aioli', description: 'Spanische Knoblauch-Mayonnaise', price: '3,50', details: 'Cremige hausgemachte Mayonnaise mit frischem Knoblauch, Olivenöl und einem Hauch Zitrone. Serviert mit frischem Brot.' },
+      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90', details: 'Ausgewählte schwarze und grüne Oliven aus Andalusien, mariniert mit Kräutern, Knoblauch und bestem Olivenöl.' },
+      { name: 'Extra Brot', description: 'Frisches spanisches Brot', price: '1,90', details: 'Warmes, knuspriges Brot nach traditionellem spanischem Rezept, perfekt für Tapas und Dips.' },
+      { name: 'Hummus', description: 'Cremiger Kichererbsen-Dip', price: '3,90', details: 'Hausgemachter Hummus aus Kichererbsen, Tahini, Zitrone und Gewürzen. Serviert mit frischem Gemüse und Brot.' },
+      { name: 'Guacamole', description: 'Frische Avocado-Creme', price: '3,90', details: 'Cremige Avocado-Creme mit Limette, Koriander, roten Zwiebeln und einem Hauch Chili. Serviert mit Tortilla-Chips.' },
+      { name: 'Spanischer Käseteller', description: 'Auswahl spanischer Käsesorten', price: '8,90', details: 'Feine Auswahl von Manchego, Cabrales und Murcia al Vino, serviert mit Walnüssen, Honig und frischen Trauben.' },
+      { name: 'Schinken-Käse-Wurst Teller', description: 'Spanische Charcuterie-Platte', price: '11,90', details: 'Edle Auswahl aus Jamón Serrano, Chorizo, Lomo und spanischen Käsesorten mit Oliven, Nüssen und Feigenmarmelade.' },
+      { name: 'Jamón Serrano Teller', description: 'Hochwertiger spanischer Schinken', price: '9,90', details: '18 Monate gereifter Jamón Serrano, hauchdünn geschnitten, serviert mit Manchego-Käse und geröstetem Brot.' },
+      { name: 'Boquerones en Vinagre', description: 'Sardellen in Essig eingelegt', price: '8,90', details: 'Frische Sardellen aus dem Cantabrischen Meer, eingelegt in Weißweinessig mit Knoblauch, Petersilie und Olivenöl.' },
+      { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', details: 'Der Edelste aller spanischen Schinken - 36 Monate gereift von freilaufenden Iberico-Schweinen, serviert mit Manchego.' },
+      { name: 'Tres (Hummus, Avocado Cream, Aioli mit Brot)', description: 'Drei köstliche Dips mit Brot', price: '10,90', details: 'Trio aus hausgemachtem Hummus, cremiger Avocado-Creme und Aioli, serviert mit warmem spanischem Brot und Gemüse.' }
     ],
     'salat': [
-      { name: 'Ensalada Mixta', description: 'Gemischter Salat mit spanischen Zutaten', price: '8,90', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999' },
-      { name: 'Ensalada Tonno', description: 'Salat mit Thunfisch', price: '14,90', image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74' },
-      { name: 'Ensalada Pollo', description: 'Salat mit gegrilltem Hähnchen', price: '14,90', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd' },
-      { name: 'Ensalada Garnelen', description: 'Salat mit frischen Garnelen', price: '15,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' }
+      { name: 'Ensalada Mixta', description: 'Gemischter Salat mit spanischen Zutaten', price: '8,90', details: 'Frischer Salat mit Tomaten, Gurken, Oliven, roten Zwiebeln und Manchego-Käse in Sherry-Vinaigrette.' },
+      { name: 'Ensalada Tonno', description: 'Salat mit Thunfisch', price: '14,90', details: 'Gemischter Salat mit saftigem Thunfisch, hartgekochten Eiern, Oliven und Kapern in mediteraner Vinaigrette.' },
+      { name: 'Ensalada Pollo', description: 'Salat mit gegrilltem Hähnchen', price: '14,90', details: 'Frischer Salat mit gegrillten Hähnchenstreifen, Cherrytomaten, Avocado und gerösteten Pinienkernen.' },
+      { name: 'Ensalada Garnelen', description: 'Salat mit frischen Garnelen', price: '15,90', details: 'Bunter Salat mit saftigen Garnelen, Avocado, Mango und einem Hauch von Chili in Limetten-Dressing.' }
     ],
     'kleiner-salat': [
-      { name: 'Tomaten/Gurken mit Zwiebeln', description: 'Frischer Gemüsesalat', price: '6,90', image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce' },
-      { name: 'Rote Beete mit Ziegenkäse', description: 'Süße rote Beete mit cremigem Ziegenkäse', price: '7,90', image: 'https://images.unsplash.com/photo-1547592180-85f173990554' },
-      { name: 'Kichererbsen mit Feta', description: 'Proteinreicher Salat mit Feta', price: '7,90', image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74' }
+      { name: 'Tomaten/Gurken mit Zwiebeln', description: 'Frischer Gemüsesalat', price: '6,90', details: 'Saftige Tomaten und knackige Gurken mit roten Zwiebeln in aromatischem Olivenöl und Kräutern.' },
+      { name: 'Rote Beete mit Ziegenkäse', description: 'Süße rote Beete mit cremigem Ziegenkäse', price: '7,90', details: 'Geröstete rote Beete mit cremigem Ziegenkäse, Walnüssen und Honig-Thymian-Dressing.' },
+      { name: 'Kichererbsen mit Feta', description: 'Proteinreicher Salat mit Feta', price: '7,90', details: 'Warme Kichererbsen mit Feta-Käse, frischen Kräutern, Tomaten und Zitronendressing.' }
     ],
     'tapa-paella': [
-      { name: 'Paella mit Hähnchen & Meeresfrüchten', description: 'Traditionelle spanische Paella als Tapa-Portion', price: '8,90', image: 'https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg' },
-      { name: 'Paella vegetarisch', description: 'Vegetarische Paella mit frischem Gemüse', price: '7,90', image: 'https://images.pexels.com/photos/10750986/pexels-photo-10750986.jpeg' }
+      { name: 'Paella mit Hähnchen & Meeresfrüchten', description: 'Traditionelle spanische Paella als Tapa-Portion', price: '8,90', details: 'Authentische Paella mit saftigem Hähnchen, frischen Garnelen, Muscheln und Bomba-Reis in würziger Safran-Brühe.' },
+      { name: 'Paella vegetarisch', description: 'Vegetarische Paella mit frischem Gemüse', price: '7,90', details: 'Vegetarische Paella mit grünen Bohnen, Paprika, Artischocken und Bomba-Reis in aromatischer Gemüsebrühe.' }
     ],
     'tapas-vegetarian': [
-      { name: 'Gebratenes Gemüse', description: 'Vegan - Saisonales Gemüse mediterran gewürzt', price: '6,90', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
-      { name: 'Papas Bravas', description: 'Vegan - Klassische spanische Kartoffeln mit scharfer Soße', price: '6,90', image: 'https://images.unsplash.com/photo-1565599837634-134bc3aadce8' },
-      { name: 'Tortilla de Patata mit Aioli', description: 'Spanisches Kartoffel-Omelett mit Aioli', price: '6,90', image: 'https://images.unsplash.com/photo-1639669794539-952631b44515' },
-      { name: 'Pimientos de Padrón', description: 'Vegan - Gebratene grüne Paprika', price: '6,90', image: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b' },
-      { name: 'Kanarische Kartoffeln', description: 'Vegan - Traditionelle Kartoffeln mit Meersalz', price: '6,90', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655' },
-      { name: 'Fetahäppchen auf Johannisbeersauce', description: 'Cremiger Feta mit süß-saurer Sauce', price: '6,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
-      { name: 'Ziegenkäse auf Johannisbeersauce oder Honig-Senf', description: 'Mild-cremiger Ziegenkäse mit Sauce nach Wahl', price: '6,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
-      { name: 'Falafel mit Joghurt-Minz-Sauce', description: 'Knusprige Kichererbsenbällchen mit erfrischender Sauce', price: '6,90', image: 'https://images.unsplash.com/photo-1593504049359-74330189a5d8' },
-      { name: 'Überbackener Feta mit Cherrytomaten', description: 'Warmer Feta mit süßen Cherrytomaten', price: '6,90', image: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371' },
-      { name: 'Champignons mit Reis & Pinienkernen auf Roquefort', description: 'Aromatische Pilze mit würzigem Käse', price: '6,90', image: 'https://images.unsplash.com/photo-1614887009518-7b9355a3a0e4' },
-      { name: 'Überbackene Tomaten mit Spinat & Roquefort', description: 'Mediterrane Gemüse-Käse-Kombination', price: '6,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
-      { name: 'Frittierte Auberginen mit Honig', description: 'Süß-herzhafte Auberginen-Kreation', price: '6,90', image: 'https://images.unsplash.com/photo-1526057565006-20beab8dd2ed' },
-      { name: 'Champignons al Ajillo', description: 'Vegan - Pilze in Knoblauchöl', price: '6,90', image: 'https://images.unsplash.com/photo-1505851498219-ee2449c18936' },
-      { name: 'Teigtaschen mit Spinat & Kräutersauce', description: 'Hausgemachte Teigtaschen mit frischen Kräutern', price: '6,90', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
-      { name: 'Feta Feigen', description: 'Süße Feigen mit salzigem Feta', price: '6,90', image: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371' },
-      { name: 'Ziegenkäse auf Fenchel & Walnuss', description: 'Aromatische Kombination mit Nüssen', price: '6,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
-      { name: 'Gebratener Spinat mit Cherrytomaten', description: 'Vegan - Frischer Spinat mit süßen Tomaten', price: '6,90', image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce' }
-    ],
+      { name: 'Gebratenes Gemüse', description: 'Vegan - Saisonales Gemüse mediterran gewürzt', price: '6,90', details: 'Frisches Saisongemüse wie Zucchini, Paprika und Auberginen, gegrillt mit Rosmarin, Thymian und Olivenöl.' },
+      { name: 'Papas Bravas', description: 'Vegan - Klassische spanische Kartoffeln mit scharfer Soße', price: '6,90', details: 'Knusprig gebratene Kartoffelwürfel mit pikanter Bravas-Sauce aus Tomaten, Paprika und einem Hauch Chili.' },
+      { name: 'Tortilla de Patata mit Aioli', description: 'Spanisches Kartoffel-Omelett mit Aioli', price: '6,90', details: 'Klassische spanische Tortilla aus Kartoffeln und Eiern, golden gebraten, serviert mit hausgemachtem Aioli.' },
+      { name: 'Pimientos de Padrón', description: 'Vegan - Gebratene grüne Paprika', price: '6,90', details: 'Kleine grüne Paprikaschoten aus Galicien, gebraten in Olivenöl und mit Meersalz bestreut - manche scharf, manche mild!' },
+      { name: 'Kanarische Kartoffeln', description: 'Vegan - Traditionelle Kartoffeln mit Meersalz', price: '6,90', details: 'Kleine Kartoffeln in der Schale gekocht mit grobem Meersalz, serviert mit Mojo Verde und Mojo Rojo.' },
+      { name: 'Fetahäppchen auf Johannisbeersauce', description: 'Cremiger Feta mit süß-saurer Sauce', price: '6,90', details: 'Warme Feta-Würfel auf einer Reduktion aus roten Johannisbeeren mit einem Hauch Balsamico und frischen Kräutern.' },
+      { name: 'Ziegenkäse auf Johannisbeersauce oder Honig-Senf', description: 'Mild-cremiger Ziegenkäse mit Sauce nach Wahl', price: '6,90', details: 'Warmer Ziegenkäse wahlweise mit süßer Johannisbeersauce oder würzigem Honig-Senf-Dressing und gerösteten Nüssen.' },
+      { name: 'Falafel mit Joghurt-Minz-Sauce', description: 'Knusprige Kichererbsenbällchen mit erfrischender Sauce', price: '6,90', details: 'Hausgemachte Falafel aus Kichererbsen und orientalischen Gewürzen, serviert mit cremiger Joghurt-Minz-Sauce.' },
+      { name: 'Überbackener Feta mit Cherrytomaten', description: 'Warmer Feta mit süßen Cherrytomaten', price: '6,90', details: 'Feta-Käse überbacken mit Cherrytomaten, Oliven, Oregano und einem Schuss Olivenöl, serviert mit frischem Brot.' },
+      { name: 'Champignons mit Reis & Pinienkernen auf Roquefort', description: 'Aromatische Pilze mit würzigem Käse', price: '6,90', details: 'Gefüllte Champignons mit Reis, gerösteten Pinienkernen und würzigem Roquefort-Käse, überbacken und mit Kräutern garniert.' },
+      { name: 'Überbackene Tomaten mit Spinat & Roquefort', description: 'Mediterrane Gemüse-Käse-Kombination', price: '6,90', details: 'Große Tomaten gefüllt mit frischem Spinat und würzigem Roquefort, überbacken und mit Basilikum garniert.' },
+      { name: 'Frittierte Auberginen mit Honig', description: 'Süß-herzhafte Auberginen-Kreation', price: '6,90', details: 'Auberginenscheiben in leichtem Teig frittiert, mit spanischem Honig glasiert und mit frischen Kräutern garniert.' },
+      { name: 'Champignons al Ajillo', description: 'Vegan - Pilze in Knoblauchöl', price: '6,90', details: 'Frische Champignons geschmort in Knoblauchöl mit Petersilie, Chili und einem Schuss Weißwein - ein Klassiker!' },
+      { name: 'Teigtaschen mit Spinat & Kräutersauce', description: 'Hausgemachte Teigtaschen mit frischen Kräutern', price: '6,90', details: 'Hausgemachte Teigtaschen gefüllt mit Spinat und Ricotta, serviert mit einer cremigen Kräutersauce.' },
+      { name: 'Feta Feigen', description: 'Süße Feigen mit salzigem Feta', price: '6,90', details: 'Frische Feigen gefüllt mit cremigem Feta-Käse, gerösteten Walnüssen und einem Hauch Honig.' },
+      { name: 'Ziegenkäse auf Fenchel & Walnuss', description: 'Aromatische Kombination mit Nüssen', price: '6,90', details: 'Warmer Ziegenkäse auf einem Bett aus geröstetem Fenchel mit gerösteten Walnüssen und Honig-Balsamico-Glasur.' },
+      { name: 'Gebratener Spinat mit Cherrytomaten', description: 'Vegan - Frischer Spinat mit süßen Tomaten', price: '6,90', details: 'Frischer Spinat geschmort mit Cherrytomaten, Knoblauch und Pinienkernen in bestem Olivenöl.' }
+    ]
+  };
     'tapas-pollo': [
       { name: 'Hähnchen mit Limetten-Sauce', description: 'Zartes Hähnchen in frischer Zitrus-Sauce', price: '7,20', image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6' },
       { name: 'Knuspriges Hähnchen mit Honig-Senf', description: 'Goldbraun gebratenes Hähnchen mit süß-scharfer Sauce', price: '7,20', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' },
