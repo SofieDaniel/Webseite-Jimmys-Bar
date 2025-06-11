@@ -255,21 +255,22 @@ const Home = () => {
 const Speisekarte = () => {
   const [selectedCategory, setSelectedCategory] = useState('alle');
   
-  // Complete menu data with detailed descriptions for hover tooltips
+  // Complete menu data with authentic images for hover display (Screenshot Style)
   const menuItems = {
     'inicio': [
-      { name: 'Aioli', description: 'Spanische Knoblauch-Mayonnaise', price: '3,50', details: 'Cremige hausgemachte Mayonnaise mit frischem Knoblauch, Olivenöl und einem Hauch Zitrone. Serviert mit frischem Brot.' },
-      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90', details: 'Ausgewählte schwarze und grüne Oliven aus Andalusien, mariniert mit Kräutern, Knoblauch und bestem Olivenöl.' },
-      { name: 'Extra Brot', description: 'Frisches spanisches Brot', price: '1,90', details: 'Warmes, knuspriges Brot nach traditionellem spanischem Rezept, perfekt für Tapas und Dips.' },
-      { name: 'Hummus', description: 'Cremiger Kichererbsen-Dip', price: '3,90', details: 'Hausgemachter Hummus aus Kichererbsen, Tahini, Zitrone und Gewürzen. Serviert mit frischem Gemüse und Brot.' },
-      { name: 'Guacamole', description: 'Frische Avocado-Creme', price: '3,90', details: 'Cremige Avocado-Creme mit Limette, Koriander, roten Zwiebeln und einem Hauch Chili. Serviert mit Tortilla-Chips.' },
-      { name: 'Spanischer Käseteller', description: 'Auswahl spanischer Käsesorten', price: '8,90', details: 'Feine Auswahl von Manchego, Cabrales und Murcia al Vino, serviert mit Walnüssen, Honig und frischen Trauben.' },
-      { name: 'Schinken-Käse-Wurst Teller', description: 'Spanische Charcuterie-Platte', price: '11,90', details: 'Edle Auswahl aus Jamón Serrano, Chorizo, Lomo und spanischen Käsesorten mit Oliven, Nüssen und Feigenmarmelade.' },
-      { name: 'Jamón Serrano Teller', description: 'Hochwertiger spanischer Schinken', price: '9,90', details: '18 Monate gereifter Jamón Serrano, hauchdünn geschnitten, serviert mit Manchego-Käse und geröstetem Brot.' },
-      { name: 'Boquerones en Vinagre', description: 'Sardellen in Essig eingelegt', price: '8,90', details: 'Frische Sardellen aus dem Cantabrischen Meer, eingelegt in Weißweinessig mit Knoblauch, Petersilie und Olivenöl.' },
-      { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', details: 'Der Edelste aller spanischen Schinken - 36 Monate gereift von freilaufenden Iberico-Schweinen, serviert mit Manchego.' },
-      { name: 'Tres (Hummus, Avocado Cream, Aioli mit Brot)', description: 'Drei köstliche Dips mit Brot', price: '10,90', details: 'Trio aus hausgemachtem Hummus, cremiger Avocado-Creme und Aioli, serviert mit warmem spanischem Brot und Gemüse.' }
-    ],
+      { name: 'Aioli', description: 'Hausgemachte Knoblauch-Mayonnaise', price: '3,50', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f', details: 'Hausgemachte, cremige Knoblauch-Mayonnaise mit nativem Olivenöl und Zitronensaft. Serviert mit ofentrischem, spanischem Weißbrot. Perfekt zum Einstieg in einen mediterranen Abend.' },
+      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90', image: 'https://images.unsplash.com/photo-1714583357992-98f0ad946902', details: 'Ausgewählte schwarze und grüne Oliven aus Andalusien, mariniert mit Kräutern, Knoblauch und bestem Olivenöl.' },
+      { name: 'Extra Brot', description: 'Frisches spanisches Brot', price: '1,90', image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73', details: 'Warmes, knuspriges Brot nach traditionellem spanischem Rezept, perfekt für Tapas und Dips.' },
+      { name: 'Hummus', description: 'Cremiger Kichererbsen-Dip', price: '3,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f', details: 'Hausgemachter Hummus aus Kichererbsen, Tahini, Zitrone und Gewürzen. Serviert mit frischem Gemüse und Brot.' },
+      { name: 'Guacamole', description: 'Frische Avocado-Creme', price: '3,90', image: 'https://images.unsplash.com/photo-1553909489-cd47e0ef937f', details: 'Cremige Avocado-Creme mit Limette, Koriander, roten Zwiebeln und einem Hauch Chili. Serviert mit Tortilla-Chips.' },
+      { name: 'Spanischer Käseteller', description: 'Auswahl spanischer Käsesorten', price: '8,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d', details: 'Feine Auswahl von Manchego, Cabrales und Murcia al Vino, serviert mit Walnüssen, Honig und frischen Trauben.' },
+      { name: 'Schinken-Käse-Wurst Teller', description: 'Spanische Charcuterie-Platte', price: '11,90', image: 'https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg', details: 'Edle Auswahl aus Jamón Serrano, Chorizo, Lomo und spanischen Käsesorten mit Oliven, Nüssen und Feigenmarmelade.' },
+      { name: 'Jamón Serrano Teller', description: 'Hochwertiger spanischer Schinken', price: '9,90', image: 'https://images.pexels.com/photos/24706530/pexels-photo-24706530.jpeg', details: '18 Monate gereifter Jamón Serrano, hauchdünn geschnitten, serviert mit Manchego-Käse und geröstetem Brot.' },
+      { name: 'Boquerones en Vinagre', description: 'Sardellen in Essig eingelegt', price: '8,90', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828', details: 'Frische Sardellen aus dem Cantabrischen Meer, eingelegt in Weißweinessig mit Knoblauch, Petersilie und Olivenöl.' },
+      { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', image: 'https://images.unsplash.com/photo-1598989519542-077da0f51c09', details: 'Der Edelste aller spanischen Schinken - 36 Monate gereift von freilaufenden Iberico-Schweinen, serviert mit Manchego.' },
+      { name: 'Tres (Hummus, Avocado Cream, Aioli mit Brot)', description: 'Drei köstliche Dips mit Brot', price: '10,90', image: 'https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg', details: 'Trio aus hausgemachtem Hummus, cremiger Avocado-Creme und Aioli, serviert mit warmem spanischem Brot und Gemüse.' }
+    ]
+  };
     'salat': [
       { name: 'Ensalada Mixta', description: 'Gemischter Salat mit spanischen Zutaten', price: '8,90', details: 'Frischer Salat mit Tomaten, Gurken, Oliven, roten Zwiebeln und Manchego-Käse in Sherry-Vinaigrette.' },
       { name: 'Ensalada Tonno', description: 'Salat mit Thunfisch', price: '14,90', details: 'Gemischter Salat mit saftigem Thunfisch, hartgekochten Eiern, Oliven und Kapern in mediteraner Vinaigrette.' },
