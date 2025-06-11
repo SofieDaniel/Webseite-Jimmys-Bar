@@ -181,7 +181,19 @@ backend:
         comment: "Fixed CORS configuration by adding explicit OPTIONS route handler and updating the CORS middleware configuration. Also updated the test to send proper CORS preflight request headers. All CORS headers are now being returned correctly."
 
 frontend:
-  - task: "Speisekarte Page Navigation"
+  - task: "New Homepage Design"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "The new homepage design has been successfully implemented with an emotional hero section featuring a Spanish restaurant background. The '¡Bienvenidos!' section with three enhanced highlight cards is present and visually appealing. Enhanced CTA buttons ('SPEISEKARTE ANSEHEN' and 'STANDORTE ENTDECKEN') are working correctly and have the proper styling. The improved food gallery with emotional storytelling is present with four items. Hover effects on cards and buttons work as expected, providing a professional and interactive experience."
+
+  - task: "Enhanced Speisekarte (Two-Column Layout)"
     implemented: true
     working: true
     file: "/app/frontend/src/App.js"
@@ -192,20 +204,11 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Successfully navigated to the Speisekarte page. The page loads correctly with the proper title and layout. The mediterranean textured background is visible and provides a warm atmosphere as required."
-
-  - task: "Menu Category Filtering"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
       - working: true
         agent: "testing"
-        comment: "All 15 category filter buttons are present and working correctly. Successfully tested filtering for Alle Kategorien, Inicio, Tapas Vegetarian, and other categories. Each category displays the appropriate menu items when selected."
+        comment: "The new two-column layout for menu items has been successfully implemented. The menu items are displayed side-by-side on desktop as required. The mediterranean textured background with terracotta/stucco effects is present and enhances the Spanish atmosphere. The layout is visually appealing and well-organized."
 
-  - task: "Hover Images (Desktop)"
+  - task: "Enhanced Hover Images"
     implemented: true
     working: true
     file: "/app/frontend/src/App.js"
@@ -216,6 +219,24 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Hover functionality works correctly on menu items. When hovering over a menu item, an image appears. However, there are some console errors related to image loading from Unsplash (ERR_BLOCKED_BY_ORB), which might be due to the testing environment restrictions rather than an implementation issue."
+      - working: true
+        agent: "testing"
+        comment: "The enhanced hover images are now larger (280x280px) with elegant frames as required. The images appear with a smooth animation when hovering over menu items. No layout shifts or overlapping issues were detected when testing hover functionality across different menu items. The tooltip-image class is properly implemented with the correct styling."
+
+  - task: "Category Filtering"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "All 15 category filter buttons are present and working correctly. Successfully tested filtering for Alle Kategorien, Inicio, Tapas Vegetarian, and other categories. Each category displays the appropriate menu items when selected."
+      - working: true
+        agent: "testing"
+        comment: "The category filtering system works correctly with the new two-column layout. All 15 category buttons are present and functional. When selecting a category (e.g., Tapas Vegetarian), the menu items are filtered correctly while maintaining the two-column structure. The active category button is highlighted appropriately."
 
   - task: "Mobile Responsive Behavior"
     implemented: true
@@ -228,6 +249,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Mobile responsive behavior works correctly. The menu displays properly on mobile viewport (375px width). Category buttons are properly sized and arranged for mobile viewing. No horizontal scrolling issues detected."
+      - working: true
+        agent: "testing"
+        comment: "The mobile responsive behavior has been tested and works correctly. On mobile devices, the two-column layout properly stacks into a single column as required. The menu items are displayed one below the other, and the category buttons are properly sized and arranged for mobile viewing. The mobile menu toggle button works correctly."
 
   - task: "Image Loading and Performance"
     implemented: true
@@ -240,6 +264,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Images are configured to load correctly, though some Unsplash image URLs are blocked in the testing environment (ERR_BLOCKED_BY_ORB). This is likely a testing environment restriction rather than an implementation issue. The lazy loading attribute is properly set on images."
+      - working: true
+        agent: "testing"
+        comment: "All new images load correctly with the lazy loading attribute properly set. Animations are smooth and provide a professional user experience. Page load times are reasonable, and no performance issues were detected during testing."
 
   - task: "Visual Design Verification"
     implemented: true
@@ -252,6 +279,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The visual design matches the requirements. The mediterranean textured background is visible and provides a warm atmosphere. Color harmony is maintained with warm browns/beiges. Typography uses Playfair Display for headings as specified. The overall Spanish bistro atmosphere is achieved."
+      - working: true
+        agent: "testing"
+        comment: "The new warm Spanish atmosphere has been successfully achieved throughout the site. The color harmony is maintained with warm browns, beiges, and terracotta tones. The typography with Playfair Display for headings enhances the elegant Spanish restaurant feel. The overall design is now more emotional, professional, and provides an authentic Spanish restaurant experience as required."
 
   - task: "Navigation and Other Pages"
     implemented: true
@@ -264,6 +294,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Navigation between pages works correctly. Successfully navigated from the menu back to the homepage. The header navigation remains functional throughout the site."
+      - working: true
+        agent: "testing"
+        comment: "Navigation between all pages works correctly and smoothly. The header navigation remains functional and consistent throughout the site. The enhanced design elements are maintained across all pages, providing a cohesive user experience."
 
 metadata:
   created_by: "testing_agent"
