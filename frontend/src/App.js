@@ -528,6 +528,20 @@ const Speisekarte = () => {
       </div>
 
       <div className="container mx-auto px-4 py-12">        
+        {/* Hover Images Toggle */}
+        <div className="text-center mb-8">
+          <button
+            onClick={() => setShowHoverImages(!showHoverImages)}
+            className={`px-6 py-3 rounded-lg transition-all duration-300 font-light tracking-wide text-sm ${
+              showHoverImages
+                ? 'bg-warm-beige text-dark-brown shadow-lg'
+                : 'border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown hover:shadow-lg'
+            }`}
+          >
+            {showHoverImages ? 'Produktbilder ausblenden' : 'Produktbilder einblenden'}
+          </button>
+        </div>
+
         {/* Category Filter Buttons - No Icons */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
