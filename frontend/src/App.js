@@ -160,151 +160,151 @@ const Home = () => {
   );
 };
 
-// Menu Page Component - Complete Digital Menu for Jimmy's Tapas Bar
+// Menu Page Component - Fixed Layout with proper images between name and price
 const Speisekarte = () => {
   const [selectedCategory, setSelectedCategory] = useState('alle');
   
-  // Complete menu data exactly as provided
+  // Complete menu data with dish-specific images
   const menuItems = {
     'inicio': [
-      { name: 'Aioli', description: 'Spanische Knoblauch-Mayonnaise', price: '3,50', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Extra Brot', description: 'Frisches spanisches Brot', price: '1,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Hummus', description: 'Cremiger Kichererbsen-Dip', price: '3,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Guacamole', description: 'Frische Avocado-Creme', price: '3,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Spanischer Käseteller', description: 'Auswahl spanischer Käsesorten', price: '8,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Schinken-Käse-Wurst Teller', description: 'Spanische Charcuterie-Platte', price: '11,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Jamón Serrano Teller', description: 'Hochwertiger spanischer Schinken', price: '9,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Boquerones en Vinagre', description: 'Sardellen in Essig eingelegt', price: '8,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Tres (Hummus, Avocado Cream, Aioli mit Brot)', description: 'Drei köstliche Dips mit Brot', price: '10,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' }
+      { name: 'Aioli', description: 'Spanische Knoblauch-Mayonnaise', price: '3,50', image: 'https://images.unsplash.com/photo-1671871695722-b91911e9c072' },
+      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90', image: 'https://images.unsplash.com/photo-1606923829579-0cb981a83e2e' },
+      { name: 'Extra Brot', description: 'Frisches spanisches Brot', price: '1,90', image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73' },
+      { name: 'Hummus', description: 'Cremiger Kichererbsen-Dip', price: '3,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
+      { name: 'Guacamole', description: 'Frische Avocado-Creme', price: '3,90', image: 'https://images.unsplash.com/photo-1553909489-cd47e0ef937f' },
+      { name: 'Spanischer Käseteller', description: 'Auswahl spanischer Käsesorten', price: '8,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
+      { name: 'Schinken-Käse-Wurst Teller', description: 'Spanische Charcuterie-Platte', price: '11,90', image: 'https://images.unsplash.com/photo-1544025162-d76694265947' },
+      { name: 'Jamón Serrano Teller', description: 'Hochwertiger spanischer Schinken', price: '9,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
+      { name: 'Boquerones en Vinagre', description: 'Sardellen in Essig eingelegt', price: '8,90', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828' },
+      { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', image: 'https://images.unsplash.com/photo-1544025162-d76694265947' },
+      { name: 'Tres (Hummus, Avocado Cream, Aioli mit Brot)', description: 'Drei köstliche Dips mit Brot', price: '10,90', image: 'https://images.pexels.com/photos/17336549/pexels-photo-17336549.jpeg' }
     ],
     'salat': [
-      { name: 'Ensalada Mixta', description: 'Gemischter Salat mit spanischen Zutaten', price: '8,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Ensalada Tonno', description: 'Salat mit Thunfisch', price: '14,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Ensalada Pollo', description: 'Salat mit gegrilltem Hähnchen', price: '14,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Ensalada Garnelen', description: 'Salat mit frischen Garnelen', price: '15,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' }
+      { name: 'Ensalada Mixta', description: 'Gemischter Salat mit spanischen Zutaten', price: '8,90', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999' },
+      { name: 'Ensalada Tonno', description: 'Salat mit Thunfisch', price: '14,90', image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74' },
+      { name: 'Ensalada Pollo', description: 'Salat mit gegrilltem Hähnchen', price: '14,90', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd' },
+      { name: 'Ensalada Garnelen', description: 'Salat mit frischen Garnelen', price: '15,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' }
     ],
     'kleiner-salat': [
-      { name: 'Tomaten/Gurken mit Zwiebeln', description: 'Frischer Gemüsesalat', price: '6,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Rote Beete mit Ziegenkäse', description: 'Süße rote Beete mit cremigem Ziegenkäse', price: '7,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Kichererbsen mit Feta', description: 'Proteinreicher Salat mit Feta', price: '7,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' }
+      { name: 'Tomaten/Gurken mit Zwiebeln', description: 'Frischer Gemüsesalat', price: '6,90', image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce' },
+      { name: 'Rote Beete mit Ziegenkäse', description: 'Süße rote Beete mit cremigem Ziegenkäse', price: '7,90', image: 'https://images.unsplash.com/photo-1547592180-85f173990554' },
+      { name: 'Kichererbsen mit Feta', description: 'Proteinreicher Salat mit Feta', price: '7,90', image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74' }
     ],
     'tapa-paella': [
-      { name: 'Paella mit Hähnchen & Meeresfrüchten', description: 'Traditionelle spanische Paella als Tapa-Portion', price: '8,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Paella vegetarisch', description: 'Vegetarische Paella mit frischem Gemüse', price: '7,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' }
+      { name: 'Paella mit Hähnchen & Meeresfrüchten', description: 'Traditionelle spanische Paella als Tapa-Portion', price: '8,90', image: 'https://images.unsplash.com/photo-1630175860333-5131bda75071' },
+      { name: 'Paella vegetarisch', description: 'Vegetarische Paella mit frischem Gemüse', price: '7,90', image: 'https://images.unsplash.com/photo-1588276552401-30058a0fe57b' }
     ],
     'tapas-vegetarian': [
-      { name: 'Gebratenes Gemüse', description: 'Vegan - Saisonales Gemüse mediterran gewürzt', price: '6,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Papas Bravas', description: 'Vegan - Klassische spanische Kartoffeln mit scharfer Soße', price: '6,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Tortilla de Patata mit Aioli', description: 'Spanisches Kartoffel-Omelett mit Aioli', price: '6,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Pimientos de Padrón', description: 'Vegan - Gebratene grüne Paprika', price: '6,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Kanarische Kartoffeln', description: 'Vegan - Traditionelle Kartoffeln mit Meersalz', price: '6,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Fetahäppchen auf Johannisbeersauce', description: 'Cremiger Feta mit süß-saurer Sauce', price: '6,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Ziegenkäse auf Johannisbeersauce oder Honig-Senf', description: 'Mild-cremiger Ziegenkäse mit Sauce nach Wahl', price: '6,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Falafel mit Joghurt-Minz-Sauce', description: 'Knusprige Kichererbsenbällchen mit erfrischender Sauce', price: '6,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Überbackener Feta mit Cherrytomaten', description: 'Warmer Feta mit süßen Cherrytomaten', price: '6,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Champignons mit Reis & Pinienkernen auf Roquefort', description: 'Aromatische Pilze mit würzigem Käse', price: '6,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Überbackene Tomaten mit Spinat & Roquefort', description: 'Mediterrane Gemüse-Käse-Kombination', price: '6,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Frittierte Auberginen mit Honig', description: 'Süß-herzhafte Auberginen-Kreation', price: '6,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Champignons al Ajillo', description: 'Vegan - Pilze in Knoblauchöl', price: '6,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Teigtaschen mit Spinat & Kräutersauce', description: 'Hausgemachte Teigtaschen mit frischen Kräutern', price: '6,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Feta Feigen', description: 'Süße Feigen mit salzigem Feta', price: '6,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Ziegenkäse auf Fenchel & Walnuss', description: 'Aromatische Kombination mit Nüssen', price: '6,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Gebratener Spinat mit Cherrytomaten', description: 'Vegan - Frischer Spinat mit süßen Tomaten', price: '6,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' }
+      { name: 'Gebratenes Gemüse', description: 'Vegan - Saisonales Gemüse mediterran gewürzt', price: '6,90', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
+      { name: 'Papas Bravas', description: 'Vegan - Klassische spanische Kartoffeln mit scharfer Soße', price: '6,90', image: 'https://images.unsplash.com/photo-1565599837634-134bc3aadce8' },
+      { name: 'Tortilla de Patata mit Aioli', description: 'Spanisches Kartoffel-Omelett mit Aioli', price: '6,90', image: 'https://images.unsplash.com/photo-1515443961218-a51367888e4b' },
+      { name: 'Pimientos de Padrón', description: 'Vegan - Gebratene grüne Paprika', price: '6,90', image: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b' },
+      { name: 'Kanarische Kartoffeln', description: 'Vegan - Traditionelle Kartoffeln mit Meersalz', price: '6,90', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655' },
+      { name: 'Fetahäppchen auf Johannisbeersauce', description: 'Cremiger Feta mit süß-saurer Sauce', price: '6,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
+      { name: 'Ziegenkäse auf Johannisbeersauce oder Honig-Senf', description: 'Mild-cremiger Ziegenkäse mit Sauce nach Wahl', price: '6,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
+      { name: 'Falafel mit Joghurt-Minz-Sauce', description: 'Knusprige Kichererbsenbällchen mit erfrischender Sauce', price: '6,90', image: 'https://images.unsplash.com/photo-1593504049359-74330189a5d8' },
+      { name: 'Überbackener Feta mit Cherrytomaten', description: 'Warmer Feta mit süßen Cherrytomaten', price: '6,90', image: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371' },
+      { name: 'Champignons mit Reis & Pinienkernen auf Roquefort', description: 'Aromatische Pilze mit würzigem Käse', price: '6,90', image: 'https://images.unsplash.com/photo-1614887009518-7b9355a3a0e4' },
+      { name: 'Überbackene Tomaten mit Spinat & Roquefort', description: 'Mediterrane Gemüse-Käse-Kombination', price: '6,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
+      { name: 'Frittierte Auberginen mit Honig', description: 'Süß-herzhafte Auberginen-Kreation', price: '6,90', image: 'https://images.unsplash.com/photo-1526057565006-20beab8dd2ed' },
+      { name: 'Champignons al Ajillo', description: 'Vegan - Pilze in Knoblauchöl', price: '6,90', image: 'https://images.unsplash.com/photo-1505576391880-b3f9d713dc4f' },
+      { name: 'Teigtaschen mit Spinat & Kräutersauce', description: 'Hausgemachte Teigtaschen mit frischen Kräutern', price: '6,90', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
+      { name: 'Feta Feigen', description: 'Süße Feigen mit salzigem Feta', price: '6,90', image: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371' },
+      { name: 'Ziegenkäse auf Fenchel & Walnuss', description: 'Aromatische Kombination mit Nüssen', price: '6,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
+      { name: 'Gebratener Spinat mit Cherrytomaten', description: 'Vegan - Frischer Spinat mit süßen Tomaten', price: '6,90', image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce' }
     ],
     'tapas-pollo': [
-      { name: 'Hähnchen mit Limetten-Sauce', description: 'Zartes Hähnchen in frischer Zitrus-Sauce', price: '7,20', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Knuspriges Hähnchen mit Honig-Senf', description: 'Goldbraun gebratenes Hähnchen mit süß-scharfer Sauce', price: '7,20', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Hähnchenspieß mit Chili', description: 'Würziger Hähnchen-Spieß mit Chili', price: '7,20', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Hähnchen mit Curry', description: 'Exotisch gewürztes Hähnchen', price: '7,20', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Hähnchen mit Mandelsauce', description: 'Cremige Mandel-Sauce zu zartem Hähnchen', price: '7,20', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Hähnchen-Chorizo-Spieß', description: 'Spanische Wurst-Fleisch-Kombination', price: '7,20', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Hähnchen mit Brandy-Sauce', description: 'Edle Brandy-Sauce zu saftigem Hähnchen', price: '7,20', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' }
+      { name: 'Hähnchen mit Limetten-Sauce', description: 'Zartes Hähnchen in frischer Zitrus-Sauce', price: '7,20', image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6' },
+      { name: 'Knuspriges Hähnchen mit Honig-Senf', description: 'Goldbraun gebratenes Hähnchen mit süß-scharfer Sauce', price: '7,20', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' },
+      { name: 'Hähnchenspieß mit Chili', description: 'Würziger Hähnchen-Spieß mit Chili', price: '7,20', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
+      { name: 'Hähnchen mit Curry', description: 'Exotisch gewürztes Hähnchen', price: '7,20', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
+      { name: 'Hähnchen mit Mandelsauce', description: 'Cremige Mandel-Sauce zu zartem Hähnchen', price: '7,20', image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6' },
+      { name: 'Hähnchen-Chorizo-Spieß', description: 'Spanische Wurst-Fleisch-Kombination', price: '7,20', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
+      { name: 'Hähnchen mit Brandy-Sauce', description: 'Edle Brandy-Sauce zu saftigem Hähnchen', price: '7,20', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' }
     ],
     'tapas-carne': [
-      { name: 'Dátiles con Bacon', description: 'Süße Datteln mit knusprigem Speck', price: '6,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Albondigas', description: 'Spanische Hackfleischbällchen in Tomatensoße', price: '6,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Pincho de Cerdo', description: 'Schweinefleisch-Spieß gegrillt', price: '7,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Pincho de Cordero', description: 'Lammfleisch-Spieß mit Kräutern', price: '8,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Chuletas de Cordero', description: 'Gegrillte Lammkoteletts', price: '9,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Rollitos Serrano mit Feige', description: 'Serrano-Schinken-Röllchen mit süßer Feige', price: '9,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Ziegenkäse mit Bacon', description: 'Cremiger Ziegenkäse mit knusprigem Speck', price: '7,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Chorizo al Diablo', description: 'Scharfe Chorizo in Teufelssauce', price: '7,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Medaillons vom Schwein', description: 'Zarte Schweinefilet-Medaillons', price: '9,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Champignons mit Käse', description: 'Überbackene Pilze mit geschmolzenem Käse', price: '8,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Schweinefilet mit Cherrytomaten', description: 'Saftiges Filet mit süßen Tomaten', price: '9,50', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Schweinefilet in Sauce', description: 'Zartes Filet in aromatischer Sauce', price: '9,50', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Chorizo a la Plancha', description: 'Gegrillte spanische Wurst', price: '7,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Lammfilet', description: 'Premium Lammfilet rosa gebraten', price: '9,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Spareribs mit BBQ', description: 'Zarte Rippchen mit BBQ-Sauce', price: '8,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Chicken Wings', description: 'Würzige Hähnchenflügel', price: '9,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' }
+      { name: 'Dátiles con Bacon', description: 'Süße Datteln mit knusprigem Speck', price: '6,90', image: 'https://images.unsplash.com/photo-1544025162-d76694265947' },
+      { name: 'Albondigas', description: 'Spanische Hackfleischbällchen in Tomatensoße', price: '6,90', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
+      { name: 'Pincho de Cerdo', description: 'Schweinefleisch-Spieß gegrillt', price: '7,90', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
+      { name: 'Pincho de Cordero', description: 'Lammfleisch-Spieß mit Kräutern', price: '8,90', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
+      { name: 'Chuletas de Cordero', description: 'Gegrillte Lammkoteletts', price: '9,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' },
+      { name: 'Rollitos Serrano mit Feige', description: 'Serrano-Schinken-Röllchen mit süßer Feige', price: '9,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
+      { name: 'Ziegenkäse mit Bacon', description: 'Cremiger Ziegenkäse mit knusprigem Speck', price: '7,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
+      { name: 'Chorizo al Diablo', description: 'Scharfe Chorizo in Teufelssauce', price: '7,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Medaillons vom Schwein', description: 'Zarte Schweinefilet-Medaillons', price: '9,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' },
+      { name: 'Champignons mit Käse', description: 'Überbackene Pilze mit geschmolzenem Käse', price: '8,90', image: 'https://images.unsplash.com/photo-1614887009518-7b9355a3a0e4' },
+      { name: 'Schweinefilet mit Cherrytomaten', description: 'Saftiges Filet mit süßen Tomaten', price: '9,50', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' },
+      { name: 'Schweinefilet in Sauce', description: 'Zartes Filet in aromatischer Sauce', price: '9,50', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' },
+      { name: 'Chorizo a la Plancha', description: 'Gegrillte spanische Wurst', price: '7,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Lammfilet', description: 'Premium Lammfilet rosa gebraten', price: '9,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' },
+      { name: 'Spareribs mit BBQ', description: 'Zarte Rippchen mit BBQ-Sauce', price: '8,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' },
+      { name: 'Chicken Wings', description: 'Würzige Hähnchenflügel', price: '9,90', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' }
     ],
     'tapas-pescado': [
-      { name: 'Boquerones Fritos', description: 'Frittierte Sardellen', price: '7,50', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Calamares a la Plancha', description: 'Gegrillte Tintenfischringe', price: '8,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Calamares a la Romana', description: 'Panierte Tintenfischringe', price: '7,50', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Lachs mit Spinat', description: 'Frischer Lachs auf Spinatbett', price: '9,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Gambas a la Plancha', description: 'Gegrillte Garnelen', price: '9,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Garnelen-Dattel-Spieß', description: 'Süß-salzige Kombination am Spieß', price: '9,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Gambas al Ajillo', description: 'Garnelen in Knoblauchöl', price: '9,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Muslitos de Mar', description: 'Gebackene Muscheln', price: '6,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Gegrillter Oktopus', description: 'Zarter Oktopus vom Grill', price: '9,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Jacobsmuscheln', description: 'Edle Jakobsmuscheln gegrillt', price: '9,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Gambas PIL PIL', description: 'Garnelen in würzigem Olivenöl', price: '9,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Empanadas', description: 'Spanische Teigtaschen mit Füllung', price: '6,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Pfahlmuscheln', description: 'Frische Miesmuscheln in Sud', price: '8,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Pulpo al Ajillo', description: 'Oktopus in Knoblauchöl', price: '9,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Zanderfilet', description: 'Zartes Zanderfilet gebraten', price: '9,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Tiger Garnelen', description: 'Große Tiger-Garnelen gegrillt', price: '9,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Brocheta de Gambas', description: 'Garnelen-Spieß mit Gemüse', price: '8,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Boqueron in Tempura', description: 'Sardellen im Tempura-Teig', price: '7,50', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Chipirones', description: 'Baby-Tintenfische gegrillt', price: '8,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' }
+      { name: 'Boquerones Fritos', description: 'Frittierte Sardellen', price: '7,50', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828' },
+      { name: 'Calamares a la Plancha', description: 'Gegrillte Tintenfischringe', price: '8,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Calamares a la Romana', description: 'Panierte Tintenfischringe', price: '7,50', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Lachs mit Spinat', description: 'Frischer Lachs auf Spinatbett', price: '9,90', image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288' },
+      { name: 'Gambas a la Plancha', description: 'Gegrillte Garnelen', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Garnelen-Dattel-Spieß', description: 'Süß-salzige Kombination am Spieß', price: '9,90', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
+      { name: 'Gambas al Ajillo', description: 'Garnelen in Knoblauchöl', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Muslitos de Mar', description: 'Gebackene Muscheln', price: '6,90', image: 'https://images.unsplash.com/photo-1580370908410-85f1eafc5e5b' },
+      { name: 'Gegrillter Oktopus', description: 'Zarter Oktopus vom Grill', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Jacobsmuscheln', description: 'Edle Jakobsmuscheln gegrillt', price: '9,90', image: 'https://images.unsplash.com/photo-1580370908410-85f1eafc5e5b' },
+      { name: 'Gambas PIL PIL', description: 'Garnelen in würzigem Olivenöl', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Empanadas', description: 'Spanische Teigtaschen mit Füllung', price: '6,90', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
+      { name: 'Pfahlmuscheln', description: 'Frische Miesmuscheln in Sud', price: '8,90', image: 'https://images.unsplash.com/photo-1580370908410-85f1eafc5e5b' },
+      { name: 'Pulpo al Ajillo', description: 'Oktopus in Knoblauchöl', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Zanderfilet', description: 'Zartes Zanderfilet gebraten', price: '9,90', image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288' },
+      { name: 'Tiger Garnelen', description: 'Große Tiger-Garnelen gegrillt', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Brocheta de Gambas', description: 'Garnelen-Spieß mit Gemüse', price: '8,90', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
+      { name: 'Boqueron in Tempura', description: 'Sardellen im Tempura-Teig', price: '7,50', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828' },
+      { name: 'Chipirones', description: 'Baby-Tintenfische gegrillt', price: '8,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' }
     ],
     'kroketten': [
-      { name: 'Bacalao', description: 'Stockfisch-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Käse', description: 'Cremige Käse-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Mandeln', description: 'Mandel-Kroketten mit feinem Aroma', price: '6,50', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Jamón', description: 'Schinken-Kroketten klassisch', price: '5,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Kartoffel', description: 'Traditionelle Kartoffel-Kroketten', price: '5,50', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' }
+      { name: 'Bacalao', description: 'Stockfisch-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
+      { name: 'Käse', description: 'Cremige Käse-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
+      { name: 'Mandeln', description: 'Mandel-Kroketten mit feinem Aroma', price: '6,50', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
+      { name: 'Jamón', description: 'Schinken-Kroketten klassisch', price: '5,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
+      { name: 'Kartoffel', description: 'Traditionelle Kartoffel-Kroketten', price: '5,50', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' }
     ],
     'pasta': [
-      { name: 'Spaghetti Aglio e Olio', description: 'Klassisch mit Knoblauch und Olivenöl', price: '12,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Spaghetti Bolognese', description: 'Mit hausgemachter Fleischsauce', price: '14,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Pasta Brokkoli Gorgonzola', description: 'Cremige Gorgonzola-Sauce mit Brokkoli', price: '14,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Pasta Verdura', description: 'Mit frischem Saisongemüse', price: '14,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Pasta Garnelen', description: 'Mit frischen Garnelen und Knoblauch', price: '16,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' }
+      { name: 'Spaghetti Aglio e Olio', description: 'Klassisch mit Knoblauch und Olivenöl', price: '12,90', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5' },
+      { name: 'Spaghetti Bolognese', description: 'Mit hausgemachter Fleischsauce', price: '14,90', image: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb' },
+      { name: 'Pasta Brokkoli Gorgonzola', description: 'Cremige Gorgonzola-Sauce mit Brokkoli', price: '14,90', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5' },
+      { name: 'Pasta Verdura', description: 'Mit frischem Saisongemüse', price: '14,90', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
+      { name: 'Pasta Garnelen', description: 'Mit frischen Garnelen und Knoblauch', price: '16,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' }
     ],
     'pizza': [
-      { name: 'Margherita', description: 'Tomaten, Mozzarella, Basilikum', price: '9,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Schinken', description: 'Mit spanischem Schinken', price: '12,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Funghi', description: 'Mit frischen Champignons', price: '12,90', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Tonno', description: 'Mit Thunfisch und Zwiebeln', price: '13,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Hawaii', description: 'Mit Schinken und Ananas', price: '13,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Verdura', description: 'Mit gegrilltem Gemüse', price: '13,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Salami', description: 'Mit würziger Salami', price: '12,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Garnelen', description: 'Mit frischen Garnelen', price: '15,90', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Bolognese', description: 'Mit Hackfleischsauce', price: '13,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: "Jimmy's Special", description: 'Unsere Haus-Spezial-Pizza', price: '13,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' }
+      { name: 'Margherita', description: 'Tomaten, Mozzarella, Basilikum', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Schinken', description: 'Mit spanischem Schinken', price: '12,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
+      { name: 'Funghi', description: 'Mit frischen Champignons', price: '12,90', image: 'https://images.unsplash.com/photo-1614887009518-7b9355a3a0e4' },
+      { name: 'Tonno', description: 'Mit Thunfisch und Zwiebeln', price: '13,90', image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74' },
+      { name: 'Hawaii', description: 'Mit Schinken und Ananas', price: '13,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
+      { name: 'Verdura', description: 'Mit gegrilltem Gemüse', price: '13,90', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
+      { name: 'Salami', description: 'Mit würziger Salami', price: '12,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Garnelen', description: 'Mit frischen Garnelen', price: '15,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Bolognese', description: 'Mit Hackfleischsauce', price: '13,90', image: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb' },
+      { name: "Jimmy's Special", description: 'Unsere Haus-Spezial-Pizza', price: '13,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' }
     ],
     'snacks': [
-      { name: 'Pommes', description: 'Goldgelbe Kartoffel-Pommes', price: '5,50', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' },
-      { name: 'Chicken Nuggets', description: 'Knusprige Hähnchen-Nuggets', price: '8,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Chicken Wings', description: 'Würzige Hähnchenflügel', price: '9,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Currywurst', description: 'Deutsche Currywurst klassisch', price: '10,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' }
+      { name: 'Pommes', description: 'Goldgelbe Kartoffel-Pommes', price: '5,50', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
+      { name: 'Chicken Nuggets', description: 'Knusprige Hähnchen-Nuggets', price: '8,90', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' },
+      { name: 'Chicken Wings', description: 'Würzige Hähnchenflügel', price: '9,90', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' },
+      { name: 'Currywurst', description: 'Deutsche Currywurst klassisch', price: '10,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' }
     ],
     'dessert': [
-      { name: 'Crema Catalana', description: 'Katalanische Crème brûlée', price: '5,50', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' },
-      { name: 'Tarte de Santiago', description: 'Spanischer Mandelkuchen', price: '7,50', image: 'https://images.unsplash.com/photo-1650964807311-970cb88d347c' },
-      { name: 'Eis', description: 'Hausgemachtes Eis nach Wahl', price: '6,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Churros mit Schokolade', description: 'Spanisches Spritzgebäck mit warmer Schokolade', price: '6,90', image: 'https://images.unsplash.com/photo-1619941862585-cd4fa9a4c2cb' },
-      { name: 'Schoko Soufflé', description: 'Warmes Schokoladen-Soufflé', price: '7,50', image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c' }
+      { name: 'Crema Catalana', description: 'Katalanische Crème brûlée', price: '5,50', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
+      { name: 'Tarte de Santiago', description: 'Spanischer Mandelkuchen', price: '7,50', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
+      { name: 'Eis', description: 'Hausgemachtes Eis nach Wahl', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
+      { name: 'Churros mit Schokolade', description: 'Spanisches Spritzgebäck mit warmer Schokolade', price: '6,90', image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96' },
+      { name: 'Schoko Soufflé', description: 'Warmes Schokoladen-Soufflé', price: '7,50', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' }
     ],
     'helados': [
-      { name: 'Kokos', description: 'Eis im Fruchtschälchen - Kokos', price: '6,90', image: 'https://images.pexels.com/photos/5863640/pexels-photo-5863640.jpeg' },
-      { name: 'Zitrone', description: 'Eis im Fruchtschälchen - Zitrone', price: '6,90', image: 'https://images.unsplash.com/photo-1632702931182-8095478495c1' },
-      { name: 'Orange', description: 'Eis im Fruchtschälchen - Orange', price: '6,90', image: 'https://images.pexels.com/photos/4109910/pexels-photo-4109910.jpeg' },
-      { name: 'Nuss', description: 'Eis im Fruchtschälchen - Nuss', price: '6,90', image: 'https://images.unsplash.com/photo-1707616954248-00aa1816e54a' }
+      { name: 'Kokos', description: 'Eis im Fruchtschälchen - Kokos', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
+      { name: 'Zitrone', description: 'Eis im Fruchtschälchen - Zitrone', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
+      { name: 'Orange', description: 'Eis im Fruchtschälchen - Orange', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
+      { name: 'Nuss', description: 'Eis im Fruchtschälchen - Nuss', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' }
     ]
   };
 
@@ -336,13 +336,13 @@ const Speisekarte = () => {
   };
 
   return (
-    <div className="min-h-screen bg-warm-brown py-12">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-warm-brown pt-24">
+      <div className="container mx-auto px-4 py-12">
         <h1 className="text-6xl font-serif text-center text-warm-beige mb-4 tracking-wide drop-shadow-text">
           Speisekarte
         </h1>
         <p className="text-center text-light-beige mb-12 text-lg font-light">
-          Authentische spanische Küche • Bewegen Sie die Maus über die Gerichte für Bilder
+          Authentische spanische Küche • Alle Gerichte mit Bildern
         </p>
         
         {/* Category Filter */}
@@ -363,42 +363,36 @@ const Speisekarte = () => {
           ))}
         </div>
 
-        {/* Menu Items */}
+        {/* Menu Items - New Layout with images between name and price */}
         <div className="grid gap-4 max-w-6xl mx-auto">
           {getDisplayItems().map((item, index) => (
-            <div key={index} className="menu-item bg-dark-brown rounded-lg border border-warm-brown p-6 hover:bg-medium-brown transition-all duration-300 relative group">
-              <div className="flex justify-between items-start">
+            <div key={index} className="menu-item bg-dark-brown rounded-lg border border-warm-brown p-6 hover:bg-medium-brown transition-all duration-300">
+              <div className="flex items-center gap-4">
+                {/* Dish name and description */}
                 <div className="flex-1">
-                  <h3 className="dish-name text-xl font-serif text-warm-beige mb-2 tracking-wide cursor-pointer relative">
+                  <h3 className="dish-name text-xl font-serif text-warm-beige mb-2 tracking-wide">
                     {item.name}
-                    {/* Hover Image Tooltip */}
-                    <div className="tooltip-image absolute left-full ml-4 top-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 hidden md:block">
-                      <img 
-                        src={item.image} 
-                        alt={item.name}
-                        className="w-48 h-48 object-cover rounded-lg shadow-2xl border-2 border-warm-beige"
-                        loading="lazy"
-                      />
-                    </div>
                   </h3>
                   <p className="text-light-beige mb-2 font-light leading-relaxed text-sm">{item.description}</p>
                   <span className="text-xs text-warm-beige capitalize font-light tracking-wide opacity-75">
                     {categories.find(c => c.id === item.category)?.name}
                   </span>
                 </div>
-                <div className="price text-2xl font-serif text-warm-beige ml-6 tracking-wide">
+                
+                {/* Dish Image - Between name and price */}
+                <div className="flex-shrink-0">
+                  <img 
+                    src={item.image} 
+                    alt={item.name}
+                    className="w-20 h-20 object-cover rounded-lg border border-warm-beige shadow-lg"
+                    loading="lazy"
+                  />
+                </div>
+                
+                {/* Price */}
+                <div className="price text-2xl font-serif text-warm-beige tracking-wide flex-shrink-0 w-20 text-right">
                   {item.price} €
                 </div>
-              </div>
-              
-              {/* Mobile Image - Show below on smaller screens */}
-              <div className="md:hidden mt-4 group-hover:block hidden">
-                <img 
-                  src={item.image} 
-                  alt={item.name}
-                  className="w-full h-32 object-cover rounded-lg border border-warm-brown"
-                  loading="lazy"
-                />
               </div>
             </div>
           ))}
