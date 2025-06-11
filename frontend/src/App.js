@@ -301,8 +301,8 @@ const Home = () => {
             <div className="bg-dark-brown rounded-lg p-8 border border-warm-brown shadow-lg">
               <div className="flex flex-col md:flex-row items-center justify-center gap-8">
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-3xl text-dark-brown">🚚</span>
+                  <div className="w-24 h-24 bg-cover bg-center rounded-lg mx-auto mb-4 border-2 border-warm-beige" 
+                       style={{backgroundImage: `url('https://images.pexels.com/photos/6969962/pexels-photo-6969962.jpeg')`}}>
                   </div>
                   <h3 className="text-xl font-serif text-warm-beige mb-2">Schnelle Lieferung</h3>
                   <p className="text-light-beige text-sm">Frisch und warm zu Ihnen</p>
@@ -319,11 +319,11 @@ const Home = () => {
                   <p className="text-light-beige text-sm mt-2">Verfügbar für beide Standorte</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-3xl text-dark-brown">🏠</span>
+                  <div className="w-24 h-24 bg-cover bg-center rounded-lg mx-auto mb-4 border-2 border-warm-beige" 
+                       style={{backgroundImage: `url('https://images.pexels.com/photos/31748679/pexels-photo-31748679.jpeg')`}}>
                   </div>
-                  <h3 className="text-xl font-serif text-warm-beige mb-2">Zu Hause genießen</h3>
-                  <p className="text-light-beige text-sm">Gemütlich auf der Couch</p>
+                  <h3 className="text-xl font-serif text-warm-beige mb-2">Authentisch Spanisch</h3>
+                  <p className="text-light-beige text-sm">Direkt vom Küchenchef</p>
                 </div>
               </div>
             </div>
