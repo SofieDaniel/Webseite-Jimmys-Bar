@@ -1656,24 +1656,27 @@ const Footer = () => {
 // Main App Component
 function App() {
   return (
-    <div className="App min-h-screen bg-dark-brown">
-      <BrowserRouter>
-        <Header />
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/speisekarte" element={<Speisekarte />} />
-          <Route path="/standorte" element={<Standorte />} />
-          <Route path="/ueber-uns" element={<UeberUns />} />
-          <Route path="/bewertungen" element={<Bewertungen />} />
-          <Route path="/kontakt" element={<Kontakt />} />
-          <Route path="/impressum" element={<Impressum />} />
-          <Route path="/datenschutz" element={<Datenschutz />} />
-        </Routes>
-        <Footer />
-        <CookieBanner />
-      </BrowserRouter>
-    </div>
+    <LanguageProvider>
+      <div className="App min-h-screen bg-dark-brown">
+        <BrowserRouter>
+          <Header />
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/speisekarte" element={<Speisekarte />} />
+            <Route path="/standorte" element={<Standorte />} />
+            <Route path="/ueber-uns" element={<UeberUns />} />
+            <Route path="/bewertungen" element={<Bewertungen />} />
+            <Route path="/kontakt" element={<Kontakt />} />
+            <Route path="/impressum" element={<Impressum />} />
+            <Route path="/datenschutz" element={<Datenschutz />} />
+            <Route path="/admin" element={<AdminPanel />} />
+          </Routes>
+          <Footer />
+          <CookieBanner />
+        </BrowserRouter>
+      </div>
+    </LanguageProvider>
   );
 }
 
