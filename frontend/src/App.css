@@ -446,6 +446,44 @@ main {
     0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
+/* Scroll to Top Button */
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: var(--warm-beige);
+  border: 2px solid var(--dark-brown);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 9999;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-to-top:hover {
+  background: var(--light-beige);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+.scroll-to-top svg {
+  color: var(--dark-brown);
+  width: 24px;
+  height: 24px;
+}
+
 /* Screenshot-Style Category Buttons - Enhanced */
 .menu-category {
   background: rgba(139, 69, 19, 0.7);
