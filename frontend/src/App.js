@@ -367,16 +367,16 @@ const Speisekarte = () => {
       { name: 'Pasta Garnelen', description: 'Mit frischen Garnelen und Knoblauch', price: '16,90', details: 'Saftige Garnelen in Knoblauch-Weißwein-Sauce mit Kirschtomaten und Basilikum.' }
     ],
     'pizza': [
-      { name: 'Margherita', description: 'Tomaten, Mozzarella, Basilikum', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
-      { name: 'Schinken', description: 'Mit spanischem Schinken', price: '12,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
-      { name: 'Funghi', description: 'Mit frischen Champignons', price: '12,90', image: 'https://images.unsplash.com/photo-1614887009518-7b9355a3a0e4' },
-      { name: 'Tonno', description: 'Mit Thunfisch und Zwiebeln', price: '13,90', image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74' },
-      { name: 'Hawaii', description: 'Mit Schinken und Ananas', price: '13,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
-      { name: 'Verdura', description: 'Mit gegrilltem Gemüse', price: '13,90', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
-      { name: 'Salami', description: 'Mit würziger Salami', price: '12,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
-      { name: 'Garnelen', description: 'Mit frischen Garnelen', price: '15,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
-      { name: 'Bolognese', description: 'Mit Hackfleischsauce', price: '13,90', image: 'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb' },
-      { name: "Jimmy's Special", description: 'Unsere Haus-Spezial-Pizza', price: '13,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' }
+      { name: 'Margherita', description: 'Tomaten, Mozzarella, Basilikum', price: '9,90', details: 'Klassische Pizza mit hausgemachter Tomatensauce, frischem Mozzarella und Basilikum.' },
+      { name: 'Schinken', description: 'Mit spanischem Schinken', price: '12,90', details: 'Pizza mit Serrano-Schinken, Mozzarella und frischen Rucola.' },
+      { name: 'Funghi', description: 'Mit frischen Champignons', price: '12,90', details: 'Pizza mit sautierten Champignons, Mozzarella und frischen Kräutern.' },
+      { name: 'Tonno', description: 'Mit Thunfisch und Zwiebeln', price: '13,90', details: 'Pizza mit Thunfisch, roten Zwiebeln, Kapern und schwarzen Oliven.' },
+      { name: 'Hawaii', description: 'Mit Schinken und Ananas', price: '13,90', details: 'Pizza mit gekochtem Schinken, frischer Ananas und extra Käse.' },
+      { name: 'Verdura', description: 'Mit gegrilltem Gemüse', price: '13,90', details: 'Pizza mit verschiedenem Grillgemüse, Mozzarella und Basilikumpesto.' },
+      { name: 'Salami', description: 'Mit würziger Salami', price: '12,90', details: 'Pizza mit italienischer Salami, Mozzarella und frischen Kräutern.' },
+      { name: 'Garnelen', description: 'Mit frischen Garnelen', price: '15,90', details: 'Pizza mit Garnelen, Knoblauch, Cherrytomaten und Rucola.' },
+      { name: 'Bolognese', description: 'Mit Hackfleischsauce', price: '13,90', details: 'Pizza mit hausgemachter Bolognese-Sauce und extra Käse.' },
+      { name: "Jimmy's Special", description: 'Unsere Haus-Spezial-Pizza', price: '13,90', details: 'Geheimrezept des Hauses mit ausgewählten spanischen Zutaten.' }
     ],
     'snacks': [
       { name: 'Pommes', description: 'Goldgelbe Kartoffel-Pommes', price: '5,50', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
