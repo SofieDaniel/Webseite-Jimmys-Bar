@@ -191,7 +191,7 @@ const Speisekarte = () => {
       { name: 'Kichererbsen mit Feta', description: 'Proteinreicher Salat mit Feta', price: '7,90', image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74' }
     ],
     'tapa-paella': [
-      { name: 'Paella mit Hähnchen & Meeresfrüchten', description: 'Traditionelle spanische Paella als Tapa-Portion', price: '8,90', image: 'https://images.unsplash.com/photo-1630175860333-5131bda75071' },
+      { name: 'Paella mit Hähnchen & Meeresfrüchten', description: 'Traditionelle spanische Paella als Tapa-Portion', price: '8,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
       { name: 'Paella vegetarisch', description: 'Vegetarische Paella mit frischem Gemüse', price: '7,90', image: 'https://images.unsplash.com/photo-1588276552401-30058a0fe57b' }
     ],
     'tapas-vegetarian': [
