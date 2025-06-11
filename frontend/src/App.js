@@ -690,8 +690,7 @@ const AdminPanel = () => {
                 { id: 'standorte', name: 'Standorte' },
                 { id: 'bewertungen', name: 'Bewertungen' },
                 { id: 'ueber-uns', name: 'Über uns' },
-                { id: 'kontakt', name: 'Kontakt' },
-                { id: 'einstellungen', name: 'Einstellungen' }
+                { id: 'kontakt', name: 'Kontakt' }
               ].map(item => (
                 <button
                   key={item.id}
@@ -727,32 +726,8 @@ const AdminPanel = () => {
             )}
 
             {activeSection === 'speisekarte' && <MenuEditor />}
-            
-            {activeSection === 'standorte' && (
-              <div>
-                <h2 className="text-2xl font-serif text-warm-beige mb-4">Standorte verwalten</h2>
-                <p className="text-light-beige mb-4">Hier können Sie Standorte bearbeiten.</p>
-                <div className="bg-dark-brown p-4 rounded border border-warm-brown">
-                  <p className="text-warm-beige">⚠️ Standorte-Editor in Entwicklung</p>
-                  <p className="text-light-beige text-sm mt-2">
-                    Funktionen: Adressen ändern, Öffnungszeiten verwalten, Kontaktdaten bearbeiten
-                  </p>
-                </div>
-              </div>
-            )}
-            
-            {activeSection === 'einstellungen' && (
-              <div>
-                <h2 className="text-2xl font-serif text-warm-beige mb-4">Einstellungen</h2>
-                <p className="text-light-beige mb-4">Allgemeine Website-Einstellungen.</p>
-                <div className="bg-dark-brown p-4 rounded border border-warm-brown">
-                  <p className="text-warm-beige">⚠️ Einstellungen-Editor in Entwicklung</p>
-                  <p className="text-light-beige text-sm mt-2">
-                    Funktionen: Kontaktdaten, SEO-Einstellungen, Backup & Restore
-                  </p>
-                </div>
-              </div>
-            )}
+            {activeSection === 'standorte' && <LocationsEditor content={content} saveContent={saveContent} />}
+            {activeSection === 'einstellungen' && <SettingsEditor content={content} saveContent={saveContent} />}
 
             {/* Add more sections as needed */}
           </div>
