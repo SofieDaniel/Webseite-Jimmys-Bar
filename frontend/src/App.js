@@ -305,13 +305,13 @@ const Speisekarte = () => {
       { name: 'Gebratener Spinat mit Cherrytomaten', description: 'Vegan - Frischer Spinat mit süßen Tomaten', price: '6,90', details: 'Frischer Spinat geschmort mit Cherrytomaten, Knoblauch und Pinienkernen in bestem Olivenöl.' }
     ],
     'tapas-pollo': [
-      { name: 'Hähnchen mit Limetten-Sauce', description: 'Zartes Hähnchen in frischer Zitrus-Sauce', price: '7,20', image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6' },
-      { name: 'Knuspriges Hähnchen mit Honig-Senf', description: 'Goldbraun gebratenes Hähnchen mit süß-scharfer Sauce', price: '7,20', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' },
-      { name: 'Hähnchenspieß mit Chili', description: 'Würziger Hähnchen-Spieß mit Chili', price: '7,20', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
-      { name: 'Hähnchen mit Curry', description: 'Exotisch gewürztes Hähnchen', price: '7,20', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
-      { name: 'Hähnchen mit Mandelsauce', description: 'Cremige Mandel-Sauce zu zartem Hähnchen', price: '7,20', image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6' },
-      { name: 'Hähnchen-Chorizo-Spieß', description: 'Spanische Wurst-Fleisch-Kombination', price: '7,20', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
-      { name: 'Hähnchen mit Brandy-Sauce', description: 'Edle Brandy-Sauce zu saftigem Hähnchen', price: '7,20', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' }
+      { name: 'Hähnchen mit Limetten-Sauce', description: 'Zartes Hähnchen in frischer Zitrus-Sauce', price: '7,20', details: 'Saftige Hähnchenstücke in einer frischen Limetten-Sauce mit Koriander und einem Hauch Chili, serviert mit Kräuterreis.' },
+      { name: 'Knuspriges Hähnchen mit Honig-Senf', description: 'Goldbraun gebratenes Hähnchen mit süß-scharfer Sauce', price: '7,20', details: 'Knusprig paniertes Hähnchen mit hausgemachter Honig-Senf-Sauce, garniert mit frischen Kräutern.' },
+      { name: 'Hähnchenspieß mit Chili', description: 'Würziger Hähnchen-Spieß mit Chili', price: '7,20', details: 'Marinierte Hähnchenstücke am Spieß mit pikanter Chili-Sauce und gegrilltem Gemüse.' },
+      { name: 'Hähnchen mit Curry', description: 'Exotisch gewürztes Hähnchen', price: '7,20', details: 'Zart geschmortes Hähnchen in aromatischer Curry-Sauce mit Kokosmilch und mediterranen Gewürzen.' },
+      { name: 'Hähnchen mit Mandelsauce', description: 'Cremige Mandel-Sauce zu zartem Hähnchen', price: '7,20', details: 'Gebratenes Hähnchen in feiner Mandel-Sahne-Sauce mit gerösteten Mandelblättchen.' },
+      { name: 'Hähnchen-Chorizo-Spieß', description: 'Spanische Wurst-Fleisch-Kombination', price: '7,20', details: 'Abwechselnd Hähnchen und würzige Chorizo am Spieß gegrillt, serviert mit Paprika und Zwiebeln.' },
+      { name: 'Hähnchen mit Brandy-Sauce', description: 'Edle Brandy-Sauce zu saftigem Hähnchen', price: '7,20', details: 'Gebratenes Hähnchen in einer cremigen Sauce aus spanischem Brandy, Sahne und feinen Gewürzen.' }
     ],
     'tapas-carne': [
       { name: 'Dátiles con Bacon', description: 'Süße Datteln mit knusprigem Speck', price: '6,90', image: 'https://images.unsplash.com/photo-1544025162-d76694265947' },
