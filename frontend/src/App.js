@@ -1556,6 +1556,10 @@ const Footer = () => {
         </div>
         <div className="border-t border-warm-brown mt-8 pt-6 text-center text-light-beige font-light">
           <p>&copy; 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten.</p>
+          <p className="text-sm mt-2 opacity-75">
+            Website erstellt von{' '}
+            <span className="text-warm-beige font-serif tracking-wide">Daniel Böttche</span>
+          </p>
         </div>
       </div>
     </footer>
