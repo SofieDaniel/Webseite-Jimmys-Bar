@@ -188,9 +188,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "CORS configuration"
-  stuck_tasks:
-    - "CORS configuration"
+    - "All backend tasks completed"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
