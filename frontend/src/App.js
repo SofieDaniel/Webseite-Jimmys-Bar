@@ -379,10 +379,10 @@ const Speisekarte = () => {
       { name: "Jimmy's Special", description: 'Unsere Haus-Spezial-Pizza', price: '13,90', details: 'Geheimrezept des Hauses mit ausgewählten spanischen Zutaten.' }
     ],
     'snacks': [
-      { name: 'Pommes', description: 'Goldgelbe Kartoffel-Pommes', price: '5,50', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
-      { name: 'Chicken Nuggets', description: 'Knusprige Hähnchen-Nuggets', price: '8,90', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' },
-      { name: 'Chicken Wings', description: 'Würzige Hähnchenflügel', price: '9,90', image: 'https://images.unsplash.com/photo-1562967914-608f82629710' },
-      { name: 'Currywurst', description: 'Deutsche Currywurst klassisch', price: '10,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' }
+      { name: 'Pommes', description: 'Goldgelbe Kartoffel-Pommes', price: '5,50', details: 'Knusprige Pommes frites mit hausgemachten Dips nach Wahl.' },
+      { name: 'Chicken Nuggets', description: 'Knusprige Hähnchen-Nuggets', price: '8,90', details: 'Hausgemachte Chicken Nuggets aus frischem Hähnchenfilet mit verschiedenen Dips.' },
+      { name: 'Chicken Wings', description: 'Würzige Hähnchenflügel', price: '9,90', details: 'Marinierte und knusprig gebratene Chicken Wings mit BBQ-Sauce.' },
+      { name: 'Currywurst', description: 'Deutsche Currywurst klassisch', price: '10,90', details: 'Klassische Currywurst mit hausgemachter Sauce und Pommes frites.' }
     ],
     'dessert': [
       { name: 'Crema Catalana', description: 'Katalanische Crème brûlée', price: '5,50', image: 'https://images.unsplash.com/photo-1736752346246-61f4daedfde0' },
