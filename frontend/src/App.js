@@ -431,7 +431,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Clean Professional Hero Section */}
-      <section className="relative h-screen bg-cover bg-center hero-background" 
+      <section id="main-content" className="relative h-screen bg-cover bg-center hero-background" 
                style={{backgroundImage: `url('https://images.unsplash.com/photo-1656423521731-9665583f100c')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative z-10 flex items-center justify-center h-full text-center px-4" style={{paddingTop: '80px'}}>
