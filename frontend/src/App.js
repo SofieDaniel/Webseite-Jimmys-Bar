@@ -2,55 +2,52 @@ import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
 
-// Header Component - EXACT match to reference image
+// Header Component - FIXED positioning with proper spacing
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 bg-dark-brown-transparent">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-dark-brown-transparent backdrop-blur-sm">
       <div className="container mx-auto px-8 py-4">
         <nav className="flex justify-between items-center">
-          {/* Logo - exactly as in reference image */}
-          <Link to="/" className="text-2xl font-serif text-warm-beige tracking-wide">
+          <Link to="/" className="text-xl font-light text-stone-100 tracking-[0.2em]">
             JIMMY'S
-            <span className="block text-sm font-serif tracking-[0.2em] mt-1">TAPAS BAR</span>
+            <span className="block text-xs text-stone-300 tracking-[0.3em] font-light mt-1">TAPAS BAR</span>
           </Link>
           
-          {/* Navigation Menu - exactly as in reference */}
-          <div className="hidden md:flex space-x-12">
-            <Link to="/standorte" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Standorte</Link>
-            <Link to="/speisekarte" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Speisekarte</Link>
-            <Link to="/bewertungen" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Bewertungen</Link>
-            <Link to="/ueber-uns" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Über uns</Link>
-            <Link to="/kontakt" className="text-warm-beige hover:text-white transition-colors font-light tracking-wide">Kontakt</Link>
+          <div className="hidden md:flex space-x-10">
+            <Link to="/" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Startseite</Link>
+            <Link to="/standorte" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Standorte</Link>
+            <Link to="/speisekarte" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Speisekarte</Link>
+            <Link to="/bewertungen" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Bewertungen</Link>
+            <Link to="/ueber-uns" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Über uns</Link>
+            <Link to="/kontakt" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Kontakt</Link>
           </div>
           
-          {/* CTA Button - exactly as in reference */}
-          <Link to="/speisekarte" className="hidden md:block border-2 border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-8 py-3 rounded-full transition-all duration-300 font-light tracking-wide">
+          <Link to="/speisekarte" className="hidden md:block border border-stone-300 text-stone-100 hover:bg-stone-100 hover:text-black px-6 py-2 rounded-full transition-all duration-300 font-light tracking-wider text-xs">
             ZUR SPEISEKARTE
           </Link>
           
-          {/* Mobile Menu Toggle */}
           <button 
             className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <div className="w-6 h-6 flex flex-col justify-center space-y-1">
-              <div className="w-6 h-0.5 bg-warm-beige"></div>
-              <div className="w-6 h-0.5 bg-warm-beige"></div>
-              <div className="w-6 h-0.5 bg-warm-beige"></div>
+            <div className="w-5 h-5 flex flex-col justify-center space-y-1">
+              <div className="w-5 h-0.5 bg-stone-100"></div>
+              <div className="w-5 h-0.5 bg-stone-100"></div>
+              <div className="w-5 h-0.5 bg-stone-100"></div>
             </div>
           </button>
         </nav>
         
-        {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 bg-dark-brown-solid rounded-lg p-4">
-            <Link to="/standorte" className="block py-3 text-warm-beige hover:text-white font-light">Standorte</Link>
-            <Link to="/speisekarte" className="block py-3 text-warm-beige hover:text-white font-light">Speisekarte</Link>
-            <Link to="/bewertungen" className="block py-3 text-warm-beige hover:text-white font-light">Bewertungen</Link>
-            <Link to="/ueber-uns" className="block py-3 text-warm-beige hover:text-white font-light">Über uns</Link>
-            <Link to="/kontakt" className="block py-3 text-warm-beige hover:text-white font-light">Kontakt</Link>
+          <div className="md:hidden mt-4 bg-black bg-opacity-90 rounded-lg p-4">
+            <Link to="/" className="block py-2 text-stone-100 hover:text-stone-300 font-light">Startseite</Link>
+            <Link to="/standorte" className="block py-2 text-stone-100 hover:text-stone-300 font-light">Standorte</Link>
+            <Link to="/speisekarte" className="block py-2 text-stone-100 hover:text-stone-300 font-light">Speisekarte</Link>
+            <Link to="/bewertungen" className="block py-2 text-stone-100 hover:text-stone-300 font-light">Bewertungen</Link>
+            <Link to="/ueber-uns" className="block py-2 text-stone-100 hover:text-stone-300 font-light">Über uns</Link>
+            <Link to="/kontakt" className="block py-2 text-stone-100 hover:text-stone-300 font-light">Kontakt</Link>
           </div>
         )}
       </div>
