@@ -1875,40 +1875,7 @@ const ScrollToTop = () => {
   );
 };
 
-// Cookie Consent Banner Component
-const CookieBanner = () => {
-  const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    const consent = localStorage.getItem("cookieConsent");
-    if (!consent) {
-      setIsVisible(true);
-    }
-  }, []);
-
-  const acceptCookies = () => {
-    localStorage.setItem("cookieConsent", "true");
-    setIsVisible(false);
-  };
-
-  if (!isVisible) return null;
-
-  return (
-    <div className="fixed bottom-0 left-0 right-0 bg-dark-brown border-t border-warm-brown p-4 z-50">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <p className="text-light-beige text-sm mb-4 md:mb-0">
-          Diese Website verwendet Cookies für eine bessere Nutzererfahrung.
-        </p>
-        <button
-          onClick={acceptCookies}
-          className="bg-warm-beige text-dark-brown px-6 py-2 rounded hover:bg-light-beige transition-colors"
-        >
-          Akzeptieren
-        </button>
-      </div>
-    </div>
-  );
-};
 
 // Main App Component
 function App() {
