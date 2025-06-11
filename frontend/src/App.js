@@ -195,8 +195,8 @@ const Home = () => {
             
             {/* Simple Subtitle */}
             <p className="text-xl md:text-2xl text-warm-beige font-light mb-12 max-w-3xl mx-auto leading-relaxed opacity-95">
-              Erleben Sie echte spanische Küche mit Blick aufs Meer<br/>
-              <span className="text-lg opacity-80">in Großenbrode und Neustadt in Holstein</span>
+              Genießen Sie authentische spanische Spezialitäten<br/>
+              <span className="text-lg opacity-80">direkt an der malerischen Ostseeküste</span>
             </p>
             
             {/* Clean CTA Buttons */}
