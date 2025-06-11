@@ -551,6 +551,9 @@ const Speisekarte = () => {
                 <div className="flex-1 pr-4">
                   <h3 className="text-xl font-serif text-warm-beige mb-2 tracking-wide">
                     {item.name}
+                    {item.vegan && <span className="ml-2 text-green-400 text-sm">🌱</span>}
+                    {item.vegetarian && <span className="ml-2 text-green-300 text-sm">🥬</span>}
+                    {item.glutenfree && <span className="ml-2 text-yellow-400 text-sm">GF</span>}
                   </h3>
                   <p className="text-light-beige mb-2 font-light leading-relaxed text-sm">{item.description}</p>
                   <span className="text-xs text-warm-beige capitalize font-light tracking-wide opacity-75">
