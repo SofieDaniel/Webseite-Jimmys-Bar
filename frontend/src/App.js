@@ -122,13 +122,13 @@ const Home = () => {
       <section className="relative h-screen bg-cover bg-center hero-background" 
                style={{backgroundImage: `url('https://images.unsplash.com/photo-1656423521731-9665583f100c')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        <div className="relative z-10 flex items-center justify-center h-full text-center px-4">
+        <div className="relative z-10 flex items-center justify-center h-full text-center px-4" style={{paddingTop: '80px'}}>
           <div className="max-w-4xl">
-            {/* Clean Main Headline */}
-            <h1 className="hero-headline font-serif text-warm-beige mb-8 tracking-wide leading-tight drop-shadow-text">
+            {/* Clean Main Headline with proper spacing */}
+            <h1 className="hero-headline font-serif text-warm-beige mb-8 tracking-wide leading-tight drop-shadow-text" style={{fontSize: 'clamp(2.5rem, 8vw, 6rem)', lineHeight: '1.1', marginTop: '40px'}}>
               AUTÉNTICO<br />
               SABOR ESPAÑOL<br />
-              <span className="text-4xl md:text-5xl font-light opacity-90">an der Ostsee</span>
+              <span className="font-light opacity-90" style={{fontSize: 'clamp(1.8rem, 5vw, 4rem)'}}>an der Ostsee</span>
             </h1>
             
             {/* Simple Subtitle */}
