@@ -434,7 +434,7 @@ const Speisekarte = () => {
       { name: 'Lachs mit Spinat', description: 'Frischer Lachs auf Spinatbett', price: '9,90', details: 'Gebratenes Lachsfilet auf cremigem Blattspinat mit Knoblauch und Pinienkernen.' },
       { name: 'Gambas a la Plancha', description: 'Gegrillte Garnelen', price: '9,90', details: 'Große Garnelen vom Grill mit Meersalz und Knoblauchöl.' },
       { name: 'Garnelen-Dattel-Spieß', description: 'Süß-salzige Kombination am Spieß', price: '9,90', details: 'Garnelen und süße Datteln am Spieß mit Speck umwickelt.' },
-      { name: 'Gambas al Ajillo', description: 'Garnelen in Knoblauchöl', price: '9,90', details: 'In Knoblauchöl gebratene Garnelen mit Chili und frischer Petersilie.' },
+      { name: 'Gambas al Ajillo', description: 'Garnelen in Knoblauchöl', price: '9,90', glutenfree: true, details: 'In bestem andalusischem Olivenöl extra vergine gebratene Garnelen aus Huelva mit frischem Knoblauch aus Las Pedroñeras (Cuenca), scharfem Guindilla-Chili aus dem Baskenland und frischer Petersilie. Ein Klassiker aus den Marisquerías von Cádiz, traditionell in der Cazuela de Barro (Tonschale) serviert.' },
       { name: 'Muslitos de Mar', description: 'Gebackene Muscheln', price: '6,90', details: 'Gratinierte Miesmuscheln mit Knoblauch-Kräuter-Kruste.' },
       { name: 'Gegrillter Oktopus', description: 'Zarter Oktopus vom Grill', price: '9,90', details: 'Gegrillter Oktopus mit Paprikapulver, Olivenöl und Meersalz.' },
       { name: 'Jacobsmuscheln', description: 'Edle Jakobsmuscheln gegrillt', price: '9,90', details: 'Gegrillte Jakobsmuscheln mit Knoblauchbutter und Petersilie.' },
