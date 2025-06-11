@@ -52,14 +52,19 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
-# Add CORS middleware before including the router
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
     allow_origins=["*"],
-    allow_methods=["*"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+# Add explicit OPTIONS route handler for CORS preflight requests
+@api_router.options("/{path:path}")
+async def options_route(path: str):
+    return {"detail": "OK"}
 
 # Include the router in the main app
 app.include_router(api_router)
