@@ -467,14 +467,14 @@ const Speisekarte = () => {
           ))}
         </div>
 
-        {/* Menu Items - Two-column layout with enhanced hover images */}
+        {/* Menu Items - Screenshot Style Two-Column Layout with Hover Images */}
         <div className="grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {getDisplayItems().map((item, index) => (
-            <div key={index} className="menu-item bg-dark-brown rounded-lg border border-warm-brown p-6 hover:bg-medium-brown transition-all duration-300 relative group">
-              <div className="flex justify-between items-center">
+            <div key={index} className="menu-item rounded-lg p-6 hover:bg-medium-brown transition-all duration-300 relative group">
+              <div className="flex justify-between items-start">
                 {/* Dish name and description */}
-                <div className="flex-1">
-                  <h3 className="dish-name text-xl font-serif text-warm-beige mb-2 tracking-wide cursor-pointer">
+                <div className="flex-1 pr-4">
+                  <h3 className="text-xl font-serif text-warm-beige mb-2 tracking-wide">
                     {item.name}
                   </h3>
                   <p className="text-light-beige mb-2 font-light leading-relaxed text-sm">{item.description}</p>
@@ -483,34 +483,22 @@ const Speisekarte = () => {
                   </span>
                 </div>
                 
-                {/* Price */}
-                <div className="price text-2xl font-serif text-warm-beige tracking-wide flex-shrink-0 ml-4">
+                {/* Price - Right aligned like in screenshot */}
+                <div className="text-2xl font-serif text-warm-beige tracking-wide flex-shrink-0">
                   {item.price} €
                 </div>
               </div>
               
-              {/* Fixed Professional Description Tooltip */}
-              <div className="detail-tooltip opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none hidden md:block">
-                <div className="bg-warm-beige p-6 rounded-lg border-2 border-dark-brown">
-                  <h4 className="text-dark-brown font-serif text-xl font-medium mb-3 tracking-wide">
-                    {item.name}
-                  </h4>
-                  <p className="text-dark-brown text-sm leading-relaxed">
-                    {item.details}
-                  </p>
-                  <div className="mt-3 text-right">
-                    <span className="text-dark-brown font-serif text-lg font-medium">
-                      {item.price} €
-                    </span>
-                  </div>
+              {/* Screenshot-Style Hover Image */}
+              <div className="menu-image-tooltip">
+                <img 
+                  src={item.image} 
+                  alt={item.name}
+                  loading="lazy"
+                />
+                <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-sm">
+                  {item.name}
                 </div>
-              </div>
-              
-              {/* Mobile: Show details on tap/touch */}
-              <div className="md:hidden mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-medium-brown p-3 rounded-lg">
-                <p className="text-light-beige text-sm leading-relaxed">
-                  {item.details}
-                </p>
               </div>
             </div>
           ))}
