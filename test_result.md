@@ -541,18 +541,28 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 3
+  test_sequence: 4
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Homepage Hero Image Update"
-    - "Global Dark Background Application"  
-    - "Category Button Icon Removal"
-    - "Menu Header Background Enhancement"
-    - "Enhanced Mouseover Effects with Shadows"
-    - "Speisekarte Background Redesign"
-  stuck_tasks: []
+    - "Authentication - POST /api/auth/login"
+    - "Authentication - GET /api/auth/me"
+    - "Content Management - GET /api/content/home"
+    - "Content Management - PUT /api/content/home/hero"
+    - "Menu Management - GET /api/menu/items"
+    - "Menu Management - POST /api/menu/items"
+    - "Review Management - POST /api/reviews"
+    - "Review Management - GET /api/admin/reviews/pending"
+    - "Contact Messages - POST /api/contact"
+    - "Contact Messages - GET /api/admin/contact"
+    - "Maintenance Mode - GET /api/maintenance"
+    - "Maintenance Mode - PUT /api/admin/maintenance"
+    - "User Management - GET /api/users"
+    - "User Management - POST /api/users"
+    - "Authentication - Unauthorized Access"
+  stuck_tasks: 
+    - "Authentication - Unauthorized Access"
   test_all: false
   test_priority: "high_first"
 
@@ -569,3 +579,5 @@ agent_communication:
     message: "Completed comprehensive redesign of Jimmy's Tapas Bar website to match the provided reference image. Updated homepage hero image to elegant Spanish restaurant interior, applied consistent dark brown background across entire website, removed emoji icons from category buttons, added beautiful background image to menu header section, enhanced mouseover effects with proper shadows and larger images (320x240px), and created sophisticated speisekarte-background with dark brown gradients. All changes maintain the elegant Spanish restaurant atmosphere while improving visual consistency and user experience."
   - agent: "testing"
     message: "Completed verification testing of Jimmy's Tapas Bar backend API after changes. All endpoints are working correctly. Successfully tested: 1) Root endpoint GET /api/ returns 'Hello World', 2) POST /api/status with Spanish restaurant name 'Reserva Mesa Paella' works correctly, 3) GET /api/status retrieves all created status checks, 4) MongoDB connection is working properly, 5) CORS configuration is correctly implemented with all required headers, and 6) All API responses return valid JSON. No issues were found during testing."
+  - agent: "testing"
+    message: "Completed comprehensive testing of the extended CMS backend for Jimmy's Tapas Bar Admin System. All new endpoints are working correctly except for one minor issue with unauthorized access handling. Successfully tested: 1) Authentication with admin credentials and JWT token validation, 2) Content management for retrieving and updating page content, 3) Menu management for retrieving and creating menu items, 4) Review management for creating and retrieving pending reviews, 5) Contact message handling for sending and retrieving messages, 6) Maintenance mode activation and status checking, and 7) User management for creating and retrieving users. The only issue found is that protected endpoints return 403 Forbidden instead of 401 Unauthorized when accessed without authentication, which is a minor issue as the endpoints are still properly protected."
