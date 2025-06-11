@@ -94,6 +94,23 @@ body {
   position: relative;
 }
 
+/* New Speisekarte Background */
+.speisekarte-background {
+  background: linear-gradient(145deg, 
+    #2D1F1A 0%,   /* Dark Brown */
+    #3D2B1F 30%,  /* Medium Brown */
+    #2D1F1A 60%,  /* Dark Brown */
+    #3D2B1F 100%  /* Medium Brown */
+  );
+  background-image: 
+    /* Sophisticated texture pattern */
+    radial-gradient(circle at 25% 25%, rgba(245, 230, 211, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(139, 69, 19, 0.02) 0%, transparent 50%);
+  background-size: 600px 600px, 400px 400px;
+  background-position: 0 0, 300px 200px;
+  position: relative;
+}
+
 .mediterranean-texture::before {
   content: '';
   position: absolute;
