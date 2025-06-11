@@ -1568,6 +1568,7 @@ function App() {
     <div className="App min-h-screen bg-dark-brown">
       <BrowserRouter>
         <Header />
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/speisekarte" element={<Speisekarte />} />
