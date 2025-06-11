@@ -940,7 +940,182 @@ const Kontakt = () => {
   );
 };
 
-// Footer Component
+// Impressum Page Component
+const Impressum = () => {
+  return (
+    <div className="min-h-screen bg-warm-brown pt-24">
+      <div className="container mx-auto px-4 py-12">
+        <h1 className="text-5xl font-serif text-center text-warm-beige mb-16 tracking-wide">
+          Impressum
+        </h1>
+        
+        <div className="max-w-4xl mx-auto bg-dark-brown rounded-lg border border-warm-brown p-8">
+          <div className="space-y-8 text-light-beige">
+            <div>
+              <h2 className="text-2xl font-serif text-warm-beige mb-4">Angaben gemäß § 5 TMG</h2>
+              <div className="space-y-2 font-light">
+                <p><strong>Jimmy's Tapas Bar</strong></p>
+                <p>Inhaber: Jimmy Rodríguez</p>
+                <p>Am Strande 21</p>
+                <p>23730 Neustadt in Holstein</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-serif text-warm-beige mb-3">Kontakt</h3>
+              <div className="space-y-2 font-light">
+                <p>Telefon: +49 (0) 4561 123456</p>
+                <p>E-Mail: info@jimmys-tapasbar.de</p>
+                <p>Website: www.jimmys-tapasbar.de</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-serif text-warm-beige mb-3">Zweiter Standort</h3>
+              <div className="space-y-2 font-light">
+                <p>Jimmy's Tapas Bar Großenbrode</p>
+                <p>Südstrand 54</p>
+                <p>23755 Großenbrode</p>
+                <p>Telefon: +49 (0) 4561 789012</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-serif text-warm-beige mb-3">Umsatzsteuer-ID</h3>
+              <p className="font-light">Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:<br />
+              DE123456789 (Beispiel - bitte echte USt-IdNr. eintragen)</p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-serif text-warm-beige mb-3">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
+              <div className="space-y-2 font-light">
+                <p>Jimmy Rodríguez</p>
+                <p>Am Strande 21</p>
+                <p>23730 Neustadt in Holstein</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-serif text-warm-beige mb-3">Haftungsausschluss</h3>
+              <div className="space-y-4 font-light">
+                <div>
+                  <h4 className="font-medium text-warm-beige mb-2">Haftung für Inhalte</h4>
+                  <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht unter der Verpflichtung, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium text-warm-beige mb-2">Haftung für Links</h4>
+                  <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-medium text-warm-beige mb-2">Urheberrecht</h4>
+                  <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Datenschutz Page Component
+const Datenschutz = () => {
+  return (
+    <div className="min-h-screen bg-warm-brown pt-24">
+      <div className="container mx-auto px-4 py-12">
+        <h1 className="text-5xl font-serif text-center text-warm-beige mb-16 tracking-wide">
+          Datenschutzerklärung
+        </h1>
+        
+        <div className="max-w-4xl mx-auto bg-dark-brown rounded-lg border border-warm-brown p-8">
+          <div className="space-y-8 text-light-beige">
+            <div>
+              <h2 className="text-2xl font-serif text-warm-beige mb-4">1. Datenschutz auf einen Blick</h2>
+              <div className="space-y-4 font-light">
+                <div>
+                  <h3 className="text-lg font-serif text-warm-beige mb-2">Allgemeine Hinweise</h3>
+                  <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-serif text-warm-beige mb-2">Datenerfassung auf dieser Website</h3>
+                  <p><strong>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</strong></p>
+                  <p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-serif text-warm-beige mb-4">2. Hosting und Content Delivery Networks (CDN)</h2>
+              <div className="space-y-4 font-light">
+                <p>Wir hosten die Inhalte unserer Website bei folgenden Anbietern:</p>
+                <p>Diese Website wird extern gehostet. Die personenbezogenen Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert.</p>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-serif text-warm-beige mb-4">3. Allgemeine Hinweise und Pflichtinformationen</h2>
+              <div className="space-y-4 font-light">
+                <div>
+                  <h3 className="text-lg font-serif text-warm-beige mb-2">Datenschutz</h3>
+                  <p>Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.</p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-serif text-warm-beige mb-2">Hinweis zur verantwortlichen Stelle</h3>
+                  <p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:</p>
+                  <div className="ml-4 mt-2">
+                    <p>Jimmy Rodríguez</p>
+                    <p>Am Strande 21</p>
+                    <p>23730 Neustadt in Holstein</p>
+                    <p>Telefon: +49 (0) 4561 123456</p>
+                    <p>E-Mail: info@jimmys-tapasbar.de</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-serif text-warm-beige mb-4">4. Datenerfassung auf dieser Website</h2>
+              <div className="space-y-4 font-light">
+                <div>
+                  <h3 className="text-lg font-serif text-warm-beige mb-2">Cookies</h3>
+                  <p>Unsere Internetseiten verwenden so genannte „Cookies". Cookies sind kleine Textdateien und richten auf Ihrem Endgerät keinen Schaden an. Sie werden entweder vorübergehend für die Dauer einer Sitzung (Session-Cookies) oder dauerhaft (dauerhafte Cookies) auf Ihrem Endgerät gespeichert.</p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-serif text-warm-beige mb-2">Kontaktformular</h3>
+                  <p>Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-serif text-warm-beige mb-4">5. Ihre Rechte</h2>
+              <div className="space-y-4 font-light">
+                <p>Sie haben jederzeit das Recht unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht, die Berichtigung, Sperrung oder Löschung dieser Daten zu verlangen.</p>
+                
+                <p>Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden.</p>
+                
+                <p>Des Weiteren steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu.</p>
+              </div>
+            </div>
+
+            <div className="border-t border-warm-brown pt-6 mt-8">
+              <p className="text-sm text-light-beige font-light">
+                Stand dieser Datenschutzerklärung: März 2024<br />
+                Quelle: Erstellt mit dem Datenschutz-Generator von eRecht24
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 const Footer = () => {
   return (
     <footer className="bg-dark-brown-solid text-light-beige py-12 border-t border-warm-brown">
