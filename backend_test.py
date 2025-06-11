@@ -223,10 +223,59 @@ def run_all_tests():
     # Test 2: Create status check
     results["create_status"], status_id = test_create_status_check()
     
-    # Test 3: Get status checks
+    # Test 3: Test with specific Spanish restaurant name
+    # Use the specific Spanish restaurant name
+    client_name = "Reserva Mesa Paella"
+    print(f"\n🧪 Testing POST /api/status with '{client_name}'...")
+    
+    try:
+        # Create payload
+        payload = {"client_name": client_name}
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/status", json=payload)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print(f"✅ Successfully created status check for '{client_name}'")
+            results["specific_spanish_restaurant"] = True
+        else:
+            print(f"❌ Failed to create status check. Status code: {response.status_code}")
+            results["specific_spanish_restaurant"] = False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            results["specific_spanish_restaurant"] = False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "client_name", "timestamp"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            results["specific_spanish_restaurant"] = False
+        
+        # Check if client_name matches what we sent
+        if data["client_name"] == client_name:
+            print("✅ Returned client_name matches input")
+        else:
+            print(f"❌ Returned client_name '{data['client_name']}' doesn't match input '{client_name}'")
+            results["specific_spanish_restaurant"] = False
+            
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to create status endpoint: {e}")
+        results["specific_spanish_restaurant"] = False
+    
+    # Test 4: Get status checks
     results["get_status"] = test_get_status_checks()
     
-    # Test 4: CORS configuration
+    # Test 5: CORS configuration
     results["cors"] = test_cors_configuration()
     
     # Print summary
