@@ -179,58 +179,6 @@ const CookieBanner = () => {
   );
 };
 
-// Cookie Banner Component
-const CookieBanner = () => {
-  const { t } = useLanguage();
-  const [showBanner, setShowBanner] = useState(false);
-
-  useEffect(() => {
-    const cookieConsent = localStorage.getItem('cookieConsent');
-    if (!cookieConsent) {
-      setShowBanner(true);
-    }
-  }, []);
-
-  const acceptCookies = () => {
-    localStorage.setItem('cookieConsent', 'accepted');
-    setShowBanner(false);
-  };
-
-  const rejectCookies = () => {
-    localStorage.setItem('cookieConsent', 'rejected');
-    setShowBanner(false);
-  };
-
-  if (!showBanner) return null;
-
-  return (
-    <div className="fixed bottom-0 left-0 right-0 bg-dark-brown border-t-2 border-warm-beige p-4 z-50">
-      <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex-1">
-            <h3 className="text-warm-beige font-serif text-lg mb-2">{t('cookies.title')}</h3>
-            <p className="text-light-beige text-sm">{t('cookies.message')}</p>
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={rejectCookies}
-              className="px-4 py-2 border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown transition-colors text-sm"
-            >
-              {t('cookies.reject')}
-            </button>
-            <button
-              onClick={acceptCookies}
-              className="px-4 py-2 bg-warm-beige text-dark-brown hover:bg-light-beige transition-colors text-sm"
-            >
-              {t('cookies.accept')}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // Scroll to Top Button Component
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
