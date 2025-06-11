@@ -22,13 +22,24 @@ const translations = {
       menu: 'Speisekarte',
       reviews: 'Bewertungen',
       about: 'Über uns',
-      contact: 'Kontakt'
+      contact: 'Kontakt',
+      privacy: 'Datenschutz',
+      imprint: 'Impressum'
     },
     home: {
       heroTitle: 'AUTÉNTICO SABOR ESPAÑOL',
       heroSubtitle: 'an der Ostsee',
       heroDescription: 'Genießen Sie authentische spanische Spezialitäten',
-      heroLocation: 'direkt an der malerischen Ostseeküste'
+      heroLocation: 'direkt an der malerischen Ostseeküste',
+      menuButton: 'Zur Speisekarte',
+      locationsButton: 'Unsere Standorte'
+    },
+    cookies: {
+      title: 'Diese Website verwendet Cookies',
+      message: 'Wir verwenden Cookies, um Ihnen das beste Website-Erlebnis zu bieten. Durch die weitere Nutzung der Website stimmen Sie der Verwendung von Cookies zu.',
+      accept: 'Akzeptieren',
+      reject: 'Ablehnen',
+      settings: 'Einstellungen'
     }
   },
   en: {
@@ -38,13 +49,51 @@ const translations = {
       menu: 'Menu',
       reviews: 'Reviews',
       about: 'About Us',
-      contact: 'Contact'
+      contact: 'Contact',
+      privacy: 'Privacy Policy',
+      imprint: 'Imprint'
     },
     home: {
       heroTitle: 'AUTÉNTICO SABOR ESPAÑOL',
       heroSubtitle: 'at the Baltic Sea',
       heroDescription: 'Enjoy authentic Spanish specialties',
-      heroLocation: 'directly at the picturesque Baltic Sea coast'
+      heroLocation: 'directly at the picturesque Baltic Sea coast',
+      menuButton: 'View Menu',
+      locationsButton: 'Our Locations'
+    },
+    cookies: {
+      title: 'This website uses cookies',
+      message: 'We use cookies to provide you with the best website experience. By continuing to use the website, you agree to the use of cookies.',
+      accept: 'Accept',
+      reject: 'Reject',
+      settings: 'Settings'
+    }
+  },
+  es: {
+    nav: {
+      home: 'Inicio',
+      locations: 'Ubicaciones',
+      menu: 'Carta',
+      reviews: 'Reseñas',
+      about: 'Acerca de',
+      contact: 'Contacto',
+      privacy: 'Privacidad',
+      imprint: 'Aviso Legal'
+    },
+    home: {
+      heroTitle: 'AUTÉNTICO SABOR ESPAÑOL',
+      heroSubtitle: 'en el Mar Báltico',
+      heroDescription: 'Disfrute de auténticas especialidades españolas',
+      heroLocation: 'directamente en la pintoresca costa del Mar Báltico',
+      menuButton: 'Ver Carta',
+      locationsButton: 'Nuestras Ubicaciones'
+    },
+    cookies: {
+      title: 'Esta web utiliza cookies',
+      message: 'Utilizamos cookies para ofrecerle la mejor experiencia en nuestra web. Al continuar navegando, acepta el uso de cookies.',
+      accept: 'Aceptar',
+      reject: 'Rechazar',
+      settings: 'Configuración'
     }
   }
 };
