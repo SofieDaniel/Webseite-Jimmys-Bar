@@ -69,12 +69,19 @@
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
-  background-color: var(--warm-brown);
+  background-color: var(--dark-brown);
 }
 
 body {
-  background-color: var(--warm-brown);
+  background: linear-gradient(145deg, 
+    #2D1F1A 0%,   /* Dark Brown */
+    #3D2B1F 30%,  /* Medium Brown */
+    #2D1F1A 60%,  /* Dark Brown */
+    #3D2B1F 100%  /* Medium Brown */
+  );
+  background-attachment: fixed;
   color: var(--warm-beige);
+  min-height: 100vh;
 }
 
 /* Professional Restaurant Menu Background - Exact Screenshot Style */
