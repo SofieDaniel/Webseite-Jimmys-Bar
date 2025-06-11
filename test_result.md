@@ -366,8 +366,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All frontend tasks completed"
-    - "All backend tasks verified"
+    - "Homepage Hero Image Update"
+    - "Global Dark Background Application"  
+    - "Category Button Icon Removal"
+    - "Menu Header Background Enhancement"
+    - "Enhanced Mouseover Effects with Shadows"
+    - "Speisekarte Background Redesign"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
