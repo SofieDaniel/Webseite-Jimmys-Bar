@@ -363,14 +363,14 @@ const Speisekarte = () => {
           ))}
         </div>
 
-        {/* Menu Items - New Layout with images between name and price */}
+        {/* Menu Items - Hover-only images with realistic dish photos */}
         <div className="grid gap-4 max-w-6xl mx-auto">
           {getDisplayItems().map((item, index) => (
-            <div key={index} className="menu-item bg-dark-brown rounded-lg border border-warm-brown p-6 hover:bg-medium-brown transition-all duration-300">
-              <div className="flex items-center gap-4">
+            <div key={index} className="menu-item bg-dark-brown rounded-lg border border-warm-brown p-6 hover:bg-medium-brown transition-all duration-300 relative group">
+              <div className="flex justify-between items-center">
                 {/* Dish name and description */}
                 <div className="flex-1">
-                  <h3 className="dish-name text-xl font-serif text-warm-beige mb-2 tracking-wide">
+                  <h3 className="dish-name text-xl font-serif text-warm-beige mb-2 tracking-wide cursor-pointer">
                     {item.name}
                   </h3>
                   <p className="text-light-beige mb-2 font-light leading-relaxed text-sm">{item.description}</p>
@@ -379,20 +379,31 @@ const Speisekarte = () => {
                   </span>
                 </div>
                 
-                {/* Dish Image - Between name and price */}
-                <div className="flex-shrink-0">
-                  <img 
-                    src={item.image} 
-                    alt={item.name}
-                    className="w-20 h-20 object-cover rounded-lg border border-warm-beige shadow-lg"
-                    loading="lazy"
-                  />
-                </div>
-                
                 {/* Price */}
-                <div className="price text-2xl font-serif text-warm-beige tracking-wide flex-shrink-0 w-20 text-right">
+                <div className="price text-2xl font-serif text-warm-beige tracking-wide flex-shrink-0">
                   {item.price} €
                 </div>
+              </div>
+              
+              {/* Hover Image Tooltip - Large and centered */}
+              <div className="tooltip-image absolute left-1/2 top-full mt-2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 hidden md:block">
+                <img 
+                  src={item.image} 
+                  alt={item.name}
+                  className="w-64 h-64 object-cover rounded-lg shadow-2xl border-2 border-warm-beige"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
+              </div>
+              
+              {/* Mobile: Show image on tap/touch */}
+              <div className="md:hidden mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <img 
+                  src={item.image} 
+                  alt={item.name}
+                  className="w-full h-40 object-cover rounded-lg border border-warm-brown"
+                  loading="lazy"
+                />
               </div>
             </div>
           ))}
