@@ -735,7 +735,7 @@ const Kontakt = () => {
 
   return (
     <div className="min-h-screen bg-warm-brown pt-24">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 py-12">
         <h1 className="text-5xl font-serif text-center text-warm-beige mb-16 tracking-wide">
           Kontakt
         </h1>
