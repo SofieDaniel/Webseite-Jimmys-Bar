@@ -368,11 +368,11 @@ const Speisekarte = () => {
       { name: 'Currywurst', description: 'Deutsche Currywurst klassisch', price: '10,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' }
     ],
     'dessert': [
-      { name: 'Crema Catalana', description: 'Katalanische Crème brûlée', price: '5,50', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
-      { name: 'Tarte de Santiago', description: 'Spanischer Mandelkuchen', price: '7,50', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
+      { name: 'Crema Catalana', description: 'Katalanische Crème brûlée', price: '5,50', image: 'https://images.unsplash.com/photo-1736752346246-61f4daedfde0' },
+      { name: 'Tarte de Santiago', description: 'Spanischer Mandelkuchen', price: '7,50', image: 'https://images.pexels.com/photos/32512507/pexels-photo-32512507.jpeg' },
       { name: 'Eis', description: 'Hausgemachtes Eis nach Wahl', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
-      { name: 'Churros mit Schokolade', description: 'Spanisches Spritzgebäck mit warmer Schokolade', price: '6,90', image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96' },
-      { name: 'Schoko Soufflé', description: 'Warmes Schokoladen-Soufflé', price: '7,50', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' }
+      { name: 'Churros mit Schokolade', description: 'Spanisches Spritzgebäck mit warmer Schokolade', price: '6,90', image: 'https://images.unsplash.com/photo-1505851498219-ee2449c18936' },
+      { name: 'Schoko Soufflé', description: 'Warmes Schokoladen-Soufflé', price: '7,50', image: 'https://images.pexels.com/photos/32512507/pexels-photo-32512507.jpeg' }
     ],
     'helados': [
       { name: 'Kokos', description: 'Eis im Fruchtschälchen - Kokos', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
