@@ -77,6 +77,48 @@ body {
   color: var(--warm-beige);
 }
 
+/* Mediterranean textured background for Speisekarte */
+.mediterranean-texture {
+  background: linear-gradient(135deg, 
+    var(--warm-brown) 0%, 
+    var(--dark-brown) 25%, 
+    var(--medium-brown) 50%, 
+    var(--warm-brown) 75%, 
+    var(--dark-brown) 100%);
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(245, 230, 211, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(232, 220, 192, 0.02) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23F5E6D3' fill-opacity='0.015' fill-rule='evenodd'%3E%3Cpath d='M0 0h40v40H0V0zm10 10h20v20H10V10z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 200px 200px, 150px 150px, 40px 40px;
+  background-position: 0 0, 100px 100px, 0 0;
+  position: relative;
+}
+
+.mediterranean-texture::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(245, 230, 211, 0.008) 2px,
+      rgba(245, 230, 211, 0.008) 4px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      rgba(232, 220, 192, 0.005) 3px,
+      rgba(232, 220, 192, 0.005) 6px
+    );
+  pointer-events: none;
+}
+
 /* Custom scrollbar - matching theme */
 ::-webkit-scrollbar {
   width: 8px;
