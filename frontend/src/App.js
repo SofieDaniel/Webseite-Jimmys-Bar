@@ -334,10 +334,9 @@ const Home = () => {
   );
 };
 
-// Menu Page Component - Fixed Layout with optional hover images
+// Menu Page Component - Mouseover with detailed information only
 const Speisekarte = () => {
   const [selectedCategory, setSelectedCategory] = useState('alle');
-  const [showHoverImages, setShowHoverImages] = useState(false); // Configurable hover images
   
   // Complete menu data with authentic images for hover display (Screenshot Style)
   const menuItems = {
