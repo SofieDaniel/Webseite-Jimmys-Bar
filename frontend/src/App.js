@@ -112,155 +112,138 @@ const Header = () => {
   );
 };
 
-// Home Page Component - Enhanced emotional design with Spanish flair
+// Home Page Component - Professional high-end design
 const Home = () => {
   const navigate = useNavigate();
   
   return (
     <div className="min-h-screen">
-      {/* Enhanced Hero Section with Spanish atmosphere */}
+      {/* Clean Professional Hero Section */}
       <section className="relative h-screen bg-cover bg-center hero-background" 
                style={{backgroundImage: `url('https://images.pexels.com/photos/16058321/pexels-photo-16058321.jpeg')`}}>
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative z-10 flex items-center justify-center h-full text-center px-4">
-          <div className="max-w-6xl">
-            {/* Enhanced Main Headline with Spanish emotion */}
+          <div className="max-w-4xl">
+            {/* Clean Main Headline */}
             <h1 className="hero-headline font-serif text-warm-beige mb-8 tracking-wide leading-tight drop-shadow-text">
               SPANISCHE<br />
               GENUSSKULTUR<br />
-              <span className="text-3xl md:text-5xl font-light opacity-90">an der Ostsee</span>
+              <span className="text-4xl md:text-5xl font-light opacity-90">an der Ostsee</span>
             </h1>
             
-            {/* Emotional Subtitle */}
-            <p className="text-xl md:text-2xl text-warm-beige font-light mb-12 max-w-4xl mx-auto leading-relaxed opacity-95">
-              Authentische Tapas & frische Paella – direkt in Grömitz und Neustadt<br/>
-              <span className="text-lg opacity-80">Mediterrane Lebensfreude trifft norddeutsche Gastlichkeit</span>
+            {/* Simple Subtitle */}
+            <p className="text-xl md:text-2xl text-warm-beige font-light mb-12 max-w-3xl mx-auto leading-relaxed opacity-95">
+              Authentische Tapas & frische Paella<br/>
+              <span className="text-lg opacity-80">direkt in Grömitz und Neustadt</span>
             </p>
             
-            {/* Enhanced CTA Buttons */}
-            <div className="flex flex-col md:flex-row justify-center gap-4 mb-16">
+            {/* Clean CTA Buttons */}
+            <div className="flex flex-col md:flex-row justify-center gap-6">
               <button 
                 onClick={() => navigate('/speisekarte')}
-                className="bg-warm-beige text-dark-brown hover:bg-light-beige px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 tracking-wide shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                className="bg-warm-beige text-dark-brown hover:bg-light-beige px-10 py-4 rounded-lg text-lg font-medium transition-all duration-300 tracking-wide shadow-lg hover:shadow-xl"
               >
-                🍽️ SPEISEKARTE ANSEHEN
+                Speisekarte ansehen
               </button>
               <button 
                 onClick={() => navigate('/standorte')}
-                className="border-2 border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 tracking-wide shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                className="border-2 border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-10 py-4 rounded-lg text-lg font-medium transition-all duration-300 tracking-wide shadow-lg hover:shadow-xl"
               >
-                📍 STANDORTE ENTDECKEN
+                Standorte entdecken
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Enhanced Features Section with Spanish highlights */}
+      {/* Professional Features Section - Clean Design like "Unsere Spezialitäten" */}
       <section className="py-24 bg-gradient-to-b from-warm-brown to-dark-brown">
         <div className="container mx-auto px-4">
           <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-serif text-warm-beige mb-8 tracking-wide">
-              ¡Bienvenidos!
+            <h2 className="text-5xl font-serif text-warm-beige mb-8 tracking-wide">
+              Spanische Tradition
             </h2>
-            <p className="text-xl text-light-beige font-light leading-relaxed max-w-4xl mx-auto">
-              Erleben Sie echte spanische Gastfreundschaft an der deutschen Ostseeküste – 
-              mit Leidenschaft für authentische Küche und mediterraner Lebensart
+            <p className="text-xl text-light-beige font-light leading-relaxed max-w-3xl mx-auto">
+              Erleben Sie authentische spanische Gastfreundschaft an der deutschen Ostseeküste
             </p>
           </div>
           
-          {/* Three Spanish Highlight Cards */}
-          <div className="grid md:grid-cols-3 gap-12 max-w-7xl mx-auto">
-            <div className="text-center bg-dark-brown rounded-2xl p-10 border-2 border-warm-brown hover:border-warm-beige transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
-              <div className="w-24 h-24 bg-gradient-to-br from-warm-beige to-light-beige rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
-                <span className="text-4xl">🍷</span>
+          {/* Clean Three Cards - Professional Layout */}
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-2xl">🍷</span>
+                </div>
+                <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Authentische Tapas</h3>
+                <p className="text-light-beige font-light leading-relaxed">
+                  Traditionelle spanische Gerichte, mit Liebe zubereitet und perfekt zum Teilen
+                </p>
               </div>
-              <h3 className="text-3xl font-serif text-warm-beige mb-6 tracking-wide">Authentische Tapas</h3>
-              <div className="w-20 h-1 bg-warm-beige mx-auto mb-6 rounded"></div>
-              <p className="text-light-beige font-light leading-relaxed text-lg">
-                Traditionelle spanische Köstlichkeiten – mit Liebe zubereitet und perfekt zum Teilen. 
-                Wie in den besten Tapas-Bars von Sevilla und Barcelona.
-              </p>
             </div>
             
-            <div className="text-center bg-dark-brown rounded-2xl p-10 border-2 border-warm-brown hover:border-warm-beige transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
-              <div className="w-24 h-24 bg-gradient-to-br from-warm-beige to-light-beige rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
-                <span className="text-4xl">🥘</span>
+            <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-2xl">🥘</span>
+                </div>
+                <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Frische Paella</h3>
+                <p className="text-light-beige font-light leading-relaxed">
+                  Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn
+                </p>
               </div>
-              <h3 className="text-3xl font-serif text-warm-beige mb-6 tracking-wide">Frische Paella</h3>
-              <div className="w-20 h-1 bg-warm-beige mx-auto mb-6 rounded"></div>
-              <p className="text-light-beige font-light leading-relaxed text-lg">
-                Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn – 
-                nach Originalrezepten aus Valencia. Ein Fest für alle Sinne.
-              </p>
             </div>
             
-            <div className="text-center bg-dark-brown rounded-2xl p-10 border-2 border-warm-brown hover:border-warm-beige transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
-              <div className="w-24 h-24 bg-gradient-to-br from-warm-beige to-light-beige rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
-                <span className="text-4xl">🏖️</span>
+            <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-2xl">🏖️</span>
+                </div>
+                <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Zwei Standorte</h3>
+                <p className="text-light-beige font-light leading-relaxed">
+                  In Grömitz und Neustadt an der Küste – immer in Strandnähe
+                </p>
               </div>
-              <h3 className="text-3xl font-serif text-warm-beige mb-6 tracking-wide">Zwei Standorte</h3>
-              <div className="w-20 h-1 bg-warm-beige mx-auto mb-6 rounded"></div>
-              <p className="text-light-beige font-light leading-relaxed text-lg">
-                In Grömitz und Neustadt an der Küste – genießen Sie spanische Küche 
-                mit Blick auf die Ostsee. Mediterrane Träume werden wahr.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Enhanced Food Gallery with emotional storytelling */}
-      <section className="py-24 bg-gradient-to-b from-dark-brown to-medium-brown">
+      {/* Clean Food Gallery - Professional */}
+      <section className="py-20 bg-medium-brown">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl font-serif text-warm-beige mb-8 tracking-wide">
-              Unsere Spezialitäten
-            </h2>
-            <p className="text-xl text-light-beige font-light max-w-3xl mx-auto leading-relaxed">
-              Jedes Gericht erzählt eine Geschichte – von sonnigen Märkten in Andalusien 
-              bis zu gemütlichen Abenden an der spanischen Küste
-            </p>
-          </div>
+          <h2 className="text-4xl font-serif text-center text-warm-beige mb-16 tracking-wide">
+            Unsere Spezialitäten
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-dark-brown rounded-2xl overflow-hidden transform hover:scale-105 transition-all duration-500 border-2 border-warm-brown hover:border-warm-beige shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1565599837634-134bc3aadce8" alt="Patatas Bravas" className="w-full h-56 object-cover" />
-              <div className="p-8">
-                <h3 className="font-serif text-warm-beige text-2xl tracking-wide mb-2">Patatas Bravas</h3>
-                <p className="text-light-beige text-sm font-light">Die Seele Madrids auf einem Teller</p>
+            <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-warm-brown">
+              <img src="https://images.unsplash.com/photo-1565599837634-134bc3aadce8" alt="Patatas Bravas" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <h3 className="font-serif text-warm-beige text-lg tracking-wide">Patatas Bravas</h3>
+                <p className="text-light-beige text-sm font-light">Klassische spanische Kartoffeln</p>
               </div>
             </div>
-            <div className="bg-dark-brown rounded-2xl overflow-hidden transform hover:scale-105 transition-all duration-500 border-2 border-warm-brown hover:border-warm-beige shadow-2xl">
-              <img src="https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg" alt="Paella" className="w-full h-56 object-cover" />
-              <div className="p-8">
-                <h3 className="font-serif text-warm-beige text-2xl tracking-wide mb-2">Paella Valenciana</h3>
-                <p className="text-light-beige text-sm font-light">Valencianer Tradition seit 1850</p>
+            <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-warm-brown">
+              <img src="https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg" alt="Paella" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <h3 className="font-serif text-warm-beige text-lg tracking-wide">Paella Valenciana</h3>
+                <p className="text-light-beige text-sm font-light">Traditionelle spanische Paella</p>
               </div>
             </div>
-            <div className="bg-dark-brown rounded-2xl overflow-hidden transform hover:scale-105 transition-all duration-500 border-2 border-warm-brown hover:border-warm-beige shadow-2xl">
-              <img src="https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg" alt="Tapas" className="w-full h-56 object-cover" />
-              <div className="p-8">
-                <h3 className="font-serif text-warm-beige text-2xl tracking-wide mb-2">Tapas Variación</h3>
-                <p className="text-light-beige text-sm font-light">Kleine Köstlichkeiten, große Freude</p>
+            <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-warm-brown">
+              <img src="https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg" alt="Tapas" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <h3 className="font-serif text-warm-beige text-lg tracking-wide">Tapas Variación</h3>
+                <p className="text-light-beige text-sm font-light">Auswahl spanischer Köstlichkeiten</p>
               </div>
             </div>
-            <div className="bg-dark-brown rounded-2xl overflow-hidden transform hover:scale-105 transition-all duration-500 border-2 border-warm-brown hover:border-warm-beige shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1619860705243-dbef552e7118" alt="Gambas al Ajillo" className="w-full h-56 object-cover" />
-              <div className="p-8">
-                <h3 className="font-serif text-warm-beige text-2xl tracking-wide mb-2">Gambas al Ajillo</h3>
-                <p className="text-light-beige text-sm font-light">Knoblauch-Garnelen wie am Meer</p>
+            <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-warm-brown">
+              <img src="https://images.unsplash.com/photo-1619860705243-dbef552e7118" alt="Gambas al Ajillo" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <h3 className="font-serif text-warm-beige text-lg tracking-wide">Gambas al Ajillo</h3>
+                <p className="text-light-beige text-sm font-light">Garnelen in Knoblauchöl</p>
               </div>
             </div>
-          </div>
-          
-          {/* Additional CTA Section */}
-          <div className="text-center mt-16">
-            <button 
-              onClick={() => navigate('/speisekarte')}
-              className="bg-warm-beige text-dark-brown hover:bg-light-beige px-10 py-5 rounded-lg text-xl font-medium transition-all duration-300 tracking-wide shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              🍽️ Vollständige Speisekarte entdecken
-            </button>
           </div>
         </div>
       </section>
