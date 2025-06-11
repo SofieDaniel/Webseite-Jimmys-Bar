@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the Jimmy's Tapas Bar backend API to ensure all endpoints are working correctly"
+user_problem_statement: "Update Jimmy's Tapas Bar website design to match the provided reference image: remove icons from category buttons, apply dark background globally, enhance mouseover effects with proper shadows, add background image to menu header, and update homepage hero image"
 
 backend:
   - task: "Root endpoint GET /api/"
