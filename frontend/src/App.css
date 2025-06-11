@@ -465,29 +465,7 @@ main {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-.menu-item {
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  background: linear-gradient(145deg, rgba(45, 31, 26, 0.9), rgba(61, 43, 31, 0.8));
-  border: 1px solid rgba(245, 230, 211, 0.15);
-}
 
-.dish-name:hover {
-  color: #F5E6D3;
-  text-shadow: 0 0 8px rgba(245, 230, 211, 0.3);
-}
-
-/* Enhanced hover effects for menu items */
-.menu-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* Price highlighting on hover */
-.menu-item:hover .price {
-  color: #F5E6D3;
-  text-shadow: 0 0 8px rgba(245, 230, 211, 0.4);
-}
 
 /* Mobile responsive adjustments for tooltip */
 @media (max-width: 768px) {
