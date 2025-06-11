@@ -127,6 +127,100 @@ const LanguageProvider = ({ children }) => {
   );
 };
 
+// Cookie Banner Component
+const CookieBanner = () => {
+  const { t } = useLanguage();
+  const [showBanner, setShowBanner] = useState(false);
+
+  useEffect(() => {
+    const cookieConsent = localStorage.getItem('cookieConsent');
+    if (!cookieConsent) {
+      setShowBanner(true);
+    }
+  }, []);
+
+  const acceptCookies = () => {
+    localStorage.setItem('cookieConsent', 'accepted');
+    setShowBanner(false);
+  };
+
+  const rejectCookies = () => {
+    localStorage.setItem('cookieConsent', 'rejected');
+    setShowBanner(false);
+  };
+
+  if (!showBanner) return null;
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-dark-brown border-t-2 border-warm-beige p-4 z-50">
+      <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex-1">
+            <h3 className="text-warm-beige font-serif text-lg mb-2">{t('cookies.title')}</h3>
+            <p className="text-light-beige text-sm">{t('cookies.message')}</p>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={rejectCookies}
+              className="px-4 py-2 border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown transition-colors text-sm"
+            >
+              {t('cookies.reject')}
+            </button>
+            <button
+              onClick={acceptCookies}
+              className="px-4 py-2 bg-warm-beige text-dark-brown hover:bg-light-beige transition-colors text-sm"
+            >
+              {t('cookies.accept')}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Scroll to Top Button Component
+const ScrollToTop = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  return (
+    <button
+      className={`fixed bottom-8 right-8 z-40 p-3 bg-warm-beige text-dark-brown rounded-full shadow-lg hover:bg-light-beige transition-all duration-300 transform ${
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
+      }`}
+      onClick={scrollToTop}
+      style={{ 
+        pointerEvents: isVisible ? 'auto' : 'none',
+        bottom: window.innerHeight > 600 ? '2rem' : '6rem' // Adjust for cookie banner
+      }}
+    >
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+  );
+};
+
 // Simple Admin Panel Component - WORKING VERSION
 const AdminPanel = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
