@@ -585,7 +585,7 @@ const Speisekarte = () => {
   };
 
   return (
-    <div className="min-h-screen speisekarte-background">
+    <div className="min-h-screen speisekarte-background" style={{position: 'relative', zIndex: 0}}>
       {/* Elegant Header Section with Background Image */}
       <div className="relative bg-cover bg-center" style={{backgroundImage: `url('https://images.pexels.com/photos/24706530/pexels-photo-24706530.jpeg')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
@@ -601,7 +601,7 @@ const Speisekarte = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">        
+      <div className="container mx-auto px-4 py-12" style={{position: 'relative', zIndex: 1}}>        
         {/* Category Filter Buttons - No Icons */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
