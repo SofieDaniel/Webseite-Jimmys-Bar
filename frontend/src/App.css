@@ -382,10 +382,19 @@ main {
   }
 }
 
-/* Tooltip and Hover Image Styles */
+/* Tooltip and Hover Image Styles - Enhanced for 250x250px */
 .tooltip-image {
   z-index: 1000;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border: 3px solid var(--warm-beige);
+  border-radius: 8px;
+}
+
+.tooltip-image img {
+  width: 250px !important;
+  height: 250px !important;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
 .menu-item:hover .tooltip-image {
@@ -395,11 +404,11 @@ main {
 @keyframes fadeInScale {
   from {
     opacity: 0;
-    transform: scale(0.8) translateY(10px);
+    transform: scale(0.8) translateY(10px) translateX(-50%);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1) translateY(0) translateX(-50%);
   }
 }
 
