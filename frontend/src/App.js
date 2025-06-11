@@ -726,18 +726,9 @@ const AdminPanel = () => {
               </div>
             )}
 
-            {activeSection === 'speisekarte' && (
-              <div>
-                <h2 className="text-2xl font-serif text-warm-beige mb-4">Speisekarte verwalten</h2>
-                <p className="text-light-beige mb-4">Hier können Sie Gerichte hinzufügen, bearbeiten oder entfernen.</p>
-                <div className="bg-dark-brown p-4 rounded border border-warm-brown">
-                  <p className="text-warm-beige">⚠️ Speisekarte-Editor in Entwicklung</p>
-                  <p className="text-light-beige text-sm mt-2">
-                    Funktionen: Gerichte hinzufügen/bearbeiten, Preise ändern, Kategorien verwalten, Bilder hochladen
-                  </p>
-                </div>
-              </div>
-            )}
+            {activeSection === 'speisekarte' && <MenuEditor />}
+            {activeSection === 'standorte' && <LocationsEditor content={content} saveContent={saveContent} />}
+            {activeSection === 'einstellungen' && <SettingsEditor content={content} saveContent={saveContent} />}
 
             {/* Add more sections as needed */}
           </div>
