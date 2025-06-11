@@ -164,11 +164,11 @@ const Home = () => {
 const Speisekarte = () => {
   const [selectedCategory, setSelectedCategory] = useState('alle');
   
-  // Complete menu data with dish-specific images
+  // Complete menu data with realistic, dish-specific images
   const menuItems = {
     'inicio': [
       { name: 'Aioli', description: 'Spanische Knoblauch-Mayonnaise', price: '3,50', image: 'https://images.unsplash.com/photo-1671871695722-b91911e9c072' },
-      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90', image: 'https://images.unsplash.com/photo-1606923829579-0cb981a83e2e' },
+      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90', image: 'https://images.unsplash.com/photo-1714583357992-98f0ad946902' },
       { name: 'Extra Brot', description: 'Frisches spanisches Brot', price: '1,90', image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73' },
       { name: 'Hummus', description: 'Cremiger Kichererbsen-Dip', price: '3,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
       { name: 'Guacamole', description: 'Frische Avocado-Creme', price: '3,90', image: 'https://images.unsplash.com/photo-1553909489-cd47e0ef937f' },
@@ -176,7 +176,7 @@ const Speisekarte = () => {
       { name: 'Schinken-Käse-Wurst Teller', description: 'Spanische Charcuterie-Platte', price: '11,90', image: 'https://images.unsplash.com/photo-1544025162-d76694265947' },
       { name: 'Jamón Serrano Teller', description: 'Hochwertiger spanischer Schinken', price: '9,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
       { name: 'Boquerones en Vinagre', description: 'Sardellen in Essig eingelegt', price: '8,90', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828' },
-      { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', image: 'https://images.unsplash.com/photo-1544025162-d76694265947' },
+      { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
       { name: 'Tres (Hummus, Avocado Cream, Aioli mit Brot)', description: 'Drei köstliche Dips mit Brot', price: '10,90', image: 'https://images.pexels.com/photos/17336549/pexels-photo-17336549.jpeg' }
     ],
     'salat': [
