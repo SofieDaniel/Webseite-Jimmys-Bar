@@ -157,7 +157,7 @@ const Home = () => {
       </section>
 
       {/* Professional Features Section - Clean Design like "Unsere Spezialitäten" */}
-      <section className="py-24 bg-gradient-to-b from-warm-brown to-dark-brown">
+      <section className="py-24 bg-gradient-to-b from-dark-brown to-medium-brown">
         <div className="container mx-auto px-4">
           <div className="text-center mb-20">
             <h2 className="text-5xl font-serif text-warm-beige mb-8 tracking-wide">
