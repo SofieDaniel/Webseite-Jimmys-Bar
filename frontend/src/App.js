@@ -385,11 +385,11 @@ const Speisekarte = () => {
       { name: 'Currywurst', description: 'Deutsche Currywurst klassisch', price: '10,90', details: 'Klassische Currywurst mit hausgemachter Sauce und Pommes frites.' }
     ],
     'dessert': [
-      { name: 'Crema Catalana', description: 'Katalanische Crème brûlée', price: '5,50', image: 'https://images.unsplash.com/photo-1736752346246-61f4daedfde0' },
-      { name: 'Tarte de Santiago', description: 'Spanischer Mandelkuchen', price: '7,50', image: 'https://images.pexels.com/photos/32512507/pexels-photo-32512507.jpeg' },
-      { name: 'Eis', description: 'Hausgemachtes Eis nach Wahl', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
-      { name: 'Churros mit Schokolade', description: 'Spanisches Spritzgebäck mit warmer Schokolade', price: '6,90', image: 'https://images.unsplash.com/photo-1505851498219-ee2449c18936' },
-      { name: 'Schoko Soufflé', description: 'Warmes Schokoladen-Soufflé', price: '7,50', image: 'https://images.pexels.com/photos/32512507/pexels-photo-32512507.jpeg' }
+      { name: 'Crema Catalana', description: 'Katalanische Crème brûlée', price: '5,50', details: 'Traditionelle spanische Crème brûlée mit karamellisierter Zuckerkruste.' },
+      { name: 'Tarte de Santiago', description: 'Spanischer Mandelkuchen', price: '7,50', details: 'Klassischer spanischer Mandelkuchen nach Originalrezept aus Galizien.' },
+      { name: 'Eis', description: 'Hausgemachtes Eis nach Wahl', price: '6,90', details: 'Verschiedene Sorten hausgemachtes Eis mit frischen Früchten.' },
+      { name: 'Churros mit Schokolade', description: 'Spanisches Spritzgebäck mit warmer Schokolade', price: '6,90', details: 'Frisch zubereitete Churros mit heißer Schokoladensauce zum Dippen.' },
+      { name: 'Schoko Soufflé', description: 'Warmes Schokoladen-Soufflé', price: '7,50', details: 'Warmes Schokoladen-Soufflé mit flüssigem Kern und Vanilleeis.' }
     ],
     'helados': [
       { name: 'Kokos', description: 'Eis im Fruchtschälchen - Kokos', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
