@@ -181,17 +181,77 @@ backend:
         comment: "Fixed CORS configuration by adding explicit OPTIONS route handler and updating the CORS middleware configuration. Also updated the test to send proper CORS preflight request headers. All CORS headers are now being returned correctly."
 
 frontend:
-  - task: "New Homepage Design"
+  - task: "Homepage Hero Image Update"
     implemented: true
     working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
-        agent: "testing"
-        comment: "The new homepage design has been successfully implemented with an emotional hero section featuring a Spanish restaurant background. The '¡Bienvenidos!' section with three enhanced highlight cards is present and visually appealing. Enhanced CTA buttons ('SPEISEKARTE ANSEHEN' and 'STANDORTE ENTDECKEN') are working correctly and have the proper styling. The improved food gallery with emotional storytelling is present with four items. Hover effects on cards and buttons work as expected, providing a professional and interactive experience."
+        agent: "main"
+        comment: "Updated homepage hero image to elegant Spanish restaurant interior (https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg) with proper scene setting and visual impact."
+
+  - task: "Global Dark Background Application"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Applied consistent dark brown background theme across entire website. Updated body background with gradient and all page components to use bg-dark-brown class."
+
+  - task: "Category Button Icon Removal"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Removed all emoji icons from category buttons (🫒, 🥗, etc.) to match reference image. Buttons now show only text with improved styling."
+
+  - task: "Menu Header Background Enhancement"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added elegant background image to Speisekarte header section with overlay and improved typography to match reference design."
+
+  - task: "Enhanced Mouseover Effects with Shadows"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Enhanced menu item hover effects with proper shadows (25px blur), larger images (320x240px), elegant borders, and improved transitions to match reference image."
+
+  - task: "Speisekarte Background Redesign"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Created new speisekarte-background CSS class with sophisticated dark brown gradient and texture patterns for elegant Spanish restaurant atmosphere."
 
   - task: "Enhanced Speisekarte (Two-Column Layout)"
     implemented: true
