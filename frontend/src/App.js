@@ -210,25 +210,33 @@ const Header = () => {
             <span className="block text-xs text-stone-300 tracking-[0.3em] font-light mt-1">TAPAS BAR</span>
           </Link>
           
-          <div className="hidden md:flex space-x-10">
+          <div className="hidden md:flex space-x-10 items-center">
             <Link to="/" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>Startseite</Link>
+            }`}>{t('nav.home')}</Link>
             <Link to="/standorte" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/standorte') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>Standorte</Link>
+            }`}>{t('nav.locations')}</Link>
             <Link to="/speisekarte" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/speisekarte') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>Speisekarte</Link>
+            }`}>{t('nav.menu')}</Link>
             <Link to="/bewertungen" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/bewertungen') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>Bewertungen</Link>
+            }`}>{t('nav.reviews')}</Link>
             <Link to="/ueber-uns" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/ueber-uns') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>Über uns</Link>
+            }`}>{t('nav.about')}</Link>
             <Link to="/kontakt" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/kontakt') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>Kontakt</Link>
+            }`}>{t('nav.contact')}</Link>
+            
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLanguage}
+              className="border border-stone-300 text-stone-100 hover:bg-stone-100 hover:text-black px-3 py-1 rounded text-xs font-light tracking-wider transition-all duration-300"
+            >
+              {currentLanguage === 'de' ? 'EN' : 'DE'}
+            </button>
           </div>
           
           <Link to="/speisekarte" className="hidden md:block border border-stone-300 text-stone-100 hover:bg-stone-100 hover:text-black px-6 py-2 rounded-full transition-all duration-300 font-light tracking-wider text-xs">
