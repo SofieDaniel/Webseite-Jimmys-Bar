@@ -459,12 +459,12 @@ const Speisekarte = () => {
                 </div>
               </div>
               
-              {/* Hover Image Tooltip - Large and centered */}
+              {/* Hover Image Tooltip - 250x250px, centered */}
               <div className="tooltip-image absolute left-1/2 top-full mt-2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 hidden md:block">
                 <img 
                   src={item.image} 
                   alt={item.name}
-                  className="w-64 h-64 object-cover rounded-lg shadow-2xl border-2 border-warm-beige"
+                  className="w-[250px] h-[250px] object-cover rounded-lg shadow-2xl border-2 border-warm-beige"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
