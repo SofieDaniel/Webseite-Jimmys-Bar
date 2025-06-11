@@ -197,6 +197,7 @@ const CookieBanner = () => {
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { currentLanguage, toggleLanguage, t } = useLanguage();
   
   const isActivePage = (path) => location.pathname === path;
   
