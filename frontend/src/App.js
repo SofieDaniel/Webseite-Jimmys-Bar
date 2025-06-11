@@ -477,29 +477,23 @@ const Speisekarte = () => {
                 </div>
               </div>
               
-              {/* Enhanced Hover Image - Large, centered, more prominent */}
-              <div className="tooltip-image absolute left-1/2 top-full mt-4 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 hidden md:block">
-                <div className="bg-warm-beige p-2 rounded-lg shadow-2xl">
-                  <img 
-                    src={item.image} 
-                    alt={item.name}
-                    className="w-[280px] h-[280px] object-cover rounded-lg"
-                    loading="lazy"
-                  />
-                  <div className="text-center mt-2 text-dark-brown font-serif text-sm font-medium">
+              {/* Enhanced Hover Tooltip - Large, centered, more prominent */}
+              <div className="tooltip absolute left-1/2 top-full mt-4 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 hidden md:block">
+                <div className="bg-warm-beige p-4 rounded-lg shadow-2xl max-w-md">
+                  <h4 className="text-dark-brown font-serif text-lg font-medium mb-2">
                     {item.name}
-                  </div>
+                  </h4>
+                  <p className="text-dark-brown text-sm leading-relaxed">
+                    {item.details}
+                  </p>
                 </div>
               </div>
               
-              {/* Mobile: Show image on tap/touch */}
-              <div className="md:hidden mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <img 
-                  src={item.image} 
-                  alt={item.name}
-                  className="w-full h-40 object-cover rounded-lg border border-warm-brown"
-                  loading="lazy"
-                />
+              {/* Mobile: Show details on tap/touch */}
+              <div className="md:hidden mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-medium-brown p-3 rounded-lg">
+                <p className="text-light-beige text-sm leading-relaxed">
+                  {item.details}
+                </p>
               </div>
             </div>
           ))}
