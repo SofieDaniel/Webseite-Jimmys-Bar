@@ -429,12 +429,24 @@ const Speisekarte = () => {
   return (
     <div className="min-h-screen mediterranean-texture pt-24">
       <div className="container mx-auto px-4 py-12">
-        <h1 className="text-6xl font-serif text-center text-warm-beige mb-4 tracking-wide drop-shadow-text">
-          Speisekarte
-        </h1>
-        <p className="text-center text-light-beige mb-12 text-lg font-light">
-          Authentische spanische Küche • Alle Gerichte mit Bildern
-        </p>
+        {/* Professional Hero Image for Menu */}
+        <div className="relative h-64 mb-12 rounded-lg overflow-hidden">
+          <img 
+            src="https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg" 
+            alt="Spanische Tapas" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide drop-shadow-text">
+                Speisekarte
+              </h1>
+              <p className="text-light-beige text-lg font-light">
+                Authentische spanische Küche • Alle Gerichte mit detaillierten Beschreibungen
+              </p>
+            </div>
+          </div>
+        </div>
         
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
