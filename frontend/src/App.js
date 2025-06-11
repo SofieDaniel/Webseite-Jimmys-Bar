@@ -392,10 +392,10 @@ const Speisekarte = () => {
       { name: 'Schoko Soufflé', description: 'Warmes Schokoladen-Soufflé', price: '7,50', details: 'Warmes Schokoladen-Soufflé mit flüssigem Kern und Vanilleeis.' }
     ],
     'helados': [
-      { name: 'Kokos', description: 'Eis im Fruchtschälchen - Kokos', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
-      { name: 'Zitrone', description: 'Eis im Fruchtschälchen - Zitrone', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
-      { name: 'Orange', description: 'Eis im Fruchtschälchen - Orange', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' },
-      { name: 'Nuss', description: 'Eis im Fruchtschälchen - Nuss', price: '6,90', image: 'https://images.unsplash.com/photo-1563379091329-5dc8e2f8e1db' }
+      { name: 'Kokos', description: 'Eis im Fruchtschälchen - Kokos', price: '6,90', details: 'Cremiges Kokoseis serviert in einer echten Kokosnussschale mit Kokosflocken.' },
+      { name: 'Zitrone', description: 'Eis im Fruchtschälchen - Zitrone', price: '6,90', details: 'Erfrischendes Zitronensorbet in einer ausgehöhlten Zitrone serviert.' },
+      { name: 'Orange', description: 'Eis im Fruchtschälchen - Orange', price: '6,90', details: 'Fruchtiges Orangensorbet in einer halbierten Orange präsentiert.' },
+      { name: 'Nuss', description: 'Eis im Fruchtschälchen - Nuss', price: '6,90', details: 'Nusseis mit karamellisierten Nüssen in einer Kokosschale serviert.' }
     ]
   };
 
