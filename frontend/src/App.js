@@ -685,13 +685,15 @@ const Standorte = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-8 flex space-x-4">
-                <button className="bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+              <div className="mt-8">
+                <a 
+                  href="https://www.google.com/maps/dir/?api=1&destination=Am+Strande+21,+23730+Neustadt+in+Holstein,+Germany"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors inline-block text-center"
+                >
                   Route planen
-                </button>
-                <button className="border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
-                  Reservieren
-                </button>
+                </a>
               </div>
             </div>
           </div>
