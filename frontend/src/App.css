@@ -320,8 +320,67 @@ body {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* Backdrop blur for modern browsers */
-.backdrop-blur-sm {
+/* Tooltip and Hover Image Styles */
+.tooltip-image {
+  z-index: 1000;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.menu-item:hover .tooltip-image {
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Menu Category and Item Styles */
+.menu-category {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+}
+
+.menu-item {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.dish-name:hover {
+  color: #F5E6D3;
+  text-shadow: 0 0 8px rgba(245, 230, 211, 0.3);
+}
+
+/* Enhanced hover effects for menu items */
+.menu-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Price highlighting on hover */
+.menu-item:hover .price {
+  color: #F5E6D3;
+  text-shadow: 0 0 8px rgba(245, 230, 211, 0.4);
+}
+
+/* Mobile responsive adjustments for tooltip */
+@media (max-width: 768px) {
+  .tooltip-image {
+    position: static !important;
+    opacity: 1 !important;
+    margin: 1rem 0;
+    left: auto !important;
+    top: auto !important;
+    margin-left: 0 !important;
+  }
+  
+  .menu-item .group-hover\:block {
+    display: block !important;
+  }
 }
