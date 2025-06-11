@@ -654,7 +654,7 @@ const Bewertungen = () => {
 // About Us Page Component
 const UeberUns = () => {
   return (
-    <div className="min-h-screen bg-warm-brown py-12">
+    <div className="min-h-screen bg-warm-brown pt-24">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-5xl font-serif text-center text-warm-beige mb-16 tracking-wide">
