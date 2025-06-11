@@ -400,21 +400,21 @@ const Speisekarte = () => {
   };
 
   const categories = [
-    { id: 'alle', name: 'Alle Kategorien', icon: '🍽️' },
-    { id: 'inicio', name: 'Inicio', icon: '🫒' },
-    { id: 'salat', name: 'Salat', icon: '🥗' },
-    { id: 'kleiner-salat', name: 'Kleiner Salat', icon: '🌿' },
-    { id: 'tapa-paella', name: 'Tapa Paella', icon: '🍚' },
-    { id: 'tapas-vegetarian', name: 'Tapas Vegetarian', icon: '🥬' },
-    { id: 'tapas-pollo', name: 'Tapas de Pollo', icon: '🍗' },
-    { id: 'tapas-carne', name: 'Tapas de Carne', icon: '🥩' },
-    { id: 'tapas-pescado', name: 'Tapas de Pescado', icon: '🐟' },
-    { id: 'kroketten', name: 'Kroketten', icon: '🧆' },
-    { id: 'pasta', name: 'Pasta', icon: '🍝' },
-    { id: 'pizza', name: 'Pizza', icon: '🍕' },
-    { id: 'snacks', name: 'Snacks', icon: '🍟' },
-    { id: 'dessert', name: 'Dessert', icon: '🍮' },
-    { id: 'helados', name: 'Helados', icon: '🍨' }
+    { id: 'alle', name: 'Alle Kategorien' },
+    { id: 'inicio', name: 'Inicio' },
+    { id: 'salat', name: 'Salat' },
+    { id: 'kleiner-salat', name: 'Kleiner Salat' },
+    { id: 'tapa-paella', name: 'Tapa Paella' },
+    { id: 'tapas-vegetarian', name: 'Tapas Vegetarian' },
+    { id: 'tapas-pollo', name: 'Tapas de Pollo' },
+    { id: 'tapas-carne', name: 'Tapas de Carne' },
+    { id: 'tapas-pescado', name: 'Tapas de Pescado' },
+    { id: 'kroketten', name: 'Kroketten' },
+    { id: 'pasta', name: 'Pasta' },
+    { id: 'pizza', name: 'Pizza' },
+    { id: 'snacks', name: 'Snacks' },
+    { id: 'dessert', name: 'Dessert' },
+    { id: 'helados', name: 'Helados' }
   ];
 
   const getDisplayItems = () => {
