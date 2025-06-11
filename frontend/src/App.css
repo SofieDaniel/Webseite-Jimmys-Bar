@@ -400,28 +400,30 @@ main {
 
 /* Enhanced Menu Hover Tooltip with Details */
 .menu-image-tooltip {
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10000;
+  z-index: 50000;
   opacity: 0;
   transition: all 0.4s ease;
   pointer-events: none;
-  max-width: 380px;
-  width: 380px;
+  max-width: 420px;
+  width: 420px;
 }
 
 .menu-item:hover .menu-image-tooltip {
   opacity: 1;
-  z-index: 10001;
+  z-index: 50001;
 }
 
 .tooltip-content {
   box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.8),
-    0 15px 35px rgba(0, 0, 0, 0.6),
-    0 5px 15px rgba(0, 0, 0, 0.4);
+    0 25px 50px rgba(0, 0, 0, 0.9),
+    0 15px 35px rgba(0, 0, 0, 0.7),
+    0 5px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Screenshot-Style Menu Items - Enhanced */
