@@ -774,34 +774,34 @@ const Standorte = () => {
         {/* Additional Information Section */}
         <div className="mt-16 bg-dark-brown rounded-xl border border-warm-brown p-8">
           <h3 className="text-3xl font-serif text-warm-beige mb-8 text-center tracking-wide">
-            Gut zu wissen
+            Warum Jimmy's Tapas Bar?
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-dark-brown">🚗</span>
+              <div className="w-24 h-24 bg-cover bg-center rounded-lg mx-auto mb-4 border-2 border-warm-beige" 
+                   style={{backgroundImage: `url('https://images.pexels.com/photos/16715741/pexels-photo-16715741.jpeg')`}}>
               </div>
-              <h4 className="text-xl font-serif text-warm-beige mb-2">Anreise</h4>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">Authentische Atmosphäre</h4>
               <p className="text-light-beige font-light text-sm">
-                Beide Standorte sind gut mit dem Auto erreichbar und bieten ausreichend Parkplätze.
+                Erleben Sie echtes spanisches Flair in gemütlicher Atmosphäre direkt an der Ostsee.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-dark-brown">📱</span>
+              <div className="w-24 h-24 bg-cover bg-center rounded-lg mx-auto mb-4 border-2 border-warm-beige" 
+                   style={{backgroundImage: `url('https://images.pexels.com/photos/9570408/pexels-photo-9570408.jpeg')`}}>
               </div>
-              <h4 className="text-xl font-serif text-warm-beige mb-2">Reservierung</h4>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">Traditionelle Küche</h4>
               <p className="text-light-beige font-light text-sm">
-                Wir empfehlen eine Reservierung, besonders an Wochenenden und in der Sommersaison.
+                Frisch zubereitete Paella und Tapas nach original spanischen Familienrezepten.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-dark-brown">🎉</span>
+              <div className="w-24 h-24 bg-cover bg-center rounded-lg mx-auto mb-4 border-2 border-warm-beige" 
+                   style={{backgroundImage: `url('https://images.pexels.com/photos/8696561/pexels-photo-8696561.jpeg')`}}>
               </div>
-              <h4 className="text-xl font-serif text-warm-beige mb-2">Events</h4>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">Spanisches Lebensgefühl</h4>
               <p className="text-light-beige font-light text-sm">
-                Beide Restaurants bieten Platz für private Feiern und Firmenevents.
+                Genießen Sie entspannte Abende mit spanischen Weinen und der besten Tapas-Auswahl.
               </p>
             </div>
           </div>
