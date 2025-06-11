@@ -1658,7 +1658,29 @@ const Footer = () => {
           </div>
           <div>
             <h4 className="font-serif mb-4 tracking-wide text-warm-beige">Kontakt</h4>
-
+            <div className="space-y-2 text-light-beige font-light">
+              <p>info@jimmys-tapasbar.de</p>
+              <p>+49 (0) 4561 123456</p>
+            </div>
+          </div>
+        </div>
+        <div className="border-t border-warm-brown mt-8 pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center text-light-beige font-light">
+            <div className="mb-4 md:mb-0">
+              <p className="text-sm">
+                Website erstellt von{' '}
+                <span className="text-warm-beige font-serif tracking-wide">Daniel Böttche</span>
+              </p>
+            </div>
+            <div className="text-center md:text-right">
+              <p>&copy; 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
 
 // Scroll to Top Button Component
 const ScrollToTop = () => {
