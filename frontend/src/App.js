@@ -89,6 +89,154 @@ const LanguageProvider = ({ children }) => {
   );
 };
 
+// Admin Panel Component - Content Management System
+const AdminPanel = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginForm, setLoginForm] = useState({ username: '', password: '' });
+  const [activeSection, setActiveSection] = useState('dashboard');
+
+  // Simple authentication (in production, use proper authentication)
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (loginForm.username === 'admin' && loginForm.password === 'jimmy2024') {
+      setIsLoggedIn(true);
+      localStorage.setItem('adminLoggedIn', 'true');
+    } else {
+      alert('Falsche Anmeldedaten');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('adminLoggedIn');
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('adminLoggedIn') === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-dark-brown flex items-center justify-center px-4">
+        <div className="bg-medium-brown p-8 rounded-lg border border-warm-brown max-w-md w-full">
+          <h1 className="text-2xl font-serif text-warm-beige mb-6 text-center">
+            Admin Login
+          </h1>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-warm-beige mb-2">Benutzername</label>
+              <input
+                type="text"
+                value={loginForm.username}
+                onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
+                className="w-full p-3 bg-dark-brown border border-warm-brown rounded text-warm-beige"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-warm-beige mb-2">Passwort</label>
+              <input
+                type="password"
+                value={loginForm.password}
+                onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
+                className="w-full p-3 bg-dark-brown border border-warm-brown rounded text-warm-beige"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-warm-beige text-dark-brown py-3 rounded font-medium hover:bg-light-beige transition-colors"
+            >
+              Anmelden
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-dark-brown pt-20">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-serif text-warm-beige">Admin Panel</h1>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+          >
+            Abmelden
+          </button>
+        </div>
+
+        <div className="grid md:grid-cols-4 gap-8">
+          {/* Sidebar Navigation */}
+          <div className="bg-medium-brown p-6 rounded-lg border border-warm-brown">
+            <nav className="space-y-2">
+              {[
+                { id: 'dashboard', name: 'Dashboard' },
+                { id: 'startseite', name: 'Startseite' },
+                { id: 'speisekarte', name: 'Speisekarte' },
+                { id: 'standorte', name: 'Standorte' },
+                { id: 'bewertungen', name: 'Bewertungen' },
+                { id: 'ueber-uns', name: 'Über uns' },
+                { id: 'kontakt', name: 'Kontakt' }
+              ].map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveSection(item.id)}
+                  className={`w-full text-left p-3 rounded transition-colors ${
+                    activeSection === item.id 
+                      ? 'bg-warm-beige text-dark-brown' 
+                      : 'text-warm-beige hover:bg-dark-brown'
+                  }`}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          {/* Content Area */}
+          <div className="md:col-span-3 bg-medium-brown p-6 rounded-lg border border-warm-brown">
+            {activeSection === 'dashboard' && (
+              <div>
+                <h2 className="text-2xl font-serif text-warm-beige mb-4">Dashboard</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-dark-brown p-4 rounded border border-warm-brown">
+                    <h3 className="text-warm-beige font-serif mb-2">Schnellzugriff</h3>
+                    <p className="text-light-beige text-sm">Verwalten Sie Inhalte und Einstellungen</p>
+                  </div>
+                  <div className="bg-dark-brown p-4 rounded border border-warm-brown">
+                    <h3 className="text-warm-beige font-serif mb-2">Letzte Änderungen</h3>
+                    <p className="text-light-beige text-sm">Keine aktuellen Änderungen</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'speisekarte' && (
+              <div>
+                <h2 className="text-2xl font-serif text-warm-beige mb-4">Speisekarte verwalten</h2>
+                <p className="text-light-beige mb-4">Hier können Sie Gerichte hinzufügen, bearbeiten oder entfernen.</p>
+                <div className="bg-dark-brown p-4 rounded border border-warm-brown">
+                  <p className="text-warm-beige">⚠️ Speisekarte-Editor in Entwicklung</p>
+                  <p className="text-light-beige text-sm mt-2">
+                    Funktionen: Gerichte hinzufügen/bearbeiten, Preise ändern, Kategorien verwalten, Bilder hochladen
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Add more sections as needed */}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Scroll to Top Button Component
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
