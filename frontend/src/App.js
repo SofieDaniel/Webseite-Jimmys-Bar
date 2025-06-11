@@ -582,26 +582,28 @@ const Speisekarte = () => {
               </div>
               
               {/* Enhanced Hover Details Popup */}
-              <div className="menu-image-tooltip">
-                <div className="tooltip-content bg-dark-brown border-2 border-warm-beige rounded-lg overflow-hidden">
-                  <img 
-                    src={item.image} 
-                    alt={item.name}
-                    loading="lazy"
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <h4 className="text-lg font-serif text-warm-beige mb-2">{item.name}</h4>
-                    <p className="text-light-beige text-sm mb-3 leading-relaxed">{item.details}</p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-warm-beige opacity-75">
-                        {categories.find(c => c.id === item.category)?.name}
-                      </span>
-                      <span className="text-xl font-serif text-warm-beige">{item.price} €</span>
+              {showHoverImages && (
+                <div className="menu-image-tooltip">
+                  <div className="tooltip-content bg-dark-brown border-2 border-warm-beige rounded-lg overflow-hidden">
+                    <img 
+                      src={item.image} 
+                      alt={item.name}
+                      loading="lazy"
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4">
+                      <h4 className="text-lg font-serif text-warm-beige mb-2">{item.name}</h4>
+                      <p className="text-light-beige text-sm mb-3 leading-relaxed">{item.details}</p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-warm-beige opacity-75">
+                          {categories.find(c => c.id === item.category)?.name}
+                        </span>
+                        <span className="text-xl font-serif text-warm-beige">{item.price} €</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           ))}
         </div>
