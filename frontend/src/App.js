@@ -353,11 +353,11 @@ const Speisekarte = () => {
       { name: 'Chipirones', description: 'Baby-Tintenfische gegrillt', price: '8,90', details: 'Gegrillte Baby-Tintenfische mit Knoblauch und Petersilie.' }
     ],
     'kroketten': [
-      { name: 'Bacalao', description: 'Stockfisch-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1718912334263-1518476fe9b1' },
-      { name: 'Käse', description: 'Cremige Käse-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1718912334263-1518476fe9b1' },
-      { name: 'Mandeln', description: 'Mandel-Kroketten mit feinem Aroma', price: '6,50', image: 'https://images.pexels.com/photos/30877123/pexels-photo-30877123.jpeg' },
-      { name: 'Jamón', description: 'Schinken-Kroketten klassisch', price: '5,90', image: 'https://images.unsplash.com/photo-1718912334263-1518476fe9b1' },
-      { name: 'Kartoffel', description: 'Traditionelle Kartoffel-Kroketten', price: '5,50', image: 'https://images.pexels.com/photos/30877123/pexels-photo-30877123.jpeg' }
+      { name: 'Bacalao', description: 'Stockfisch-Kroketten', price: '5,90', details: 'Cremige Kroketten aus Stockfisch und Kartoffeln, traditionell zubereitet.' },
+      { name: 'Käse', description: 'Cremige Käse-Kroketten', price: '5,90', details: 'Hausgemachte Kroketten mit einer Füllung aus spanischen Käsesorten.' },
+      { name: 'Mandeln', description: 'Mandel-Kroketten mit feinem Aroma', price: '6,50', details: 'Süße Kroketten aus gemahlenen Mandeln mit Honig und Zimt.' },
+      { name: 'Jamón', description: 'Schinken-Kroketten klassisch', price: '5,90', details: 'Traditionelle Kroketten mit feiner Serrano-Schinken-Füllung.' },
+      { name: 'Kartoffel', description: 'Traditionelle Kartoffel-Kroketten', price: '5,50', details: 'Klassische Kartoffelkroketten mit Kräutern und Gewürzen.' }
     ],
     'pasta': [
       { name: 'Spaghetti Aglio e Olio', description: 'Klassisch mit Knoblauch und Olivenöl', price: '12,90', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5' },
