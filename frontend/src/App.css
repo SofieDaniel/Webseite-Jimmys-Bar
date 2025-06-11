@@ -464,15 +464,26 @@ main {
   }
 }
 
-/* Menu Category and Item Styles */
+/* Enhanced menu category and grid spacing for two-column layout */
 .menu-category {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  background: linear-gradient(145deg, rgba(245, 230, 211, 0.1), rgba(232, 220, 192, 0.08));
+  border: 1px solid rgba(245, 230, 211, 0.2);
+}
+
+.menu-category:hover {
+  background: linear-gradient(145deg, var(--warm-beige), var(--light-beige));
+  color: var(--dark-brown);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .menu-item {
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+  background: linear-gradient(145deg, rgba(45, 31, 26, 0.9), rgba(61, 43, 31, 0.8));
+  border: 1px solid rgba(245, 230, 211, 0.15);
 }
 
 .dish-name:hover {
