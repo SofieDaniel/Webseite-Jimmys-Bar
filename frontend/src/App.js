@@ -126,15 +126,15 @@ const Home = () => {
           <div className="max-w-4xl">
             {/* Clean Main Headline */}
             <h1 className="hero-headline font-serif text-warm-beige mb-8 tracking-wide leading-tight drop-shadow-text">
-              SPANISCHE<br />
-              GENUSSKULTUR<br />
+              AUTÉNTICO<br />
+              SABOR ESPAÑOL<br />
               <span className="text-4xl md:text-5xl font-light opacity-90">an der Ostsee</span>
             </h1>
             
             {/* Simple Subtitle */}
             <p className="text-xl md:text-2xl text-warm-beige font-light mb-12 max-w-3xl mx-auto leading-relaxed opacity-95">
-              Authentische Tapas & frische Paella<br/>
-              <span className="text-lg opacity-80">direkt in Grömitz und Neustadt</span>
+              Erleben Sie echte spanische Küche mit Blick aufs Meer<br/>
+              <span className="text-lg opacity-80">in Großenbrode und Neustadt in Holstein</span>
             </p>
             
             {/* Clean CTA Buttons */}
