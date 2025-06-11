@@ -302,7 +302,7 @@ const Speisekarte = () => {
       { name: 'Pincho de Cerdo', description: 'Schweinefleisch-Spieß gegrillt', price: '7,90', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
       { name: 'Pincho de Cordero', description: 'Lammfleisch-Spieß mit Kräutern', price: '8,90', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
       { name: 'Chuletas de Cordero', description: 'Gegrillte Lammkoteletts', price: '9,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' },
-      { name: 'Rollitos Serrano mit Feige', description: 'Serrano-Schinken-Röllchen mit süßer Feige', price: '9,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
+      { name: 'Rollitos Serrano mit Feige', description: 'Serrano-Schinken-Röllchen mit süßer Feige', price: '9,90', image: 'https://images.pexels.com/photos/24706530/pexels-photo-24706530.jpeg' },
       { name: 'Ziegenkäse mit Bacon', description: 'Cremiger Ziegenkäse mit knusprigem Speck', price: '7,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
       { name: 'Chorizo al Diablo', description: 'Scharfe Chorizo in Teufelssauce', price: '7,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
       { name: 'Medaillons vom Schwein', description: 'Zarte Schweinefilet-Medaillons', price: '9,90', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd' },
