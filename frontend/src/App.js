@@ -103,7 +103,10 @@ const LanguageProvider = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState('de');
 
   const toggleLanguage = () => {
-    setCurrentLanguage(prev => prev === 'de' ? 'en' : 'de');
+    const languages = ['de', 'en', 'es'];
+    const currentIndex = languages.indexOf(currentLanguage);
+    const nextIndex = (currentIndex + 1) % languages.length;
+    setCurrentLanguage(languages[nextIndex]);
   };
 
   const t = (key) => {
