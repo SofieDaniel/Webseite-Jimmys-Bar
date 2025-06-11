@@ -1218,6 +1218,49 @@ def run_all_tests():
     
     return all_passed
 
+def run_admin_login_tests():
+    """Run specific tests for admin login system"""
+    print("\n🔍 Starting Jimmy's Tapas Bar Admin Login System Tests")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # Test 1: Authentication login
+    auth_success, token = test_auth_login()
+    results["admin_login"] = auth_success
+    
+    # Test 2: JWT token validation
+    if auth_success:
+        results["jwt_token_validation"] = test_auth_me()
+    else:
+        results["jwt_token_validation"] = False
+        print("❌ Skipping JWT token validation test due to failed login")
+    
+    # Test 3: Admin endpoint access
+    if auth_success:
+        results["admin_endpoint_access"] = test_get_users()
+    else:
+        results["admin_endpoint_access"] = False
+        print("❌ Skipping admin endpoint access test due to failed login")
+    
+    # Test 4: CORS configuration
+    results["cors_configuration"] = test_cors_configuration()
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    for test_name, result in results.items():
+        status = "✅ PASSED" if result else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
 if __name__ == "__main__":
-    success = run_all_tests()
+    # Run the specific tests for admin login system
+    success = run_admin_login_tests()
     sys.exit(0 if success else 1)
