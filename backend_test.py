@@ -6,8 +6,15 @@ import sys
 from datetime import datetime
 
 # Get the backend URL from the frontend .env file
-BACKEND_URL = "https://5b11e37a-145d-4a4e-811a-6a9a84a36b58.preview.emergentagent.com"
+import os
+from dotenv import load_dotenv
+
+# Load the frontend .env file
+load_dotenv("/app/frontend/.env")
+BACKEND_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://5b11e37a-145d-4a4e-811a-6a9a84a36b58.preview.emergentagent.com")
 API_BASE_URL = f"{BACKEND_URL}/api"
+
+print(f"Using backend URL: {BACKEND_URL}")
 
 # Spanish restaurant client names for testing
 SPANISH_CLIENTS = [
