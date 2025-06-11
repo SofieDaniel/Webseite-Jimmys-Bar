@@ -334,9 +334,10 @@ const Home = () => {
   );
 };
 
-// Menu Page Component - Fixed Layout with proper images between name and price
+// Menu Page Component - Fixed Layout with optional hover images
 const Speisekarte = () => {
   const [selectedCategory, setSelectedCategory] = useState('alle');
+  const [showHoverImages, setShowHoverImages] = useState(false); // Configurable hover images
   
   // Complete menu data with authentic images for hover display (Screenshot Style)
   const menuItems = {
