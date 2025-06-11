@@ -410,7 +410,7 @@ const Speisekarte = () => {
   };
 
   return (
-    <div className="min-h-screen bg-warm-brown pt-24">
+    <div className="min-h-screen mediterranean-texture pt-24">
       <div className="container mx-auto px-4 py-12">
         <h1 className="text-6xl font-serif text-center text-warm-beige mb-4 tracking-wide drop-shadow-text">
           Speisekarte
