@@ -200,8 +200,8 @@ const Home = () => {
             
             <div className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
               <img 
-                src="https://images.pexels.com/photos/12180257/pexels-photo-12180257.jpeg" 
-                alt="Strandpromenade Großenbrode" 
+                src="https://images.pexels.com/photos/32508247/pexels-photo-32508247.jpeg" 
+                alt="Strandnähe mit Strandkörben" 
                 className="w-full h-48 object-cover"
               />
               <div className="p-8 text-center">
