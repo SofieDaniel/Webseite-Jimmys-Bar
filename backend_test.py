@@ -165,8 +165,19 @@ def test_cors_configuration():
     print("\n🧪 Testing CORS configuration...")
     
     try:
-        # Make OPTIONS request to check CORS headers
-        response = requests.options(f"{API_BASE_URL}/")
+        # Make OPTIONS request to check CORS headers with verbose output
+        headers = {
+            'Origin': 'http://localhost:3000',
+            'Access-Control-Request-Method': 'GET',
+            'Access-Control-Request-Headers': 'Content-Type'
+        }
+        
+        response = requests.options(f"{API_BASE_URL}/", headers=headers)
+        
+        print(f"Response status code: {response.status_code}")
+        print("Response headers:")
+        for header, value in response.headers.items():
+            print(f"  {header}: {value}")
         
         # Check if response contains CORS headers
         cors_headers = [
