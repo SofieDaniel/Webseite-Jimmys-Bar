@@ -619,8 +619,8 @@ const Speisekarte = () => {
           ))}
         </div>
 
-        {/* Menu Items - Screenshot Style Two-Column Layout with Hover Images */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
+        {/* Menu Items - Screenshot Style Two-Column Layout with Hover Info */}
+        <div className="grid md:grid-cols-2 gap-6 max-w-7xl mx-auto" style={{position: 'relative', zIndex: 1}}>
           {getDisplayItems().map((item, index) => (
             <div key={index} className="menu-item rounded-lg p-6 hover:bg-medium-brown transition-all duration-300 relative group">
               <div className="flex justify-between items-start">
@@ -644,7 +644,7 @@ const Speisekarte = () => {
                 </div>
               </div>
               
-              {/* Enhanced Hover Details Popup - Only text without images */}
+              {/* Enhanced Hover Details Popup - Only text without images - ALWAYS ON TOP */}
               <div className="menu-image-tooltip">
                 <div className="tooltip-content bg-dark-brown border-2 border-warm-beige rounded-lg p-6 max-w-md">
                   <h4 className="text-lg font-serif text-warm-beige mb-3">{item.name}</h4>
