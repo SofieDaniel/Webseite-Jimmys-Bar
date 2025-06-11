@@ -1176,7 +1176,7 @@ const Footer = () => {
 // Main App Component
 function App() {
   return (
-    <div className="App">
+    <div className="App min-h-screen bg-dark-brown">
       <BrowserRouter>
         <Header />
         <Routes>
