@@ -59,9 +59,12 @@ const CookieBanner = () => {
   );
 };
 
-// Header Component - FIXED positioning with proper spacing
+// Header Component - FIXED positioning with proper spacing and active navigation
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  
+  const isActivePage = (path) => location.pathname === path;
   
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark-brown-transparent backdrop-blur-sm">
@@ -73,12 +76,24 @@ const Header = () => {
           </Link>
           
           <div className="hidden md:flex space-x-10">
-            <Link to="/" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Startseite</Link>
-            <Link to="/standorte" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Standorte</Link>
-            <Link to="/speisekarte" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Speisekarte</Link>
-            <Link to="/bewertungen" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Bewertungen</Link>
-            <Link to="/ueber-uns" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Über uns</Link>
-            <Link to="/kontakt" className="text-stone-100 hover:text-stone-300 transition-colors font-light tracking-wide text-sm">Kontakt</Link>
+            <Link to="/" className={`transition-colors font-light tracking-wide text-sm ${
+              isActivePage('/') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
+            }`}>Startseite</Link>
+            <Link to="/standorte" className={`transition-colors font-light tracking-wide text-sm ${
+              isActivePage('/standorte') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
+            }`}>Standorte</Link>
+            <Link to="/speisekarte" className={`transition-colors font-light tracking-wide text-sm ${
+              isActivePage('/speisekarte') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
+            }`}>Speisekarte</Link>
+            <Link to="/bewertungen" className={`transition-colors font-light tracking-wide text-sm ${
+              isActivePage('/bewertungen') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
+            }`}>Bewertungen</Link>
+            <Link to="/ueber-uns" className={`transition-colors font-light tracking-wide text-sm ${
+              isActivePage('/ueber-uns') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
+            }`}>Über uns</Link>
+            <Link to="/kontakt" className={`transition-colors font-light tracking-wide text-sm ${
+              isActivePage('/kontakt') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
+            }`}>Kontakt</Link>
           </div>
           
           <Link to="/speisekarte" className="hidden md:block border border-stone-300 text-stone-100 hover:bg-stone-100 hover:text-black px-6 py-2 rounded-full transition-all duration-300 font-light tracking-wider text-xs">
