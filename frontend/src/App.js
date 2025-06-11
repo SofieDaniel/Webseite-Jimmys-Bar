@@ -437,8 +437,8 @@ const Speisekarte = () => {
           ))}
         </div>
 
-        {/* Menu Items - Hover-only images with realistic dish photos */}
-        <div className="grid gap-4 max-w-6xl mx-auto">
+        {/* Menu Items - Two-column layout with enhanced hover images */}
+        <div className="grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {getDisplayItems().map((item, index) => (
             <div key={index} className="menu-item bg-dark-brown rounded-lg border border-warm-brown p-6 hover:bg-medium-brown transition-all duration-300 relative group">
               <div className="flex justify-between items-center">
@@ -454,20 +454,24 @@ const Speisekarte = () => {
                 </div>
                 
                 {/* Price */}
-                <div className="price text-2xl font-serif text-warm-beige tracking-wide flex-shrink-0">
+                <div className="price text-2xl font-serif text-warm-beige tracking-wide flex-shrink-0 ml-4">
                   {item.price} €
                 </div>
               </div>
               
-              {/* Hover Image Tooltip - 250x250px, centered */}
-              <div className="tooltip-image absolute left-1/2 top-full mt-2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 hidden md:block">
-                <img 
-                  src={item.image} 
-                  alt={item.name}
-                  className="w-[250px] h-[250px] object-cover rounded-lg shadow-2xl border-2 border-warm-beige"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
+              {/* Enhanced Hover Image - Large, centered, more prominent */}
+              <div className="tooltip-image absolute left-1/2 top-full mt-4 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 hidden md:block">
+                <div className="bg-warm-beige p-2 rounded-lg shadow-2xl">
+                  <img 
+                    src={item.image} 
+                    alt={item.name}
+                    className="w-[280px] h-[280px] object-cover rounded-lg"
+                    loading="lazy"
+                  />
+                  <div className="text-center mt-2 text-dark-brown font-serif text-sm font-medium">
+                    {item.name}
+                  </div>
+                </div>
               </div>
               
               {/* Mobile: Show image on tap/touch */}
