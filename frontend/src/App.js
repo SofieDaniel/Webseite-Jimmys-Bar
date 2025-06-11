@@ -1116,15 +1116,16 @@ const Datenschutz = () => {
     </div>
   );
 };
+// Footer Component
 const Footer = () => {
   return (
     <footer className="bg-dark-brown-solid text-light-beige py-12 border-t border-warm-brown">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-xl font-serif mb-4 tracking-wide text-warm-beige">Jimmy's Tapas Bar</h3>
             <p className="text-light-beige font-light">
-              Spanische Genüsse – Authentisch & Gemütlich
+              Spanische Genusskultur – Authentisch & Gemütlich
             </p>
           </div>
           <div>
@@ -1141,9 +1142,16 @@ const Footer = () => {
               <p>www.jimmys-tapasbar.de</p>
             </div>
           </div>
+          <div>
+            <h4 className="font-serif mb-4 tracking-wide text-warm-beige">Rechtliches</h4>
+            <div className="space-y-2 text-light-beige font-light">
+              <Link to="/impressum" className="block hover:text-warm-beige transition-colors">Impressum</Link>
+              <Link to="/datenschutz" className="block hover:text-warm-beige transition-colors">Datenschutz</Link>
+            </div>
+          </div>
         </div>
         <div className="border-t border-warm-brown mt-8 pt-6 text-center text-light-beige font-light">
-          <p>&copy; 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten. | Impressum | Datenschutz</p>
+          <p>&copy; 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten.</p>
         </div>
       </div>
     </footer>
