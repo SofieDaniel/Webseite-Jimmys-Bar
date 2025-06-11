@@ -86,33 +86,50 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section - Professional redesign with new content */}
       <section className="py-20 bg-warm-brown">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-serif text-center text-warm-beige mb-16 tracking-wide">
-            Spanische Genüsse – Authentisch & Gemütlich
-          </h2>
-          <div className="grid md:grid-cols-3 gap-12">
-            <div className="text-center">
-              <div className="w-20 h-20 border-2 border-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-serif text-warm-beige mb-6 tracking-wide">
+              Spanische Genusskultur an der Ostsee
+            </h2>
+            <p className="text-xl text-light-beige font-light leading-relaxed max-w-4xl mx-auto">
+              Erleben Sie echte Tapas, frische Paella und mediterrane Lebensfreude – direkt in Grömitz und Neustadt.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+            <div className="text-center bg-dark-brown rounded-lg p-8 border border-warm-brown hover:bg-medium-brown transition-all duration-300">
+              <div className="w-20 h-20 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">🍷</span>
               </div>
-              <h3 className="text-xl font-serif text-warm-beige mb-4 tracking-wide">Authentische Tapas</h3>
-              <p className="text-light-beige font-light leading-relaxed">Traditionelle spanische Küche mit frischen, hochwertigen Zutaten</p>
+              <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Authentische Tapas</h3>
+              <div className="w-16 h-0.5 bg-warm-beige mx-auto mb-4"></div>
+              <p className="text-light-beige font-light leading-relaxed">
+                Traditionelle spanische Gerichte, mit Liebe zubereitet und perfekt zum Teilen.
+              </p>
             </div>
-            <div className="text-center">
-              <div className="w-20 h-20 border-2 border-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
+            
+            <div className="text-center bg-dark-brown rounded-lg p-8 border border-warm-brown hover:bg-medium-brown transition-all duration-300">
+              <div className="w-20 h-20 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">🥘</span>
               </div>
-              <h3 className="text-xl font-serif text-warm-beige mb-4 tracking-wide">Frische Paella</h3>
-              <p className="text-light-beige font-light leading-relaxed">Täglich frisch zubereitet mit den besten Meeresfrüchten und Zutaten</p>
+              <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Frische Paella</h3>
+              <div className="w-16 h-0.5 bg-warm-beige mx-auto mb-4"></div>
+              <p className="text-light-beige font-light leading-relaxed">
+                Täglich frisch serviert – mit Meeresfrüchten, Gemüse oder Huhn.
+              </p>
             </div>
-            <div className="text-center">
-              <div className="w-20 h-20 border-2 border-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
+            
+            <div className="text-center bg-dark-brown rounded-lg p-8 border border-warm-brown hover:bg-medium-brown transition-all duration-300">
+              <div className="w-20 h-20 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl">🏖️</span>
               </div>
-              <h3 className="text-xl font-serif text-warm-beige mb-4 tracking-wide">Zwei Standorte</h3>
-              <p className="text-light-beige font-light leading-relaxed">In Neustadt und Großenbrode direkt an der Ostsee</p>
+              <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">Zwei Standorte an der Küste</h3>
+              <div className="w-16 h-0.5 bg-warm-beige mx-auto mb-4"></div>
+              <p className="text-light-beige font-light leading-relaxed">
+                Genießen Sie unsere Küche in Grömitz oder Neustadt – immer in Strandnähe.
+              </p>
             </div>
           </div>
         </div>
