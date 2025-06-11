@@ -488,15 +488,20 @@ const Speisekarte = () => {
                 </div>
               </div>
               
-              {/* Enhanced Hover Tooltip - Large, centered, more prominent */}
-              <div className="tooltip absolute left-1/2 top-full mt-4 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-50 hidden md:block">
-                <div className="bg-warm-beige p-4 rounded-lg shadow-2xl max-w-md">
-                  <h4 className="text-dark-brown font-serif text-lg font-medium mb-2">
+              {/* Fixed Professional Description Tooltip */}
+              <div className="detail-tooltip opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none hidden md:block">
+                <div className="bg-warm-beige p-6 rounded-lg border-2 border-dark-brown">
+                  <h4 className="text-dark-brown font-serif text-xl font-medium mb-3 tracking-wide">
                     {item.name}
                   </h4>
                   <p className="text-dark-brown text-sm leading-relaxed">
                     {item.details}
                   </p>
+                  <div className="mt-3 text-right">
+                    <span className="text-dark-brown font-serif text-lg font-medium">
+                      {item.price} €
+                    </span>
+                  </div>
                 </div>
               </div>
               
