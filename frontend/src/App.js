@@ -2,6 +2,11 @@ import React, { useState, useEffect, createContext, useContext } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
 
+// Import Admin Sections
+import { ContentSection, MenuSection } from './AdminSections';
+import { ReviewsSection, ContactsSection, UsersSection } from './AdminSectionsExtended';
+import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
+
 // Language Context for i18n
 const LanguageContext = createContext();
 
