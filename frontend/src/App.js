@@ -852,11 +852,23 @@ const Bewertungen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dark-brown pt-24">
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-5xl font-serif text-center text-warm-beige mb-16 tracking-wide">
-          Bewertungen & Feedback
-        </h1>
+    <div className="min-h-screen bg-dark-brown">
+      {/* Elegant Header Section with Background */}
+      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg')`}}>
+        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+        <div className="relative z-10 pt-24 pb-16">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide drop-shadow-text">
+              Bewertungen & Feedback
+            </h1>
+            <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
+              Was unsere Gäste über uns sagen
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-16">
         
         <div className="grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
           {/* Public Reviews */}
