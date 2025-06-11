@@ -323,12 +323,12 @@ const Speisekarte = () => {
       { name: 'Garnelen-Dattel-Spieß', description: 'Süß-salzige Kombination am Spieß', price: '9,90', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
       { name: 'Gambas al Ajillo', description: 'Garnelen in Knoblauchöl', price: '9,90', image: 'https://images.unsplash.com/photo-1619860705243-dbef552e7118' },
       { name: 'Muslitos de Mar', description: 'Gebackene Muscheln', price: '6,90', image: 'https://images.unsplash.com/photo-1580370908410-85f1eafc5e5b' },
-      { name: 'Gegrillter Oktopus', description: 'Zarter Oktopus vom Grill', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Gegrillter Oktopus', description: 'Zarter Oktopus vom Grill', price: '9,90', image: 'https://images.unsplash.com/photo-1531890820402-2a683fbfd30c' },
       { name: 'Jacobsmuscheln', description: 'Edle Jakobsmuscheln gegrillt', price: '9,90', image: 'https://images.unsplash.com/photo-1580370908410-85f1eafc5e5b' },
       { name: 'Gambas PIL PIL', description: 'Garnelen in würzigem Olivenöl', price: '9,90', image: 'https://images.unsplash.com/photo-1619860705619-1e0ba34091e0' },
       { name: 'Empanadas', description: 'Spanische Teigtaschen mit Füllung', price: '6,90', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
       { name: 'Pfahlmuscheln', description: 'Frische Miesmuscheln in Sud', price: '8,90', image: 'https://images.unsplash.com/photo-1580370908410-85f1eafc5e5b' },
-      { name: 'Pulpo al Ajillo', description: 'Oktopus in Knoblauchöl', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
+      { name: 'Pulpo al Ajillo', description: 'Oktopus in Knoblauchöl', price: '9,90', image: 'https://images.unsplash.com/photo-1531890820402-2a683fbfd30c' },
       { name: 'Zanderfilet', description: 'Zartes Zanderfilet gebraten', price: '9,90', image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288' },
       { name: 'Tiger Garnelen', description: 'Große Tiger-Garnelen gegrillt', price: '9,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' },
       { name: 'Brocheta de Gambas', description: 'Garnelen-Spieß mit Gemüse', price: '8,90', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1' },
@@ -336,11 +336,11 @@ const Speisekarte = () => {
       { name: 'Chipirones', description: 'Baby-Tintenfische gegrillt', price: '8,90', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b' }
     ],
     'kroketten': [
-      { name: 'Bacalao', description: 'Stockfisch-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
-      { name: 'Käse', description: 'Cremige Käse-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
-      { name: 'Mandeln', description: 'Mandel-Kroketten mit feinem Aroma', price: '6,50', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
-      { name: 'Jamón', description: 'Schinken-Kroketten klassisch', price: '5,90', image: 'https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e' },
-      { name: 'Kartoffel', description: 'Traditionelle Kartoffel-Kroketten', price: '5,50', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' }
+      { name: 'Bacalao', description: 'Stockfisch-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1718912334263-1518476fe9b1' },
+      { name: 'Käse', description: 'Cremige Käse-Kroketten', price: '5,90', image: 'https://images.unsplash.com/photo-1718912334263-1518476fe9b1' },
+      { name: 'Mandeln', description: 'Mandel-Kroketten mit feinem Aroma', price: '6,50', image: 'https://images.pexels.com/photos/30877123/pexels-photo-30877123.jpeg' },
+      { name: 'Jamón', description: 'Schinken-Kroketten klassisch', price: '5,90', image: 'https://images.unsplash.com/photo-1718912334263-1518476fe9b1' },
+      { name: 'Kartoffel', description: 'Traditionelle Kartoffel-Kroketten', price: '5,50', image: 'https://images.pexels.com/photos/30877123/pexels-photo-30877123.jpeg' }
     ],
     'pasta': [
       { name: 'Spaghetti Aglio e Olio', description: 'Klassisch mit Knoblauch und Olivenöl', price: '12,90', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5' },
