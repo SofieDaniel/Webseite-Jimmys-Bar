@@ -1,6 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
+
+// Cookie Consent Banner Component
+const CookieBanner = () => {
+  const [showBanner, setShowBanner] = useState(false);
+
+  useEffect(() => {
+    const cookieConsent = localStorage.getItem('cookieConsent');
+    if (!cookieConsent) {
+      setShowBanner(true);
+    }
+  }, []);
+
+  const acceptAllCookies = () => {
+    localStorage.setItem('cookieConsent', 'all');
+    setShowBanner(false);
+  };
+
+  const acceptNecessaryCookies = () => {
+    localStorage.setItem('cookieConsent', 'necessary');
+    setShowBanner(false);
+  };
+
+  if (!showBanner) return null;
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-dark-brown-solid border-t-2 border-warm-beige p-6 z-50 shadow-2xl">
+      <div className="container mx-auto max-w-6xl">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-serif text-warm-beige mb-2">Cookie-Einstellungen</h3>
+            <p className="text-light-beige text-sm font-light leading-relaxed">
+              Wir verwenden Cookies, um Ihnen die bestmögliche Erfahrung auf unserer Website zu bieten. 
+              Einige Cookies sind notwendig für die Funktion der Website, andere helfen uns bei der Analyse und Verbesserung.
+            </p>
+            <Link to="/datenschutz" className="text-warm-beige hover:text-white text-sm underline">
+              Mehr in der Datenschutzerklärung
+            </Link>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={acceptNecessaryCookies}
+              className="px-4 py-2 border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown rounded transition-colors text-sm font-light"
+            >
+              Nur erforderliche
+            </button>
+            <button
+              onClick={acceptAllCookies}
+              className="px-6 py-2 bg-warm-beige text-dark-brown hover:bg-light-beige rounded transition-colors text-sm font-light"
+            >
+              Alle akzeptieren
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Header Component - FIXED positioning with proper spacing
 const Header = () => {
