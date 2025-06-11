@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 
 # Get the backend URL from the frontend .env file
-BACKEND_URL = "https://35e329b2-7968-4dcd-b6f4-2ae9359a8471.preview.emergentagent.com"
+BACKEND_URL = "https://64cb2d13-9700-4ea6-a769-634f1203a977.preview.emergentagent.com"
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 # Spanish restaurant client names for testing
