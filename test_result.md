@@ -576,23 +576,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Authentication - POST /api/auth/login"
-    - "Authentication - GET /api/auth/me"
-    - "Content Management - GET /api/content/home"
-    - "Content Management - PUT /api/content/home/hero"
-    - "Menu Management - GET /api/menu/items"
-    - "Menu Management - POST /api/menu/items"
-    - "Review Management - POST /api/reviews"
-    - "Review Management - GET /api/admin/reviews/pending"
-    - "Contact Messages - POST /api/contact"
-    - "Contact Messages - GET /api/admin/contact"
-    - "Maintenance Mode - GET /api/maintenance"
-    - "Maintenance Mode - PUT /api/admin/maintenance"
-    - "User Management - GET /api/users"
-    - "User Management - POST /api/users"
-    - "Authentication - Unauthorized Access"
+    - "Admin CMS Implementation"
   stuck_tasks: 
     - "Authentication - Unauthorized Access"
+    - "Admin CMS Implementation"
   test_all: false
   test_priority: "high_first"
 
