@@ -269,8 +269,7 @@ const Speisekarte = () => {
       { name: 'Boquerones en Vinagre', description: 'Sardellen in Essig eingelegt', price: '8,90', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828', details: 'Frische Sardellen aus dem Cantabrischen Meer, eingelegt in Weißweinessig mit Knoblauch, Petersilie und Olivenöl.' },
       { name: 'Pata Negra', description: 'Premium Iberico Schinken', price: '10,90', image: 'https://images.unsplash.com/photo-1598989519542-077da0f51c09', details: 'Der Edelste aller spanischen Schinken - 36 Monate gereift von freilaufenden Iberico-Schweinen, serviert mit Manchego.' },
       { name: 'Tres (Hummus, Avocado Cream, Aioli mit Brot)', description: 'Drei köstliche Dips mit Brot', price: '10,90', image: 'https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg', details: 'Trio aus hausgemachtem Hummus, cremiger Avocado-Creme und Aioli, serviert mit warmem spanischem Brot und Gemüse.' }
-    ]
-  };
+    ],
     'salat': [
       { name: 'Ensalada Mixta', description: 'Gemischter Salat mit spanischen Zutaten', price: '8,90', details: 'Frischer Salat mit Tomaten, Gurken, Oliven, roten Zwiebeln und Manchego-Käse in Sherry-Vinaigrette.' },
       { name: 'Ensalada Tonno', description: 'Salat mit Thunfisch', price: '14,90', details: 'Gemischter Salat mit saftigem Thunfisch, hartgekochten Eiern, Oliven und Kapern in mediteraner Vinaigrette.' },
