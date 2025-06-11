@@ -392,6 +392,21 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Website Credits */}
+      <section className="py-8 bg-gradient-to-r from-dark-brown-solid to-dark-brown">
+        <div className="container mx-auto px-4 text-center">
+          <div className="border-t border-warm-brown pt-6">
+            <p className="text-light-beige text-sm font-light">
+              Website erstellt von{' '}
+              <span className="text-warm-beige font-serif tracking-wide">Daniel Böttche</span>
+            </p>
+            <p className="text-warm-brown text-xs mt-2 opacity-75">
+              © 2024 Jimmy's Tapas Bar • Alle Rechte vorbehalten
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
