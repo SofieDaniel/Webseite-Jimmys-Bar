@@ -351,6 +351,11 @@ const Header = () => {
   
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark-brown-transparent backdrop-blur-sm">
+      {/* Skip to content link for accessibility */}
+      <a href="#main-content" className="skip-link">
+        Zum Hauptinhalt springen
+      </a>
+      
       <div className="container mx-auto px-8 py-4">
         <nav className="flex justify-between items-center">
           <Link to="/" className="text-xl font-light text-stone-100 tracking-[0.2em]">
