@@ -623,6 +623,9 @@ const AdminPanel = () => {
     );
   };
 
+  // Locations Editor Component
+  const LocationsEditor = () => {
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-dark-brown flex items-center justify-center px-4">
