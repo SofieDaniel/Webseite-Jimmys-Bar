@@ -554,7 +554,7 @@ const Bewertungen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-warm-brown py-12">
+    <div className="min-h-screen bg-warm-brown pt-24">
       <div className="container mx-auto px-4">
         <h1 className="text-5xl font-serif text-center text-warm-beige mb-16 tracking-wide">
           Bewertungen & Feedback
