@@ -427,31 +427,35 @@ const Speisekarte = () => {
   };
 
   return (
-    <div className="min-h-screen mediterranean-texture pt-24">
-      <div className="container mx-auto px-4 py-12">
-        {/* Simple Header like in Screenshot */}
-        <div className="text-center mb-12">
-          <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide">
-            Speisekarte
-          </h1>
-          <p className="text-light-beige text-lg font-light">
-            Authentische spanische Küche - Bewegen Sie die Maus über Gerichte für Bilder
-          </p>
+    <div className="min-h-screen speisekarte-background">
+      {/* Elegant Header Section with Background Image */}
+      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('https://images.pexels.com/photos/24706530/pexels-photo-24706530.jpeg')`}}>
+        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+        <div className="relative z-10 pt-24 pb-16">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide drop-shadow-text">
+              Speisekarte
+            </h1>
+            <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
+              Authentische spanische Küche - Bewegen Sie die Maus über Gerichte für Bildvorschau
+            </p>
+          </div>
         </div>
-        
-        {/* Category Filter */}
+      </div>
+
+      <div className="container mx-auto px-4 py-12">        
+        {/* Category Filter Buttons - No Icons */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map(category => (
+          {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`menu-category px-4 py-3 rounded-lg transition-all duration-300 font-light tracking-wide text-sm ${
+              className={`menu-category px-6 py-3 rounded-lg transition-all duration-300 font-light tracking-wide text-sm ${
                 selectedCategory === category.id
-                  ? 'bg-warm-beige text-dark-brown'
-                  : 'border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown'
+                  ? 'bg-warm-beige text-dark-brown shadow-lg'
+                  : 'border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown hover:shadow-lg'
               }`}
             >
-              <span className="mr-2">{category.icon}</span>
               {category.name}
             </button>
           ))}
