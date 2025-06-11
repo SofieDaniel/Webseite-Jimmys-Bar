@@ -265,13 +265,13 @@ const Speisekarte = () => {
       { name: 'Kichererbsen mit Feta', description: 'Proteinreicher Salat mit Feta', price: '7,90', image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74' }
     ],
     'tapa-paella': [
-      { name: 'Paella mit Hähnchen & Meeresfrüchten', description: 'Traditionelle spanische Paella als Tapa-Portion', price: '8,90', image: 'https://images.pexels.com/photos/29843070/pexels-photo-29843070.jpeg' },
-      { name: 'Paella vegetarisch', description: 'Vegetarische Paella mit frischem Gemüse', price: '7,90', image: 'https://images.unsplash.com/photo-1588276552401-30058a0fe57b' }
+      { name: 'Paella mit Hähnchen & Meeresfrüchten', description: 'Traditionelle spanische Paella als Tapa-Portion', price: '8,90', image: 'https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg' },
+      { name: 'Paella vegetarisch', description: 'Vegetarische Paella mit frischem Gemüse', price: '7,90', image: 'https://images.pexels.com/photos/10750986/pexels-photo-10750986.jpeg' }
     ],
     'tapas-vegetarian': [
       { name: 'Gebratenes Gemüse', description: 'Vegan - Saisonales Gemüse mediterran gewürzt', price: '6,90', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f' },
       { name: 'Papas Bravas', description: 'Vegan - Klassische spanische Kartoffeln mit scharfer Soße', price: '6,90', image: 'https://images.unsplash.com/photo-1565599837634-134bc3aadce8' },
-      { name: 'Tortilla de Patata mit Aioli', description: 'Spanisches Kartoffel-Omelett mit Aioli', price: '6,90', image: 'https://images.unsplash.com/photo-1515443961218-a51367888e4b' },
+      { name: 'Tortilla de Patata mit Aioli', description: 'Spanisches Kartoffel-Omelett mit Aioli', price: '6,90', image: 'https://images.unsplash.com/photo-1639669794539-952631b44515' },
       { name: 'Pimientos de Padrón', description: 'Vegan - Gebratene grüne Paprika', price: '6,90', image: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b' },
       { name: 'Kanarische Kartoffeln', description: 'Vegan - Traditionelle Kartoffeln mit Meersalz', price: '6,90', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655' },
       { name: 'Fetahäppchen auf Johannisbeersauce', description: 'Cremiger Feta mit süß-saurer Sauce', price: '6,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
@@ -281,7 +281,7 @@ const Speisekarte = () => {
       { name: 'Champignons mit Reis & Pinienkernen auf Roquefort', description: 'Aromatische Pilze mit würzigem Käse', price: '6,90', image: 'https://images.unsplash.com/photo-1614887009518-7b9355a3a0e4' },
       { name: 'Überbackene Tomaten mit Spinat & Roquefort', description: 'Mediterrane Gemüse-Käse-Kombination', price: '6,90', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
       { name: 'Frittierte Auberginen mit Honig', description: 'Süß-herzhafte Auberginen-Kreation', price: '6,90', image: 'https://images.unsplash.com/photo-1526057565006-20beab8dd2ed' },
-      { name: 'Champignons al Ajillo', description: 'Vegan - Pilze in Knoblauchöl', price: '6,90', image: 'https://images.unsplash.com/photo-1505576391880-b3f9d713dc4f' },
+      { name: 'Champignons al Ajillo', description: 'Vegan - Pilze in Knoblauchöl', price: '6,90', image: 'https://images.unsplash.com/photo-1505851498219-ee2449c18936' },
       { name: 'Teigtaschen mit Spinat & Kräutersauce', description: 'Hausgemachte Teigtaschen mit frischen Kräutern', price: '6,90', image: 'https://images.unsplash.com/photo-1574484284002-952d92456975' },
       { name: 'Feta Feigen', description: 'Süße Feigen mit salzigem Feta', price: '6,90', image: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371' },
       { name: 'Ziegenkäse auf Fenchel & Walnuss', description: 'Aromatische Kombination mit Nüssen', price: '6,90', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
