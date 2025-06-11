@@ -238,7 +238,7 @@ const Home = () => {
 const Speisekarte = () => {
   const [selectedCategory, setSelectedCategory] = useState('alle');
   
-  // Complete menu data with realistic, dish-specific images
+  // Complete menu data with authentic, dish-specific images
   const menuItems = {
     'inicio': [
       { name: 'Aioli', description: 'Spanische Knoblauch-Mayonnaise', price: '3,50', image: 'https://images.unsplash.com/photo-1671871695722-b91911e9c072' },
