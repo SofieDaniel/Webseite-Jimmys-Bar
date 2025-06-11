@@ -649,11 +649,24 @@ const Speisekarte = () => {
         {/* Menu Footer */}
         <div className="text-center mt-16 p-8 bg-dark-brown rounded-lg border border-warm-brown">
           <h3 className="text-2xl font-serif text-warm-beige mb-4">Allergien und Unverträglichkeiten</h3>
-          <p className="text-light-beige font-light leading-relaxed max-w-3xl mx-auto">
+          <p className="text-light-beige font-light leading-relaxed max-w-3xl mx-auto mb-4">
             Bitte informieren Sie uns über eventuelle Allergien oder Unverträglichkeiten. 
-            Unsere Küche berücksichtigt gerne Ihre individuellen Bedürfnisse. 
-            Vegan = 🌱 • Vegetarisch = 🥬 • Glutenfrei auf Anfrage möglich
+            Unsere Küche berücksichtigt gerne Ihre individuellen Bedürfnisse.
           </p>
+          <div className="flex flex-wrap justify-center gap-6 text-sm">
+            <span className="flex items-center text-light-beige">
+              <span className="text-green-400 text-lg mr-2">🌱</span>
+              Vegan
+            </span>
+            <span className="flex items-center text-light-beige">
+              <span className="text-green-300 text-lg mr-2">🥬</span>
+              Vegetarisch
+            </span>
+            <span className="flex items-center text-light-beige">
+              <span className="text-yellow-400 text-sm font-bold mr-2">GF</span>
+              Glutenfrei
+            </span>
+          </div>
         </div>
       </div>
     </div>
