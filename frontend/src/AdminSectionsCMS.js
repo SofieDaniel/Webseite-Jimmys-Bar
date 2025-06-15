@@ -794,6 +794,23 @@ export const AboutContentSection = ({ user, token, apiCall }) => {
     }
   };
 
+  const saveAboutContent = async () => {
+    setLoading(true);
+    try {
+      const response = await apiCall('/cms/about', 'PUT', aboutData);
+      if (response.ok) {
+        setSuccess('Über uns Inhalte erfolgreich gespeichert!');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Fehler beim Speichern');
+      }
+    } catch (error) {
+      setError('Fehler beim Speichern');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -872,6 +889,7 @@ export const AboutContentSection = ({ user, token, apiCall }) => {
           />
 
           <button
+            onClick={saveAboutContent}
             disabled={loading}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
