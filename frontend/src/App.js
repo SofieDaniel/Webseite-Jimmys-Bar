@@ -10,6 +10,7 @@ import { HomepageContentSection, LocationsManagementSection, EnhancedMenuSection
 import { NewsletterSection } from './NewsletterSection';
 import { NewsletterSection } from './NewsletterSection';
 import { NewsletterSection } from './NewsletterSection';
+import { NewsletterSection } from './NewsletterSection';
 
 // Cookie Banner Component
 const CookieBanner = () => {
