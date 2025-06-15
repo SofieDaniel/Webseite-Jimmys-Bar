@@ -876,12 +876,11 @@ const NewsletterRegistration = () => {
   );
 };
 
-// Speisekarte Component (Simplified German-only)
+// Speisekarte Component (Loads from CMS)
 const Speisekarte = () => {
   const [selectedCategory, setSelectedCategory] = useState('alle');
-  
-  // Get menu data from CMS or fallback to static data
-  const [menuData, setMenuData] = useState(null);
+  const [menuData, setMenuData] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : 'http://localhost:8001/api';
@@ -892,11 +891,28 @@ const Speisekarte = () => {
 
   const loadMenuData = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/menu/items`);
-      if (response.ok) {
-        const data = await response.json();
-        setMenuData(data);
+      // Load menu items and categories from CMS
+      const [itemsResponse, categoriesResponse] = await Promise.all([
+        fetch(`${API_BASE_URL}/menu/items`),
+        fetch(`${API_BASE_URL}/menu/categories`) // We'll need to add this endpoint
+      ]);
+      
+      if (itemsResponse.ok) {
+        const items = await itemsResponse.json();
+        setMenuData(items);
       }
+
+      // For now, use static categories until we add the endpoint
+      setCategories([
+        { id: 'alle', name: 'Alle Kategorien', slug: 'alle' },
+        { id: 'inicio', name: 'Inicio', slug: 'inicio' },
+        { id: 'salat', name: 'Salate', slug: 'salat' },
+        { id: 'kleiner-salat', name: 'Kleine Salate', slug: 'kleiner-salat' },
+        { id: 'tapa-paella', name: 'Tapa Paella', slug: 'tapa-paella' },
+        { id: 'tapas-vegetarian', name: 'Tapas Vegetarisch', slug: 'tapas-vegetarian' },
+        { id: 'tapas-pescado', name: 'Tapas Fisch', slug: 'tapas-pescado' }
+      ]);
+      
     } catch (error) {
       console.error('Error loading menu data:', error);
     } finally {
@@ -904,40 +920,15 @@ const Speisekarte = () => {
     }
   };
 
-  // Static fallback menu data (simplified structure)
-  const staticMenuItems = {
-    'inicio': [
-      { name: 'Aioli', description: 'Hausgemachte Knoblauch-Mayonnaise', price: '3,50€', image: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f' },
-      { name: 'Oliven', description: 'Marinierte spanische Oliven', price: '3,90€', image: 'https://images.unsplash.com/photo-1714583357992-98f0ad946902' },
-      { name: 'Spanischer Käseteller', description: 'Auswahl spanischer Käsesorten', price: '8,90€', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d' },
-    ],
-    'tapas-vegetarian': [
-      { name: 'Papas Bravas', description: 'Klassische spanische Kartoffeln mit scharfer Soße', price: '6,90€', vegan: true },
-      { name: 'Pimientos de Padrón', description: 'Gebratene grüne Paprika', price: '6,90€', vegan: true },
-      { name: 'Tortilla de Patata', description: 'Spanisches Kartoffel-Omelett', price: '6,90€', vegetarian: true },
-    ],
-    'tapas-pescado': [
-      { name: 'Gambas al Ajillo', description: 'Garnelen in Knoblauchöl', price: '9,90€' },
-      { name: 'Calamares a la Romana', description: 'Panierte Tintenfischringe', price: '7,50€' },
-      { name: 'Boquerones Fritos', description: 'Frittierte Sardellen', price: '7,50€' },
-    ]
-  };
-
-  const categories = [
-    { id: 'alle', name: 'Alle Kategorien' },
-    { id: 'inicio', name: 'Inicio' },
-    { id: 'tapas-vegetarian', name: 'Tapas Vegetarisch' },
-    { id: 'tapas-pescado', name: 'Tapas Fisch' },
-    { id: 'tapas-carne', name: 'Tapas Fleisch' },
-    { id: 'pasta', name: 'Pasta' },
-    { id: 'dessert', name: 'Dessert' }
-  ];
-
   const getFilteredItems = () => {
     if (selectedCategory === 'alle') {
-      return Object.values(staticMenuItems).flat();
+      return menuData;
     }
-    return staticMenuItems[selectedCategory] || [];
+    return menuData.filter(item => item.category === selectedCategory);
+  };
+
+  const formatPrice = (price) => {
+    return `${price.toFixed(2).replace('.', ',')}€`;
   };
 
   if (loading) {
@@ -961,9 +952,9 @@ const Speisekarte = () => {
           {categories.map((category) => (
             <button
               key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
+              onClick={() => setSelectedCategory(category.slug)}
               className={`px-6 py-3 rounded-lg transition-all duration-300 ${
-                selectedCategory === category.id
+                selectedCategory === category.slug
                   ? 'bg-warm-beige text-dark-brown'
                   : 'bg-medium-brown text-light-beige hover:bg-warm-brown'
               }`}
@@ -976,19 +967,35 @@ const Speisekarte = () => {
         {/* Menu Items */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {getFilteredItems().map((item, index) => (
-            <div key={index} className="bg-medium-brown rounded-lg overflow-hidden border border-warm-brown hover:border-warm-beige transition-all duration-300">
+            <div key={item.id || index} className="bg-medium-brown rounded-lg overflow-hidden border border-warm-brown hover:border-warm-beige transition-all duration-300 group">
+              {/* Hover Image */}
               {item.image && (
-                <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
+                  />
+                  {/* Hover overlay with details */}
+                  {item.detailed_description && (
+                    <div className="absolute inset-0 bg-black bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex items-center justify-center">
+                      <p className="text-white text-sm text-center leading-relaxed max-h-full overflow-y-auto">
+                        {item.detailed_description}
+                      </p>
+                    </div>
+                  )}
+                </div>
               )}
+              
               <div className="p-6">
                 <div className="flex justify-between items-start mb-3">
                   <h3 className="text-xl font-serif text-warm-beige">{item.name}</h3>
-                  <span className="text-warm-beige font-semibold">{item.price}</span>
+                  <span className="text-warm-beige font-semibold">{formatPrice(item.price)}</span>
                 </div>
-                <p className="text-light-beige text-sm leading-relaxed">{item.description}</p>
+                <p className="text-light-beige text-sm leading-relaxed mb-3">{item.description}</p>
                 
                 {/* Tags */}
-                <div className="flex gap-2 mt-3">
+                <div className="flex gap-2 flex-wrap">
                   {item.vegan && (
                     <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">Vegan</span>
                   )}
@@ -1003,6 +1010,12 @@ const Speisekarte = () => {
             </div>
           ))}
         </div>
+
+        {getFilteredItems().length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-light-beige text-lg">Keine Gerichte in dieser Kategorie gefunden.</p>
+          </div>
+        )}
       </div>
     </div>
   );
