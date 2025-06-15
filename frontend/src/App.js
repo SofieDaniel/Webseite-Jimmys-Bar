@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "re
 import { ContentSection, MenuSection } from './AdminSections';
 import { ReviewsSection, ContactsSection, UsersSection } from './AdminSectionsExtended';
 import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
-import { HomepageContentSection, LocationsManagementSection, EnhancedMenuSection, AboutContentSection } from './AdminSectionsCMS';
+import { HomepageContentSection, LocationsManagementSection, EnhancedMenuSection, AboutContentSection, ContactLegalSection } from './AdminSectionsCMS';
 
 // Language Context with Enhanced Multi-Language Support
 const LanguageContext = createContext();
