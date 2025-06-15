@@ -1287,6 +1287,8 @@ async def create_smtp_config(
     current_user: User = Depends(get_admin_user)
 ):
     """Create SMTP configuration"""
+    import base64
+    
     # Deactivate existing configs
     await db.smtp_config.update_many({}, {"$set": {"is_active": False}})
     
