@@ -469,8 +469,6 @@ const AdminPanel = () => {
           {activeSection === 'enhanced-menu' && <EnhancedMenuSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'about-cms' && <AboutContentSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'contact-legal' && <ContactLegalSection user={user} token={token} apiCall={apiCall} />}
-          {activeSection === 'content' && <ContentSection user={user} token={token} apiCall={apiCall} />}
-          {activeSection === 'menu' && <MenuSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'reviews' && <ReviewsSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'contacts' && <ContactsSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'users' && <UsersSection user={user} token={token} apiCall={apiCall} />}
