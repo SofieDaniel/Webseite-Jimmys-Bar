@@ -404,6 +404,82 @@ class MaintenanceMode(BaseModel):
     activated_by: Optional[str] = None
     activated_at: Optional[datetime] = None
 
+# Newsletter Models
+class NewsletterSubscriber(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: str
+    name: Optional[str] = None
+    subscribed_at: datetime = Field(default_factory=datetime.utcnow)
+    is_active: bool = True
+    unsubscribe_token: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+class NewsletterSubscriberCreate(BaseModel):
+    email: str
+    name: Optional[str] = None
+
+class NewsletterTemplate(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    subject: str
+    content: str  # HTML content
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_by: str
+    is_active: bool = True
+
+class NewsletterTemplateCreate(BaseModel):
+    name: str
+    subject: str
+    content: str
+
+class Newsletter(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    subject: str
+    content: str  # HTML content
+    template_id: Optional[str] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_by: str
+    sent_at: Optional[datetime] = None
+    sent_by: Optional[str] = None
+    recipients_count: int = 0
+    status: str = "draft"  # draft, sending, sent, failed
+
+class NewsletterCreate(BaseModel):
+    subject: str
+    content: str
+    template_id: Optional[str] = None
+
+class SMTPConfig(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    host: str
+    port: int
+    username: str
+    password: str  # Will be encrypted
+    use_tls: bool = True
+    from_email: str
+    from_name: str
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+class SMTPConfigCreate(BaseModel):
+    host: str
+    port: int
+    username: str
+    password: str
+    use_tls: bool = True
+    from_email: str
+    from_name: str
+
+class SMTPConfigUpdate(BaseModel):
+    host: Optional[str] = None
+    port: Optional[int] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
+    use_tls: Optional[bool] = None
+    from_email: Optional[str] = None
+    from_name: Optional[str] = None
+
 # Auth Helper Functions
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
