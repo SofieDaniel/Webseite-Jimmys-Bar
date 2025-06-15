@@ -330,7 +330,7 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
                       newItems[index] = {...item, image_url: e.target.value};
                       setGalleryData({...galleryData, gallery_items: newItems});
                     }}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
