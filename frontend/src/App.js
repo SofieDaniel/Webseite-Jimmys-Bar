@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "re
 import { ContentSection, MenuSection } from './AdminSections';
 import { ReviewsSection, ContactsSection, UsersSection } from './AdminSectionsExtended';
 import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
+import { HomepageContentSection, LocationsManagementSection, EnhancedMenuSection, AboutContentSection } from './AdminSectionsCMS';
 
 // Language Context for i18n
 const LanguageContext = createContext();
