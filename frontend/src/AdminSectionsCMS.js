@@ -409,7 +409,7 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
               type="url"
               value={lieferandoData.lieferando_url || ''}
               onChange={(e) => setLieferandoData({...lieferandoData, lieferando_url: e.target.value})}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
