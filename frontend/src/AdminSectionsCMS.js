@@ -677,7 +677,7 @@ export const LocationsManagementSection = ({ user, token, apiCall }) => {
               type="url"
               value={editingLocation.google_maps_url || ''}
               onChange={(e) => setEditingLocation({...editingLocation, google_maps_url: e.target.value})}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
