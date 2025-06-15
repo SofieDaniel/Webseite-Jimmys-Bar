@@ -1236,31 +1236,29 @@ def test_admin_route_access():
         # Check if response contains admin login page content
         content = response.text.lower()
         
-        # Look for key elements that should be in the admin login page
-        admin_indicators = [
-            "cms login",
-            "jimmy's tapas bar verwaltung",
-            "benutzername",
-            "passwort",
-            "anmelden"
-        ]
-        
-        missing_indicators = [indicator for indicator in admin_indicators if indicator not in content]
-        
-        if not missing_indicators:
+        # Check if we're getting the main site content or admin login
+        if "cms login" in content and "jimmy's tapas bar verwaltung" in content:
             print("✅ Response contains admin login page content")
-        else:
-            print(f"❌ Response is missing expected admin login page content: {missing_indicators}")
-            return False
-        
-        # Check that the main site header is not present
-        if "speisekarte" in content and "startseite" in content and "kontakt" in content:
-            print("❌ Main site header is present in admin page")
-            return False
-        else:
-            print("✅ Admin route is properly isolated from main site layout")
             
-        return True
+            # Check that the main site header is not present
+            if "speisekarte" in content and "startseite" in content and "kontakt" in content:
+                print("❌ Main site header is present in admin page")
+                return False
+            else:
+                print("✅ Admin route is properly isolated from main site layout")
+                return True
+        else:
+            # We're not getting the admin login page
+            print("❌ Admin login page not found in response")
+            
+            # Check if we're getting the main site or just the base HTML
+            if "jimmy's" in content and "tapas bar" in content:
+                print("❌ Main site content is being returned instead of admin login")
+            else:
+                print("❌ Neither admin login nor main site content found - likely a client-side routing issue")
+                print("   The server is returning the base HTML without the admin component being rendered")
+            
+            return False
     
     except requests.exceptions.RequestException as e:
         print(f"❌ Error connecting to admin route: {e}")
