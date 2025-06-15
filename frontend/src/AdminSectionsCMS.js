@@ -461,7 +461,52 @@ export const LocationsManagementSection = ({ user, token, apiCall }) => {
     }
   };
 
-  const newLocation = {
+  const saveLocation = async () => {
+    setLoading(true);
+    try {
+      const isNewLocation = editingLocation.id.includes('location-') && editingLocation.id.includes(Date.now().toString().slice(-5));
+      
+      const response = isNewLocation 
+        ? await apiCall('/cms/locations', 'POST', editingLocation)
+        : await apiCall(`/cms/locations/${editingLocation.id}`, 'PUT', editingLocation);
+      
+      if (response.ok) {
+        setSuccess(`Standort erfolgreich ${isNewLocation ? 'erstellt' : 'aktualisiert'}!`);
+        setShowForm(false);
+        setEditingLocation(null);
+        loadLocations();
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Fehler beim Speichern des Standorts');
+      }
+    } catch (error) {
+      setError('Fehler beim Speichern des Standorts');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteLocation = async (locationId) => {
+    if (!window.confirm('Möchten Sie diesen Standort wirklich löschen?')) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await apiCall(`/cms/locations/${locationId}`, 'DELETE');
+      if (response.ok) {
+        setSuccess('Standort erfolgreich gelöscht!');
+        loadLocations();
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Fehler beim Löschen des Standorts');
+      }
+    } catch (error) {
+      setError('Fehler beim Löschen des Standorts');
+    } finally {
+      setLoading(false);
+    }
+  };
     id: `location-${Date.now()}`,
     name: { de: '', en: '', es: '' },
     address: { de: '', en: '', es: '' },
