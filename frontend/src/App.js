@@ -109,12 +109,11 @@ const LanguageProvider = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState('de');
 
   const toggleLanguage = () => {
-    const languages = ['de', 'en', 'es'];
-    const currentIndex = languages.indexOf(currentLanguage);
-    const nextIndex = (currentIndex + 1) % languages.length;
-    setCurrentLanguage(languages[nextIndex]);
+    const nextLanguage = currentLanguage === 'de' ? 'en' : currentLanguage === 'en' ? 'es' : 'de';
+    setCurrentLanguage(nextLanguage);
   };
 
+  // Enhanced translation function with fallback
   const t = (key) => {
     const keys = key.split('.');
     let value = translations[currentLanguage];
@@ -123,6 +122,15 @@ const LanguageProvider = ({ children }) => {
       value = value?.[k];
     }
     
+    // Fallback to German if translation not found
+    if (!value && currentLanguage !== 'de') {
+      value = translations.de;
+      for (const k of keys) {
+        value = value?.[k];
+      }
+    }
+    
+    // Last fallback - return the key itself
     return value || key;
   };
 
