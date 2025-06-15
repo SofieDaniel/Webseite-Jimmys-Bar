@@ -1214,6 +1214,302 @@ async def update_footer_content(
     
     return {"message": "Footer content updated successfully", "data": footer_data}
 
+# ===============================================
+# NEWSLETTER SYSTEM API ENDPOINTS
+# ===============================================
+
+# Newsletter Subscription (Public endpoint)
+@api_router.post("/newsletter/subscribe")
+async def subscribe_to_newsletter(subscriber_data: NewsletterSubscriberCreate):
+    """Subscribe to newsletter - public endpoint"""
+    # Check if email already exists
+    existing = await db.newsletter_subscribers.find_one({"email": subscriber_data.email})
+    if existing:
+        if existing["is_active"]:
+            raise HTTPException(status_code=400, detail="Diese E-Mail-Adresse ist bereits für den Newsletter registriert")
+        else:
+            # Reactivate subscription
+            await db.newsletter_subscribers.update_one(
+                {"email": subscriber_data.email},
+                {"$set": {"is_active": True, "subscribed_at": datetime.utcnow()}}
+            )
+            return {"message": "Newsletter-Abonnement wurde reaktiviert"}
+    
+    subscriber = NewsletterSubscriber(**subscriber_data.dict())
+    await db.newsletter_subscribers.insert_one(subscriber.dict())
+    return {"message": "Vielen Dank! Sie haben sich erfolgreich für unseren Newsletter angemeldet."}
+
+# Newsletter Unsubscribe (Public endpoint)
+@api_router.post("/newsletter/unsubscribe/{token}")
+async def unsubscribe_from_newsletter(token: str):
+    """Unsubscribe from newsletter using token"""
+    subscriber = await db.newsletter_subscribers.find_one({"unsubscribe_token": token})
+    if not subscriber:
+        raise HTTPException(status_code=404, detail="Ungültiger Abmelde-Link")
+    
+    await db.newsletter_subscribers.update_one(
+        {"unsubscribe_token": token},
+        {"$set": {"is_active": False}}
+    )
+    return {"message": "Sie wurden erfolgreich vom Newsletter abgemeldet"}
+
+# Admin Newsletter Management
+@api_router.get("/admin/newsletter/subscribers")
+async def get_newsletter_subscribers(current_user: User = Depends(get_editor_user)):
+    """Get all newsletter subscribers"""
+    subscribers = await db.newsletter_subscribers.find().sort("subscribed_at", -1).to_list(1000)
+    return [NewsletterSubscriber(**sub) for sub in subscribers]
+
+@api_router.delete("/admin/newsletter/subscribers/{subscriber_id}")
+async def delete_newsletter_subscriber(subscriber_id: str, current_user: User = Depends(get_admin_user)):
+    """Delete newsletter subscriber"""
+    result = await db.newsletter_subscribers.delete_one({"id": subscriber_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Abonnent nicht gefunden")
+    return {"message": "Abonnent erfolgreich gelöscht"}
+
+# SMTP Configuration Management
+@api_router.get("/admin/newsletter/smtp")
+async def get_smtp_config(current_user: User = Depends(get_admin_user)):
+    """Get SMTP configuration"""
+    config = await db.smtp_config.find_one({"is_active": True})
+    if not config:
+        return {"message": "Keine SMTP-Konfiguration gefunden"}
+    
+    # Don't return password for security
+    config_dict = SMTPConfig(**config).dict()
+    config_dict["password"] = "***hidden***"
+    return config_dict
+
+@api_router.post("/admin/newsletter/smtp")
+async def create_smtp_config(
+    smtp_data: SMTPConfigCreate, 
+    current_user: User = Depends(get_admin_user)
+):
+    """Create SMTP configuration"""
+    # Deactivate existing configs
+    await db.smtp_config.update_many({}, {"$set": {"is_active": False}})
+    
+    # Encrypt password (simple base64 for demo - use proper encryption in production)
+    encrypted_password = base64.b64encode(smtp_data.password.encode()).decode()
+    
+    smtp_config = SMTPConfig(
+        **smtp_data.dict(),
+        password=encrypted_password,
+        updated_by=current_user.username
+    )
+    
+    await db.smtp_config.insert_one(smtp_config.dict())
+    return {"message": "SMTP-Konfiguration erfolgreich erstellt"}
+
+@api_router.put("/admin/newsletter/smtp/{config_id}")
+async def update_smtp_config(
+    config_id: str,
+    smtp_data: SMTPConfigUpdate,
+    current_user: User = Depends(get_admin_user)
+):
+    """Update SMTP configuration"""
+    update_dict = {k: v for k, v in smtp_data.dict().items() if v is not None}
+    update_dict["updated_at"] = datetime.utcnow()
+    update_dict["updated_by"] = current_user.username
+    
+    # Encrypt password if provided
+    if "password" in update_dict:
+        update_dict["password"] = base64.b64encode(update_dict["password"].encode()).decode()
+    
+    result = await db.smtp_config.update_one(
+        {"id": config_id},
+        {"$set": update_dict}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="SMTP-Konfiguration nicht gefunden")
+    
+    return {"message": "SMTP-Konfiguration erfolgreich aktualisiert"}
+
+# Newsletter Template Management
+@api_router.get("/admin/newsletter/templates")
+async def get_newsletter_templates(current_user: User = Depends(get_editor_user)):
+    """Get all newsletter templates"""
+    templates = await db.newsletter_templates.find({"is_active": True}).sort("created_at", -1).to_list(1000)
+    return [NewsletterTemplate(**template) for template in templates]
+
+@api_router.post("/admin/newsletter/templates")
+async def create_newsletter_template(
+    template_data: NewsletterTemplateCreate,
+    current_user: User = Depends(get_editor_user)
+):
+    """Create newsletter template"""
+    template = NewsletterTemplate(
+        **template_data.dict(),
+        created_by=current_user.username
+    )
+    await db.newsletter_templates.insert_one(template.dict())
+    return {"message": "Newsletter-Vorlage erfolgreich erstellt", "template": template}
+
+@api_router.delete("/admin/newsletter/templates/{template_id}")
+async def delete_newsletter_template(template_id: str, current_user: User = Depends(get_admin_user)):
+    """Delete newsletter template"""
+    result = await db.newsletter_templates.update_one(
+        {"id": template_id},
+        {"$set": {"is_active": False}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Vorlage nicht gefunden")
+    return {"message": "Vorlage erfolgreich gelöscht"}
+
+# Newsletter Creation and Sending
+@api_router.get("/admin/newsletter/campaigns")
+async def get_newsletters(current_user: User = Depends(get_editor_user)):
+    """Get all newsletters/campaigns"""
+    newsletters = await db.newsletters.find().sort("created_at", -1).to_list(1000)
+    return [Newsletter(**newsletter) for newsletter in newsletters]
+
+@api_router.post("/admin/newsletter/campaigns")
+async def create_newsletter(
+    newsletter_data: NewsletterCreate,
+    current_user: User = Depends(get_editor_user)
+):
+    """Create newsletter campaign"""
+    newsletter = Newsletter(
+        **newsletter_data.dict(),
+        created_by=current_user.username
+    )
+    await db.newsletters.insert_one(newsletter.dict())
+    return {"message": "Newsletter erfolgreich erstellt", "newsletter": newsletter}
+
+@api_router.post("/admin/newsletter/campaigns/{newsletter_id}/send")
+async def send_newsletter(newsletter_id: str, current_user: User = Depends(get_admin_user)):
+    """Send newsletter to all active subscribers"""
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    
+    # Get newsletter
+    newsletter = await db.newsletters.find_one({"id": newsletter_id})
+    if not newsletter:
+        raise HTTPException(status_code=404, detail="Newsletter nicht gefunden")
+    
+    if newsletter["status"] == "sent":
+        raise HTTPException(status_code=400, detail="Newsletter wurde bereits versendet")
+    
+    # Get SMTP config
+    smtp_config = await db.smtp_config.find_one({"is_active": True})
+    if not smtp_config:
+        raise HTTPException(status_code=400, detail="Keine SMTP-Konfiguration gefunden")
+    
+    # Get active subscribers
+    subscribers = await db.newsletter_subscribers.find({"is_active": True}).to_list(1000)
+    if not subscribers:
+        raise HTTPException(status_code=400, detail="Keine aktiven Abonnenten gefunden")
+    
+    # Update newsletter status
+    await db.newsletters.update_one(
+        {"id": newsletter_id},
+        {"$set": {"status": "sending"}}
+    )
+    
+    try:
+        # Decrypt password
+        decrypted_password = base64.b64decode(smtp_config["password"]).decode()
+        
+        # Setup SMTP
+        server = smtplib.SMTP(smtp_config["host"], smtp_config["port"])
+        if smtp_config["use_tls"]:
+            server.starttls()
+        server.login(smtp_config["username"], decrypted_password)
+        
+        sent_count = 0
+        for subscriber in subscribers:
+            try:
+                # Create email
+                msg = MIMEMultipart('alternative')
+                msg['Subject'] = newsletter["subject"]
+                msg['From'] = f"{smtp_config['from_name']} <{smtp_config['from_email']}>"
+                msg['To'] = subscriber["email"]
+                
+                # Add unsubscribe link to content
+                content_with_unsubscribe = newsletter["content"] + f"""
+                <br><br>
+                <p style="font-size: 12px; color: #666;">
+                    Sie möchten sich vom Newsletter abmelden? 
+                    <a href="{os.environ.get('FRONTEND_URL', 'http://localhost:3000')}/newsletter/unsubscribe/{subscriber['unsubscribe_token']}">Hier klicken</a>
+                </p>
+                """
+                
+                html_part = MIMEText(content_with_unsubscribe, 'html', 'utf-8')
+                msg.attach(html_part)
+                
+                # Send email
+                server.send_message(msg)
+                sent_count += 1
+                
+            except Exception as e:
+                logger.error(f"Failed to send email to {subscriber['email']}: {str(e)}")
+                continue
+        
+        server.quit()
+        
+        # Update newsletter status
+        await db.newsletters.update_one(
+            {"id": newsletter_id},
+            {"$set": {
+                "status": "sent",
+                "sent_at": datetime.utcnow(),
+                "sent_by": current_user.username,
+                "recipients_count": sent_count
+            }}
+        )
+        
+        return {"message": f"Newsletter erfolgreich an {sent_count} Empfänger versendet"}
+        
+    except Exception as e:
+        # Update newsletter status to failed
+        await db.newsletters.update_one(
+            {"id": newsletter_id},
+            {"$set": {"status": "failed"}}
+        )
+        
+        logger.error(f"Failed to send newsletter: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Fehler beim Versenden: {str(e)}")
+
+# Test SMTP Configuration
+@api_router.post("/admin/newsletter/smtp/test")
+async def test_smtp_config(current_user: User = Depends(get_admin_user)):
+    """Test SMTP configuration"""
+    import smtplib
+    from email.mime.text import MIMEText
+    
+    # Get SMTP config
+    smtp_config = await db.smtp_config.find_one({"is_active": True})
+    if not smtp_config:
+        raise HTTPException(status_code=400, detail="Keine SMTP-Konfiguration gefunden")
+    
+    try:
+        # Decrypt password
+        decrypted_password = base64.b64decode(smtp_config["password"]).decode()
+        
+        # Test SMTP connection
+        server = smtplib.SMTP(smtp_config["host"], smtp_config["port"])
+        if smtp_config["use_tls"]:
+            server.starttls()
+        server.login(smtp_config["username"], decrypted_password)
+        
+        # Send test email to admin
+        msg = MIMEText("Dies ist eine Test-E-Mail von Jimmy's Tapas Bar Newsletter-System.", 'plain', 'utf-8')
+        msg['Subject'] = "Newsletter-System Test"
+        msg['From'] = f"{smtp_config['from_name']} <{smtp_config['from_email']}>"
+        msg['To'] = current_user.email
+        
+        server.send_message(msg)
+        server.quit()
+        
+        return {"message": "Test-E-Mail erfolgreich versendet! Bitte prüfen Sie Ihr Postfach."}
+        
+    except Exception as e:
+        logger.error(f"SMTP test failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"SMTP-Test fehlgeschlagen: {str(e)}")
+
 # Add explicit OPTIONS route handler for CORS preflight requests
 @api_router.options("/{path:path}")
 async def options_route(path: str):
