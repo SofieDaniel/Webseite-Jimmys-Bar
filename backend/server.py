@@ -691,6 +691,293 @@ async def upload_image(
     
     return {"image_url": data_url, "filename": file.filename}
 
+# ===============================================
+# COMPLETE CMS API ENDPOINTS
+# ===============================================
+
+# Homepage Content Management
+@api_router.get("/cms/homepage/hero")
+async def get_hero_section():
+    """Get homepage hero section content"""
+    hero = await db.homepage_hero.find_one({"is_active": True})
+    if not hero:
+        # Return default content if none exists
+        return {
+            "title": {"de": "AUTÉNTICO SABOR ESPAÑOL", "en": "AUTÉNTICO SABOR ESPAÑOL", "es": "AUTÉNTICO SABOR ESPAÑOL"},
+            "subtitle": {"de": "an der Ostsee", "en": "at the Baltic Sea", "es": "en el Mar Báltico"},
+            "description": {"de": "Genießen Sie authentische spanische Spezialitäten", "en": "Enjoy authentic Spanish specialties", "es": "Disfrute de auténticas especialidades españolas"},
+            "location_text": {"de": "direkt an der malerischen Ostseeküste", "en": "directly at the picturesque Baltic Sea coast", "es": "directamente en la pintoresca costa del Mar Báltico"},
+            "background_image": "https://images.unsplash.com/photo-1656423521731-9665583f100c",
+            "menu_button_text": {"de": "Zur Speisekarte", "en": "View Menu", "es": "Ver Carta"},
+            "locations_button_text": {"de": "Unsere Standorte", "en": "Our Locations", "es": "Nuestras Ubicaciones"}
+        }
+    return hero
+
+@api_router.put("/cms/homepage/hero")
+async def update_hero_section(
+    hero_data: HeroSection,
+    current_user: User = Depends(get_editor_user)
+):
+    """Update homepage hero section"""
+    hero_data.updated_at = datetime.utcnow()
+    hero_data.updated_by = current_user.username
+    
+    await db.homepage_hero.update_one(
+        {"is_active": True},
+        {"$set": hero_data.dict()},
+        upsert=True
+    )
+    
+    return {"message": "Hero section updated successfully", "data": hero_data}
+
+@api_router.get("/cms/homepage/features")
+async def get_homepage_features():
+    """Get homepage features section"""
+    features = await db.homepage_features.find_one({"is_active": True})
+    if not features:
+        # Return default content
+        return {
+            "section_title": {"de": "Spanische Tradition", "en": "Spanish Tradition", "es": "Tradición Española"},
+            "section_description": {"de": "Erleben Sie authentische spanische Gastfreundschaft an der deutschen Ostseeküste", "en": "Experience authentic Spanish hospitality at the German Baltic Sea coast", "es": "Experimente la auténtica hospitalidad española en la costa alemana del Mar Báltico"},
+            "features": [
+                {
+                    "title": {"de": "Authentische Tapas", "en": "Authentic Tapas", "es": "Tapas Auténticas"},
+                    "description": {"de": "Traditionelle spanische Gerichte, mit Liebe zubereitet und perfekt zum Teilen", "en": "Traditional Spanish dishes, prepared with love and perfect for sharing", "es": "Platos tradicionales españoles, preparados con amor y perfectos para compartir"},
+                    "image_url": "https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg",
+                    "image_alt": {"de": "Authentische Tapas", "en": "Authentic Tapas", "es": "Tapas Auténticas"}
+                },
+                {
+                    "title": {"de": "Frische Paella", "en": "Fresh Paella", "es": "Paella Fresca"},
+                    "description": {"de": "Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn", "en": "Daily homemade with seafood, vegetables or chicken", "es": "Hecha en casa diariamente con mariscos, verduras o pollo"},
+                    "image_url": "https://images.unsplash.com/photo-1694685367640-05d6624e57f1",
+                    "image_alt": {"de": "Frische Paella", "en": "Fresh Paella", "es": "Paella Fresca"}
+                },
+                {
+                    "title": {"de": "Strandnähe", "en": "Beach Proximity", "es": "Cerca de la Playa"},
+                    "description": {"de": "Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden", "en": "Both locations directly at the picturesque Baltic Sea coast – perfect for relaxing hours", "es": "Ambas ubicaciones directamente en la pintoresca costa del Mar Báltico – perfectas para horas relajantes"},
+                    "image_url": "https://images.pexels.com/photos/32508247/pexels-photo-32508247.jpeg",
+                    "image_alt": {"de": "Strandnähe", "en": "Beach Proximity", "es": "Cerca de la Playa"}
+                }
+            ]
+        }
+    return features
+
+@api_router.put("/cms/homepage/features")
+async def update_homepage_features(
+    features_data: HomepageFeatures,
+    current_user: User = Depends(get_editor_user)
+):
+    """Update homepage features section"""
+    features_data.updated_at = datetime.utcnow()
+    features_data.updated_by = current_user.username
+    
+    await db.homepage_features.update_one(
+        {"is_active": True},
+        {"$set": features_data.dict()},
+        upsert=True
+    )
+    
+    return {"message": "Features section updated successfully", "data": features_data}
+
+@api_router.get("/cms/homepage/food-gallery")
+async def get_food_gallery():
+    """Get homepage food gallery section"""
+    gallery = await db.homepage_food_gallery.find_one({"is_active": True})
+    if not gallery:
+        # Return default content
+        return {
+            "section_title": {"de": "Unsere Spezialitäten", "en": "Our Specialties", "es": "Nuestras Especialidades"},
+            "gallery_items": [
+                {
+                    "name": {"de": "Patatas Bravas", "en": "Patatas Bravas", "es": "Patatas Bravas"},
+                    "description": {"de": "Klassische spanische Kartoffeln", "en": "Classic Spanish potatoes", "es": "Patatas españolas clásicas"},
+                    "image_url": "https://images.unsplash.com/photo-1565599837634-134bc3aadce8",
+                    "category_link": "#tapas-vegetarian",
+                    "order": 1
+                },
+                {
+                    "name": {"de": "Paella Valenciana", "en": "Paella Valenciana", "es": "Paella Valenciana"},
+                    "description": {"de": "Traditionelle spanische Paella", "en": "Traditional Spanish paella", "es": "Paella española tradicional"},
+                    "image_url": "https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg",
+                    "category_link": "#tapa-paella",
+                    "order": 2
+                },
+                {
+                    "name": {"de": "Tapas Variación", "en": "Tapas Variation", "es": "Variación de Tapas"},
+                    "description": {"de": "Auswahl spanischer Köstlichkeiten", "en": "Selection of Spanish delicacies", "es": "Selección de delicias españolas"},
+                    "image_url": "https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg",
+                    "category_link": "#inicio",
+                    "order": 3
+                },
+                {
+                    "name": {"de": "Gambas al Ajillo", "en": "Gambas al Ajillo", "es": "Gambas al Ajillo"},
+                    "description": {"de": "Garnelen in Knoblauchöl", "en": "Shrimp in garlic oil", "es": "Gambas en aceite de ajo"},
+                    "image_url": "https://images.unsplash.com/photo-1619860705243-dbef552e7118",
+                    "category_link": "#tapas-pescado",
+                    "order": 4
+                }
+            ]
+        }
+    return gallery
+
+@api_router.put("/cms/homepage/food-gallery")
+async def update_food_gallery(
+    gallery_data: HomepageFoodGallery,
+    current_user: User = Depends(get_editor_user)
+):
+    """Update homepage food gallery section"""
+    gallery_data.updated_at = datetime.utcnow()
+    gallery_data.updated_by = current_user.username
+    
+    await db.homepage_food_gallery.update_one(
+        {"is_active": True},
+        {"$set": gallery_data.dict()},
+        upsert=True
+    )
+    
+    return {"message": "Food gallery updated successfully", "data": gallery_data}
+
+@api_router.get("/cms/homepage/lieferando")
+async def get_lieferando_section():
+    """Get Lieferando section content"""
+    lieferando = await db.homepage_lieferando.find_one({"is_active": True})
+    if not lieferando:
+        # Return default content
+        return {
+            "title": {"de": "Jetzt auch bequem nach Hause bestellen", "en": "Now also order conveniently to your home", "es": "Ahora también pide cómodamente a casa"},
+            "description": {"de": "Genießen Sie unsere authentischen spanischen Spezialitäten gemütlich zu Hause. Bestellen Sie direkt über Lieferando und lassen Sie sich verwöhnen.", "en": "Enjoy our authentic Spanish specialties comfortably at home. Order directly via Lieferando and let yourself be pampered.", "es": "Disfrute de nuestras auténticas especialidades españolas cómodamente en casa. Pida directamente a través de Lieferando y déjese mimar."},
+            "button_text": {"de": "Jetzt bei Lieferando bestellen", "en": "Order now at Lieferando", "es": "Pedir ahora en Lieferando"},
+            "delivery_text": {"de": "Schnelle Lieferung", "en": "Fast delivery", "es": "Entrega rápida"},
+            "authentic_text": {"de": "Authentisch Spanisch", "en": "Authentically Spanish", "es": "Auténticamente Español"},
+            "availability_text": {"de": "Verfügbar für beide Standorte", "en": "Available for both locations", "es": "Disponible para ambas ubicaciones"},
+            "lieferando_url": "https://www.lieferando.de"
+        }
+    return lieferando
+
+@api_router.put("/cms/homepage/lieferando")
+async def update_lieferando_section(
+    lieferando_data: LieferandoSection,
+    current_user: User = Depends(get_editor_user)
+):
+    """Update Lieferando section"""
+    lieferando_data.updated_at = datetime.utcnow()
+    lieferando_data.updated_by = current_user.username
+    
+    await db.homepage_lieferando.update_one(
+        {"is_active": True},
+        {"$set": lieferando_data.dict()},
+        upsert=True
+    )
+    
+    return {"message": "Lieferando section updated successfully", "data": lieferando_data}
+
+# Location Management
+@api_router.get("/cms/locations")
+async def get_all_locations():
+    """Get all locations"""
+    locations = await db.locations.find({"is_active": True}).sort("order", 1).to_list(None)
+    if not locations:
+        # Return default content
+        return [
+            {
+                "id": "location-1",
+                "name": {"de": "Warnemünde", "en": "Warnemünde", "es": "Warnemünde"},
+                "address": {"de": "Strandstraße 12, 18119 Rostock-Warnemünde", "en": "Strandstraße 12, 18119 Rostock-Warnemünde", "es": "Strandstraße 12, 18119 Rostock-Warnemünde"},
+                "phone": "+49 381 123456",
+                "email": "warnemuende@jimmys-tapas.de",
+                "opening_hours": {
+                    "monday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"},
+                    "tuesday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"},
+                    "wednesday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"},
+                    "thursday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"},
+                    "friday": {"de": "12:00 - 23:00", "en": "12:00 - 23:00", "es": "12:00 - 23:00"},
+                    "saturday": {"de": "12:00 - 23:00", "en": "12:00 - 23:00", "es": "12:00 - 23:00"},
+                    "sunday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"}
+                },
+                "description": {"de": "Unser Hauptstandort direkt am Strand von Warnemünde", "en": "Our main location directly at Warnemünde beach", "es": "Nuestra ubicación principal directamente en la playa de Warnemünde"},
+                "features": [
+                    {"de": "Meerblick", "en": "Ocean view", "es": "Vista al mar"},
+                    {"de": "Terrasse", "en": "Terrace", "es": "Terraza"},
+                    {"de": "Parkplätze", "en": "Parking", "es": "Aparcamiento"}
+                ],
+                "image_url": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4",
+                "google_maps_url": "https://maps.google.com",
+                "order": 1
+            },
+            {
+                "id": "location-2",
+                "name": {"de": "Kühlungsborn", "en": "Kühlungsborn", "es": "Kühlungsborn"},
+                "address": {"de": "Ostseeallee 25, 18225 Kühlungsborn", "en": "Ostseeallee 25, 18225 Kühlungsborn", "es": "Ostseeallee 25, 18225 Kühlungsborn"},
+                "phone": "+49 38293 789012",
+                "email": "kuehlungsborn@jimmys-tapas.de",
+                "opening_hours": {
+                    "monday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"},
+                    "tuesday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"},
+                    "wednesday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"},
+                    "thursday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"},
+                    "friday": {"de": "12:00 - 23:00", "en": "12:00 - 23:00", "es": "12:00 - 23:00"},
+                    "saturday": {"de": "12:00 - 23:00", "en": "12:00 - 23:00", "es": "12:00 - 23:00"},
+                    "sunday": {"de": "12:00 - 22:00", "en": "12:00 - 22:00", "es": "12:00 - 22:00"}
+                },
+                "description": {"de": "Gemütliches Restaurant mit traditioneller Atmosphäre", "en": "Cozy restaurant with traditional atmosphere", "es": "Restaurante acogedor con ambiente tradicional"},
+                "features": [
+                    {"de": "Familienfreundlich", "en": "Family friendly", "es": "Amigable para familias"},
+                    {"de": "Biergarten", "en": "Beer garden", "es": "Jardín de cerveza"},
+                    {"de": "Live Musik", "en": "Live music", "es": "Música en vivo"}
+                ],
+                "image_url": "https://images.unsplash.com/photo-1529256354694-69f81f6be3b1",
+                "google_maps_url": "https://maps.google.com",
+                "order": 2
+            }
+        ]
+    return locations
+
+@api_router.post("/cms/locations")
+async def create_location(
+    location_data: LocationModel,
+    current_user: User = Depends(get_editor_user)
+):
+    """Create new location"""
+    location_data.updated_by = current_user.username
+    result = await db.locations.insert_one(location_data.dict())
+    return {"message": "Location created successfully", "id": str(result.inserted_id)}
+
+@api_router.put("/cms/locations/{location_id}")
+async def update_location(
+    location_id: str,
+    location_data: LocationModel,
+    current_user: User = Depends(get_editor_user)
+):
+    """Update location"""
+    location_data.updated_at = datetime.utcnow()
+    location_data.updated_by = current_user.username
+    
+    result = await db.locations.update_one(
+        {"id": location_id},
+        {"$set": location_data.dict()}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Location not found")
+    
+    return {"message": "Location updated successfully"}
+
+@api_router.delete("/cms/locations/{location_id}")
+async def delete_location(
+    location_id: str,
+    current_user: User = Depends(get_admin_user)
+):
+    """Delete location"""
+    result = await db.locations.update_one(
+        {"id": location_id},
+        {"$set": {"is_active": False}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Location not found")
+    
+    return {"message": "Location deleted successfully"}
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
