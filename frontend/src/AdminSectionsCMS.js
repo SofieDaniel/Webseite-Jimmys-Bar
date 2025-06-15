@@ -185,7 +185,7 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
               type="url"
               value={heroData.background_image || ''}
               onChange={(e) => setHeroData({...heroData, background_image: e.target.value})}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
