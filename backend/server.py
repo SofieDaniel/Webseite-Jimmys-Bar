@@ -1305,11 +1305,13 @@ async def create_smtp_config(
     # Encrypt password (simple base64 for demo - use proper encryption in production)
     encrypted_password = base64.b64encode(smtp_data.password.encode()).decode()
     
-    smtp_config = SMTPConfig(
-        **smtp_data.dict(),
-        password=encrypted_password,
-        updated_by=current_user.username
-    )
+    # Create a dictionary from the model and update the password
+    smtp_dict = smtp_data.dict()
+    smtp_dict["password"] = encrypted_password
+    smtp_dict["updated_by"] = current_user.username
+    
+    # Create the SMTPConfig object
+    smtp_config = SMTPConfig(**smtp_dict)
     
     await db.smtp_config.insert_one(smtp_config.dict())
     return {"message": "SMTP-Konfiguration erfolgreich erstellt"}
