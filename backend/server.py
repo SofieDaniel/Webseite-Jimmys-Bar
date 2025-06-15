@@ -48,6 +48,238 @@ class UserRole(str, Enum):
 # Basic models from before
 class StatusCheck(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+# ===============================================
+# COMPLETE CMS MODELS FOR MULTI-LANGUAGE SUPPORT
+# ===============================================
+
+# Language Support
+class Language(str, Enum):
+    DE = "de"
+    EN = "en"
+    ES = "es"
+
+# Multi-language text content
+class MultiLanguageText(BaseModel):
+    de: str = ""
+    en: str = ""
+    es: str = ""
+
+# Multi-language content with images
+class MultiLanguageContent(BaseModel):
+    title: MultiLanguageText
+    subtitle: Optional[MultiLanguageText] = None
+    description: MultiLanguageText
+    image_url: Optional[str] = None
+    image_alt: Optional[MultiLanguageText] = None
+
+# Homepage Content Models
+class HeroSection(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: MultiLanguageText
+    subtitle: MultiLanguageText
+    description: MultiLanguageText
+    location_text: MultiLanguageText
+    background_image: str
+    menu_button_text: MultiLanguageText
+    locations_button_text: MultiLanguageText
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+class FeatureCard(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: MultiLanguageText
+    description: MultiLanguageText
+    image_url: str
+    image_alt: MultiLanguageText
+    order: int = 0
+
+class HomepageFeatures(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    section_title: MultiLanguageText
+    section_description: MultiLanguageText
+    features: List[FeatureCard]
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+class FoodGalleryItem(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: MultiLanguageText
+    description: MultiLanguageText
+    image_url: str
+    category_link: str
+    order: int = 0
+
+class HomepageFoodGallery(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    section_title: MultiLanguageText
+    gallery_items: List[FoodGalleryItem]
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+class LieferandoSection(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: MultiLanguageText
+    description: MultiLanguageText
+    button_text: MultiLanguageText
+    delivery_text: MultiLanguageText
+    authentic_text: MultiLanguageText
+    availability_text: MultiLanguageText
+    lieferando_url: str
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+# Location Models
+class OpeningHours(BaseModel):
+    monday: MultiLanguageText
+    tuesday: MultiLanguageText
+    wednesday: MultiLanguageText
+    thursday: MultiLanguageText
+    friday: MultiLanguageText
+    saturday: MultiLanguageText
+    sunday: MultiLanguageText
+
+class LocationModel(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: MultiLanguageText
+    address: MultiLanguageText
+    phone: str
+    email: str
+    opening_hours: OpeningHours
+    description: MultiLanguageText
+    features: List[MultiLanguageText]
+    image_url: str
+    google_maps_url: str
+    order: int = 0
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+# Enhanced Menu Models
+class MenuCategory(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: MultiLanguageText
+    description: Optional[MultiLanguageText] = None
+    slug: str
+    order: int = 0
+    is_active: bool = True
+
+class AllergenInfo(BaseModel):
+    vegetarian: bool = False
+    vegan: bool = False
+    gluten_free: bool = False
+    lactose_free: bool = False
+    nuts: bool = False
+
+class EnhancedMenuItem(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: MultiLanguageText
+    description: MultiLanguageText
+    detailed_description: Optional[MultiLanguageText] = None
+    price: float
+    category_id: str
+    image_url: Optional[str] = None
+    image_alt: Optional[MultiLanguageText] = None
+    allergen_info: Optional[AllergenInfo] = None
+    is_available: bool = True
+    order: int = 0
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+# About Us Models
+class TeamMember(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    position: MultiLanguageText
+    description: MultiLanguageText
+    image_url: str
+    order: int = 0
+
+class AboutUsContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    hero_title: MultiLanguageText
+    hero_description: MultiLanguageText
+    hero_image: str
+    story_title: MultiLanguageText
+    story_content: MultiLanguageText
+    team_title: MultiLanguageText
+    team_members: List[TeamMember]
+    values_title: MultiLanguageText
+    values: List[MultiLanguageContent]
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+# Contact Information Models
+class ContactInfo(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_title: MultiLanguageText
+    page_description: MultiLanguageText
+    contact_form_title: MultiLanguageText
+    contact_form_description: MultiLanguageText
+    general_email: str
+    general_phone: str
+    social_media: Dict[str, str] = {}
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+# Legal Content Models
+class LegalContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_type: str  # "impressum" or "datenschutz"
+    title: MultiLanguageText
+    content: MultiLanguageText
+    last_updated: datetime = Field(default_factory=datetime.utcnow)
+    is_active: bool = True
+    updated_by: str
+
+# Navigation and Footer Models
+class NavigationItem(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    label: MultiLanguageText
+    url: str
+    order: int = 0
+    is_active: bool = True
+
+class FooterContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    company_name: str
+    company_description: MultiLanguageText
+    quick_links: List[NavigationItem]
+    social_links: Dict[str, str] = {}
+    copyright_text: MultiLanguageText
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+# SEO and Meta Content
+class SEOContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_slug: str
+    meta_title: MultiLanguageText
+    meta_description: MultiLanguageText
+    meta_keywords: MultiLanguageText
+    og_title: Optional[MultiLanguageText] = None
+    og_description: Optional[MultiLanguageText] = None
+    og_image: Optional[str] = None
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
     client_name: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
