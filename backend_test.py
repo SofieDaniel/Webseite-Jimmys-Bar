@@ -3,6 +3,7 @@ import requests
 import json
 import time
 import sys
+import uuid
 from datetime import datetime
 
 # Get the backend URL from the frontend .env file
@@ -30,8 +31,19 @@ SPANISH_CLIENTS = [
     "Iberian Inspirations"
 ]
 
-# Global variable to store auth token
+# Test email addresses for newsletter
+TEST_EMAILS = [
+    "test.user@example.com",
+    "maria.garcia@example.es",
+    "juan.rodriguez@example.com",
+    "carmen.lopez@example.es",
+    "antonio.martinez@example.com"
+]
+
+# Global variables to store tokens and IDs
 AUTH_TOKEN = None
+NEWSLETTER_TOKEN = None
+MENU_ITEM_ID = None
 
 def test_root_endpoint():
     """Test the root endpoint GET /api/"""
