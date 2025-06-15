@@ -636,7 +636,16 @@ async def update_content_section(
 @api_router.get("/menu/items", response_model=List[MenuItem])
 async def get_menu_items():
     items = await db.menu_items.find({"is_active": True}).sort("order_index", 1).to_list(1000)
-    return [MenuItem(**item) for item in items]
+    
+    # Fix for data type mismatch: convert float price to string
+    menu_items = []
+    for item in items:
+        # Check if price is a float and convert it to string
+        if "price" in item and isinstance(item["price"], float):
+            item["price"] = str(item["price"])
+        menu_items.append(MenuItem(**item))
+    
+    return menu_items
 
 @api_router.post("/menu/items", response_model=MenuItem)
 async def create_menu_item(item_data: MenuItemCreate, current_user: User = Depends(get_editor_user)):
