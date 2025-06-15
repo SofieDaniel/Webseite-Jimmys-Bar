@@ -8,7 +8,7 @@ import { ReviewsSection, ContactsSection, UsersSection } from './AdminSectionsEx
 import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
 import { HomepageContentSection, LocationsManagementSection, EnhancedMenuSection, AboutContentSection } from './AdminSectionsCMS';
 
-// Language Context for i18n
+// Language Context with Enhanced Multi-Language Support
 const LanguageContext = createContext();
 
 const useLanguage = () => {
