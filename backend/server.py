@@ -1321,6 +1321,7 @@ async def update_smtp_config(
     current_user: User = Depends(get_admin_user)
 ):
     """Update SMTP configuration"""
+    # Import base64 at the function level to ensure it's available
     import base64
     
     update_dict = {k: v for k, v in smtp_data.dict().items() if v is not None}
