@@ -1399,6 +1399,11 @@ def run_admin_route_tests():
     return all_passed
 
 if __name__ == "__main__":
-    # Run the specific tests for admin login system
-    success = run_admin_login_tests()
+    # Check if a specific test is requested
+    if len(sys.argv) > 1 and sys.argv[1] == "admin-route":
+        # Run the admin route tests
+        success = run_admin_route_tests()
+    else:
+        # Run the specific tests for admin login system
+        success = run_admin_login_tests()
     sys.exit(0 if success else 1)
