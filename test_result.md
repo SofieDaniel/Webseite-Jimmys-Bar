@@ -727,12 +727,8 @@ metadata:
 test_plan:
   current_focus:
     - "Authentication - Unauthorized Access"
-    - "SMTP-Konfiguration: GET/POST/PUT /api/admin/newsletter/smtp"
-    - "Menu-System (GET /api/menu/items)"
   stuck_tasks: 
     - "Authentication - Unauthorized Access"
-    - "SMTP-Konfiguration: GET/POST/PUT /api/admin/newsletter/smtp"
-    - "Menu-System (GET /api/menu/items)"
   test_all: false
   test_priority: "high_first"
 
