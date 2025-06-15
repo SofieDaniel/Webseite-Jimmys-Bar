@@ -898,7 +898,7 @@ export const AboutContentSection = ({ user, token, apiCall }) => {
               type="url"
               value={aboutData.hero_image || ''}
               onChange={(e) => setAboutData({...aboutData, hero_image: e.target.value})}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
