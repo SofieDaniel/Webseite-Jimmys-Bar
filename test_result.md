@@ -354,11 +354,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "Protected endpoints are returning 403 Forbidden instead of 401 Unauthorized when accessed without authentication. This is a minor issue as the endpoints are still protected, but the status code should be 401 for unauthenticated requests and 403 for authenticated requests with insufficient permissions."
+      - working: false
+        agent: "testing"
+        comment: "Confirmed that protected endpoints are still returning 403 Forbidden instead of 401 Unauthorized when accessed without authentication. This is a minor issue that doesn't affect functionality but should be fixed for proper HTTP status code semantics."
 
 frontend:
   - task: "Homepage Hero Image Update"
