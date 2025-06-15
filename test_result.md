@@ -401,7 +401,7 @@ backend:
 
   - task: "SMTP-Konfiguration: GET/POST/PUT /api/admin/newsletter/smtp"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -410,6 +410,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "GET endpoint works correctly, but POST endpoint returns a 500 Internal Server Error. The error occurs when trying to create a new SMTP configuration. This suggests an issue with the implementation of the SMTP configuration creation logic."
+      - working: true
+        agent: "testing"
+        comment: "Fixed the POST /api/admin/newsletter/smtp endpoint by resolving a parameter conflict. The issue was that the password parameter was being passed twice to the SMTPConfig constructor. Modified the code to create a dictionary from the model first, update the password with the encrypted value, and then create the SMTPConfig object. All SMTP configuration endpoints (GET/POST/PUT) are now working correctly."
 
   - task: "Newsletter-Vorlagen: GET/POST /api/admin/newsletter/templates"
     implemented: true
