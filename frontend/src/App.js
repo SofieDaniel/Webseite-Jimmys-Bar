@@ -2122,13 +2122,27 @@ const ScrollToTop = () => {
 
 
 // Main App Component
+// Main Layout Component that conditionally renders Header/Footer
+const MainLayout = ({ children }) => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  return (
+    <div className="App min-h-screen bg-dark-brown">
+      {!isAdminRoute && <Header />}
+      <ScrollToTop />
+      {children}
+      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && <CookieBanner />}
+    </div>
+  );
+};
+
 function App() {
   return (
     <LanguageProvider>
-      <div className="App min-h-screen bg-dark-brown">
-        <BrowserRouter>
-          <Header />
-          <ScrollToTop />
+      <BrowserRouter>
+        <MainLayout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/speisekarte" element={<Speisekarte />} />
@@ -2140,10 +2154,8 @@ function App() {
             <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
-          <Footer />
-          <CookieBanner />
-        </BrowserRouter>
-      </div>
+        </MainLayout>
+      </BrowserRouter>
     </LanguageProvider>
   );
 }
