@@ -1386,6 +1386,7 @@ async def create_newsletter(
 async def send_newsletter(newsletter_id: str, current_user: User = Depends(get_admin_user)):
     """Send newsletter to all active subscribers"""
     import smtplib
+    import base64
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
     
@@ -1433,11 +1434,12 @@ async def send_newsletter(newsletter_id: str, current_user: User = Depends(get_a
                 msg['To'] = subscriber["email"]
                 
                 # Add unsubscribe link to content
+                frontend_url = os.environ.get('REACT_APP_BACKEND_URL', 'http://localhost:3000').replace('/api', '')
                 content_with_unsubscribe = newsletter["content"] + f"""
                 <br><br>
                 <p style="font-size: 12px; color: #666;">
                     Sie möchten sich vom Newsletter abmelden? 
-                    <a href="{os.environ.get('FRONTEND_URL', 'http://localhost:3000')}/newsletter/unsubscribe/{subscriber['unsubscribe_token']}">Hier klicken</a>
+                    <a href="{frontend_url}/newsletter/unsubscribe/{subscriber['unsubscribe_token']}">Hier klicken</a>
                 </p>
                 """
                 
@@ -1477,11 +1479,11 @@ async def send_newsletter(newsletter_id: str, current_user: User = Depends(get_a
         logger.error(f"Failed to send newsletter: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Fehler beim Versenden: {str(e)}")
 
-# Test SMTP Configuration
 @api_router.post("/admin/newsletter/smtp/test")
 async def test_smtp_config(current_user: User = Depends(get_admin_user)):
     """Test SMTP configuration"""
     import smtplib
+    import base64
     from email.mime.text import MIMEText
     
     # Get SMTP config
