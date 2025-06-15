@@ -995,6 +995,157 @@ async def options_route(path: str):
 # Include the router in the main app
 app.include_router(api_router)
 
+# About Us Content Management
+@api_router.get("/cms/about")
+async def get_about_content():
+    """Get About Us content"""
+    about = await db.about_content.find_one({"is_active": True})
+    if not about:
+        # Return default content
+        return {
+            "hero_title": {"de": "Über Jimmy's Tapas Bar", "en": "About Jimmy's Tapas Bar", "es": "Acerca de Jimmy's Tapas Bar"},
+            "hero_description": {"de": "Authentische spanische Küche an der deutschen Ostseeküste", "en": "Authentic Spanish cuisine on the German Baltic coast", "es": "Auténtica cocina española en la costa báltica alemana"},
+            "hero_image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4",
+            "story_title": {"de": "Unsere Geschichte", "en": "Our Story", "es": "Nuestra Historia"},
+            "story_content": {"de": "Seit über 10 Jahren bringen wir die Aromen Spaniens an die Ostseeküste. Unser Familienunternehmen verbindet traditionelle spanische Küche mit der entspannten Atmosphäre der deutschen Küste.", "en": "For over 10 years we have been bringing the flavors of Spain to the Baltic coast. Our family business combines traditional Spanish cuisine with the relaxed atmosphere of the German coast.", "es": "Durante más de 10 años hemos estado trayendo los sabores de España a la costa báltica. Nuestro negocio familiar combina la cocina tradicional española con el ambiente relajado de la costa alemana."},
+            "team_title": {"de": "Unser Team", "en": "Our Team", "es": "Nuestro Equipo"},
+            "team_members": [],
+            "values_title": {"de": "Unsere Werte", "en": "Our Values", "es": "Nuestros Valores"},
+            "values": []
+        }
+    return about
+
+@api_router.put("/cms/about")
+async def update_about_content(
+    about_data: AboutUsContent,
+    current_user: User = Depends(get_editor_user)
+):
+    """Update About Us content"""
+    about_data.updated_at = datetime.utcnow()
+    about_data.updated_by = current_user.username
+    
+    await db.about_content.update_one(
+        {"is_active": True},
+        {"$set": about_data.dict()},
+        upsert=True
+    )
+    
+    return {"message": "About Us content updated successfully", "data": about_data}
+
+# Contact Information Management
+@api_router.get("/cms/contact")
+async def get_contact_info():
+    """Get contact information"""
+    contact = await db.contact_info.find_one({"is_active": True})
+    if not contact:
+        # Return default content
+        return {
+            "page_title": {"de": "Kontakt", "en": "Contact", "es": "Contacto"},
+            "page_description": {"de": "Nehmen Sie Kontakt mit uns auf", "en": "Get in touch with us", "es": "Póngase en contacto con nosotros"},
+            "contact_form_title": {"de": "Schreiben Sie uns", "en": "Write to us", "es": "Escríbanos"},
+            "contact_form_description": {"de": "Wir freuen uns auf Ihre Nachricht", "en": "We look forward to your message", "es": "Esperamos su mensaje"},
+            "general_email": "info@jimmys-tapas.de",
+            "general_phone": "+49 381 123456",
+            "social_media": {
+                "facebook": "https://facebook.com/jimmys-tapas",
+                "instagram": "https://instagram.com/jimmys-tapas"
+            }
+        }
+    return contact
+
+@api_router.put("/cms/contact")
+async def update_contact_info(
+    contact_data: ContactInfo,
+    current_user: User = Depends(get_editor_user)
+):
+    """Update contact information"""
+    contact_data.updated_at = datetime.utcnow()
+    contact_data.updated_by = current_user.username
+    
+    await db.contact_info.update_one(
+        {"is_active": True},
+        {"$set": contact_data.dict()},
+        upsert=True
+    )
+    
+    return {"message": "Contact information updated successfully", "data": contact_data}
+
+# Legal Content Management
+@api_router.get("/cms/legal/{page_type}")
+async def get_legal_content(page_type: str):
+    """Get legal content (impressum or datenschutz)"""
+    legal = await db.legal_content.find_one({"page_type": page_type, "is_active": True})
+    if not legal:
+        if page_type == "impressum":
+            return {
+                "title": {"de": "Impressum", "en": "Imprint", "es": "Aviso Legal"},
+                "content": {"de": "Angaben gemäß § 5 TMG:\n\nJimmy's Tapas Bar\nMustermann GmbH\nMusterstraße 1\n12345 Musterstadt\n\nVertreten durch:\nMax Mustermann\n\nKontakt:\nTelefon: +49 381 123456\nE-Mail: info@jimmys-tapas.de", 
+                           "en": "Information according to § 5 TMG:\n\nJimmy's Tapas Bar\nExample Ltd.\nExample Street 1\n12345 Example City\n\nRepresented by:\nJohn Example\n\nContact:\nPhone: +49 381 123456\nE-Mail: info@jimmys-tapas.de", 
+                           "es": "Información según § 5 TMG:\n\nJimmy's Tapas Bar\nEjemplo S.L.\nCalle Ejemplo 1\n12345 Ciudad Ejemplo\n\nRepresentado por:\nJuan Ejemplo\n\nContacto:\nTeléfono: +49 381 123456\nE-Mail: info@jimmys-tapas.de"}
+            }
+        elif page_type == "datenschutz":
+            return {
+                "title": {"de": "Datenschutzerklärung", "en": "Privacy Policy", "es": "Política de Privacidad"},
+                "content": {"de": "1. Datenschutz auf einen Blick\n\nAllgemeine Hinweise\nDie folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere Website besuchen.", 
+                           "en": "1. Data protection at a glance\n\nGeneral information\nThe following notes provide a simple overview of what happens to your personal data when you visit our website.", 
+                           "es": "1. Protección de datos de un vistazo\n\nInformación general\nLas siguientes notas proporcionan una descripción general simple de lo que sucede con sus datos personales cuando visita nuestro sitio web."}
+            }
+    return legal
+
+@api_router.put("/cms/legal/{page_type}")
+async def update_legal_content(
+    page_type: str,
+    legal_data: LegalContent,
+    current_user: User = Depends(get_admin_user)
+):
+    """Update legal content"""
+    legal_data.page_type = page_type
+    legal_data.last_updated = datetime.utcnow()
+    legal_data.updated_by = current_user.username
+    
+    await db.legal_content.update_one(
+        {"page_type": page_type, "is_active": True},
+        {"$set": legal_data.dict()},
+        upsert=True
+    )
+    
+    return {"message": f"Legal content ({page_type}) updated successfully", "data": legal_data}
+
+# Footer Content Management
+@api_router.get("/cms/footer")
+async def get_footer_content():
+    """Get footer content"""
+    footer = await db.footer_content.find_one({"is_active": True})
+    if not footer:
+        return {
+            "company_name": "Jimmy's Tapas Bar",
+            "company_description": {"de": "Authentische spanische Küche an der Ostsee", "en": "Authentic Spanish cuisine by the Baltic Sea", "es": "Auténtica cocina española junto al Mar Báltico"},
+            "quick_links": [],
+            "social_links": {
+                "facebook": "https://facebook.com/jimmys-tapas",
+                "instagram": "https://instagram.com/jimmys-tapas"
+            },
+            "copyright_text": {"de": "© 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten.", "en": "© 2024 Jimmy's Tapas Bar. All rights reserved.", "es": "© 2024 Jimmy's Tapas Bar. Todos los derechos reservados."}
+        }
+    return footer
+
+@api_router.put("/cms/footer")
+async def update_footer_content(
+    footer_data: FooterContent,
+    current_user: User = Depends(get_editor_user)
+):
+    """Update footer content"""
+    footer_data.updated_at = datetime.utcnow()
+    footer_data.updated_by = current_user.username
+    
+    await db.footer_content.update_one(
+        {"is_active": True},
+        {"$set": footer_data.dict()},
+        upsert=True
+    )
+    
+    return {"message": "Footer content updated successfully", "data": footer_data}
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
