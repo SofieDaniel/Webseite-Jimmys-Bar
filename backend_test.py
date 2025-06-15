@@ -1092,7 +1092,11 @@ def test_unauthorized_access():
         {"method": "get", "url": f"{API_BASE_URL}/auth/me", "name": "Get user profile"},
         {"method": "get", "url": f"{API_BASE_URL}/users", "name": "Get users"},
         {"method": "get", "url": f"{API_BASE_URL}/admin/reviews/pending", "name": "Get pending reviews"},
-        {"method": "get", "url": f"{API_BASE_URL}/admin/contact", "name": "Get contact messages"}
+        {"method": "get", "url": f"{API_BASE_URL}/admin/contact", "name": "Get contact messages"},
+        {"method": "get", "url": f"{API_BASE_URL}/admin/newsletter/subscribers", "name": "Get newsletter subscribers"},
+        {"method": "get", "url": f"{API_BASE_URL}/admin/newsletter/smtp", "name": "Get SMTP configuration"},
+        {"method": "get", "url": f"{API_BASE_URL}/admin/newsletter/templates", "name": "Get newsletter templates"},
+        {"method": "get", "url": f"{API_BASE_URL}/admin/newsletter/campaigns", "name": "Get newsletter campaigns"}
     ]
     
     results = {}
