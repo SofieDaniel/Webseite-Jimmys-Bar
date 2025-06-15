@@ -7,6 +7,7 @@ import { ContentSection, MenuSection } from './AdminSections';
 import { ReviewsSection, ContactsSection, UsersSection } from './AdminSectionsExtended';
 import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
 import { HomepageContentSection, LocationsManagementSection, EnhancedMenuSection, AboutContentSection, ContactLegalSection } from './AdminSectionsCMS';
+import { NewsletterSection } from './NewsletterSection';
 
 // Cookie Banner Component
 const CookieBanner = () => {
