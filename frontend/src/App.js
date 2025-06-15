@@ -530,22 +530,6 @@ const DashboardSection = ({ user, token, apiCall }) => {
   );
 };
 
-// Newsletter Section - Placeholder for now
-const NewsletterSection = ({ user, token, apiCall }) => {
-  return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Newsletter Management</h1>
-        <p className="text-gray-600">Newsletter-Verwaltung und SMTP-Konfiguration</p>
-      </div>
-      
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <p className="text-center text-gray-500 py-8">Newsletter-Funktionalität wird entwickelt...</p>
-      </div>
-    </div>
-  );
-};
-
 // Header Component (Simplified German-only)
 const Header = () => {
   const location = useLocation();
