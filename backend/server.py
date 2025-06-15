@@ -1296,6 +1296,7 @@ async def create_smtp_config(
     current_user: User = Depends(get_admin_user)
 ):
     """Create SMTP configuration"""
+    # Import base64 at the function level to ensure it's available
     import base64
     
     # Deactivate existing configs
