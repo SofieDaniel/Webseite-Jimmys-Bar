@@ -449,7 +449,7 @@ backend:
 
   - task: "Menu-System (GET /api/menu/items)"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -458,6 +458,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "The GET /api/menu/items endpoint returns a 500 Internal Server Error. The error is due to a data type mismatch: the price field is expected to be a string but some items in the database have it as a float. This suggests a database migration issue where the data format doesn't match the model definition."
+      - working: true
+        agent: "testing"
+        comment: "Fixed the GET /api/menu/items endpoint by adding data type conversion. The endpoint now correctly handles menu items with float price values by converting them to strings. Successfully retrieved 29 menu items with the correct data structure."
 
   - task: "Menu-System (POST /api/menu/items)"
     implemented: true
