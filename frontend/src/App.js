@@ -456,6 +456,10 @@ const AdminPanel = () => {
         {/* Main Content Area */}
         <main className="flex-1 ml-64 p-8">
           {activeSection === 'dashboard' && <DashboardSection user={user} token={token} apiCall={apiCall} />}
+          {activeSection === 'homepage' && <HomepageContentSection user={user} token={token} apiCall={apiCall} />}
+          {activeSection === 'locations' && <LocationsManagementSection user={user} token={token} apiCall={apiCall} />}
+          {activeSection === 'enhanced-menu' && <EnhancedMenuSection user={user} token={token} apiCall={apiCall} />}
+          {activeSection === 'about-cms' && <AboutContentSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'content' && <ContentSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'menu' && <MenuSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'reviews' && <ReviewsSection user={user} token={token} apiCall={apiCall} />}
