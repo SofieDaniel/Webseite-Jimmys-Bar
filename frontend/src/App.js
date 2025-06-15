@@ -192,7 +192,7 @@ const AdminPanel = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loginForm, setLoginForm] = useState({ username: '', password: '' });
-  const [activeSection, setActiveSection] = useState('dashboard');
+  const [activeSection, setActiveSection] = useState('homepage');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
