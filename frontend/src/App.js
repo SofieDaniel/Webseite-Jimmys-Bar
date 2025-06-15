@@ -532,7 +532,7 @@ const DashboardSection = ({ user, token, apiCall }) => {
           Willkommen zurück, {user?.username}!
         </h1>
         <p className="text-gray-600">
-          Hier ist eine Übersicht über Ihr Jimmy's Tapas Bar CMS Dashboard.
+          Hier ist eine Übersicht über Ihr Jimmy´s Webseiten CMS by Daniel Böttche Dashboard.
         </p>
       </div>
 
