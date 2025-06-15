@@ -1412,12 +1412,885 @@ def run_admin_route_tests():
     
     return all_passed
 
+# Newsletter System Tests
+def test_newsletter_subscribe():
+    """Test POST /api/newsletter/subscribe endpoint"""
+    print("\n🧪 Testing POST /api/newsletter/subscribe endpoint...")
+    
+    try:
+        # Create payload with a unique email
+        timestamp = int(time.time())
+        email = f"test.user{timestamp}@example.com"
+        payload = {
+            "email": email,
+            "name": "Test User"
+        }
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/newsletter/subscribe", json=payload)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print(f"✅ Successfully subscribed to newsletter with email: {email}")
+        else:
+            print(f"❌ Failed to subscribe to newsletter. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False, None
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False, None
+        
+        # Check if response contains success message
+        if "message" in data:
+            print(f"✅ Response contains message: {data['message']}")
+        else:
+            print("❌ Response does not contain a message")
+            return False, None
+            
+        return True, email
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to newsletter subscribe endpoint: {e}")
+        return False, None
+
+def test_get_newsletter_subscribers():
+    """Test GET /api/admin/newsletter/subscribers endpoint"""
+    print("\n🧪 Testing GET /api/admin/newsletter/subscribers endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/admin/newsletter/subscribers", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved newsletter subscribers")
+        else:
+            print(f"❌ Failed to retrieve newsletter subscribers. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} subscribers")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # If there are subscribers, verify the structure of the first one
+        if data:
+            required_fields = ["id", "email", "subscribed_at", "is_active", "unsubscribe_token"]
+            missing_fields = [field for field in required_fields if field not in data[0]]
+            
+            if not missing_fields:
+                print("✅ Subscriber objects contain all required fields")
+            else:
+                print(f"❌ Subscriber objects are missing required fields: {missing_fields}")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample subscribers:")
+            for i, subscriber in enumerate(data[:3]):  # Show up to 3 samples
+                print(f"  {i+1}. {subscriber.get('name', 'No name')} - {subscriber['email']} - Active: {subscriber['is_active']}")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to newsletter subscribers endpoint: {e}")
+        return False
+
+def test_get_smtp_config():
+    """Test GET /api/admin/newsletter/smtp endpoint"""
+    print("\n🧪 Testing GET /api/admin/newsletter/smtp endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/admin/newsletter/smtp", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved SMTP configuration")
+        else:
+            print(f"❌ Failed to retrieve SMTP configuration. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # If no SMTP config exists, the response should contain a message
+        if "message" in data and data["message"] == "Keine SMTP-Konfiguration gefunden":
+            print("✅ No SMTP configuration found (expected message)")
+            return True
+        
+        # If SMTP config exists, check required fields
+        required_fields = ["host", "port", "username", "from_email", "from_name"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ SMTP configuration contains all required fields")
+        else:
+            print(f"❌ SMTP configuration is missing required fields: {missing_fields}")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to SMTP configuration endpoint: {e}")
+        return False
+
+def test_create_smtp_config():
+    """Test POST /api/admin/newsletter/smtp endpoint"""
+    print("\n🧪 Testing POST /api/admin/newsletter/smtp endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Create payload
+        payload = {
+            "host": "smtp.example.com",
+            "port": 587,
+            "username": "test@example.com",
+            "password": "securePassword123!",
+            "use_tls": True,
+            "from_email": "newsletter@jimmys-tapasbar.de",
+            "from_name": "Jimmy's Tapas Bar"
+        }
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/admin/newsletter/smtp", json=payload, headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully created SMTP configuration")
+        else:
+            print(f"❌ Failed to create SMTP configuration. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains success message
+        if "message" in data and data["message"] == "SMTP-Konfiguration erfolgreich erstellt":
+            print("✅ Response contains success message")
+        else:
+            print("❌ Response does not contain expected success message")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to create SMTP configuration endpoint: {e}")
+        return False
+
+def test_get_newsletter_templates():
+    """Test GET /api/admin/newsletter/templates endpoint"""
+    print("\n🧪 Testing GET /api/admin/newsletter/templates endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/admin/newsletter/templates", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved newsletter templates")
+        else:
+            print(f"❌ Failed to retrieve newsletter templates. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} templates")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # If there are templates, verify the structure of the first one
+        if data:
+            required_fields = ["id", "name", "subject", "content", "created_at", "created_by", "is_active"]
+            missing_fields = [field for field in required_fields if field not in data[0]]
+            
+            if not missing_fields:
+                print("✅ Template objects contain all required fields")
+            else:
+                print(f"❌ Template objects are missing required fields: {missing_fields}")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample templates:")
+            for i, template in enumerate(data[:3]):  # Show up to 3 samples
+                print(f"  {i+1}. {template['name']} - {template['subject']}")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to newsletter templates endpoint: {e}")
+        return False
+
+def test_create_newsletter_template():
+    """Test POST /api/admin/newsletter/templates endpoint"""
+    print("\n🧪 Testing POST /api/admin/newsletter/templates endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Create a unique template name with timestamp
+        timestamp = int(time.time())
+        
+        # Create payload
+        payload = {
+            "name": f"Test Template {timestamp}",
+            "subject": "Willkommen bei Jimmy's Tapas Bar Newsletter",
+            "content": "<h1>Willkommen!</h1><p>Vielen Dank für Ihre Anmeldung zu unserem Newsletter.</p>"
+        }
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/admin/newsletter/templates", json=payload, headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully created newsletter template")
+        else:
+            print(f"❌ Failed to create newsletter template. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains success message and template
+        if "message" in data and "template" in data:
+            print(f"✅ Response contains message: {data['message']}")
+            
+            # Verify template fields
+            template = data["template"]
+            required_fields = ["id", "name", "subject", "content", "created_at", "created_by", "is_active"]
+            missing_fields = [field for field in required_fields if field not in template]
+            
+            if not missing_fields:
+                print("✅ Template object contains all required fields")
+            else:
+                print(f"❌ Template object is missing required fields: {missing_fields}")
+                return False
+                
+            # Check if fields match what we sent
+            if (template["name"] == payload["name"] and 
+                template["subject"] == payload["subject"] and
+                template["content"] == payload["content"]):
+                print("✅ Returned template data matches input")
+            else:
+                print(f"❌ Returned template data doesn't match input")
+                return False
+        else:
+            print("❌ Response does not contain expected message and template")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to create newsletter template endpoint: {e}")
+        return False
+
+def test_get_newsletter_campaigns():
+    """Test GET /api/admin/newsletter/campaigns endpoint"""
+    print("\n🧪 Testing GET /api/admin/newsletter/campaigns endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/admin/newsletter/campaigns", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved newsletter campaigns")
+        else:
+            print(f"❌ Failed to retrieve newsletter campaigns. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} campaigns")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # If there are campaigns, verify the structure of the first one
+        if data:
+            required_fields = ["id", "subject", "content", "created_at", "created_by", "status"]
+            missing_fields = [field for field in required_fields if field not in data[0]]
+            
+            if not missing_fields:
+                print("✅ Campaign objects contain all required fields")
+            else:
+                print(f"❌ Campaign objects are missing required fields: {missing_fields}")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample campaigns:")
+            for i, campaign in enumerate(data[:3]):  # Show up to 3 samples
+                print(f"  {i+1}. {campaign['subject']} - Status: {campaign['status']}")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to newsletter campaigns endpoint: {e}")
+        return False
+
+def test_create_newsletter_campaign():
+    """Test POST /api/admin/newsletter/campaigns endpoint"""
+    print("\n🧪 Testing POST /api/admin/newsletter/campaigns endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Create a unique campaign subject with timestamp
+        timestamp = int(time.time())
+        
+        # Create payload
+        payload = {
+            "subject": f"Test Campaign {timestamp}",
+            "content": "<h1>Neue Angebote!</h1><p>Entdecken Sie unsere neuen Tapas-Spezialitäten.</p>",
+            "template_id": None  # Optional
+        }
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/admin/newsletter/campaigns", json=payload, headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully created newsletter campaign")
+        else:
+            print(f"❌ Failed to create newsletter campaign. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains success message and newsletter
+        if "message" in data and "newsletter" in data:
+            print(f"✅ Response contains message: {data['message']}")
+            
+            # Verify newsletter fields
+            newsletter = data["newsletter"]
+            required_fields = ["id", "subject", "content", "created_at", "created_by", "status"]
+            missing_fields = [field for field in required_fields if field not in newsletter]
+            
+            if not missing_fields:
+                print("✅ Newsletter object contains all required fields")
+            else:
+                print(f"❌ Newsletter object is missing required fields: {missing_fields}")
+                return False
+                
+            # Check if fields match what we sent
+            if (newsletter["subject"] == payload["subject"] and 
+                newsletter["content"] == payload["content"]):
+                print("✅ Returned newsletter data matches input")
+            else:
+                print(f"❌ Returned newsletter data doesn't match input")
+                return False
+                
+            # Check if status is draft by default
+            if newsletter["status"] == "draft":
+                print("✅ Newsletter is in draft status by default as expected")
+            else:
+                print(f"❌ Newsletter has unexpected status: {newsletter['status']}")
+                return False
+        else:
+            print("❌ Response does not contain expected message and newsletter")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to create newsletter campaign endpoint: {e}")
+        return False
+
+# CMS Content Tests
+def test_get_homepage_hero():
+    """Test GET /api/cms/homepage/hero endpoint"""
+    print("\n🧪 Testing GET /api/cms/homepage/hero endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/homepage/hero")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved homepage hero content")
+        else:
+            print(f"❌ Failed to retrieve homepage hero content. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["title", "subtitle", "description", "location_text", "background_image", 
+                          "menu_button_text", "locations_button_text"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+            
+        # Check if multilanguage fields are properly structured
+        multilang_fields = ["title", "subtitle", "description", "location_text", 
+                           "menu_button_text", "locations_button_text"]
+        
+        for field in multilang_fields:
+            if field in data:
+                if not isinstance(data[field], dict) or not all(lang in data[field] for lang in ["de", "en", "es"]):
+                    print(f"❌ Field '{field}' is not properly structured as multilanguage")
+                    return False
+        
+        print("✅ All multilanguage fields are properly structured")
+        
+        # Print some sample data
+        print(f"📊 Sample hero content:")
+        print(f"  Title (DE): {data['title']['de']}")
+        print(f"  Subtitle (DE): {data['subtitle']['de']}")
+        print(f"  Background Image: {data['background_image']}")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to homepage hero endpoint: {e}")
+        return False
+
+def test_get_homepage_features():
+    """Test GET /api/cms/homepage/features endpoint"""
+    print("\n🧪 Testing GET /api/cms/homepage/features endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/homepage/features")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved homepage features content")
+        else:
+            print(f"❌ Failed to retrieve homepage features content. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["section_title", "section_description", "features"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+            
+        # Check if features is a list
+        if not isinstance(data["features"], list):
+            print("❌ Features is not a list")
+            return False
+            
+        # If there are features, verify the structure of the first one
+        if data["features"]:
+            feature = data["features"][0]
+            feature_required_fields = ["title", "description", "image_url", "image_alt"]
+            feature_missing_fields = [field for field in feature_required_fields if field not in feature]
+            
+            if not feature_missing_fields:
+                print("✅ Feature objects contain all required fields")
+            else:
+                print(f"❌ Feature objects are missing required fields: {feature_missing_fields}")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample features content:")
+            print(f"  Section Title (DE): {data['section_title']['de']}")
+            print(f"  Number of features: {len(data['features'])}")
+            for i, feature in enumerate(data["features"][:2]):  # Show up to 2 samples
+                print(f"  Feature {i+1}: {feature['title']['de']}")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to homepage features endpoint: {e}")
+        return False
+
+def test_get_homepage_food_gallery():
+    """Test GET /api/cms/homepage/food-gallery endpoint"""
+    print("\n🧪 Testing GET /api/cms/homepage/food-gallery endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/homepage/food-gallery")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved homepage food gallery content")
+        else:
+            print(f"❌ Failed to retrieve homepage food gallery content. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["section_title", "gallery_items"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+            
+        # Check if gallery_items is a list
+        if not isinstance(data["gallery_items"], list):
+            print("❌ Gallery items is not a list")
+            return False
+            
+        # If there are gallery items, verify the structure of the first one
+        if data["gallery_items"]:
+            item = data["gallery_items"][0]
+            item_required_fields = ["name", "description", "image_url", "category_link"]
+            item_missing_fields = [field for field in item_required_fields if field not in item]
+            
+            if not item_missing_fields:
+                print("✅ Gallery item objects contain all required fields")
+            else:
+                print(f"❌ Gallery item objects are missing required fields: {item_missing_fields}")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample food gallery content:")
+            print(f"  Section Title (DE): {data['section_title']['de']}")
+            print(f"  Number of gallery items: {len(data['gallery_items'])}")
+            for i, item in enumerate(data["gallery_items"][:2]):  # Show up to 2 samples
+                print(f"  Item {i+1}: {item['name']['de']} - {item['category_link']}")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to homepage food gallery endpoint: {e}")
+        return False
+
+def test_get_homepage_lieferando():
+    """Test GET /api/cms/homepage/lieferando endpoint"""
+    print("\n🧪 Testing GET /api/cms/homepage/lieferando endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/homepage/lieferando")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved homepage lieferando content")
+        else:
+            print(f"❌ Failed to retrieve homepage lieferando content. Status code: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["title", "description", "button_text", "delivery_text", 
+                          "authentic_text", "availability_text", "lieferando_url"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+            
+        # Check if multilanguage fields are properly structured
+        multilang_fields = ["title", "description", "button_text", "delivery_text", 
+                           "authentic_text", "availability_text"]
+        
+        for field in multilang_fields:
+            if field in data:
+                if not isinstance(data[field], dict) or not all(lang in data[field] for lang in ["de", "en", "es"]):
+                    print(f"❌ Field '{field}' is not properly structured as multilanguage")
+                    return False
+        
+        print("✅ All multilanguage fields are properly structured")
+        
+        # Print some sample data
+        print(f"📊 Sample lieferando content:")
+        print(f"  Title (DE): {data['title']['de']}")
+        print(f"  Description (DE): {data['description']['de'][:50]}...")
+        print(f"  Lieferando URL: {data['lieferando_url']}")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to homepage lieferando endpoint: {e}")
+        return False
+
+def run_jimmy_tapas_tests():
+    """Run tests for Jimmy's Tapas Bar backend after fixes"""
+    print("\n🔍 Starting Jimmy's Tapas Bar Backend Tests After Fixes")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # First, authenticate to get a token for protected endpoints
+    auth_success, token = test_auth_login()
+    results["auth_login"] = auth_success
+    
+    if not auth_success:
+        print("❌ Authentication failed. Cannot proceed with tests requiring authentication.")
+    
+    # Priority 1: Fixed issues
+    print("\n📋 Priority 1: Testing Fixed Issues")
+    print("-" * 80)
+    
+    # Test Menu-System GET endpoint (fixed data type issue)
+    results["menu_items_get"] = test_get_menu_items()
+    
+    # Test Newsletter SMTP POST endpoint (fixed import issue)
+    if auth_success:
+        results["smtp_config_post"] = test_create_smtp_config()
+    else:
+        results["smtp_config_post"] = False
+        print("❌ Skipping SMTP configuration test due to failed login")
+    
+    # Priority 2: Newsletter System
+    print("\n📋 Priority 2: Testing Newsletter System")
+    print("-" * 80)
+    
+    # Test Newsletter Registration
+    results["newsletter_subscribe"], subscriber_email = test_newsletter_subscribe()
+    
+    # Test SMTP Configuration GET
+    if auth_success:
+        results["smtp_config_get"] = test_get_smtp_config()
+    else:
+        results["smtp_config_get"] = False
+        print("❌ Skipping SMTP configuration GET test due to failed login")
+    
+    # Test Newsletter Templates
+    if auth_success:
+        results["newsletter_templates_get"] = test_get_newsletter_templates()
+        results["newsletter_templates_post"] = test_create_newsletter_template()
+    else:
+        results["newsletter_templates_get"] = False
+        results["newsletter_templates_post"] = False
+        print("❌ Skipping newsletter templates tests due to failed login")
+    
+    # Test Newsletter Campaigns
+    if auth_success:
+        results["newsletter_campaigns_get"] = test_get_newsletter_campaigns()
+        results["newsletter_campaigns_post"] = test_create_newsletter_campaign()
+    else:
+        results["newsletter_campaigns_get"] = False
+        results["newsletter_campaigns_post"] = False
+        print("❌ Skipping newsletter campaigns tests due to failed login")
+    
+    # Test Subscribers Management
+    if auth_success:
+        results["newsletter_subscribers_get"] = test_get_newsletter_subscribers()
+    else:
+        results["newsletter_subscribers_get"] = False
+        print("❌ Skipping newsletter subscribers test due to failed login")
+    
+    # Priority 3: CMS Content
+    print("\n📋 Priority 3: Testing CMS Content")
+    print("-" * 80)
+    
+    # Test Homepage Hero
+    results["homepage_hero_get"] = test_get_homepage_hero()
+    
+    # Test Homepage Features
+    results["homepage_features_get"] = test_get_homepage_features()
+    
+    # Test Homepage Food Gallery
+    results["homepage_food_gallery_get"] = test_get_homepage_food_gallery()
+    
+    # Test Homepage Lieferando
+    results["homepage_lieferando_get"] = test_get_homepage_lieferando()
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    
+    # Priority 1 summary
+    print("\nPriority 1: Fixed Issues")
+    print("-" * 40)
+    priority1_tests = ["menu_items_get", "smtp_config_post"]
+    for test_name in priority1_tests:
+        status = "✅ PASSED" if results[test_name] else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Priority 2 summary
+    print("\nPriority 2: Newsletter System")
+    print("-" * 40)
+    priority2_tests = ["newsletter_subscribe", "smtp_config_get", "newsletter_templates_get", 
+                      "newsletter_templates_post", "newsletter_campaigns_get", 
+                      "newsletter_campaigns_post", "newsletter_subscribers_get"]
+    for test_name in priority2_tests:
+        status = "✅ PASSED" if results[test_name] else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Priority 3 summary
+    print("\nPriority 3: CMS Content")
+    print("-" * 40)
+    priority3_tests = ["homepage_hero_get", "homepage_features_get", 
+                      "homepage_food_gallery_get", "homepage_lieferando_get"]
+    for test_name in priority3_tests:
+        status = "✅ PASSED" if results[test_name] else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
 if __name__ == "__main__":
     # Check if a specific test is requested
-    if len(sys.argv) > 1 and sys.argv[1] == "admin-route":
-        # Run the admin route tests
-        success = run_admin_route_tests()
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "admin-route":
+            # Run the admin route tests
+            success = run_admin_route_tests()
+        elif sys.argv[1] == "jimmy-tapas":
+            # Run the Jimmy's Tapas Bar tests after fixes
+            success = run_jimmy_tapas_tests()
+        else:
+            # Run the specific tests for admin login system
+            success = run_admin_login_tests()
     else:
-        # Run the specific tests for admin login system
-        success = run_admin_login_tests()
+        # Run the Jimmy's Tapas Bar tests after fixes by default
+        success = run_jimmy_tapas_tests()
     sys.exit(0 if success else 1)
