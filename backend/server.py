@@ -1311,6 +1311,8 @@ async def update_smtp_config(
     current_user: User = Depends(get_admin_user)
 ):
     """Update SMTP configuration"""
+    import base64
+    
     update_dict = {k: v for k, v in smtp_data.dict().items() if v is not None}
     update_dict["updated_at"] = datetime.utcnow()
     update_dict["updated_by"] = current_user.username
