@@ -84,14 +84,14 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
                 rows={rows}
                 value={value?.[lang] || ''}
                 onChange={(e) => onChange({...value, [lang]: e.target.value})}
-                className="w-full p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             ) : (
               <input
                 type={type}
                 value={value?.[lang] || ''}
                 onChange={(e) => onChange({...value, [lang]: e.target.value})}
-                className="w-full p-2 border border-gray-300 rounded-md text-sm"
+                className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             )}
           </div>
