@@ -1218,6 +1218,99 @@ def run_all_tests():
     
     return all_passed
 
+def test_admin_route_access():
+    """Test direct access to admin route via HTTP"""
+    print("\n🧪 Testing direct access to /admin route...")
+    
+    try:
+        # Make GET request to the admin route
+        response = requests.get(f"{BACKEND_URL}/admin")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully accessed admin route")
+        else:
+            print(f"❌ Failed to access admin route. Status code: {response.status_code}")
+            return False
+        
+        # Check if response contains admin login page content
+        content = response.text.lower()
+        
+        # Look for key elements that should be in the admin login page
+        admin_indicators = [
+            "cms login",
+            "jimmy's tapas bar verwaltung",
+            "benutzername",
+            "passwort",
+            "anmelden"
+        ]
+        
+        missing_indicators = [indicator for indicator in admin_indicators if indicator not in content]
+        
+        if not missing_indicators:
+            print("✅ Response contains admin login page content")
+        else:
+            print(f"❌ Response is missing expected admin login page content: {missing_indicators}")
+            return False
+        
+        # Check that the main site header is not present
+        if "speisekarte" in content and "startseite" in content and "kontakt" in content:
+            print("❌ Main site header is present in admin page")
+            return False
+        else:
+            print("✅ Admin route is properly isolated from main site layout")
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to admin route: {e}")
+        return False
+
+def test_admin_api_integration():
+    """Test that admin panel can communicate with backend APIs"""
+    print("\n🧪 Testing admin panel API integration...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Test a few admin-specific API endpoints
+        endpoints = [
+            {"url": f"{API_BASE_URL}/admin/reviews/pending", "name": "Pending Reviews"},
+            {"url": f"{API_BASE_URL}/admin/contact", "name": "Contact Messages"},
+            {"url": f"{API_BASE_URL}/admin/maintenance", "name": "Maintenance Mode"}
+        ]
+        
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        all_successful = True
+        
+        for endpoint in endpoints:
+            response = requests.get(endpoint["url"], headers=headers)
+            
+            if response.status_code == 200:
+                print(f"✅ Successfully accessed {endpoint['name']} API")
+                
+                # Check if response is valid JSON
+                try:
+                    data = response.json()
+                    print(f"  ✅ Response is valid JSON")
+                except json.JSONDecodeError:
+                    print(f"  ❌ Response is not valid JSON")
+                    all_successful = False
+            else:
+                print(f"❌ Failed to access {endpoint['name']} API. Status code: {response.status_code}")
+                all_successful = False
+        
+        return all_successful
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error testing admin API integration: {e}")
+        return False
+
 def run_admin_login_tests():
     """Run specific tests for admin login system"""
     print("\n🔍 Starting Jimmy's Tapas Bar Admin Login System Tests")
@@ -1246,6 +1339,51 @@ def run_admin_login_tests():
     
     # Test 4: CORS configuration
     results["cors_configuration"] = test_cors_configuration()
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    for test_name, result in results.items():
+        status = "✅ PASSED" if result else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
+def run_admin_route_tests():
+    """Run tests for admin route functionality"""
+    print("\n🔍 Starting Jimmy's Tapas Bar Admin Route Tests")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # Test 1: Admin Route Access
+    results["admin_route_access"] = test_admin_route_access()
+    
+    # Test 2: Authentication login
+    auth_success, token = test_auth_login()
+    results["admin_login"] = auth_success
+    
+    # Test 3: JWT token validation
+    if auth_success:
+        results["jwt_token_validation"] = test_auth_me()
+    else:
+        results["jwt_token_validation"] = False
+        print("❌ Skipping JWT token validation test due to failed login")
+    
+    # Test 4: Admin API Integration
+    if auth_success:
+        results["admin_api_integration"] = test_admin_api_integration()
+    else:
+        results["admin_api_integration"] = False
+        print("❌ Skipping admin API integration test due to failed login")
+    
+    # Test 5: Unauthorized Access
+    results["unauthorized_access"] = test_unauthorized_access()
     
     # Print summary
     print("\n📋 Test Summary")
