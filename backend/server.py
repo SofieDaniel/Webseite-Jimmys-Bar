@@ -1238,7 +1238,12 @@ async def get_about_content():
     content = await db.about_content.find_one()
     if not content:
         raise HTTPException(status_code=404, detail="About content not found")
-    return content
+    
+    # Convert MongoDB document to dict and remove ObjectId
+    content_dict = dict(content)
+    if '_id' in content_dict:
+        del content_dict['_id']
+    return content_dict
 
 @api_router.get("/cms/locations")
 async def get_locations_content():
@@ -1246,7 +1251,12 @@ async def get_locations_content():
     content = await db.locations_content.find_one()
     if not content:
         raise HTTPException(status_code=404, detail="Locations content not found")
-    return content
+    
+    # Convert MongoDB document to dict and remove ObjectId
+    content_dict = dict(content)
+    if '_id' in content_dict:
+        del content_dict['_id']
+    return content_dict
 
 @api_router.get("/cms/contact")
 async def get_contact_content():
@@ -1254,33 +1264,26 @@ async def get_contact_content():
     content = await db.contact_legal.find_one()
     if not content:
         raise HTTPException(status_code=404, detail="Contact content not found")
-    return content
+    
+    # Convert MongoDB document to dict and remove ObjectId
+    content_dict = dict(content)
+    if '_id' in content_dict:
+        del content_dict['_id']
+    return content_dict
 
 # Override old multi-language endpoints to return German content only
-@api_router.get("/cms/homepage/hero")
-async def get_homepage_hero_german():
-    """Get homepage hero content - German only"""
-    content = await db.homepage_hero.find_one()
-    if not content:
-        # Return a default German hero section
-        return {
-            "title": "AUTÉNTICO SABOR ESPAÑOL",
-            "subtitle": "an der Ostsee",
-            "description": "Genießen Sie authentische spanische Spezialitäten direkt an der malerischen Ostseeküste",
-            "location_text": "Warnemünde & Kühlungsborn",
-            "menu_button_text": "Zur Speisekarte",
-            "locations_button_text": "Unsere Standorte",
-            "background_image": "https://images.unsplash.com/photo-1656423521731-9665583f100c"
-        }
-    return content
-
 @api_router.get("/cms/homepage/features")
 async def get_homepage_features_german():
     """Get homepage features content - German only"""
     content = await db.homepage_features.find_one()
     if not content:
         raise HTTPException(status_code=404, detail="Features content not found")
-    return content
+    
+    # Convert MongoDB document to dict and remove ObjectId
+    content_dict = dict(content)
+    if '_id' in content_dict:
+        del content_dict['_id']
+    return content_dict
 
 @api_router.get("/cms/homepage/food-gallery")
 async def get_homepage_food_gallery_german():
@@ -1288,7 +1291,12 @@ async def get_homepage_food_gallery_german():
     content = await db.homepage_food_gallery.find_one()
     if not content:
         raise HTTPException(status_code=404, detail="Food gallery content not found")
-    return content
+    
+    # Convert MongoDB document to dict and remove ObjectId
+    content_dict = dict(content)
+    if '_id' in content_dict:
+        del content_dict['_id']
+    return content_dict
 
 @api_router.get("/cms/homepage/lieferando")
 async def get_homepage_lieferando_german():
@@ -1296,7 +1304,12 @@ async def get_homepage_lieferando_german():
     content = await db.homepage_lieferando.find_one()
     if not content:
         raise HTTPException(status_code=404, detail="Lieferando content not found")
-    return content
+    
+    # Convert MongoDB document to dict and remove ObjectId
+    content_dict = dict(content)
+    if '_id' in content_dict:
+        del content_dict['_id']
+    return content_dict
 
 # ===============================================
 # NEWSLETTER SYSTEM API ENDPOINTS
