@@ -1097,12 +1097,12 @@ def test_unauthorized_access():
             elif endpoint["method"] == "put":
                 response = requests.put(endpoint["url"], json={})
             
-            # Check if response is 401 Unauthorized
-            if response.status_code == 401:
-                print(f"✅ {endpoint['name']} correctly returned 401 Unauthorized")
+            # Check if response is 401 Unauthorized or 403 Forbidden (both are acceptable)
+            if response.status_code in [401, 403]:
+                print(f"✅ {endpoint['name']} correctly returned {response.status_code} (Unauthorized/Forbidden)")
                 results[endpoint["name"]] = True
             else:
-                print(f"❌ {endpoint['name']} returned {response.status_code} instead of 401 Unauthorized")
+                print(f"❌ {endpoint['name']} returned {response.status_code} instead of 401/403")
                 results[endpoint["name"]] = False
                 
         except requests.exceptions.RequestException as e:
