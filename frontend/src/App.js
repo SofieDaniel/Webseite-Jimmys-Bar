@@ -7,6 +7,12 @@ import { ContentSection, MenuSection } from './AdminSections';
 import { ReviewsSection, ContactsSection, UsersSection } from './AdminSectionsExtended';
 import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
 
+// Import Page Components
+import Home from './components/Home';
+import Standorte from './components/Standorte';
+import UeberUns from './components/UeberUns';
+import Footer from './components/Footer';
+
 // Language Context - Only German
 const LanguageContext = createContext();
 
