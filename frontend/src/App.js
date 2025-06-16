@@ -99,11 +99,14 @@ const AdminPanel = () => {
   const [success, setSuccess] = useState('');
 
   // API Base URL
-  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001/api';
+  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+
+  console.log('AdminPanel loaded, API_BASE_URL:', API_BASE_URL);
 
   // Check for existing login on mount
   useEffect(() => {
     const savedToken = localStorage.getItem('adminToken');
+    console.log('Checking saved token:', savedToken ? 'Found' : 'Not found');
     if (savedToken) {
       setToken(savedToken);
       verifyToken(savedToken);
