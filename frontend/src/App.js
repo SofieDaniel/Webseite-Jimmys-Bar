@@ -1093,14 +1093,136 @@ const MainLayout = ({ children }) => {
 };
 
 // Placeholder Components for other pages
-const Standorte = () => (
-  <div className="min-h-screen bg-dark-brown pt-20 flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-4xl font-serif text-warm-beige mb-4">Unsere Standorte</h1>
-      <p className="text-light-beige">Standorte-Seite wird entwickelt...</p>
+const Standorte = () => {
+  const [locationsData, setLocationsData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : 'http://localhost:8001/api';
+
+  useEffect(() => {
+    loadLocationsData();
+  }, []);
+
+  const loadLocationsData = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/cms/locations`);
+      if (response.ok) {
+        const data = await response.json();
+        setLocationsData(data);
+      }
+    } catch (error) {
+      console.error('Error loading locations data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-brown">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-warm-beige"></div>
+      </div>
+    );
+  }
+
+  if (!locationsData) {
+    return (
+      <div className="min-h-screen bg-dark-brown pt-20 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-serif text-warm-beige mb-4">Unsere Standorte</h1>
+          <p className="text-light-beige">Standorte werden geladen...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-dark-brown pt-20">
+      <div className="container mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-serif text-warm-beige mb-4">{locationsData.hero_title}</h1>
+          <p className="text-xl text-light-beige max-w-3xl mx-auto">{locationsData.hero_description}</p>
+        </div>
+
+        {/* Locations */}
+        <div className="space-y-16">
+          {locationsData.locations?.map((location, index) => (
+            <div key={location.id} className={`grid lg:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
+              {/* Image */}
+              <div className={`${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
+                <img 
+                  src={location.image} 
+                  alt={location.name}
+                  className="w-full h-96 object-cover rounded-lg border-2 border-warm-brown"
+                />
+              </div>
+              
+              {/* Content */}
+              <div className={`${index % 2 === 1 ? 'lg:col-start-1' : ''}`}>
+                <h2 className="text-3xl font-serif text-warm-beige mb-2">{location.name}</h2>
+                <p className="text-lg text-orange-300 mb-4">{location.subtitle}</p>
+                <p className="text-light-beige mb-6 leading-relaxed">{location.description}</p>
+                
+                {/* Contact Info */}
+                <div className="bg-medium-brown rounded-lg p-6 mb-6 border border-warm-brown">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-warm-beige font-semibold mb-3">📍 Adresse</h4>
+                      <p className="text-light-beige whitespace-pre-line">{location.address}</p>
+                      <div className="mt-4 space-y-1">
+                        <p className="text-light-beige">📞 {location.phone}</p>
+                        <p className="text-light-beige">✉️ {location.email}</p>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-warm-beige font-semibold mb-3">🕐 Öffnungszeiten</h4>
+                      <div className="space-y-1 text-light-beige text-sm">
+                        <div className="flex justify-between">
+                          <span>Montag - Donnerstag:</span>
+                          <span>{location.opening_hours.monday}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Freitag - Samstag:</span>
+                          <span>{location.opening_hours.friday}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Sonntag:</span>
+                          <span>{location.opening_hours.sunday}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Features */}
+                <div className="mb-6">
+                  <h4 className="text-warm-beige font-semibold mb-3">✨ Highlights</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {location.features?.map((feature, idx) => (
+                      <div key={idx} className="flex items-center text-light-beige text-sm">
+                        <span className="w-2 h-2 bg-warm-beige rounded-full mr-2"></span>
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Special Info */}
+                {location.special_info && (
+                  <div className="bg-warm-beige bg-opacity-10 border border-warm-beige rounded-lg p-4">
+                    <p className="text-orange-200 text-sm italic">{location.special_info}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Bewertungen = () => (
   <div className="min-h-screen bg-dark-brown pt-20 flex items-center justify-center">
@@ -1111,23 +1233,217 @@ const Bewertungen = () => (
   </div>
 );
 
-const UeberUns = () => (
-  <div className="min-h-screen bg-dark-brown pt-20 flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-4xl font-serif text-warm-beige mb-4">Über uns</h1>
-      <p className="text-light-beige">Über uns-Seite wird entwickelt...</p>
-    </div>
-  </div>
-);
+const UeberUns = () => {
+  const [aboutData, setAboutData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-const Kontakt = () => (
-  <div className="min-h-screen bg-dark-brown pt-20 flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-4xl font-serif text-warm-beige mb-4">Kontakt</h1>
-      <p className="text-light-beige">Kontakt-Seite wird entwickelt...</p>
+  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : 'http://localhost:8001/api';
+
+  useEffect(() => {
+    loadAboutData();
+  }, []);
+
+  const loadAboutData = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/cms/about`);
+      if (response.ok) {
+        const data = await response.json();
+        setAboutData(data);
+      }
+    } catch (error) {
+      console.error('Error loading about data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-brown">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-warm-beige"></div>
+      </div>
+    );
+  }
+
+  if (!aboutData) {
+    return (
+      <div className="min-h-screen bg-dark-brown pt-20 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-serif text-warm-beige mb-4">Über uns</h1>
+          <p className="text-light-beige">Inhalte werden geladen...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-dark-brown pt-20">
+      <div className="container mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-serif text-warm-beige mb-4">{aboutData.hero_title}</h1>
+          <p className="text-xl text-light-beige max-w-4xl mx-auto leading-relaxed">{aboutData.hero_description}</p>
+        </div>
+
+        {/* Hero Image */}
+        {aboutData.hero_image && (
+          <div className="mb-16">
+            <img 
+              src={aboutData.hero_image} 
+              alt="Jimmy's Tapas Bar" 
+              className="w-full h-96 object-cover rounded-lg border-2 border-warm-brown"
+            />
+          </div>
+        )}
+
+        {/* Story Section */}
+        <div className="mb-20">
+          <h2 className="text-4xl font-serif text-warm-beige mb-8 text-center">{aboutData.story_title}</h2>
+          <div className="max-w-4xl mx-auto bg-medium-brown rounded-lg p-8 border border-warm-brown">
+            <div 
+              className="prose prose-lg prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: aboutData.story_content }}
+            />
+          </div>
+        </div>
+
+        {/* Team Section */}
+        {aboutData.team_members && (
+          <div className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-serif text-warm-beige mb-4">{aboutData.team_title}</h2>
+              <p className="text-xl text-light-beige">{aboutData.team_description}</p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {aboutData.team_members.map((member, index) => (
+                <div key={index} className="bg-medium-brown rounded-lg overflow-hidden border border-warm-brown hover:border-warm-beige transition-all duration-300">
+                  <img 
+                    src={member.image} 
+                    alt={member.name}
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="p-6">
+                    <h3 className="text-xl font-serif text-warm-beige mb-1">{member.name}</h3>
+                    <p className="text-orange-300 text-sm font-medium mb-3">{member.position}</p>
+                    <p className="text-light-beige text-sm leading-relaxed">{member.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Values Section */}
+        {aboutData.values && (
+          <div className="mb-16">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-serif text-warm-beige mb-4">{aboutData.values_title}</h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+              {aboutData.values.map((value, index) => (
+                <div key={index} className="bg-medium-brown rounded-lg p-6 border border-warm-brown text-center hover:border-warm-beige transition-all duration-300">
+                  <div className="text-4xl mb-4">{value.icon}</div>
+                  <h3 className="text-xl font-serif text-warm-beige mb-3">{value.title}</h3>
+                  <p className="text-light-beige text-sm leading-relaxed">{value.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+const Kontakt = () => {
+  const [contactData, setContactData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : 'http://localhost:8001/api';
+
+  useEffect(() => {
+    loadContactData();
+  }, []);
+
+  const loadContactData = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/cms/contact`);
+      if (response.ok) {
+        const data = await response.json();
+        setContactData(data);
+      }
+    } catch (error) {
+      console.error('Error loading contact data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-brown">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-warm-beige"></div>
+      </div>
+    );
+  }
+
+  if (!contactData) {
+    return (
+      <div className="min-h-screen bg-dark-brown pt-20 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-serif text-warm-beige mb-4">Kontakt</h1>
+          <p className="text-light-beige">Kontakt-Informationen werden geladen...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-dark-brown pt-20">
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-serif text-warm-beige mb-4">{contactData.contact_title}</h1>
+          <p className="text-xl text-light-beige max-w-3xl mx-auto">{contactData.contact_description}</p>
+          {contactData.reservation_info && (
+            <p className="text-light-beige mt-4 italic">{contactData.reservation_info}</p>
+          )}
+        </div>
+
+        {/* Contact Content with Newsletter */}
+        <div className="grid lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+          {/* Main contact info */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Contact form or info can go here */}
+            <div className="bg-medium-brown rounded-lg p-8 border border-warm-brown">
+              <h2 className="text-2xl font-serif text-warm-beige mb-6">Nachricht senden</h2>
+              <p className="text-light-beige">Für Reservierungen und Anfragen nutzen Sie bitte unsere Telefonnummern oder E-Mail-Adressen der jeweiligen Standorte.</p>
+            </div>
+          </div>
+
+          {/* Newsletter sidebar */}
+          <div className="lg:col-span-1">
+            <NewsletterRegistration />
+          </div>
+        </div>
+
+        {/* Legal pages */}
+        <div className="mt-20 space-y-12">
+          {/* Privacy Policy */}
+          <div className="bg-medium-brown rounded-lg p-8 border border-warm-brown">
+            <div dangerouslySetInnerHTML={{ __html: contactData.privacy_policy }} />
+          </div>
+
+          {/* Imprint */}
+          <div className="bg-medium-brown rounded-lg p-8 border border-warm-brown">
+            <div dangerouslySetInnerHTML={{ __html: contactData.imprint }} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Main App Component
 const App = () => {
