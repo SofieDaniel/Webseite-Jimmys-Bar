@@ -968,45 +968,34 @@ const Speisekarte = () => {
         {/* Menu Items */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {getFilteredItems().map((item, index) => (
-            <div key={item.id || index} className="bg-medium-brown rounded-lg overflow-hidden border border-warm-brown hover:border-warm-beige transition-all duration-300 group">
-              {/* Hover Image */}
-              {item.image && (
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={item.image} 
-                    alt={item.name} 
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
-                  />
-                  {/* Hover overlay with details */}
-                  {item.detailed_description && (
-                    <div className="absolute inset-0 bg-black bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex items-center justify-center">
-                      <p className="text-white text-sm text-center leading-relaxed max-h-full overflow-y-auto">
-                        {item.detailed_description}
-                      </p>
-                    </div>
-                  )}
+            <div key={item.id || index} className="bg-medium-brown rounded-lg border border-warm-brown hover:border-warm-beige transition-all duration-300 group p-6">
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-xl font-serif text-warm-beige">{item.name}</h3>
+                <span className="text-warm-beige font-semibold">{formatPrice(item.price)}</span>
+              </div>
+              
+              <p className="text-light-beige text-sm leading-relaxed mb-3">{item.description}</p>
+              
+              {/* Detailed description on hover */}
+              {item.detailed_description && (
+                <div className="hidden group-hover:block">
+                  <p className="text-orange-200 text-xs leading-relaxed mb-3 italic border-t border-warm-brown pt-3">
+                    {item.detailed_description}
+                  </p>
                 </div>
               )}
               
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-xl font-serif text-warm-beige">{item.name}</h3>
-                  <span className="text-warm-beige font-semibold">{formatPrice(item.price)}</span>
-                </div>
-                <p className="text-light-beige text-sm leading-relaxed mb-3">{item.description}</p>
-                
-                {/* Tags */}
-                <div className="flex gap-2 flex-wrap">
-                  {item.vegan && (
-                    <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">Vegan</span>
-                  )}
-                  {item.vegetarian && (
-                    <span className="px-2 py-1 bg-green-500 text-white text-xs rounded">Vegetarisch</span>
-                  )}
-                  {item.glutenfree && (
-                    <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded">Glutenfrei</span>
-                  )}
-                </div>
+              {/* Tags */}
+              <div className="flex gap-2 flex-wrap">
+                {item.vegan && (
+                  <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">Vegan</span>
+                )}
+                {item.vegetarian && (
+                  <span className="px-2 py-1 bg-green-500 text-white text-xs rounded">Vegetarisch</span>
+                )}
+                {item.glutenfree && (
+                  <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded">Glutenfrei</span>
+                )}
               </div>
             </div>
           ))}
