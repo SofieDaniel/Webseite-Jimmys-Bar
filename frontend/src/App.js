@@ -551,7 +551,34 @@ const DashboardSection = ({ user, token, apiCall }) => {
 // Header Component  
 const Header = () => {
   const location = useLocation();
-  const { currentLanguage, toggleLanguage, t } = useLanguage();
+  const [navigationTexts, setNavigationTexts] = useState({
+    home: 'Startseite',
+    locations: 'Standorte', 
+    menu: 'Speisekarte',
+    reviews: 'Bewertungen',
+    about: 'Über uns',
+    contact: 'Kontakt',
+    privacy: 'Datenschutz',
+    imprint: 'Impressum'
+  });
+
+  // Load navigation texts from backend
+  useEffect(() => {
+    const loadNavigationTexts = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/website-texts/navigation`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.navigation) {
+            setNavigationTexts(data.navigation);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading navigation texts:', error);
+      }
+    };
+    loadNavigationTexts();
+  }, []);
   
   const isActivePage = (path) => location.pathname === path;
   
@@ -571,29 +598,22 @@ const Header = () => {
           <div className="hidden md:flex space-x-10 items-center">
             <Link to="/" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>{t('nav.home')}</Link>
+            }`}>{navigationTexts.home}</Link>
             <Link to="/standorte" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/standorte') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>{t('nav.locations')}</Link>
+            }`}>{navigationTexts.locations}</Link>
             <Link to="/speisekarte" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/speisekarte') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>{t('nav.menu')}</Link>
+            }`}>{navigationTexts.menu}</Link>
             <Link to="/bewertungen" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/bewertungen') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>{t('nav.reviews')}</Link>
+            }`}>{navigationTexts.reviews}</Link>
             <Link to="/ueber-uns" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/ueber-uns') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>{t('nav.about')}</Link>
+            }`}>{navigationTexts.about}</Link>
             <Link to="/kontakt" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/kontakt') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
-            }`}>{t('nav.contact')}</Link>
-            
-            <button
-              onClick={toggleLanguage}
-              className="border border-stone-300 text-stone-100 hover:bg-stone-100 hover:text-black px-3 py-1 rounded text-xs font-light tracking-wider transition-all duration-300"
-            >
-              {currentLanguage === 'de' ? 'EN' : currentLanguage === 'en' ? 'ES' : 'DE'}
-            </button>
+            }`}>{navigationTexts.contact}</Link>
           </div>
         </nav>
       </div>
