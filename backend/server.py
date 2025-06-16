@@ -647,6 +647,10 @@ async def get_homepage_content():
         ]
         await db.homepage_content.insert_one(default_content.dict())
         content = default_content.dict()
+    else:
+        # Remove MongoDB ObjectId before returning
+        if '_id' in content:
+            del content['_id']
     return HomepageContent(**content)
 
 @api_router.put("/cms/homepage")
