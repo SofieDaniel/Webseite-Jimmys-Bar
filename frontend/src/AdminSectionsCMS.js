@@ -28,162 +28,10 @@ const GermanTextInput = ({ label, value, onChange, type = 'text', rows = null, p
 );
 
 // ===============================================
-// HOMEPAGE CONTENT MANAGEMENT (German Only)
+// ENHANCED MENU MANAGEMENT SECTION (With Edit/Delete)
 // ===============================================
 
-export const HomepageContentSection = ({ user, token, apiCall }) => {
-  const [activeTab, setActiveTab] = useState('hero');
-  const [heroData, setHeroData] = useState({
-    title: '',
-    subtitle: '',
-    description: '',
-    location_text: '',
-    menu_button_text: '',
-    locations_button_text: '',
-    background_image: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    loadHeroData();
-  }, []);
-
-  const loadHeroData = async () => {
-    setLoading(true);
-    try {
-      const response = await apiCall('/cms/homepage/hero');
-      if (response.ok) {
-        const data = await response.json();
-        setHeroData({
-          title: data.title || '',
-          subtitle: data.subtitle || '',
-          description: data.description || '',
-          location_text: data.location_text || '',
-          menu_button_text: data.menu_button_text || '',
-          locations_button_text: data.locations_button_text || '',
-          background_image: data.background_image || ''
-        });
-      }
-    } catch (error) {
-      setError('Fehler beim Laden der Homepage-Inhalte');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const saveHeroData = async () => {
-    setLoading(true);
-    setError('');
-    setSuccess('');
-
-    try {
-      const response = await apiCall('/cms/homepage/hero', 'PUT', heroData);
-      if (response.ok) {
-        setSuccess('Homepage-Inhalte erfolgreich gespeichert');
-        loadHeroData();
-      } else {
-        const errorData = await response.json();
-        setError(errorData.detail || 'Fehler beim Speichern der Homepage-Inhalte');
-      }
-    } catch (error) {
-      setError('Verbindungsfehler beim Speichern');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Homepage-Verwaltung</h1>
-        <p className="text-gray-600">Verwalten Sie alle Inhalte der Startseite (nur Deutsch)</p>
-      </div>
-
-      {/* Messages */}
-      {success && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-          {success}
-        </div>
-      )}
-
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {error}
-        </div>
-      )}
-
-      {/* Hero Section Form */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Hero-Bereich bearbeiten</h2>
-        
-        <div className="space-y-6">
-          <GermanTextInput
-            label="Haupttitel"
-            value={heroData.title}
-            onChange={(value) => setHeroData({...heroData, title: value})}
-            placeholder="AUTÉNTICO SABOR ESPAÑOL"
-          />
-
-          <GermanTextInput
-            label="Untertitel"
-            value={heroData.subtitle}
-            onChange={(value) => setHeroData({...heroData, subtitle: value})}
-            placeholder="an der Ostsee"
-          />
-
-          <GermanTextInput
-            label="Beschreibung"
-            value={heroData.description}
-            onChange={(value) => setHeroData({...heroData, description: value})}
-            rows={3}
-            placeholder="Genießen Sie authentische spanische Spezialitäten..."
-          />
-
-          <GermanTextInput
-            label="Standort-Text"
-            value={heroData.location_text}
-            onChange={(value) => setHeroData({...heroData, location_text: value})}
-            placeholder="Warnemünde & Kühlungsborn"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <GermanTextInput
-              label="Menü-Button Text"
-              value={heroData.menu_button_text}
-              onChange={(value) => setHeroData({...heroData, menu_button_text: value})}
-              placeholder="Zur Speisekarte"
-            />
-
-            <GermanTextInput
-              label="Standorte-Button Text"
-              value={heroData.locations_button_text}
-              onChange={(value) => setHeroData({...heroData, locations_button_text: value})}
-              placeholder="Unsere Standorte"
-            />
-          </div>
-
-          <GermanTextInput
-            label="Hintergrundbild URL"
-            value={heroData.background_image}
-            onChange={(value) => setHeroData({...heroData, background_image: value})}
-            type="url"
-            placeholder="https://images.unsplash.com/..."
-          />
-
-          <button
-            onClick={saveHeroData}
-            disabled={loading}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-          >
-            {loading ? 'Speichern...' : 'Homepage-Inhalte speichern'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+export const EnhancedMenuSection = ({ user, token, apiCall }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -200,7 +48,6 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
     detailed_description: '',
     price: '',
     category: 'inicio',
-    image: '',
     vegan: false,
     vegetarian: false,
     glutenfree: false
@@ -227,7 +74,6 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
   };
 
   const loadCategories = async () => {
-    // Static categories for now - could be loaded from API
     setCategories([
       { slug: 'inicio', name: 'Inicio' },
       { slug: 'salat', name: 'Salate' },
@@ -250,7 +96,6 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
       detailed_description: '',
       price: '',
       category: 'inicio',
-      image: '',
       vegan: false,
       vegetarian: false,
       glutenfree: false
@@ -271,7 +116,8 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
       
       const payload = {
         ...itemForm,
-        price: parseFloat(itemForm.price)
+        price: parseFloat(itemForm.price),
+        image: '' // Remove images
       };
 
       const response = await apiCall(endpoint, method, payload);
@@ -298,7 +144,6 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
       detailed_description: item.detailed_description || '',
       price: item.price.toString(),
       category: item.category,
-      image: item.image || '',
       vegan: item.vegan || false,
       vegetarian: item.vegetarian || false,
       glutenfree: item.glutenfree || false
@@ -329,6 +174,28 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
     }
   };
 
+  const removeAllImages = async () => {
+    if (!confirm('Sind Sie sicher, dass Sie alle Bilder aus der Speisekarte entfernen möchten?')) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      for (const item of menuItems) {
+        if (item.image) {
+          const payload = { ...item, image: '' };
+          await apiCall(`/menu/items/${item.id}`, 'PUT', payload);
+        }
+      }
+      setSuccess('Alle Bilder wurden erfolgreich entfernt');
+      loadMenuData();
+    } catch (error) {
+      setError('Fehler beim Entfernen der Bilder');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getFilteredItems = () => {
     if (selectedCategory === 'alle') {
       return menuItems;
@@ -346,8 +213,8 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Erweiterte Speisekarten-Verwaltung</h1>
-        <p className="text-gray-600">Verwalten Sie alle Menü-Items mit vollständiger Bearbeitungs- und Löschfunktion</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Speisekarten-Verwaltung</h1>
+        <p className="text-gray-600">Verwalten Sie alle Menü-Items (ohne Bilder, nur Deutsch)</p>
       </div>
 
       {/* Messages */}
@@ -372,7 +239,7 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border border-gray-300 rounded-lg px-3 py-2 bg-white text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="alle">Alle Kategorien ({menuItems.length} Items)</option>
                 {categories.map(cat => {
@@ -388,6 +255,13 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
           </div>
           
           <div className="flex space-x-3">
+            <button
+              onClick={removeAllImages}
+              className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors"
+              disabled={loading}
+            >
+              Alle Bilder entfernen
+            </button>
             <button
               onClick={loadMenuData}
               className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
@@ -413,23 +287,19 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name *</label>
-                  <input
-                    type="text"
-                    value={itemForm.name}
-                    onChange={(e) => setItemForm({...itemForm, name: e.target.value})}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
-                  />
-                </div>
+                <GermanTextInput
+                  label="Name *"
+                  value={itemForm.name}
+                  onChange={(value) => setItemForm({...itemForm, name: value})}
+                  placeholder="Gambas al Ajillo"
+                />
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kategorie *</label>
                   <select
                     value={itemForm.category}
                     onChange={(e) => setItemForm({...itemForm, category: e.target.value})}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-300 rounded-lg bg-white text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                   >
                     {categories.map(cat => (
@@ -438,51 +308,30 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Preis (€) *</label>
-                  <input
-                    type="number"
-                    step="0.10"
-                    value={itemForm.price}
-                    onChange={(e) => setItemForm({...itemForm, price: e.target.value})}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Bild URL</label>
-                  <input
-                    type="url"
-                    value={itemForm.image}
-                    onChange={(e) => setItemForm({...itemForm, image: e.target.value})}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://images.unsplash.com/..."
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Kurze Beschreibung *</label>
-                <textarea
-                  value={itemForm.description}
-                  onChange={(e) => setItemForm({...itemForm, description: e.target.value})}
-                  rows={2}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  required
+                <GermanTextInput
+                  label="Preis (€) *"
+                  type="number"
+                  value={itemForm.price}
+                  onChange={(value) => setItemForm({...itemForm, price: value})}
+                  placeholder="9.90"
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Detaillierte Beschreibung</label>
-                <textarea
-                  value={itemForm.detailed_description}
-                  onChange={(e) => setItemForm({...itemForm, detailed_description: e.target.value})}
-                  rows={3}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ausführliche Beschreibung mit Zutaten und Herkunft..."
-                />
-              </div>
+              <GermanTextInput
+                label="Kurze Beschreibung *"
+                value={itemForm.description}
+                onChange={(value) => setItemForm({...itemForm, description: value})}
+                rows={2}
+                placeholder="Garnelen in Knoblauchöl"
+              />
+
+              <GermanTextInput
+                label="Detaillierte Beschreibung"
+                value={itemForm.detailed_description}
+                onChange={(value) => setItemForm({...itemForm, detailed_description: value})}
+                rows={3}
+                placeholder="Ausführliche Beschreibung mit Zutaten und Herkunft..."
+              />
 
               {/* Tags */}
               <div>
@@ -564,18 +413,9 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
               {getFilteredItems().map((item) => (
                 <tr key={item.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      {item.image && (
-                        <img 
-                          src={item.image} 
-                          alt={item.name}
-                          className="h-12 w-12 rounded-lg object-cover mr-4"
-                        />
-                      )}
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">{item.name}</div>
-                        <div className="text-sm text-gray-500">{item.description}</div>
-                      </div>
+                    <div>
+                      <div className="text-sm font-medium text-gray-900">{item.name}</div>
+                      <div className="text-sm text-gray-500">{item.description}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -631,8 +471,127 @@ export const HomepageContentSection = ({ user, token, apiCall }) => {
   );
 };
 
-// Export placeholder functions for other CMS sections (until fixed)
-export const HomepageContentSection = () => <div>Homepage CMS wird geladen...</div>;
-export const LocationsManagementSection = () => <div>Locations CMS wird geladen...</div>;
-export const AboutContentSection = () => <div>About CMS wird geladen...</div>;
-export const ContactLegalSection = () => <div>Contact CMS wird geladen...</div>;
+// ===============================================
+// HOMEPAGE CONTENT MANAGEMENT (German Only)
+// ===============================================
+
+export const HomepageContentSection = ({ user, token, apiCall }) => {
+  const [heroData, setHeroData] = useState({
+    title: '',
+    subtitle: '',
+    description: '',
+    location_text: '',
+    menu_button_text: '',
+    locations_button_text: '',
+    background_image: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadHeroData();
+  }, []);
+
+  const loadHeroData = async () => {
+    setLoading(true);
+    try {
+      const response = await apiCall('/cms/homepage/hero');
+      if (response.ok) {
+        const data = await response.json();
+        setHeroData({
+          title: data.title || '',
+          subtitle: data.subtitle || '',
+          description: data.description || '',
+          location_text: data.location_text || '',
+          menu_button_text: data.menu_button_text || '',
+          locations_button_text: data.locations_button_text || '',
+          background_image: data.background_image || ''
+        });
+      }
+    } catch (error) {
+      setError('Fehler beim Laden der Homepage-Inhalte');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Homepage-Verwaltung</h1>
+        <p className="text-gray-600">Verwalten Sie alle Inhalte der Startseite (nur Deutsch)</p>
+      </div>
+
+      {/* Messages */}
+      {success && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+          {success}
+        </div>
+      )}
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          {error}
+        </div>
+      )}
+
+      {/* Hero Section Form */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Hero-Bereich bearbeiten</h2>
+        
+        <div className="space-y-6">
+          <GermanTextInput
+            label="Haupttitel"
+            value={heroData.title}
+            onChange={(value) => setHeroData({...heroData, title: value})}
+            placeholder="AUTÉNTICO SABOR ESPAÑOL"
+          />
+
+          <GermanTextInput
+            label="Untertitel"
+            value={heroData.subtitle}
+            onChange={(value) => setHeroData({...heroData, subtitle: value})}
+            placeholder="an der Ostsee"
+          />
+
+          <GermanTextInput
+            label="Beschreibung"
+            value={heroData.description}
+            onChange={(value) => setHeroData({...heroData, description: value})}
+            rows={3}
+            placeholder="Genießen Sie authentische spanische Spezialitäten..."
+          />
+
+          <GermanTextInput
+            label="Standort-Text"
+            value={heroData.location_text}
+            onChange={(value) => setHeroData({...heroData, location_text: value})}
+            placeholder="Warnemünde & Kühlungsborn"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <GermanTextInput
+              label="Menü-Button Text"
+              value={heroData.menu_button_text}
+              onChange={(value) => setHeroData({...heroData, menu_button_text: value})}
+              placeholder="Zur Speisekarte"
+            />
+
+            <GermanTextInput
+              label="Standorte-Button Text"
+              value={heroData.locations_button_text}
+              onChange={(value) => setHeroData({...heroData, locations_button_text: value})}
+              placeholder="Unsere Standorte"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Placeholder exports for other sections
+export const LocationsManagementSection = () => <div>Standorte CMS wird entwickelt...</div>;
+export const AboutContentSection = () => <div>About CMS wird entwickelt...</div>;
+export const ContactLegalSection = () => <div>Contact CMS wird entwickelt...</div>;
