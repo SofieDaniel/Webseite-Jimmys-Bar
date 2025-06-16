@@ -1,10 +1,189 @@
 import React, { useState, useEffect } from 'react';
 
 // ===============================================
-// ENHANCED MENU MANAGEMENT SECTION (With Edit/Delete)
+// SINGLE LANGUAGE INPUT COMPONENT (German only)
 // ===============================================
 
-export const EnhancedMenuSection = ({ user, token, apiCall }) => {
+const GermanTextInput = ({ label, value, onChange, type = 'text', rows = null, placeholder = '' }) => (
+  <div className="space-y-2">
+    <label className="block text-sm font-medium text-gray-700">{label}</label>
+    {rows ? (
+      <textarea
+        rows={rows}
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full p-3 border border-gray-300 rounded-lg text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      />
+    ) : (
+      <input
+        type={type}
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full p-3 border border-gray-300 rounded-lg text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      />
+    )}
+  </div>
+);
+
+// ===============================================
+// HOMEPAGE CONTENT MANAGEMENT (German Only)
+// ===============================================
+
+export const HomepageContentSection = ({ user, token, apiCall }) => {
+  const [activeTab, setActiveTab] = useState('hero');
+  const [heroData, setHeroData] = useState({
+    title: '',
+    subtitle: '',
+    description: '',
+    location_text: '',
+    menu_button_text: '',
+    locations_button_text: '',
+    background_image: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadHeroData();
+  }, []);
+
+  const loadHeroData = async () => {
+    setLoading(true);
+    try {
+      const response = await apiCall('/cms/homepage/hero');
+      if (response.ok) {
+        const data = await response.json();
+        setHeroData({
+          title: data.title || '',
+          subtitle: data.subtitle || '',
+          description: data.description || '',
+          location_text: data.location_text || '',
+          menu_button_text: data.menu_button_text || '',
+          locations_button_text: data.locations_button_text || '',
+          background_image: data.background_image || ''
+        });
+      }
+    } catch (error) {
+      setError('Fehler beim Laden der Homepage-Inhalte');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveHeroData = async () => {
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const response = await apiCall('/cms/homepage/hero', 'PUT', heroData);
+      if (response.ok) {
+        setSuccess('Homepage-Inhalte erfolgreich gespeichert');
+        loadHeroData();
+      } else {
+        const errorData = await response.json();
+        setError(errorData.detail || 'Fehler beim Speichern der Homepage-Inhalte');
+      }
+    } catch (error) {
+      setError('Verbindungsfehler beim Speichern');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Homepage-Verwaltung</h1>
+        <p className="text-gray-600">Verwalten Sie alle Inhalte der Startseite (nur Deutsch)</p>
+      </div>
+
+      {/* Messages */}
+      {success && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+          {success}
+        </div>
+      )}
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          {error}
+        </div>
+      )}
+
+      {/* Hero Section Form */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Hero-Bereich bearbeiten</h2>
+        
+        <div className="space-y-6">
+          <GermanTextInput
+            label="Haupttitel"
+            value={heroData.title}
+            onChange={(value) => setHeroData({...heroData, title: value})}
+            placeholder="AUTÉNTICO SABOR ESPAÑOL"
+          />
+
+          <GermanTextInput
+            label="Untertitel"
+            value={heroData.subtitle}
+            onChange={(value) => setHeroData({...heroData, subtitle: value})}
+            placeholder="an der Ostsee"
+          />
+
+          <GermanTextInput
+            label="Beschreibung"
+            value={heroData.description}
+            onChange={(value) => setHeroData({...heroData, description: value})}
+            rows={3}
+            placeholder="Genießen Sie authentische spanische Spezialitäten..."
+          />
+
+          <GermanTextInput
+            label="Standort-Text"
+            value={heroData.location_text}
+            onChange={(value) => setHeroData({...heroData, location_text: value})}
+            placeholder="Warnemünde & Kühlungsborn"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <GermanTextInput
+              label="Menü-Button Text"
+              value={heroData.menu_button_text}
+              onChange={(value) => setHeroData({...heroData, menu_button_text: value})}
+              placeholder="Zur Speisekarte"
+            />
+
+            <GermanTextInput
+              label="Standorte-Button Text"
+              value={heroData.locations_button_text}
+              onChange={(value) => setHeroData({...heroData, locations_button_text: value})}
+              placeholder="Unsere Standorte"
+            />
+          </div>
+
+          <GermanTextInput
+            label="Hintergrundbild URL"
+            value={heroData.background_image}
+            onChange={(value) => setHeroData({...heroData, background_image: value})}
+            type="url"
+            placeholder="https://images.unsplash.com/..."
+          />
+
+          <button
+            onClick={saveHeroData}
+            disabled={loading}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+          >
+            {loading ? 'Speichern...' : 'Homepage-Inhalte speichern'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
   const [menuItems, setMenuItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
