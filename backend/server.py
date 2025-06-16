@@ -1251,6 +1251,48 @@ async def get_contact_content():
         raise HTTPException(status_code=404, detail="Contact content not found")
     return content
 
+# Override old multi-language endpoints to return German content only
+@api_router.get("/cms/homepage/hero")
+async def get_homepage_hero_german():
+    """Get homepage hero content - German only"""
+    content = await db.homepage_hero.find_one()
+    if not content:
+        # Return a default German hero section
+        return {
+            "title": "AUTÉNTICO SABOR ESPAÑOL",
+            "subtitle": "an der Ostsee",
+            "description": "Genießen Sie authentische spanische Spezialitäten direkt an der malerischen Ostseeküste",
+            "location_text": "Warnemünde & Kühlungsborn",
+            "menu_button_text": "Zur Speisekarte",
+            "locations_button_text": "Unsere Standorte",
+            "background_image": "https://images.unsplash.com/photo-1656423521731-9665583f100c"
+        }
+    return content
+
+@api_router.get("/cms/homepage/features")
+async def get_homepage_features_german():
+    """Get homepage features content - German only"""
+    content = await db.homepage_features.find_one()
+    if not content:
+        raise HTTPException(status_code=404, detail="Features content not found")
+    return content
+
+@api_router.get("/cms/homepage/food-gallery")
+async def get_homepage_food_gallery_german():
+    """Get homepage food gallery content - German only"""
+    content = await db.homepage_food_gallery.find_one()
+    if not content:
+        raise HTTPException(status_code=404, detail="Food gallery content not found")
+    return content
+
+@api_router.get("/cms/homepage/lieferando")
+async def get_homepage_lieferando_german():
+    """Get homepage lieferando content - German only"""
+    content = await db.homepage_lieferando.find_one()
+    if not content:
+        raise HTTPException(status_code=404, detail="Lieferando content not found")
+    return content
+
 # ===============================================
 # NEWSLETTER SYSTEM API ENDPOINTS
 # ===============================================
