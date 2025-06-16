@@ -665,11 +665,68 @@ export const NewsletterSection = ({ user, token, apiCall }) => {
                   <textarea
                     value={campaignForm.content}
                     onChange={(e) => setCampaignForm({...campaignForm, content: e.target.value})}
-                    rows={10}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="<h1>Newsletter-Titel</h1><p>Ihr Newsletter-Inhalt hier...</p>"
+                    rows={12}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+                    placeholder={`<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #FFF8DC; padding: 20px; border-radius: 10px;">
+  <div style="text-align: center; margin-bottom: 30px;">
+    <h1 style="color: #8B4513; font-size: 24px; margin: 0;">¡Hola!</h1>
+    <h2 style="color: #D2691E; font-size: 18px; margin: 5px 0;">Jimmy's Tapas Bar Newsletter</h2>
+  </div>
+  
+  <p style="color: #333; line-height: 1.6;">Liebe Tapas-Liebhaber,</p>
+  
+  <p style="color: #333; line-height: 1.6;">wir haben aufregende Neuigkeiten aus unserer Küche für Sie!</p>
+  
+  <div style="background-color: #8B4513; color: white; padding: 15px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="margin: 0 0 10px 0;">🍽️ Diese Woche neu in der Speisekarte</h3>
+    <ul style="margin: 0; padding-left: 20px;">
+      <li>Pulpo a la Gallega - Galicischer Oktopus</li>
+      <li>Croquetas de Jamón - Hausgemachte Schinken-Kroketten</li>
+      <li>Albóndigas en Salsa - Spanische Fleischbällchen</li>
+    </ul>
+  </div>
+  
+  <div style="background-color: #F0E68C; padding: 15px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="color: #8B4513; margin: 0 0 10px 0;">🍷 Weinempfehlung des Monats</h3>
+    <p style="margin: 0; color: #333;">Unser Sommelier empfiehlt: <strong>Tempranillo Reserva</strong> aus Ribera del Duero - perfekt zu unseren Fleischtapas!</p>
+  </div>
+  
+  <div style="text-align: center; margin: 30px 0;">
+    <a href="https://jimmys-tapas.de/speisekarte" style="background-color: #D2691E; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">🍤 Jetzt Speisekarte entdecken</a>
+  </div>
+  
+  <div style="text-align: center; margin: 30px 0;">
+    <p style="color: #666; margin: 5px 0;">📍 <strong>Warnemünde:</strong> Am Strom 12 | Tel: +49 381 12345</p>
+    <p style="color: #666; margin: 5px 0;">📍 <strong>Kühlungsborn:</strong> Strandstraße 8 | Tel: +49 38293 67890</p>
+  </div>
+  
+  <div style="border-top: 1px solid #D2691E; padding-top: 15px; text-align: center;">
+    <p style="color: #8B4513; font-style: italic; margin: 0;">¡Hasta pronto! - Ihr Jimmy's Team</p>
+    <p style="color: #999; font-size: 11px; margin: 5px 0;">Authentische spanische Küche an der Ostsee</p>
+  </div>
+</div>`}
                     required
                   />
+                  <div className="mt-2 text-sm text-gray-600">
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-1">
+                        <strong>HTML-Tipps:</strong>
+                        <ul className="text-xs list-disc list-inside mt-1 space-y-1">
+                          <li>Verwenden Sie Inline-CSS für beste E-Mail-Kompatibilität</li>
+                          <li>Maximale Breite: 600px für Desktop-Ansicht</li>
+                          <li>Nutzen Sie Web-sichere Farben und Schriften</li>
+                        </ul>
+                      </div>
+                      <div className="flex-1">
+                        <strong>Jimmy's Farben:</strong>
+                        <ul className="text-xs list-disc list-inside mt-1 space-y-1">
+                          <li><span style={{color: '#8B4513'}}>■</span> Hauptbraun: #8B4513</li>
+                          <li><span style={{color: '#D2691E'}}>■</span> Akzent: #D2691E</li>
+                          <li><span style={{color: '#FFF8DC'}}>■</span> Hintergrund: #FFF8DC</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <button
