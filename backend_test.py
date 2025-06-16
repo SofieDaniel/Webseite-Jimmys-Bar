@@ -1260,7 +1260,623 @@ def run_admin_login_tests():
     
     return all_passed
 
+def test_cms_homepage_get():
+    """Test GET /api/cms/homepage endpoint"""
+    print("\n🧪 Testing GET /api/cms/homepage endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/homepage")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved homepage content")
+        else:
+            print(f"❌ Failed to retrieve homepage content. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "hero", "features", "specialties", "delivery", "updated_at"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if hero section contains expected fields
+        hero_fields = ["title", "subtitle", "description", "location", "background_image"]
+        missing_hero_fields = [field for field in hero_fields if field not in data["hero"]]
+        
+        if not missing_hero_fields:
+            print("✅ Hero section contains all required fields")
+            print(f"✅ Hero title: {data['hero']['title']}")
+        else:
+            print(f"❌ Hero section is missing required fields: {missing_hero_fields}")
+            return False
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/homepage endpoint: {e}")
+        return False
+
+def test_cms_homepage_put():
+    """Test PUT /api/cms/homepage endpoint"""
+    print("\n🧪 Testing PUT /api/cms/homepage endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # First get the current homepage content
+        get_response = requests.get(f"{API_BASE_URL}/cms/homepage")
+        if get_response.status_code != 200:
+            print(f"❌ Failed to retrieve current homepage content. Status code: {get_response.status_code}")
+            return False
+        
+        current_data = get_response.json()
+        
+        # Make a copy of the current data to modify
+        updated_data = current_data.copy()
+        
+        # Update the hero title with a timestamp to ensure it's different
+        timestamp = int(time.time())
+        updated_data["hero"]["title"] = f"JIMMY'S TAPAS BAR - {timestamp}"
+        
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Make PUT request
+        response = requests.put(f"{API_BASE_URL}/cms/homepage", json=updated_data, headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully updated homepage content")
+        else:
+            print(f"❌ Failed to update homepage content. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if the title was updated correctly
+        if data["hero"]["title"] == updated_data["hero"]["title"]:
+            print(f"✅ Hero title was updated correctly to: {data['hero']['title']}")
+        else:
+            print(f"❌ Hero title was not updated correctly. Expected: {updated_data['hero']['title']}, Got: {data['hero']['title']}")
+            return False
+        
+        # Restore the original data
+        restore_response = requests.put(f"{API_BASE_URL}/cms/homepage", json=current_data, headers=headers)
+        if restore_response.status_code == 200:
+            print("✅ Successfully restored original homepage content")
+        else:
+            print(f"❌ Failed to restore original homepage content. Status code: {restore_response.status_code}")
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/homepage endpoint: {e}")
+        return False
+
+def test_cms_website_texts_get(section):
+    """Test GET /api/cms/website-texts/{section} endpoint"""
+    print(f"\n🧪 Testing GET /api/cms/website-texts/{section} endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/website-texts/{section}")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print(f"✅ Successfully retrieved {section} texts")
+        else:
+            print(f"❌ Failed to retrieve {section} texts. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "section", "updated_at"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if section matches the requested section
+        if data["section"] == section:
+            print(f"✅ Section field matches requested section: {section}")
+        else:
+            print(f"❌ Section field doesn't match requested section. Expected: {section}, Got: {data['section']}")
+            return False
+        
+        # Check if section-specific data is present
+        if section == "navigation" and "navigation" in data:
+            print(f"✅ Navigation texts are present: {data['navigation']}")
+        elif section == "footer" and "footer" in data:
+            print(f"✅ Footer texts are present: {data['footer']}")
+        elif section == "buttons" and "buttons" in data:
+            print(f"✅ Button texts are present: {data['buttons']}")
+        elif section == "general" and "general" in data:
+            print(f"✅ General texts are present: {data['general']}")
+        else:
+            print(f"❌ Section-specific data is missing for {section}")
+            return False
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/website-texts/{section} endpoint: {e}")
+        return False
+
+def test_cms_website_texts_put(section):
+    """Test PUT /api/cms/website-texts/{section} endpoint"""
+    print(f"\n🧪 Testing PUT /api/cms/website-texts/{section} endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # First get the current website texts
+        get_response = requests.get(f"{API_BASE_URL}/cms/website-texts/{section}")
+        if get_response.status_code != 200:
+            print(f"❌ Failed to retrieve current {section} texts. Status code: {get_response.status_code}")
+            return False
+        
+        current_data = get_response.json()
+        
+        # Make a copy of the current data to modify
+        updated_data = current_data.copy()
+        
+        # Update a field based on the section
+        timestamp = int(time.time())
+        if section == "navigation" and "navigation" in updated_data:
+            updated_data["navigation"]["home"] = f"Startseite-{timestamp}"
+        elif section == "footer" and "footer" in updated_data:
+            updated_data["footer"]["copyright"] = f"© 2024 Jimmy's Tapas Bar - {timestamp}. Alle Rechte vorbehalten."
+        elif section == "buttons" and "buttons" in updated_data:
+            updated_data["buttons"]["menu_button"] = f"Zur Speisekarte-{timestamp}"
+        elif section == "general" and "general" in updated_data:
+            updated_data["general"]["loading"] = f"Lädt...-{timestamp}"
+        else:
+            print(f"❌ Unable to find appropriate field to update for {section}")
+            return False
+        
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Make PUT request
+        response = requests.put(f"{API_BASE_URL}/cms/website-texts/{section}", json=updated_data, headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print(f"✅ Successfully updated {section} texts")
+        else:
+            print(f"❌ Failed to update {section} texts. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Verify the update was successful
+        if section == "navigation" and "navigation" in data and data["navigation"]["home"] == updated_data["navigation"]["home"]:
+            print(f"✅ Navigation home text was updated correctly to: {data['navigation']['home']}")
+        elif section == "footer" and "footer" in data and data["footer"]["copyright"] == updated_data["footer"]["copyright"]:
+            print(f"✅ Footer copyright text was updated correctly")
+        elif section == "buttons" and "buttons" in data and data["buttons"]["menu_button"] == updated_data["buttons"]["menu_button"]:
+            print(f"✅ Menu button text was updated correctly to: {data['buttons']['menu_button']}")
+        elif section == "general" and "general" in data and data["general"]["loading"] == updated_data["general"]["loading"]:
+            print(f"✅ Loading text was updated correctly to: {data['general']['loading']}")
+        else:
+            print(f"❌ Text update verification failed for {section}")
+            return False
+        
+        # Restore the original data
+        restore_response = requests.put(f"{API_BASE_URL}/cms/website-texts/{section}", json=current_data, headers=headers)
+        if restore_response.status_code == 200:
+            print(f"✅ Successfully restored original {section} texts")
+        else:
+            print(f"❌ Failed to restore original {section} texts. Status code: {restore_response.status_code}")
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/website-texts/{section} endpoint: {e}")
+        return False
+
+def test_cms_locations_get():
+    """Test GET /api/cms/locations endpoint"""
+    print("\n🧪 Testing GET /api/cms/locations endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/locations")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved locations content")
+        else:
+            print(f"❌ Failed to retrieve locations content. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "page_title", "page_description", "locations", "updated_at"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if locations array is present and has items
+        if "locations" in data and isinstance(data["locations"], list):
+            print(f"✅ Locations array contains {len(data['locations'])} locations")
+            
+            # If there are locations, check the structure of the first one
+            if data["locations"]:
+                location_fields = ["name", "address", "phone", "email", "opening_hours"]
+                missing_location_fields = [field for field in location_fields if field not in data["locations"][0]]
+                
+                if not missing_location_fields:
+                    print("✅ Location objects contain all required fields")
+                    print(f"✅ First location: {data['locations'][0]['name']}")
+                else:
+                    print(f"❌ Location objects are missing required fields: {missing_location_fields}")
+                    return False
+        else:
+            print("❌ Locations array is missing or not an array")
+            return False
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/locations endpoint: {e}")
+        return False
+
+def test_cms_locations_put():
+    """Test PUT /api/cms/locations endpoint"""
+    print("\n🧪 Testing PUT /api/cms/locations endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # First get the current locations content
+        get_response = requests.get(f"{API_BASE_URL}/cms/locations")
+        if get_response.status_code != 200:
+            print(f"❌ Failed to retrieve current locations content. Status code: {get_response.status_code}")
+            return False
+        
+        current_data = get_response.json()
+        
+        # Make a copy of the current data to modify
+        updated_data = current_data.copy()
+        
+        # Update the page title with a timestamp to ensure it's different
+        timestamp = int(time.time())
+        updated_data["page_title"] = f"Unsere Standorte - {timestamp}"
+        
+        # If there are locations, update the first one's name
+        if updated_data["locations"]:
+            updated_data["locations"][0]["name"] = f"Jimmy's Tapas Bar Kühlungsborn - {timestamp}"
+        
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Make PUT request
+        response = requests.put(f"{API_BASE_URL}/cms/locations", json=updated_data, headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully updated locations content")
+        else:
+            print(f"❌ Failed to update locations content. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if the title was updated correctly
+        if data["page_title"] == updated_data["page_title"]:
+            print(f"✅ Page title was updated correctly to: {data['page_title']}")
+        else:
+            print(f"❌ Page title was not updated correctly. Expected: {updated_data['page_title']}, Got: {data['page_title']}")
+            return False
+        
+        # Check if the first location name was updated correctly
+        if data["locations"] and data["locations"][0]["name"] == updated_data["locations"][0]["name"]:
+            print(f"✅ First location name was updated correctly to: {data['locations'][0]['name']}")
+        else:
+            print("❌ First location name was not updated correctly")
+            return False
+        
+        # Restore the original data
+        restore_response = requests.put(f"{API_BASE_URL}/cms/locations", json=current_data, headers=headers)
+        if restore_response.status_code == 200:
+            print("✅ Successfully restored original locations content")
+        else:
+            print(f"❌ Failed to restore original locations content. Status code: {restore_response.status_code}")
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/locations endpoint: {e}")
+        return False
+
+def test_cms_about_get():
+    """Test GET /api/cms/about endpoint"""
+    print("\n🧪 Testing GET /api/cms/about endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/about")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved about content")
+        else:
+            print(f"❌ Failed to retrieve about content. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "page_title", "hero_title", "story_title", "story_content", "team_title", "team_members", "values_title", "values", "updated_at"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if team_members array is present
+        if "team_members" in data and isinstance(data["team_members"], list):
+            print(f"✅ Team members array contains {len(data['team_members'])} members")
+            
+            # If there are team members, check the structure of the first one
+            if data["team_members"]:
+                member_fields = ["name", "position", "description"]
+                missing_member_fields = [field for field in member_fields if field not in data["team_members"][0]]
+                
+                if not missing_member_fields:
+                    print("✅ Team member objects contain all required fields")
+                    print(f"✅ First team member: {data['team_members'][0]['name']}")
+                else:
+                    print(f"❌ Team member objects are missing required fields: {missing_member_fields}")
+                    return False
+        else:
+            print("❌ Team members array is missing or not an array")
+            return False
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/about endpoint: {e}")
+        return False
+
+def test_cms_about_put():
+    """Test PUT /api/cms/about endpoint"""
+    print("\n🧪 Testing PUT /api/cms/about endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # First get the current about content
+        get_response = requests.get(f"{API_BASE_URL}/cms/about")
+        if get_response.status_code != 200:
+            print(f"❌ Failed to retrieve current about content. Status code: {get_response.status_code}")
+            return False
+        
+        current_data = get_response.json()
+        
+        # Make a copy of the current data to modify
+        updated_data = current_data.copy()
+        
+        # Update the hero title with a timestamp to ensure it's different
+        timestamp = int(time.time())
+        updated_data["hero_title"] = f"Unsere Geschichte - {timestamp}"
+        
+        # If there are team members, update the first one's name
+        if updated_data["team_members"]:
+            updated_data["team_members"][0]["name"] = f"Jimmy Rodriguez - {timestamp}"
+        
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Make PUT request
+        response = requests.put(f"{API_BASE_URL}/cms/about", json=updated_data, headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully updated about content")
+        else:
+            print(f"❌ Failed to update about content. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if the hero title was updated correctly
+        if data["hero_title"] == updated_data["hero_title"]:
+            print(f"✅ Hero title was updated correctly to: {data['hero_title']}")
+        else:
+            print(f"❌ Hero title was not updated correctly. Expected: {updated_data['hero_title']}, Got: {data['hero_title']}")
+            return False
+        
+        # Check if the first team member name was updated correctly
+        if data["team_members"] and data["team_members"][0]["name"] == updated_data["team_members"][0]["name"]:
+            print(f"✅ First team member name was updated correctly to: {data['team_members'][0]['name']}")
+        else:
+            print("❌ First team member name was not updated correctly")
+            return False
+        
+        # Restore the original data
+        restore_response = requests.put(f"{API_BASE_URL}/cms/about", json=current_data, headers=headers)
+        if restore_response.status_code == 200:
+            print("✅ Successfully restored original about content")
+        else:
+            print(f"❌ Failed to restore original about content. Status code: {restore_response.status_code}")
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/about endpoint: {e}")
+        return False
+
+def run_cms_tests():
+    """Run tests for the CMS endpoints"""
+    print("\n🔍 Starting Jimmy's Tapas Bar CMS API Tests")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # Test authentication first
+    auth_success, token = test_auth_login()
+    results["auth_login"] = auth_success
+    
+    # Test Homepage endpoints
+    results["cms_homepage_get"] = test_cms_homepage_get()
+    
+    if auth_success:
+        results["cms_homepage_put"] = test_cms_homepage_put()
+    else:
+        results["cms_homepage_put"] = False
+        print("❌ Skipping homepage update test due to failed login")
+    
+    # Test Website Texts endpoints
+    for section in ["navigation", "footer", "buttons", "general"]:
+        results[f"cms_website_texts_get_{section}"] = test_cms_website_texts_get(section)
+        
+        if auth_success:
+            results[f"cms_website_texts_put_{section}"] = test_cms_website_texts_put(section)
+        else:
+            results[f"cms_website_texts_put_{section}"] = False
+            print(f"❌ Skipping {section} texts update test due to failed login")
+    
+    # Test Locations endpoints
+    results["cms_locations_get"] = test_cms_locations_get()
+    
+    if auth_success:
+        results["cms_locations_put"] = test_cms_locations_put()
+    else:
+        results["cms_locations_put"] = False
+        print("❌ Skipping locations update test due to failed login")
+    
+    # Test About endpoints
+    results["cms_about_get"] = test_cms_about_get()
+    
+    if auth_success:
+        results["cms_about_put"] = test_cms_about_put()
+    else:
+        results["cms_about_put"] = False
+        print("❌ Skipping about update test due to failed login")
+    
+    # Test unauthorized access
+    results["unauthorized_access"] = test_unauthorized_access()
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    for test_name, result in results.items():
+        status = "✅ PASSED" if result else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
 if __name__ == "__main__":
-    # Run the specific tests for admin login system
-    success = run_admin_login_tests()
+    # Run the CMS tests
+    success = run_cms_tests()
     sys.exit(0 if success else 1)
