@@ -136,7 +136,16 @@ const AdminPanel = () => {
   // Authentication Functions
   const verifyToken = async (tokenToVerify) => {
     try {
-      const response = await apiCall('/auth/me', 'GET', null, true);
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${tokenToVerify}`
+      };
+
+      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        method: 'GET',
+        headers
+      });
+      
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
