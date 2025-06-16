@@ -1324,40 +1324,6 @@ const Standorte = () => {
     </div>
   );
 };
-                  className="w-full bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors inline-block text-center"
-                >
-                  Route planen
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Großenbrode Location - Enhanced */}
-          <div className="bg-dark-brown rounded-xl border border-warm-brown overflow-hidden shadow-2xl">
-            <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1665758564796-5162ff406254" 
-                alt="Jimmy's Tapas Bar Großenbrode" 
-                className="w-full h-72 object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-lg">
-                <span className="font-serif font-semibold">Zweigstelle</span>
-              </div>
-            </div>
-            <div className="p-8">
-              <h2 className="text-3xl font-serif text-warm-beige mb-6 tracking-wide">
-                Jimmy's Tapas Bar Großenbrode
-              </h2>
-              <div className="space-y-6 text-light-beige">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl text-dark-brown">📍</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-warm-beige mb-1">Adresse</h3>
-                    <p className="font-light text-lg">Südstrand 54</p>
-                    <p className="font-light">23755 Großenbrode</p>
-                  </div>
                 </div>
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
