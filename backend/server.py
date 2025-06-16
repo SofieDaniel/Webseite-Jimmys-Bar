@@ -595,6 +595,219 @@ async def upload_image(
     
     return {"image_url": data_url, "filename": file.filename}
 
+# Content Management API routes
+@api_router.get("/cms/homepage", response_model=HomepageContent)
+async def get_homepage_content():
+    content = await db.homepage_content.find_one()
+    if not content:
+        # Create default content
+        default_content = HomepageContent()
+        default_content.features.cards = [
+            FeatureCard(
+                title="Authentische Tapas",
+                description="Traditionelle mediterrane Gerichte, mit Liebe zubereitet und perfekt zum Teilen",
+                image_url="https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg"
+            ),
+            FeatureCard(
+                title="Frische Paella",
+                description="Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn",
+                image_url="https://images.unsplash.com/photo-1694685367640-05d6624e57f1"
+            ),
+            FeatureCard(
+                title="Strandnähe",
+                description="Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden",
+                image_url="https://images.pexels.com/photos/32508247/pexels-photo-32508247.jpeg"
+            )
+        ]
+        default_content.specialties.cards = [
+            SpecialtyCard(
+                title="Patatas Bravas",
+                description="Klassische mediterrane Kartoffeln",
+                image_url="https://images.unsplash.com/photo-1565599837634-134bc3aadce8",
+                category_link="tapas-vegetarian"
+            ),
+            SpecialtyCard(
+                title="Paella Valenciana",
+                description="Traditionelle mediterrane Paella",
+                image_url="https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg",
+                category_link="tapa-paella"
+            ),
+            SpecialtyCard(
+                title="Tapas Variación",
+                description="Auswahl mediterraner Köstlichkeiten",
+                image_url="https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg",
+                category_link="inicio"
+            ),
+            SpecialtyCard(
+                title="Gambas al Ajillo",
+                description="Garnelen in Knoblauchöl",
+                image_url="https://images.unsplash.com/photo-1619860705243-dbef552e7118",
+                category_link="tapas-pescado"
+            )
+        ]
+        await db.homepage_content.insert_one(default_content.dict())
+        content = default_content.dict()
+    return HomepageContent(**content)
+
+@api_router.put("/cms/homepage")
+async def update_homepage_content(content_data: HomepageContent, current_user: User = Depends(get_editor_user)):
+    content_data.updated_at = datetime.utcnow()
+    content_data.updated_by = current_user.username
+    
+    await db.homepage_content.update_one(
+        {},
+        {"$set": content_data.dict()},
+        upsert=True
+    )
+    return content_data
+
+@api_router.get("/cms/website-texts/{section}")
+async def get_website_texts(section: str):
+    texts = await db.website_texts.find_one({"section": section})
+    if not texts:
+        # Create default texts based on section
+        default_texts = WebsiteTexts(section=section)
+        if section == "navigation":
+            default_texts.navigation = NavigationTexts()
+        elif section == "footer":
+            default_texts.footer = FooterTexts()
+        elif section == "buttons":
+            default_texts.buttons = ButtonTexts()
+        elif section == "general":
+            default_texts.general = GeneralTexts()
+        
+        await db.website_texts.insert_one(default_texts.dict())
+        texts = default_texts.dict()
+    return texts
+
+@api_router.put("/cms/website-texts/{section}")
+async def update_website_texts(section: str, texts_data: dict, current_user: User = Depends(get_editor_user)):
+    updated_texts = WebsiteTexts(
+        section=section,
+        updated_at=datetime.utcnow(),
+        updated_by=current_user.username,
+        **texts_data
+    )
+    
+    await db.website_texts.update_one(
+        {"section": section},
+        {"$set": updated_texts.dict()},
+        upsert=True
+    )
+    return updated_texts
+
+@api_router.get("/cms/locations", response_model=LocationsContent)
+async def get_locations_content():
+    content = await db.locations.find_one()
+    if not content:
+        # Create default locations
+        default_content = LocationsContent()
+        default_content.locations = [
+            LocationInfo(
+                name="Jimmy's Tapas Bar Kühlungsborn",
+                address="Strandstraße 1, 18225 Kühlungsborn",
+                phone="+49 38293 12345",
+                email="kuehlungsborn@jimmys-tapasbar.de",
+                opening_hours={
+                    "Montag": "16:00 - 23:00",
+                    "Dienstag": "16:00 - 23:00", 
+                    "Mittwoch": "16:00 - 23:00",
+                    "Donnerstag": "16:00 - 23:00",
+                    "Freitag": "16:00 - 24:00",
+                    "Samstag": "12:00 - 24:00",
+                    "Sonntag": "12:00 - 23:00"
+                },
+                description="Unser Hauptstandort direkt am Strand von Kühlungsborn",
+                image_url="https://images.unsplash.com/photo-1571197119738-26123cb0d22f"
+            ),
+            LocationInfo(
+                name="Jimmy's Tapas Bar Warnemünde",
+                address="Am Strom 2, 18119 Warnemünde",
+                phone="+49 381 987654",
+                email="warnemuende@jimmys-tapasbar.de",
+                opening_hours={
+                    "Montag": "17:00 - 23:00",
+                    "Dienstag": "17:00 - 23:00",
+                    "Mittwoch": "17:00 - 23:00", 
+                    "Donnerstag": "17:00 - 23:00",
+                    "Freitag": "17:00 - 24:00",
+                    "Samstag": "12:00 - 24:00",
+                    "Sonntag": "12:00 - 23:00"
+                },
+                description="Gemütlich am alten Strom mit Blick auf die Warnow",
+                image_url="https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d"
+            )
+        ]
+        await db.locations.insert_one(default_content.dict())
+        content = default_content.dict()
+    return LocationsContent(**content)
+
+@api_router.put("/cms/locations")
+async def update_locations_content(content_data: LocationsContent, current_user: User = Depends(get_editor_user)):
+    content_data.updated_at = datetime.utcnow()
+    content_data.updated_by = current_user.username
+    
+    await db.locations.update_one(
+        {},
+        {"$set": content_data.dict()},
+        upsert=True
+    )
+    return content_data
+
+@api_router.get("/cms/about", response_model=AboutContent)
+async def get_about_content():
+    content = await db.about_content.find_one()
+    if not content:
+        # Create default about content
+        default_content = AboutContent()
+        default_content.story_content = """
+        Seit der Gründung steht Jimmy's Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.
+        
+        Unsere Leidenschaft gilt den traditionellen Rezepten und frischen Zutaten, die wir täglich mit Liebe zubereiten.
+        Von den ersten kleinen Tapas bis hin zu unseren berühmten Paellas - jedes Gericht erzählt eine Geschichte
+        von Tradition und Qualität.
+        
+        An beiden Standorten erleben Sie die entspannte Atmosphäre des Mittelmeers, 
+        während Sie den Blick auf die Ostsee genießen können.
+        """
+        default_content.story_image = "https://images.unsplash.com/photo-1571197119738-26123cb0d22f"
+        default_content.team_members = [
+            TeamMember(
+                name="Jimmy Rodriguez",
+                position="Inhaber & Küchenchef",
+                description="Jimmy bringt über 20 Jahre Erfahrung in der mediterranen Küche mit",
+                image_url="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
+            ),
+            TeamMember(
+                name="Maria Santos",
+                position="Sous Chef",
+                description="Spezialistin für authentische Tapas und Paellas",
+                image_url="https://images.unsplash.com/photo-1438761681033-6461ffad8d80"
+            )
+        ]
+        default_content.values = [
+            "Authentische mediterrane Küche",
+            "Frische, regionale Zutaten",
+            "Familiäre Atmosphäre",
+            "Leidenschaft für Qualität",
+            "Gastfreundschaft"
+        ]
+        await db.about_content.insert_one(default_content.dict())
+        content = default_content.dict()
+    return AboutContent(**content)
+
+@api_router.put("/cms/about")
+async def update_about_content(content_data: AboutContent, current_user: User = Depends(get_editor_user)):
+    content_data.updated_at = datetime.utcnow()
+    content_data.updated_by = current_user.username
+    
+    await db.about_content.update_one(
+        {},
+        {"$set": content_data.dict()},
+        upsert=True
+    )
+    return content_data
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
