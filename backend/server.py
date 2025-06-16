@@ -1224,6 +1224,34 @@ async def update_footer_content(
     return {"message": "Footer content updated successfully", "data": footer_data}
 
 # ===============================================
+# CMS CONTENT API ENDPOINTS (German-only)
+# ===============================================
+
+@api_router.get("/cms/about")
+async def get_about_content():
+    """Get about page content"""
+    content = await db.about_content.find_one()
+    if not content:
+        raise HTTPException(status_code=404, detail="About content not found")
+    return content
+
+@api_router.get("/cms/locations")
+async def get_locations_content():
+    """Get locations page content"""
+    content = await db.locations_content.find_one()
+    if not content:
+        raise HTTPException(status_code=404, detail="Locations content not found")
+    return content
+
+@api_router.get("/cms/contact")
+async def get_contact_content():
+    """Get contact & legal page content"""
+    content = await db.contact_legal.find_one()
+    if not content:
+        raise HTTPException(status_code=404, detail="Contact content not found")
+    return content
+
+# ===============================================
 # NEWSLETTER SYSTEM API ENDPOINTS
 # ===============================================
 
