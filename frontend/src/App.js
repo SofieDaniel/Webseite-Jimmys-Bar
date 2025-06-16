@@ -270,10 +270,10 @@ const AdminPanel = () => {
 
   // Admin Dashboard
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="flex">
+    <div className="min-h-screen bg-gray-100" style={{paddingTop: '0', marginTop: '0'}}>
+      <div className="flex" style={{minHeight: '100vh'}}>
         {/* Sidebar */}
-        <div className="w-64 bg-white shadow-lg">
+        <div className="w-64 bg-white shadow-lg" style={{position: 'fixed', height: '100vh', zIndex: 1000}}>
           <div className="p-6">
             <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
             <p className="text-sm text-gray-600">Willkommen, {user?.username}</p>
@@ -337,7 +337,7 @@ const AdminPanel = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8" style={{marginLeft: '256px'}}>
           {activeSection === 'dashboard' && (
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
