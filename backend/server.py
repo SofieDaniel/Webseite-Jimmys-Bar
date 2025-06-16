@@ -748,6 +748,10 @@ async def get_locations_content():
         ]
         await db.locations.insert_one(default_content.dict())
         content = default_content.dict()
+    else:
+        # Remove MongoDB ObjectId before returning
+        if '_id' in content:
+            del content['_id']
     return LocationsContent(**content)
 
 @api_router.put("/cms/locations")
