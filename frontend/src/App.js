@@ -1324,30 +1324,6 @@ const Standorte = () => {
     </div>
   );
 };
-                    <span className="text-xl text-dark-brown">📞</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-warm-beige mb-1">Kontakt</h3>
-                    <p className="font-light">+49 (0) 4561 123456</p>
-                    <p className="font-light text-sm">neustadt@jimmys-tapasbar.de</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl text-dark-brown">🏖️</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-warm-beige mb-1">Besonderheiten</h3>
-                    <p className="font-light text-sm">Direkt am Strand • Terrasse mit Meerblick</p>
-                    <p className="font-light text-sm">Parkplätze vorhanden • Familienfreundlich</p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-8">
-                <a 
-                  href="https://www.google.com/maps/dir/?api=1&destination=Am+Strande+21,+23730+Neustadt+in+Holstein,+Germany"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="w-full bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors inline-block text-center"
                 >
                   Route planen
