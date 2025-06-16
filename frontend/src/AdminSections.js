@@ -128,31 +128,130 @@ export const ContentSection = ({ user, token, apiCall }) => {
 
 // Home Page Content Editor
 const HomeContentEditor = ({ saveContent, saving }) => {
-  const [heroContent, setHeroContent] = useState({
-    title: 'AUTÉNTICO SABOR ESPAÑOL',
-    subtitle: 'an der Ostsee',
-    description: 'Genießen Sie authentische spanische Spezialitäten',
-    location: 'direkt an der malerischen Ostseeküste'
+  const [content, setContent] = useState({
+    hero: {
+      title: "JIMMY'S TAPAS BAR",
+      subtitle: "an der Ostsee",
+      description: "Genießen Sie authentische mediterrane Spezialitäten",
+      location: "direkt an der malerischen Ostseeküste",
+      background_image: "https://images.unsplash.com/photo-1656423521731-9665583f100c",
+      menu_button_text: "Zur Speisekarte",
+      locations_button_text: "Unsere Standorte"
+    },
+    features: {
+      title: "Mediterrane Tradition",
+      subtitle: "Erleben Sie authentische mediterrane Gastfreundschaft an der deutschen Ostseeküste",
+      cards: [
+        {
+          title: "Authentische Tapas",
+          description: "Traditionelle mediterrane Gerichte, mit Liebe zubereitet und perfekt zum Teilen",
+          image_url: "https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg"
+        },
+        {
+          title: "Frische Paella", 
+          description: "Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn",
+          image_url: "https://images.unsplash.com/photo-1694685367640-05d6624e57f1"
+        },
+        {
+          title: "Strandnähe",
+          description: "Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden",
+          image_url: "https://images.pexels.com/photos/32508247/pexels-photo-32508247.jpeg"
+        }
+      ]
+    },
+    specialties: {
+      title: "Unsere Spezialitäten",
+      cards: [
+        {
+          title: "Patatas Bravas",
+          description: "Klassische mediterrane Kartoffeln",
+          image_url: "https://images.unsplash.com/photo-1565599837634-134bc3aadce8",
+          category_link: "tapas-vegetarian"
+        },
+        {
+          title: "Paella Valenciana",
+          description: "Traditionelle mediterrane Paella", 
+          image_url: "https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg",
+          category_link: "tapa-paella"
+        },
+        {
+          title: "Tapas Variación",
+          description: "Auswahl mediterraner Köstlichkeiten",
+          image_url: "https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg",
+          category_link: "inicio"
+        },
+        {
+          title: "Gambas al Ajillo",
+          description: "Garnelen in Knoblauchöl",
+          image_url: "https://images.unsplash.com/photo-1619860705243-dbef552e7118",
+          category_link: "tapas-pescado"
+        }
+      ]
+    },
+    delivery: {
+      title: "Jetzt auch bequem nach Hause bestellen",
+      description: "Genießen Sie unsere authentischen mediterranen Spezialitäten gemütlich zu Hause.",
+      description_2: "Bestellen Sie direkt über Lieferando und lassen Sie sich verwöhnen.",
+      delivery_feature_title: "Schnelle Lieferung",
+      delivery_feature_description: "Frisch und warm zu Ihnen",
+      delivery_feature_image: "https://images.pexels.com/photos/6969962/pexels-photo-6969962.jpeg",
+      button_text: "Jetzt bei Lieferando bestellen",
+      button_url: "https://www.lieferando.de",
+      availability_text: "Verfügbar für beide Standorte",
+      authentic_feature_title: "Authentisch Mediterran",
+      authentic_feature_description: "Direkt vom Küchenchef",
+      authentic_feature_image: "https://images.pexels.com/photos/31748679/pexels-photo-31748679.jpeg"
+    }
   });
+  
+  const [loading, setLoading] = useState(true);
 
-  const [featuresContent, setFeaturesContent] = useState({
-    sectionTitle: 'Spanische Tradition',
-    sectionSubtitle: 'Erleben Sie authentische spanische Gastfreundschaft an der deutschen Ostseeküste',
-    features: [
-      {
-        title: 'Authentische Tapas',
-        description: 'Traditionelle spanische Gerichte, mit Liebe zubereitet und perfekt zum Teilen'
-      },
-      {
-        title: 'Frische Paella',
-        description: 'Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn'
-      },
-      {
-        title: 'Strandnähe',
-        description: 'Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden'
+  // Load current content from backend
+  useEffect(() => {
+    const loadContent = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/homepage`);
+        if (response.ok) {
+          const data = await response.json();
+          setContent(data);
+        }
+      } catch (error) {
+        console.error('Error loading homepage content:', error);
+      } finally {
+        setLoading(false);
       }
-    ]
-  });
+    };
+    loadContent();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/homepage`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify(content)
+      });
+      
+      if (response.ok) {
+        alert('Homepage-Inhalte erfolgreich gespeichert!');
+      } else {
+        alert('Fehler beim Speichern der Homepage-Inhalte');
+      }
+    } catch (error) {
+      alert('Verbindungsfehler beim Speichern');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-32">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -164,8 +263,11 @@ const HomeContentEditor = ({ saveContent, saving }) => {
             <label className="block text-sm font-medium text-gray-700 mb-2">Haupttitel</label>
             <input
               type="text"
-              value={heroContent.title}
-              onChange={(e) => setHeroContent({...heroContent, title: e.target.value})}
+              value={content.hero.title}
+              onChange={(e) => setContent({
+                ...content,
+                hero: { ...content.hero, title: e.target.value }
+              })}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -173,8 +275,11 @@ const HomeContentEditor = ({ saveContent, saving }) => {
             <label className="block text-sm font-medium text-gray-700 mb-2">Untertitel</label>
             <input
               type="text"
-              value={heroContent.subtitle}
-              onChange={(e) => setHeroContent({...heroContent, subtitle: e.target.value})}
+              value={content.hero.subtitle}
+              onChange={(e) => setContent({
+                ...content,
+                hero: { ...content.hero, subtitle: e.target.value }
+              })}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -182,8 +287,11 @@ const HomeContentEditor = ({ saveContent, saving }) => {
             <label className="block text-sm font-medium text-gray-700 mb-2">Beschreibung</label>
             <input
               type="text"
-              value={heroContent.description}
-              onChange={(e) => setHeroContent({...heroContent, description: e.target.value})}
+              value={content.hero.description}
+              onChange={(e) => setContent({
+                ...content,
+                hero: { ...content.hero, description: e.target.value }
+              })}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -191,19 +299,39 @@ const HomeContentEditor = ({ saveContent, saving }) => {
             <label className="block text-sm font-medium text-gray-700 mb-2">Standort-Text</label>
             <input
               type="text"
-              value={heroContent.location}
-              onChange={(e) => setHeroContent({...heroContent, location: e.target.value})}
+              value={content.hero.location}
+              onChange={(e) => setContent({
+                ...content,
+                hero: { ...content.hero, location: e.target.value }
+              })}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Hintergrundbild URL</label>
+            <input
+              type="url"
+              value={content.hero.background_image}
+              onChange={(e) => setContent({
+                ...content,
+                hero: { ...content.hero, background_image: e.target.value }
+              })}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Menü-Button Text</label>
+            <input
+              type="text"
+              value={content.hero.menu_button_text}
+              onChange={(e) => setContent({
+                ...content,
+                hero: { ...content.hero, menu_button_text: e.target.value }
+              })}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
-        <button
-          onClick={() => saveContent('hero', heroContent)}
-          disabled={saving}
-          className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-        >
-          {saving ? 'Speichern...' : 'Hero-Bereich speichern'}
-        </button>
       </div>
 
       {/* Features Section Editor */}
@@ -215,8 +343,11 @@ const HomeContentEditor = ({ saveContent, saving }) => {
               <label className="block text-sm font-medium text-gray-700 mb-2">Bereichstitel</label>
               <input
                 type="text"
-                value={featuresContent.sectionTitle}
-                onChange={(e) => setFeaturesContent({...featuresContent, sectionTitle: e.target.value})}
+                value={content.features.title}
+                onChange={(e) => setContent({
+                  ...content,
+                  features: { ...content.features, title: e.target.value }
+                })}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -224,40 +355,65 @@ const HomeContentEditor = ({ saveContent, saving }) => {
               <label className="block text-sm font-medium text-gray-700 mb-2">Bereichs-Untertitel</label>
               <input
                 type="text"
-                value={featuresContent.sectionSubtitle}
-                onChange={(e) => setFeaturesContent({...featuresContent, sectionSubtitle: e.target.value})}
+                value={content.features.subtitle}
+                onChange={(e) => setContent({
+                  ...content,
+                  features: { ...content.features, subtitle: e.target.value }
+                })}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
           </div>
           
           <div className="space-y-4">
-            <h4 className="font-medium text-gray-900">Features bearbeiten:</h4>
-            {featuresContent.features.map((feature, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+            <h4 className="font-medium text-gray-900">Features-Karten bearbeiten:</h4>
+            {content.features.cards.map((card, index) => (
+              <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Feature {index + 1} Titel</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Karte {index + 1} Titel</label>
                   <input
                     type="text"
-                    value={feature.title}
+                    value={card.title}
                     onChange={(e) => {
-                      const newFeatures = [...featuresContent.features];
-                      newFeatures[index].title = e.target.value;
-                      setFeaturesContent({...featuresContent, features: newFeatures});
+                      const newCards = [...content.features.cards];
+                      newCards[index].title = e.target.value;
+                      setContent({
+                        ...content,
+                        features: { ...content.features, cards: newCards }
+                      });
                     }}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Feature {index + 1} Beschreibung</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Karte {index + 1} Beschreibung</label>
                   <textarea
-                    value={feature.description}
+                    value={card.description}
                     onChange={(e) => {
-                      const newFeatures = [...featuresContent.features];
-                      newFeatures[index].description = e.target.value;
-                      setFeaturesContent({...featuresContent, features: newFeatures});
+                      const newCards = [...content.features.cards];
+                      newCards[index].description = e.target.value;
+                      setContent({
+                        ...content,
+                        features: { ...content.features, cards: newCards }
+                      });
                     }}
                     rows={2}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Karte {index + 1} Bild-URL</label>
+                  <input
+                    type="url"
+                    value={card.image_url}
+                    onChange={(e) => {
+                      const newCards = [...content.features.cards];
+                      newCards[index].image_url = e.target.value;
+                      setContent({
+                        ...content,
+                        features: { ...content.features, cards: newCards }
+                      });
+                    }}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
@@ -265,12 +421,16 @@ const HomeContentEditor = ({ saveContent, saving }) => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Save Button */}
+      <div className="flex justify-end">
         <button
-          onClick={() => saveContent('features', featuresContent)}
+          onClick={handleSave}
           disabled={saving}
-          className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {saving ? 'Speichern...' : 'Features-Bereich speichern'}
+          {saving ? 'Speichern...' : 'Homepage-Inhalte speichern'}
         </button>
       </div>
     </div>
