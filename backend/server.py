@@ -777,24 +777,24 @@ async def upload_image(
     return {"image_url": data_url, "filename": file.filename}
 
 # ===============================================
-# COMPLETE CMS API ENDPOINTS
+# GERMAN-ONLY CMS API ENDPOINTS (OVERRIDE OLD MULTI-LANGUAGE)
 # ===============================================
 
-# Homepage Content Management
+# Homepage Content Management (German only)
 @api_router.get("/cms/homepage/hero")
-async def get_hero_section():
-    """Get homepage hero section content"""
-    hero = await db.homepage_hero.find_one({"is_active": True})
+async def get_hero_section_german():
+    """Get homepage hero section content - German only"""
+    hero = await db.homepage_hero.find_one()
     if not hero:
-        # Return default content if none exists
+        # Return default German content if none exists
         return {
-            "title": {"de": "AUTÉNTICO SABOR ESPAÑOL", "en": "AUTÉNTICO SABOR ESPAÑOL", "es": "AUTÉNTICO SABOR ESPAÑOL"},
-            "subtitle": {"de": "an der Ostsee", "en": "at the Baltic Sea", "es": "en el Mar Báltico"},
-            "description": {"de": "Genießen Sie authentische spanische Spezialitäten", "en": "Enjoy authentic Spanish specialties", "es": "Disfrute de auténticas especialidades españolas"},
-            "location_text": {"de": "direkt an der malerischen Ostseeküste", "en": "directly at the picturesque Baltic Sea coast", "es": "directamente en la pintoresca costa del Mar Báltico"},
+            "title": "AUTÉNTICO SABOR ESPAÑOL",
+            "subtitle": "an der Ostsee", 
+            "description": "Genießen Sie authentische spanische Spezialitäten direkt an der malerischen Ostseeküste",
+            "location_text": "Warnemünde & Kühlungsborn",
             "background_image": "https://images.unsplash.com/photo-1656423521731-9665583f100c",
-            "menu_button_text": {"de": "Zur Speisekarte", "en": "View Menu", "es": "Ver Carta"},
-            "locations_button_text": {"de": "Unsere Standorte", "en": "Our Locations", "es": "Nuestras Ubicaciones"}
+            "menu_button_text": "Zur Speisekarte",
+            "locations_button_text": "Unsere Standorte"
         }
     return hero
 
