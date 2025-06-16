@@ -631,7 +631,8 @@ const Home = () => {
   const getText = (textObj) => {
     if (!textObj) return '';
     if (typeof textObj === 'string') return textObj;
-    return textObj.de || textObj.en || textObj.es || '';
+    // For compatibility with old multi-language data, try German first
+    return textObj.de || textObj.en || textObj.es || textObj;
   };
 
   if (loading) {
