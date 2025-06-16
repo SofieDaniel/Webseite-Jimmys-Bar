@@ -564,10 +564,36 @@ export const NewsletterSection = ({ user, token, apiCall }) => {
                     value={templateForm.content}
                     onChange={(e) => setTemplateForm({...templateForm, content: e.target.value})}
                     rows={8}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="<h1>Willkommen zu unserem Newsletter!</h1><p>Ihr Newsletter-Inhalt hier...</p>"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+                    placeholder={`<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  <h1 style="color: #8B4513; text-align: center;">Jimmy's Tapas Bar Newsletter</h1>
+  <p>Liebe Gäste,</p>
+  
+  <p>Wir freuen uns, Ihnen unsere neuesten spanischen Spezialitäten vorstellen zu können:</p>
+  
+  <h2 style="color: #D2691E;">🍤 Neue Tapas diese Woche</h2>
+  <ul>
+    <li><strong>Pulpo a la Gallega</strong> - Galicischer Oktopus mit Paprikapulver</li>
+    <li><strong>Croquetas de Jamón</strong> - Hausgemachte Schinken-Kroketten</li>
+  </ul>
+  
+  <h2 style="color: #D2691E;">🍷 Weinempfehlung</h2>
+  <p>Probieren Sie unseren neuen <em>Tempranillo Reserva</em> aus Ribera del Duero.</p>
+  
+  <p style="text-align: center; margin-top: 30px;">
+    <a href="https://jimmys-tapas.de" style="background-color: #8B4513; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Jetzt reservieren</a>
+  </p>
+  
+  <p style="color: #666; font-size: 12px; text-align: center; margin-top: 30px;">
+    ¡Hasta pronto! - Ihr Jimmy's Team<br>
+    Warnemünde & Kühlungsborn
+  </p>
+</div>`}
                     required
                   />
+                  <div className="mt-2 text-sm text-gray-600">
+                    <strong>Tipp:</strong> Verwenden Sie HTML für Formatierung. Inline-CSS wird empfohlen für beste E-Mail-Kompatibilität.
+                  </div>
                 </div>
 
                 <button
