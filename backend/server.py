@@ -796,7 +796,12 @@ async def get_hero_section_german():
             "menu_button_text": "Zur Speisekarte",
             "locations_button_text": "Unsere Standorte"
         }
-    return hero
+    
+    # Convert MongoDB document to dict and remove ObjectId
+    hero_dict = dict(hero)
+    if '_id' in hero_dict:
+        del hero_dict['_id']
+    return hero_dict
 
 @api_router.put("/cms/homepage/hero")
 async def update_hero_section(
