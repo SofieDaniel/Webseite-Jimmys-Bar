@@ -37,7 +37,6 @@ const LanguageProvider = ({ children }) => {
 
 // Cookie Banner Component
 const CookieBanner = () => {
-  const { t } = useLanguage();
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
@@ -64,21 +63,21 @@ const CookieBanner = () => {
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex-1">
-            <h3 className="text-warm-beige font-serif text-lg mb-2">{t('cookies.title')}</h3>
-            <p className="text-light-beige text-sm">{t('cookies.message')}</p>
+            <h3 className="text-warm-beige font-serif text-lg mb-2">Diese Website verwendet Cookies</h3>
+            <p className="text-light-beige text-sm">Wir verwenden Cookies, um Ihnen das beste Website-Erlebnis zu bieten. Durch die weitere Nutzung der Website stimmen Sie der Verwendung von Cookies zu.</p>
           </div>
           <div className="flex gap-3">
             <button
               onClick={rejectCookies}
               className="px-4 py-2 border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown transition-colors text-sm"
             >
-              {t('cookies.reject')}
+              Ablehnen
             </button>
             <button
               onClick={acceptCookies}
               className="px-4 py-2 bg-warm-beige text-dark-brown hover:bg-light-beige transition-colors text-sm"
             >
-              {t('cookies.accept')}
+              Akzeptieren
             </button>
           </div>
         </div>
