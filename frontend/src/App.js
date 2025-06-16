@@ -172,7 +172,50 @@ const AdminPanel = () => {
         const errorData = await response.json();
         setError(errorData.detail || 'Anmeldung fehlgeschlagen');
       }
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    console.log('Attempting login with:', loginForm.username);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginForm)
+      });
+      
+      console.log('Login response status:', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        const newToken = data.access_token;
+        console.log('Login successful, token received');
+        
+        setToken(newToken);
+        localStorage.setItem('adminToken', newToken);
+        
+        // Get user info
+        const userResponse = await fetch(`${API_BASE_URL}/api/auth/me`, {
+          headers: { 'Authorization': `Bearer ${newToken}` }
+        });
+        
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          setUser(userData);
+          setIsLoggedIn(true);
+          setSuccess('Erfolgreich angemeldet!');
+        }
+      } else {
+        const errorData = await response.json();
+        console.error('Login failed:', errorData);
+        setError(errorData.detail || 'Anmeldung fehlgeschlagen');
+      }
     } catch (error) {
+      console.error('Login error:', error);
       setError('Verbindungsfehler. Bitte versuchen Sie es erneut.');
     } finally {
       setLoading(false);
@@ -180,11 +223,12 @@ const AdminPanel = () => {
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
-    setToken(null);
     localStorage.removeItem('adminToken');
+    setToken(null);
+    setUser(null);
+    setIsLoggedIn(false);
     setActiveSection('dashboard');
+    setSuccess('Erfolgreich abgemeldet');
   };
 
   // Login Screen
