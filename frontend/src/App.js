@@ -447,16 +447,17 @@ function App() {
         <BrowserRouter>
           <Header />
           <Routes>
-            <Route path="/" element={<div>Homepage wird geladen...</div>} />
-            <Route path="/standorte" element={<div>Standorte werden geladen...</div>} />
+            <Route path="/" element={<Home />} />
+            <Route path="/standorte" element={<Standorte />} />
             <Route path="/speisekarte" element={<div>Speisekarte wird geladen...</div>} />
             <Route path="/bewertungen" element={<div>Bewertungen werden geladen...</div>} />
-            <Route path="/ueber-uns" element={<div>Über uns wird geladen...</div>} />
+            <Route path="/ueber-uns" element={<UeberUns />} />
             <Route path="/kontakt" element={<div>Kontakt wird geladen...</div>} />
             <Route path="/impressum" element={<div>Impressum wird geladen...</div>} />
             <Route path="/datenschutz" element={<div>Datenschutz wird geladen...</div>} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
+          <Footer />
           <CookieBanner />
         </BrowserRouter>
       </div>
