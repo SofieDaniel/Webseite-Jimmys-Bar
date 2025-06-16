@@ -113,52 +113,29 @@ const AdminPanel = () => {
     }
   }, []);
 
-  // API Helper Functions
-  const apiCall = async (endpoint, method = 'GET', data = null, includeAuth = true) => {
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-
-    if (includeAuth && token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    const config = {
-      method,
-      headers,
-    };
-
-    if (data) {
-      config.body = JSON.stringify(data);
-    }
-
-    try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-      return response;
-    } catch (error) {
-      console.error('API Call failed:', error);
-      throw error;
-    }
-  };
-
   // Authentication Functions
   const verifyToken = async (tokenToVerify) => {
     try {
+      console.log('Verifying token...');
       const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${tokenToVerify}`
       };
 
-      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+      const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
         method: 'GET',
         headers
       });
       
+      console.log('Token verification response status:', response.status);
+      
       if (response.ok) {
         const userData = await response.json();
+        console.log('User data received:', userData);
         setUser(userData);
         setIsLoggedIn(true);
       } else {
+        console.log('Token verification failed');
         localStorage.removeItem('adminToken');
         setToken(null);
       }
