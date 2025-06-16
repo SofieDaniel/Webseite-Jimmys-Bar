@@ -641,7 +641,6 @@ test_plan:
   current_focus:
     - "Admin CMS Implementation"
   stuck_tasks: 
-    - "Authentication - Unauthorized Access"
     - "Admin CMS Implementation"
   test_all: false
   test_priority: "high_first"
