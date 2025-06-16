@@ -186,6 +186,51 @@ class TeamMember(BaseModel):
     description: str
     image_url: Optional[str] = None
 
+# Newsletter Models
+class NewsletterSubscriber(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: str
+    name: Optional[str] = None
+    subscribed: bool = True
+    subscribe_date: datetime = Field(default_factory=datetime.utcnow)
+    unsubscribe_date: Optional[datetime] = None
+    ip_address: Optional[str] = None
+    user_agent: Optional[str] = None
+
+class NewsletterTemplate(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    subject: str
+    content: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_by: str
+
+class NewsletterCampaign(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    template_id: str
+    subject: str
+    content: str
+    scheduled_date: Optional[datetime] = None
+    sent_date: Optional[datetime] = None
+    recipients_count: int = 0
+    sent_count: int = 0
+    status: str = "draft"  # draft, scheduled, sending, sent, failed
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_by: str
+
+class SMTPConfig(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    smtp_server: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    username: str
+    password: str
+    from_email: str
+    from_name: str = "Jimmy's Tapas Bar"
+    use_tls: bool = True
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
 class AboutContent(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     page_title: str = "Über uns"
