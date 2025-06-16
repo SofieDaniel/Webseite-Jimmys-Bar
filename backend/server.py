@@ -65,6 +65,142 @@ class User(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     last_login: Optional[datetime] = None
 
+# Homepage Content Models
+class HeroSection(BaseModel):
+    title: str = "JIMMY'S TAPAS BAR"
+    subtitle: str = "an der Ostsee"
+    description: str = "Genießen Sie authentische mediterrane Spezialitäten"
+    location: str = "direkt an der malerischen Ostseeküste"
+    background_image: str = "https://images.unsplash.com/photo-1656423521731-9665583f100c"
+    menu_button_text: str = "Zur Speisekarte"
+    locations_button_text: str = "Unsere Standorte"
+
+class FeatureCard(BaseModel):
+    title: str
+    description: str
+    image_url: str
+    link_category: Optional[str] = None
+
+class FeaturesSection(BaseModel):
+    title: str = "Mediterrane Tradition"
+    subtitle: str = "Erleben Sie authentische mediterrane Gastfreundschaft an der deutschen Ostseeküste"
+    cards: List[FeatureCard] = []
+
+class SpecialtyCard(BaseModel):
+    title: str
+    description: str
+    image_url: str
+    category_link: Optional[str] = None
+
+class SpecialtiesSection(BaseModel):
+    title: str = "Unsere Spezialitäten"
+    cards: List[SpecialtyCard] = []
+
+class DeliverySection(BaseModel):
+    title: str = "Jetzt auch bequem nach Hause bestellen"
+    description: str = "Genießen Sie unsere authentischen mediterranen Spezialitäten gemütlich zu Hause."
+    description_2: str = "Bestellen Sie direkt über Lieferando und lassen Sie sich verwöhnen."
+    delivery_feature_title: str = "Schnelle Lieferung"
+    delivery_feature_description: str = "Frisch und warm zu Ihnen"
+    delivery_feature_image: str = "https://images.pexels.com/photos/6969962/pexels-photo-6969962.jpeg"
+    button_text: str = "Jetzt bei Lieferando bestellen"
+    button_url: str = "https://www.lieferando.de"
+    availability_text: str = "Verfügbar für beide Standorte"
+    authentic_feature_title: str = "Authentisch Mediterran"
+    authentic_feature_description: str = "Direkt vom Küchenchef"
+    authentic_feature_image: str = "https://images.pexels.com/photos/31748679/pexels-photo-31748679.jpeg"
+
+class HomepageContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    hero: HeroSection = Field(default_factory=HeroSection)
+    features: FeaturesSection = Field(default_factory=FeaturesSection)
+    specialties: SpecialtiesSection = Field(default_factory=SpecialtiesSection)
+    delivery: DeliverySection = Field(default_factory=DeliverySection)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
+# Website Texts Models  
+class NavigationTexts(BaseModel):
+    home: str = "Startseite"
+    locations: str = "Standorte"
+    menu: str = "Speisekarte"
+    reviews: str = "Bewertungen"
+    about: str = "Über uns"
+    contact: str = "Kontakt"
+    privacy: str = "Datenschutz"
+    imprint: str = "Impressum"
+
+class FooterTexts(BaseModel):
+    opening_hours_title: str = "Öffnungszeiten"
+    contact_title: str = "Kontakt"
+    follow_us_title: str = "Folgen Sie uns"
+    copyright: str = "© 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten."
+
+class ButtonTexts(BaseModel):
+    menu_button: str = "Zur Speisekarte"
+    locations_button: str = "Unsere Standorte"
+    contact_button: str = "Kontakt aufnehmen"
+    reserve_button: str = "Tisch reservieren"
+    order_button: str = "Jetzt bestellen"
+
+class GeneralTexts(BaseModel):
+    loading: str = "Lädt..."
+    error: str = "Fehler beim Laden"
+    success: str = "Erfolgreich gespeichert"
+    required_field: str = "Dieses Feld ist erforderlich"
+    email_invalid: str = "E-Mail-Adresse ist ungültig"
+
+class WebsiteTexts(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    section: str  # navigation, footer, buttons, general
+    navigation: Optional[NavigationTexts] = None
+    footer: Optional[FooterTexts] = None
+    buttons: Optional[ButtonTexts] = None
+    general: Optional[GeneralTexts] = None
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
+# Location Models
+class LocationInfo(BaseModel):
+    name: str
+    address: str
+    phone: str
+    email: str
+    opening_hours: Dict[str, str]  # {"monday": "10:00 - 22:00", ...}
+    image_url: Optional[str] = None
+    description: Optional[str] = None
+    maps_embed: Optional[str] = None
+
+class LocationsContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_title: str = "Unsere Standorte"
+    page_description: str = "Besuchen Sie uns an einem unserer beiden Standorte"
+    locations: List[LocationInfo] = []
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
+# About Page Models
+class TeamMember(BaseModel):
+    name: str
+    position: str
+    description: str
+    image_url: Optional[str] = None
+
+class AboutContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_title: str = "Über uns"
+    hero_title: str = "Unsere Geschichte"
+    hero_description: str = "Entdecken Sie die Leidenschaft hinter Jimmy's Tapas Bar"
+    story_title: str = "Unsere Leidenschaft"
+    story_content: str = "Seit der Gründung steht Jimmy's Tapas Bar für authentische mediterrane Küche..."
+    story_image: Optional[str] = None
+    team_title: str = "Unser Team"
+    team_members: List[TeamMember] = []
+    values_title: str = "Unsere Werte"
+    values: List[str] = []
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
 class UserCreate(BaseModel):
     username: str
     email: str
