@@ -882,6 +882,197 @@ async def update_about_content(content_data: AboutContent, current_user: User = 
     )
     return content_data
 
+# Newsletter API endpoints
+@api_router.post("/newsletter/subscribe")
+async def subscribe_newsletter(subscriber_data: dict):
+    try:
+        # Basic validation
+        email = subscriber_data.get('email', '').strip().lower()
+        if not email or '@' not in email:
+            raise HTTPException(status_code=400, detail="Gültige E-Mail-Adresse erforderlich")
+        
+        # Check if already subscribed
+        existing = await db.newsletter_subscribers.find_one({"email": email})
+        if existing and existing.get('subscribed', False):
+            return {"message": "E-Mail-Adresse ist bereits registriert"}
+        
+        # Create new subscriber
+        subscriber = NewsletterSubscriber(
+            email=email,
+            name=subscriber_data.get('name', ''),
+            ip_address=subscriber_data.get('ip_address'),
+            user_agent=subscriber_data.get('user_agent')
+        )
+        
+        if existing:
+            # Reactivate existing subscriber
+            await db.newsletter_subscribers.update_one(
+                {"email": email},
+                {"$set": {
+                    "subscribed": True,
+                    "subscribe_date": datetime.utcnow(),
+                    "unsubscribe_date": None
+                }}
+            )
+        else:
+            # Add new subscriber
+            await db.newsletter_subscribers.insert_one(subscriber.dict())
+        
+        return {"message": "Erfolgreich für Newsletter angemeldet!"}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler bei Newsletter-Anmeldung")
+
+@api_router.post("/newsletter/unsubscribe")
+async def unsubscribe_newsletter(email_data: dict):
+    try:
+        email = email_data.get('email', '').strip().lower()
+        if not email:
+            raise HTTPException(status_code=400, detail="E-Mail-Adresse erforderlich")
+        
+        await db.newsletter_subscribers.update_one(
+            {"email": email},
+            {"$set": {
+                "subscribed": False,
+                "unsubscribe_date": datetime.utcnow()
+            }}
+        )
+        
+        return {"message": "Erfolgreich vom Newsletter abgemeldet"}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler bei Newsletter-Abmeldung")
+
+# Admin Newsletter endpoints
+@api_router.get("/admin/newsletter/subscribers")
+async def get_newsletter_subscribers(current_user: User = Depends(get_admin_user)):
+    try:
+        subscribers = []
+        async for subscriber in db.newsletter_subscribers.find({"subscribed": True}):
+            if '_id' in subscriber:
+                del subscriber['_id']
+            subscribers.append(subscriber)
+        return subscribers
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Abonnenten")
+
+@api_router.delete("/admin/newsletter/subscribers/{subscriber_id}")
+async def delete_newsletter_subscriber(subscriber_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        result = await db.newsletter_subscribers.delete_one({"id": subscriber_id})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Abonnent nicht gefunden")
+        return {"message": "Abonnent erfolgreich gelöscht"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Löschen des Abonnenten")
+
+@api_router.get("/admin/newsletter/smtp-config")
+async def get_smtp_config(current_user: User = Depends(get_admin_user)):
+    try:
+        config = await db.smtp_config.find_one()
+        if not config:
+            # Return default config
+            return {
+                "smtp_server": "smtp.gmail.com",
+                "smtp_port": 587,
+                "username": "",
+                "from_email": "",
+                "from_name": "Jimmy's Tapas Bar",
+                "use_tls": True
+            }
+        
+        if '_id' in config:
+            del config['_id']
+        # Don't return password for security
+        if 'password' in config:
+            config['password'] = "••••••••"
+        return config
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der SMTP-Konfiguration")
+
+@api_router.put("/admin/newsletter/smtp-config")
+async def update_smtp_config(config_data: dict, current_user: User = Depends(get_admin_user)):
+    try:
+        config = SMTPConfig(
+            smtp_server=config_data.get('smtp_server', 'smtp.gmail.com'),
+            smtp_port=config_data.get('smtp_port', 587),
+            username=config_data.get('username', ''),
+            password=config_data.get('password', ''),
+            from_email=config_data.get('from_email', ''),
+            from_name=config_data.get('from_name', "Jimmy's Tapas Bar"),
+            use_tls=config_data.get('use_tls', True),
+            updated_by=current_user.username
+        )
+        
+        await db.smtp_config.update_one(
+            {},
+            {"$set": config.dict()},
+            upsert=True
+        )
+        
+        return {"message": "SMTP-Konfiguration erfolgreich gespeichert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Speichern der SMTP-Konfiguration")
+
+@api_router.get("/admin/newsletter/templates")
+async def get_newsletter_templates(current_user: User = Depends(get_admin_user)):
+    try:
+        templates = []
+        async for template in db.newsletter_templates.find():
+            if '_id' in template:
+                del template['_id']
+            templates.append(template)
+        return templates
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Newsletter-Vorlagen")
+
+@api_router.post("/admin/newsletter/templates")
+async def create_newsletter_template(template_data: dict, current_user: User = Depends(get_admin_user)):
+    try:
+        template = NewsletterTemplate(
+            name=template_data.get('name', ''),
+            subject=template_data.get('subject', ''),
+            content=template_data.get('content', ''),
+            created_by=current_user.username
+        )
+        
+        await db.newsletter_templates.insert_one(template.dict())
+        return {"message": "Newsletter-Vorlage erfolgreich erstellt", "template": template.dict()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Erstellen der Newsletter-Vorlage")
+
+@api_router.get("/admin/newsletter/campaigns")
+async def get_newsletter_campaigns(current_user: User = Depends(get_admin_user)):
+    try:
+        campaigns = []
+        async for campaign in db.newsletter_campaigns.find():
+            if '_id' in campaign:
+                del campaign['_id']
+            campaigns.append(campaign)
+        return campaigns
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Newsletter-Kampagnen")
+
+@api_router.post("/admin/newsletter/campaigns")
+async def create_newsletter_campaign(campaign_data: dict, current_user: User = Depends(get_admin_user)):
+    try:
+        # Count active subscribers
+        subscriber_count = await db.newsletter_subscribers.count_documents({"subscribed": True})
+        
+        campaign = NewsletterCampaign(
+            name=campaign_data.get('name', ''),
+            template_id=campaign_data.get('template_id', ''),
+            subject=campaign_data.get('subject', ''),
+            content=campaign_data.get('content', ''),
+            recipients_count=subscriber_count,
+            created_by=current_user.username
+        )
+        
+        await db.newsletter_campaigns.insert_one(campaign.dict())
+        return {"message": "Newsletter-Kampagne erfolgreich erstellt", "campaign": campaign.dict()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Erstellen der Newsletter-Kampagne")
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
