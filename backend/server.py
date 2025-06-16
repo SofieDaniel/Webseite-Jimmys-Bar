@@ -806,6 +806,10 @@ async def get_about_content():
         ]
         await db.about_content.insert_one(default_content.dict())
         content = default_content.dict()
+    else:
+        # Remove MongoDB ObjectId before returning
+        if '_id' in content:
+            del content['_id']
     return AboutContent(**content)
 
 @api_router.put("/cms/about")
