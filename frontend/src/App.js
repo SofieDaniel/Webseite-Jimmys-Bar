@@ -129,8 +129,13 @@ const AdminPanel = () => {
       config.body = JSON.stringify(data);
     }
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-    return response;
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+      return response;
+    } catch (error) {
+      console.error('API Call failed:', error);
+      throw error;
+    }
   };
 
   // Authentication Functions
