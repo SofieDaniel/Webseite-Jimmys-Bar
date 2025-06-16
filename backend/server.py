@@ -690,11 +690,16 @@ async def get_website_texts(section: str):
 
 @api_router.put("/cms/website-texts/{section}")
 async def update_website_texts(section: str, texts_data: dict, current_user: User = Depends(get_editor_user)):
+    # Create a copy of the texts_data without the section field to avoid duplicate
+    texts_data_copy = texts_data.copy()
+    if "section" in texts_data_copy:
+        del texts_data_copy["section"]
+    
     updated_texts = WebsiteTexts(
         section=section,
         updated_at=datetime.utcnow(),
         updated_by=current_user.username,
-        **texts_data
+        **texts_data_copy
     )
     
     await db.website_texts.update_one(
