@@ -331,6 +331,8 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
             raise HTTPException(status_code=401, detail="Invalid authentication credentials")
     except jwt.PyJWTError:
         raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except Exception:
+        raise HTTPException(status_code=401, detail="Authentication required")
     
     user = await db.users.find_one({"username": username})
     if user is None:
