@@ -677,7 +677,11 @@ async def get_website_texts(section: str):
             default_texts.general = GeneralTexts()
         
         await db.website_texts.insert_one(default_texts.dict())
-        texts = default_texts.dict()
+        return default_texts.dict()
+    
+    # Remove MongoDB ObjectId before returning
+    if '_id' in texts:
+        del texts['_id']
     return texts
 
 @api_router.put("/cms/website-texts/{section}")
