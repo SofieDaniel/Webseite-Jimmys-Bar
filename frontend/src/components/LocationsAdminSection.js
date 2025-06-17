@@ -342,7 +342,7 @@ const LocationModal = ({ location, onSave, onCancel, isEditing, setLocation }) =
                   type="text"
                   value={location.address}
                   onChange={(e) => setLocation({...location, address: e.target.value})}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
