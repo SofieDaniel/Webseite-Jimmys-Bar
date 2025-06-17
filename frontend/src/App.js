@@ -105,134 +105,98 @@ const CookieBanner = () => {
   );
 };
 
-// Startseite Summary Component
+// Startseite Summary Component - Simplified
 const StartseiteSummary = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Startseite - Content Übersicht</h1>
-        <p className="text-gray-600">Schnelle Übersicht und Direktzugang zu den wichtigsten Inhalten</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Startseite</h1>
+        <p className="text-gray-600">Willkommen im Jimmy's Tapas Bar CMS</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Hero Section Card */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-blue-600 text-lg">🏠</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900">Hero-Bereich</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">Haupttitel, Untertitel und Hintergrundbild der Startseite</p>
-          <button 
-            onClick={() => window.location.hash = '#homepage'} 
-            className="text-blue-600 text-sm hover:text-blue-800"
-          >
-            → Bearbeiten
-          </button>
-        </div>
-
-        {/* Features Section Card */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-green-600 text-lg">⭐</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900">Features</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">3 Feature-Karten mit Beschreibungen und Bildern</p>
-          <button 
-            onClick={() => window.location.hash = '#homepage'} 
-            className="text-green-600 text-sm hover:text-green-800"
-          >
-            → Bearbeiten
-          </button>
-        </div>
-
-        {/* Specialties Section Card */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-orange-500">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-orange-600 text-lg">🍽️</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900">Spezialitäten</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">4 Spezialitäten-Karten mit direkten Kategorie-Links</p>
-          <button 
-            onClick={() => window.location.hash = '#homepage'} 
-            className="text-orange-600 text-sm hover:text-orange-800"
-          >
-            → Bearbeiten
-          </button>
-        </div>
-
-        {/* Delivery Section Card */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-purple-600 text-lg">🚚</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900">Lieferservice</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">Lieferando-Integration und Lieferinformationen</p>
-          <button 
-            onClick={() => window.location.hash = '#homepage'} 
-            className="text-purple-600 text-sm hover:text-purple-800"
-          >
-            → Bearbeiten
-          </button>
-        </div>
-
-        {/* Menu Quick Access */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-red-600 text-lg">📋</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900">Speisekarte</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">Gerichte, Kategorien und Preise verwalten</p>
-          <button 
-            onClick={() => window.location.hash = '#menu'} 
-            className="text-red-600 text-sm hover:text-red-800"
-          >
-            → Verwalten
-          </button>
-        </div>
-
-        {/* Locations Quick Access */}
-        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-teal-500">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-teal-600 text-lg">📍</span>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900">Standorte</h3>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">Adressen, Öffnungszeiten und Kontaktdaten</p>
-          <button 
-            onClick={() => window.location.hash = '#locations'} 
-            className="text-teal-600 text-sm hover:text-teal-800"
-          >
-            → Verwalten
-          </button>
-        </div>
-      </div>
-
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-blue-900 mb-3">📋 Schnelle Aktionen</h3>
+      {/* Focused Quick Actions */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">🚀 Häufige Aktionen</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <button className="bg-white border border-blue-200 text-blue-700 px-4 py-3 rounded-lg hover:bg-blue-50 text-sm font-medium">
-            📝 Neues Gericht hinzufügen
+          <button className="flex flex-col items-center p-6 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors group">
+            <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 transition-colors">
+              <span className="text-white text-xl">+</span>
+            </div>
+            <span className="font-medium text-blue-700 text-center">Neues Gericht hinzufügen</span>
           </button>
-          <button className="bg-white border border-blue-200 text-blue-700 px-4 py-3 rounded-lg hover:bg-blue-50 text-sm font-medium">
-            ⭐ Bewertungen prüfen
+
+          <button className="flex flex-col items-center p-6 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition-colors group">
+            <div className="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center mb-3 group-hover:bg-yellow-600 transition-colors">
+              <span className="text-white text-xl">⭐</span>
+            </div>
+            <span className="font-medium text-yellow-700 text-center">Bewertungen prüfen</span>
           </button>
-          <button className="bg-white border border-blue-200 text-blue-700 px-4 py-3 rounded-lg hover:bg-blue-50 text-sm font-medium">
-            📧 Kontakt-Nachrichten
+
+          <button className="flex flex-col items-center p-6 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors group">
+            <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-600 transition-colors">
+              <span className="text-white text-xl">📧</span>
+            </div>
+            <span className="font-medium text-green-700 text-center">Nachrichten lesen</span>
           </button>
-          <button className="bg-white border border-blue-200 text-blue-700 px-4 py-3 rounded-lg hover:bg-blue-50 text-sm font-medium">
-            🔧 Wartungsmodus
+
+          <button className="flex flex-col items-center p-6 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors group">
+            <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-3 group-hover:bg-purple-600 transition-colors">
+              <span className="text-white text-xl">📮</span>
+            </div>
+            <span className="font-medium text-purple-700 text-center">Newsletter senden</span>
           </button>
+        </div>
+      </div>
+
+      {/* System Information */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">📊 System-Status</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex items-center p-4 bg-green-50 rounded-lg">
+            <div className="flex items-center">
+              <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">CMS-Status</p>
+                <p className="text-xs text-green-600">Online & Betriebsbereit</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center p-4 bg-blue-50 rounded-lg">
+            <div className="flex items-center">
+              <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">Letztes Backup</p>
+                <p className="text-xs text-blue-600">Vor 6 Stunden</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center p-4 bg-purple-50 rounded-lg">
+            <div className="flex items-center">
+              <div className="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">System-Uptime</p>
+                <p className="text-xs text-purple-600">24h 15m</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Hint */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-blue-900 mb-3">💡 Navigation</h3>
+        <p className="text-blue-800 mb-4">
+          Verwenden Sie das <strong>linke Hauptmenü</strong> für die vollständige Navigation zu allen CMS-Bereichen.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-blue-700">
+          <div>• 🏠 <strong>Homepage bearbeiten</strong> - Inhalte der Startseite</div>
+          <div>• 📍 <strong>Standorte</strong> - Adressen & Öffnungszeiten</div>
+          <div>• 🍽️ <strong>Speisekarte</strong> - Gerichte & Kategorien</div>
+          <div>• ⭐ <strong>Bewertungen</strong> - Moderation & Genehmigung</div>
+          <div>• 📧 <strong>Kontakt-Nachrichten</strong> - Kundenanfragen</div>
+          <div>• 👥 <strong>Benutzer-Verwaltung</strong> - Accounts & Rollen</div>
         </div>
       </div>
     </div>
