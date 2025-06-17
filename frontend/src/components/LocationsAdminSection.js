@@ -399,7 +399,7 @@ const LocationModal = ({ location, onSave, onCancel, isEditing, setLocation }) =
                       type="text"
                       value={time}
                       onChange={(e) => updateOpeningHours(day, e.target.value)}
-                      className="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="flex-1 p-2 border border-gray-300 rounded bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="z.B. 10:00 - 22:00"
                     />
                   </div>
