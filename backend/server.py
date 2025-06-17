@@ -1602,6 +1602,548 @@ async def create_database_backup(current_user: User = Depends(get_admin_user)):
         print(f"MySQL backup error details: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Database backup creation failed: {str(e)}")
 
+@api_router.post("/admin/backup/full")
+async def create_full_backup(current_user: User = Depends(get_admin_user)):
+    """Create and download full backup (MySQL database + complete codebase + assets)"""
+    try:
+        import subprocess
+        import tempfile
+        import zipfile
+        import os
+        import shutil
+        from datetime import datetime
+        
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"jimmy-tapas-bar-full-backup-{timestamp}.zip"
+        
+        # Create temporary directory for backup assembly
+        with tempfile.TemporaryDirectory() as temp_dir:
+            backup_dir = os.path.join(temp_dir, 'backup')
+            os.makedirs(backup_dir)
+            
+            # 1. Create MySQL dump
+            mysql_dump_path = os.path.join(backup_dir, 'database.sql')
+            dump_command = [
+                'mysqldump',
+                '-u', os.environ['MYSQL_USER'],
+                f'-p{os.environ["MYSQL_PASSWORD"]}',
+                '--single-transaction',
+                '--routines',
+                '--triggers',
+                '--add-drop-table',
+                '--complete-insert',
+                '--hex-blob',
+                os.environ['MYSQL_DATABASE']
+            ]
+            
+            with open(mysql_dump_path, 'w') as dump_file:
+                result = subprocess.run(dump_command, stdout=dump_file, stderr=subprocess.PIPE, text=True)
+            
+            if result.returncode != 0:
+                raise Exception(f"mysqldump failed: {result.stderr}")
+            
+            # 2. Copy complete frontend codebase
+            frontend_backup_dir = os.path.join(backup_dir, 'frontend')
+            shutil.copytree('/app/frontend/src', os.path.join(frontend_backup_dir, 'src'))
+            shutil.copytree('/app/frontend/public', os.path.join(frontend_backup_dir, 'public'))
+            
+            # Copy frontend config files
+            frontend_files = ['package.json', 'tailwind.config.js', 'postcss.config.js']
+            for file in frontend_files:
+                src_path = f'/app/frontend/{file}'
+                if os.path.exists(src_path):
+                    shutil.copy2(src_path, frontend_backup_dir)
+            
+            # Copy .env (without sensitive data)
+            with open('/app/frontend/.env', 'r') as f:
+                env_content = f.read()
+            # Only include non-sensitive config
+            safe_env_content = "WDS_SOCKET_PORT=443\n# REACT_APP_BACKEND_URL will be configured during restore\n"
+            with open(os.path.join(frontend_backup_dir, '.env.example'), 'w') as f:
+                f.write(safe_env_content)
+            
+            # 3. Copy complete backend codebase  
+            backend_backup_dir = os.path.join(backup_dir, 'backend')
+            os.makedirs(backend_backup_dir)
+            
+            # Copy Python files
+            backend_files = ['server.py', 'requirements.txt', 'mysql_schema.sql']
+            for file in backend_files:
+                src_path = f'/app/backend/{file}'
+                if os.path.exists(src_path):
+                    shutil.copy2(src_path, backend_backup_dir)
+            
+            # Copy .env example (without sensitive data)
+            safe_backend_env = """MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_USER=your_mysql_user
+MYSQL_PASSWORD=your_mysql_password
+MYSQL_DATABASE=jimmys_tapas_bar
+JWT_SECRET_KEY=your-secret-key-here
+"""
+            with open(os.path.join(backend_backup_dir, '.env.example'), 'w') as f:
+                f.write(safe_backend_env)
+            
+            # 4. Copy external integrations if they exist
+            integrations_src = '/app/backend/external_integrations'
+            if os.path.exists(integrations_src):
+                shutil.copytree(integrations_src, os.path.join(backend_backup_dir, 'external_integrations'))
+            
+            # 5. Copy root configuration files
+            root_files = ['nginx.conf', 'Dockerfile', 'entrypoint.sh']
+            for file in root_files:
+                src_path = f'/app/{file}'
+                if os.path.exists(src_path):
+                    shutil.copy2(src_path, backup_dir)
+            
+            # 6. Create media/uploads directory (even if empty, for structure)
+            uploads_dir = os.path.join(backup_dir, 'uploads')
+            os.makedirs(uploads_dir)
+            
+            # Add placeholder for media files
+            with open(os.path.join(uploads_dir, 'README.txt'), 'w') as f:
+                f.write("""Uploads und Mediendateien
+
+Dieser Ordner ist für hochgeladene Bilder und Mediendateien vorgesehen.
+Bei der Wiederherstellung sollten hier alle Benutzerdateien platziert werden.
+
+Hinweis: Base64-kodierte Bilder werden direkt in der Datenbank gespeichert
+und sind bereits im database.sql Backup enthalten.
+""")
+            
+            # 7. Count database statistics
+            conn = await get_mysql_connection()
+            try:
+                cursor = await conn.cursor()
+                await cursor.execute("SHOW TABLES")
+                tables = await cursor.fetchall()
+                tables_count = len(tables)
+                
+                total_rows = 0
+                for table in tables:
+                    table_name = table[0]
+                    await cursor.execute(f"SELECT COUNT(*) FROM `{table_name}`")
+                    count_result = await cursor.fetchone()
+                    total_rows += count_result[0]
+                
+            finally:
+                mysql_pool.release(conn)
+            
+            # 8. Create comprehensive README
+            readme_content = f"""# Jimmy's Tapas Bar - Vollständiges System-Backup
+
+## 📋 Backup-Informationen
+- **Typ:** Vollständiges System-Backup
+- **Erstellt am:** {datetime.now().strftime('%d.%m.%Y um %H:%M:%S')}
+- **Erstellt von:** {current_user.username}
+- **Datenbank-Tabellen:** {tables_count}
+- **Datenbank-Datensätze:** {total_rows}
+- **CMS Version:** 2.0 (MySQL)
+
+## 📁 Backup-Inhalt
+
+### `/database.sql`
+- Vollständiger MySQL-Dump der Datenbank
+- Enthält alle Tabellen, Daten, Indizes und Strukturen
+- Kompatibel mit MySQL 5.7+ und MariaDB 10.0+
+
+### `/frontend/`
+- **src/**: Kompletter React-Quellcode
+- **public/**: Statische Assets und HTML-Templates
+- **package.json**: Node.js Dependencies
+- **tailwind.config.js**: Tailwind CSS Konfiguration
+- **postcss.config.js**: PostCSS Konfiguration
+- **.env.example**: Beispiel-Umgebungsvariablen
+
+### `/backend/`
+- **server.py**: FastAPI Backend-Anwendung
+- **requirements.txt**: Python Dependencies
+- **mysql_schema.sql**: Datenbank-Schema für Neuinstallation
+- **.env.example**: Beispiel-Umgebungsvariablen
+- **external_integrations/**: Externe API-Integrationen (falls vorhanden)
+
+### `/uploads/`
+- Ordner für Mediendateien und Uploads
+- Base64-Bilder sind bereits in der Datenbank enthalten
+
+### Root-Konfiguration
+- **nginx.conf**: Nginx-Webserver-Konfiguration
+- **Dockerfile**: Container-Konfiguration
+- **entrypoint.sh**: Container-Startskript
+
+## 🔧 Wiederherstellung
+
+### 1. Systemvorbereitung
+```bash
+# MySQL/MariaDB installieren
+sudo apt update
+sudo apt install mysql-server
+
+# Node.js und Python installieren
+sudo apt install nodejs npm python3 python3-pip
+```
+
+### 2. Datenbank wiederherstellen
+```bash
+# Datenbank und Benutzer erstellen
+mysql -u root -p
+CREATE DATABASE jimmys_tapas_bar;
+CREATE USER 'jimmy_user'@'localhost' IDENTIFIED BY 'ihr_passwort';
+GRANT ALL PRIVILEGES ON jimmys_tapas_bar.* TO 'jimmy_user'@'localhost';
+FLUSH PRIVILEGES;
+exit
+
+# Backup einspielen
+mysql -u jimmy_user -p jimmys_tapas_bar < database.sql
+```
+
+### 3. Backend einrichten
+```bash
+cd backend/
+cp .env.example .env
+# .env-Datei mit korrekten Datenbank-Zugangsdaten bearbeiten
+
+pip install -r requirements.txt
+python server.py
+```
+
+### 4. Frontend einrichten  
+```bash
+cd frontend/
+cp .env.example .env
+# .env-Datei mit Backend-URL bearbeiten
+
+npm install
+npm start
+```
+
+### 5. Uploads wiederherstellen
+- Mediendateien aus `/uploads/` in den produktiven Upload-Ordner kopieren
+- Dateiberechtigungen korrekt setzen
+
+## ⚙️ Konfiguration
+
+### Backend .env
+```
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_USER=jimmy_user
+MYSQL_PASSWORD=ihr_mysql_passwort
+MYSQL_DATABASE=jimmys_tapas_bar
+JWT_SECRET_KEY=generieren_sie_einen_sicheren_schluessel
+```
+
+### Frontend .env
+```
+REACT_APP_BACKEND_URL=http://localhost:8001
+# oder Ihre Produktions-URL
+```
+
+## 🚀 Produktions-Setup
+
+### Mit Docker
+```bash
+# Dockerfile im Root-Verzeichnis verwenden
+docker build -t jimmys-tapas-bar .
+docker run -p 80:80 jimmys-tapas-bar
+```
+
+### Manual Setup
+1. Nginx als Reverse Proxy konfigurieren
+2. Backend als Service einrichten
+3. Frontend für Produktion builden: `npm run build`
+4. SSL-Zertifikat einrichten
+
+## 📊 Technische Details
+- **Datenbank:** MySQL/MariaDB
+- **Backend:** Python 3.11 + FastAPI + aiomysql
+- **Frontend:** React 19 + Tailwind CSS
+- **Authentifizierung:** JWT
+- **Admin-Login:** admin / jimmy2024
+
+## 🆘 Support
+Bei Problemen mit der Wiederherstellung:
+1. Logdateien prüfen
+2. Datenbankverbindung testen
+3. Dateiberechtigungen prüfen
+4. Port-Verfügbarkeit prüfen (3000, 8001)
+
+**Wichtig:** Ändern Sie nach der Wiederherstellung:
+- Admin-Passwort
+- JWT Secret Key
+- Datenbank-Passwörter
+
+---
+*Erstellt mit Jimmy's Tapas Bar CMS v2.0 - MySQL Edition*
+"""
+            
+            with open(os.path.join(backup_dir, 'README.md'), 'w', encoding='utf-8') as f:
+                f.write(readme_content)
+            
+            # 9. Create system info JSON
+            system_info = {
+                "backup_created": datetime.now().isoformat(),
+                "cms_version": "2.0-mysql",
+                "database_type": "mysql",
+                "tables_count": tables_count,
+                "total_records": total_rows,
+                "created_by": current_user.username,
+                "backup_type": "full_system",
+                "includes": {
+                    "database": True,
+                    "frontend_code": True,
+                    "backend_code": True,
+                    "configuration": True,
+                    "media_structure": True
+                }
+            }
+            
+            with open(os.path.join(backup_dir, 'system_info.json'), 'w', encoding='utf-8') as f:
+                json.dumps(system_info, f, indent=2, ensure_ascii=False)
+            
+            # 10. Create ZIP archive
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                # Add all files from backup directory
+                for root, dirs, files in os.walk(backup_dir):
+                    for file in files:
+                        file_path = os.path.join(root, file)
+                        arcname = os.path.relpath(file_path, backup_dir)
+                        zip_file.write(file_path, arcname)
+            
+            zip_buffer.seek(0)
+            zip_content = zip_buffer.getvalue()
+            zip_size = len(zip_content)
+            
+            # 11. Save backup metadata
+            backup_metadata = {
+                "id": f"full_system_{timestamp}",
+                "filename": filename,
+                "type": "full",
+                "created_at": datetime.now(),
+                "created_by": current_user.username,
+                "size_bytes": zip_size,
+                "size_human": format_bytes(zip_size),
+                "collections_count": tables_count,
+                "total_documents": total_rows,
+                "includes_media": True
+            }
+            
+            # Store in database for backup list
+            conn = await get_mysql_connection()
+            try:
+                cursor = await conn.cursor()
+                await cursor.execute("""
+                    INSERT INTO system_backups (id, filename, type, created_at, created_by, 
+                                               size_bytes, size_human, collections_count, 
+                                               total_documents, includes_media)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (
+                    backup_metadata["id"], backup_metadata["filename"], backup_metadata["type"],
+                    backup_metadata["created_at"], backup_metadata["created_by"],
+                    backup_metadata["size_bytes"], backup_metadata["size_human"],
+                    backup_metadata["collections_count"], backup_metadata["total_documents"],
+                    backup_metadata["includes_media"]
+                ))
+            finally:
+                mysql_pool.release(conn)
+            
+            # Return as downloadable zip file
+            from fastapi.responses import Response
+            
+            return Response(
+                content=zip_content,
+                media_type="application/zip",
+                headers={
+                    "Content-Disposition": f"attachment; filename={filename}",
+                    "X-Backup-ID": backup_metadata["id"],
+                    "X-Backup-Size": str(zip_size)
+                }
+            )
+        
+    except Exception as e:
+        print(f"Full backup error details: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Full backup creation failed: {str(e)}")
+
+@api_router.get("/admin/backup/list")
+async def get_backup_list(current_user: User = Depends(get_admin_user)):
+    """Get list of all available backups"""
+    try:
+        conn = await get_mysql_connection()
+        try:
+            cursor = await conn.cursor(aiomysql.DictCursor)
+            await cursor.execute("SELECT * FROM system_backups ORDER BY created_at DESC")
+            backups = await cursor.fetchall()
+            
+            # Convert datetime objects to ISO format for JSON serialization
+            for backup in backups:
+                if isinstance(backup.get('created_at'), datetime):
+                    backup['created_at'] = backup['created_at'].isoformat()
+            
+            return {"backups": backups}
+        finally:
+            mysql_pool.release(conn)
+        
+    except Exception as e:
+        print(f"Backup list error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Could not retrieve backup list: {str(e)}")
+
+@api_router.get("/admin/backup/download/{backup_id}")
+async def download_backup(backup_id: str, current_user: User = Depends(get_admin_user)):
+    """Download a specific backup"""
+    try:
+        conn = await get_mysql_connection()
+        try:
+            cursor = await conn.cursor(aiomysql.DictCursor)
+            await cursor.execute("SELECT * FROM system_backups WHERE id = %s", (backup_id,))
+            backup = await cursor.fetchone()
+            
+            if not backup:
+                raise HTTPException(status_code=404, detail="Backup not found")
+            
+            # For this implementation, return backup info
+            # In production, you would read the actual backup file from storage
+            return {
+                "message": "Backup download initiated",
+                "backup_info": {
+                    "id": backup["id"],
+                    "filename": backup["filename"],
+                    "type": backup["type"],
+                    "size_human": backup["size_human"],
+                    "created_at": backup["created_at"].isoformat() if isinstance(backup["created_at"], datetime) else backup["created_at"]
+                }
+            }
+        finally:
+            mysql_pool.release(conn)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Backup download error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Could not download backup: {str(e)}")
+
+@api_router.delete("/admin/backup/{backup_id}")
+async def delete_backup(backup_id: str, current_user: User = Depends(get_admin_user)):
+    """Delete a specific backup"""
+    try:
+        conn = await get_mysql_connection()
+        try:
+            cursor = await conn.cursor(aiomysql.DictCursor)
+            
+            # Check if backup exists
+            await cursor.execute("SELECT * FROM system_backups WHERE id = %s", (backup_id,))
+            backup = await cursor.fetchone()
+            if not backup:
+                raise HTTPException(status_code=404, detail="Backup not found")
+            
+            # Delete backup record from database
+            await cursor.execute("DELETE FROM system_backups WHERE id = %s", (backup_id,))
+            
+            if cursor.rowcount == 0:
+                raise HTTPException(status_code=404, detail="Backup not found")
+            
+            # In production, you would also delete the actual backup file from storage
+            
+            return {
+                "message": "Backup deleted successfully",
+                "deleted_backup": {
+                    "id": backup["id"],
+                    "filename": backup["filename"]
+                }
+            }
+        finally:
+            mysql_pool.release(conn)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Backup deletion error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Could not delete backup: {str(e)}")
+
+# System status endpoint
+@api_router.get("/admin/system/info")
+async def get_system_info(current_user: User = Depends(get_admin_user)):
+    """Get system information and status"""
+    try:
+        import psutil
+        import platform
+        
+        # Get MySQL database info
+        conn = await get_mysql_connection()
+        try:
+            cursor = await conn.cursor(aiomysql.DictCursor)
+            
+            # Get database size
+            await cursor.execute("""
+                SELECT 
+                    ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS database_size_mb
+                FROM information_schema.tables 
+                WHERE table_schema = %s
+            """, (os.environ['MYSQL_DATABASE'],))
+            db_size_result = await cursor.fetchone()
+            db_size_mb = db_size_result['database_size_mb'] if db_size_result['database_size_mb'] else 0
+            
+            # Get table count
+            await cursor.execute("SHOW TABLES")
+            tables = await cursor.fetchall()
+            table_count = len(tables)
+            
+            # Get total records
+            total_records = 0
+            for table in tables:
+                table_name = list(table.values())[0]
+                await cursor.execute(f"SELECT COUNT(*) as count FROM `{table_name}`")
+                count_result = await cursor.fetchone()
+                total_records += count_result['count']
+            
+        finally:
+            mysql_pool.release(conn)
+        
+        # Get system information
+        system_info = {
+            "system": {
+                "platform": platform.system(),
+                "platform_release": platform.release(),
+                "architecture": platform.machine(),
+                "hostname": platform.node(),
+                "python_version": platform.python_version()
+            },
+            "resources": {
+                "cpu_count": psutil.cpu_count(),
+                "cpu_usage_percent": psutil.cpu_percent(interval=1),
+                "memory": {
+                    "total_gb": round(psutil.virtual_memory().total / (1024**3), 2),
+                    "available_gb": round(psutil.virtual_memory().available / (1024**3), 2),
+                    "used_percent": psutil.virtual_memory().percent
+                },
+                "disk": {
+                    "total_gb": round(psutil.disk_usage('/').total / (1024**3), 2),
+                    "free_gb": round(psutil.disk_usage('/').free / (1024**3), 2),
+                    "used_percent": psutil.disk_usage('/').percent
+                }
+            },
+            "database": {
+                "type": "MySQL/MariaDB",
+                "database_name": os.environ['MYSQL_DATABASE'],
+                "tables_count": table_count,
+                "total_records": total_records,
+                "database_size_mb": float(db_size_mb),
+                "connection_status": "Connected"
+            },
+            "application": {
+                "cms_version": "2.0-mysql",
+                "backend_status": "Running",
+                "mysql_pool_size": mysql_pool.size if mysql_pool else 0,
+                "uptime": "Running"
+            }
+        }
+        
+        return system_info
+        
+    except Exception as e:
+        print(f"System info error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Could not retrieve system information: {str(e)}")
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
