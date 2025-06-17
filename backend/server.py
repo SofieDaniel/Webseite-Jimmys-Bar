@@ -1134,11 +1134,36 @@ während Sie den Blick auf die Ostsee genießen können."""
                 "updated_at": datetime.utcnow()
             }
         else:
-            # Parse JSON fields
-            if content.get('team_members'):
-                content['team_members'] = json.loads(content['team_members']) if isinstance(content['team_members'], str) else content['team_members']
-            if content.get('values_data'):
-                content['values_data'] = json.loads(content['values_data']) if isinstance(content['values_data'], str) else content['values_data']
+            # Parse JSON fields and structure for frontend compatibility
+            team_members = content.get('team_members')
+            if team_members and isinstance(team_members, str):
+                team_members = json.loads(team_members)
+            elif not team_members:
+                team_members = []
+                
+            values_data = content.get('values_data')
+            if values_data and isinstance(values_data, str):
+                values_data = json.loads(values_data)
+            elif not values_data:
+                values_data = []
+            
+            # Structure data for frontend compatibility
+            content = {
+                "id": content.get("id"),
+                "page_title": content.get("page_title"),
+                "hero_title": content.get("hero_title"),
+                "hero_description": content.get("hero_description"),
+                "story_title": content.get("story_title"),
+                "story_content": content.get("story_content"),
+                "story_image": content.get("story_image"),
+                "team_title": content.get("team_title"),
+                "team_members": team_members,
+                "values_title": content.get("values_title"),
+                "values_data": values_data,
+                "updated_at": content.get("updated_at"),
+                # Add expected 'values' key for frontend compatibility
+                "values": values_data
+            }
         
         return content
     finally:
