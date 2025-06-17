@@ -122,6 +122,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Found issues with the backup functions during MySQL migration testing. The backup list endpoint returns a dictionary instead of a list, and the database backup endpoint has issues with JSON serialization. The full backup endpoint fails with error: 'dumps() takes 1 positional argument but 2 positional arguments (and 2 keyword-only arguments) were given'. This suggests there's an issue with how json.dumps() is being used in the backup functions."
+      - working: false
+        agent: "testing"
+        comment: "Confirmed issues with backup functions during MySQL migration validation. The backup list endpoint returns a dictionary instead of a list, and both database and full backup endpoints have issues with JSON serialization. The response is not valid JSON."
 
   - task: "Implement missing backup endpoints - /admin/backup/list"
     implemented: true
