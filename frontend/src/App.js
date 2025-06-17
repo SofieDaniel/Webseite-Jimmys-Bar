@@ -2,6 +2,9 @@ import React, { useState, useEffect, createContext, useContext } from "react";
 import "./App.css";
 import { createBrowserRouter, RouterProvider, Outlet, Link, useLocation } from "react-router-dom";
 
+// Import Error Boundary
+import ErrorBoundary from './components/ErrorBoundary';
+
 // Import Admin Sections
 import { ContentSection, MenuSection } from './AdminSections';
 import { MediaSection } from './AdminSectionsFinal';
@@ -18,7 +21,7 @@ import SystemBackupSection from './components/SystemBackupSection';
 
 // Import Page Components
 import Home from './components/Home';
-import Standorte from './components/Standorte';
+import Locations from './components/Locations'; // Updated component
 import UeberUns from './components/UeberUns';
 import Speisekarte from './components/Speisekarte';
 import Bewertungen from './components/Bewertungen';
