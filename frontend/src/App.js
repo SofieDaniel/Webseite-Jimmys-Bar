@@ -105,7 +105,139 @@ const CookieBanner = () => {
   );
 };
 
-// Admin Panel Component
+// Startseite Summary Component
+const StartseiteSummary = () => {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Startseite - Content Übersicht</h1>
+        <p className="text-gray-600">Schnelle Übersicht und Direktzugang zu den wichtigsten Inhalten</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Hero Section Card */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
+          <div className="flex items-center mb-4">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+              <span className="text-blue-600 text-lg">🏠</span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Hero-Bereich</h3>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">Haupttitel, Untertitel und Hintergrundbild der Startseite</p>
+          <button 
+            onClick={() => window.location.hash = '#homepage'} 
+            className="text-blue-600 text-sm hover:text-blue-800"
+          >
+            → Bearbeiten
+          </button>
+        </div>
+
+        {/* Features Section Card */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+          <div className="flex items-center mb-4">
+            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+              <span className="text-green-600 text-lg">⭐</span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Features</h3>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">3 Feature-Karten mit Beschreibungen und Bildern</p>
+          <button 
+            onClick={() => window.location.hash = '#homepage'} 
+            className="text-green-600 text-sm hover:text-green-800"
+          >
+            → Bearbeiten
+          </button>
+        </div>
+
+        {/* Specialties Section Card */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-orange-500">
+          <div className="flex items-center mb-4">
+            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+              <span className="text-orange-600 text-lg">🍽️</span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Spezialitäten</h3>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">4 Spezialitäten-Karten mit direkten Kategorie-Links</p>
+          <button 
+            onClick={() => window.location.hash = '#homepage'} 
+            className="text-orange-600 text-sm hover:text-orange-800"
+          >
+            → Bearbeiten
+          </button>
+        </div>
+
+        {/* Delivery Section Card */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500">
+          <div className="flex items-center mb-4">
+            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+              <span className="text-purple-600 text-lg">🚚</span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Lieferservice</h3>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">Lieferando-Integration und Lieferinformationen</p>
+          <button 
+            onClick={() => window.location.hash = '#homepage'} 
+            className="text-purple-600 text-sm hover:text-purple-800"
+          >
+            → Bearbeiten
+          </button>
+        </div>
+
+        {/* Menu Quick Access */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
+          <div className="flex items-center mb-4">
+            <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+              <span className="text-red-600 text-lg">📋</span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Speisekarte</h3>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">Gerichte, Kategorien und Preise verwalten</p>
+          <button 
+            onClick={() => window.location.hash = '#menu'} 
+            className="text-red-600 text-sm hover:text-red-800"
+          >
+            → Verwalten
+          </button>
+        </div>
+
+        {/* Locations Quick Access */}
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-teal-500">
+          <div className="flex items-center mb-4">
+            <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center mr-3">
+              <span className="text-teal-600 text-lg">📍</span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Standorte</h3>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">Adressen, Öffnungszeiten und Kontaktdaten</p>
+          <button 
+            onClick={() => window.location.hash = '#locations'} 
+            className="text-teal-600 text-sm hover:text-teal-800"
+          >
+            → Verwalten
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-blue-900 mb-3">📋 Schnelle Aktionen</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <button className="bg-white border border-blue-200 text-blue-700 px-4 py-3 rounded-lg hover:bg-blue-50 text-sm font-medium">
+            📝 Neues Gericht hinzufügen
+          </button>
+          <button className="bg-white border border-blue-200 text-blue-700 px-4 py-3 rounded-lg hover:bg-blue-50 text-sm font-medium">
+            ⭐ Bewertungen prüfen
+          </button>
+          <button className="bg-white border border-blue-200 text-blue-700 px-4 py-3 rounded-lg hover:bg-blue-50 text-sm font-medium">
+            📧 Kontakt-Nachrichten
+          </button>
+          <button className="bg-white border border-blue-200 text-blue-700 px-4 py-3 rounded-lg hover:bg-blue-50 text-sm font-medium">
+            🔧 Wartungsmodus
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 const AdminPanel = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
