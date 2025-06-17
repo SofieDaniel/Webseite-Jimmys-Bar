@@ -14,6 +14,8 @@ import UeberUns from './components/UeberUns';
 import Speisekarte from './components/Speisekarte';
 import Bewertungen from './components/Bewertungen';
 import Kontakt from './components/Kontakt';
+import Impressum from './components/Impressum';
+import Datenschutz from './components/Datenschutz';
 import Footer from './components/Footer';
 
 // Language Context - Only German
