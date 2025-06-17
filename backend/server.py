@@ -572,9 +572,20 @@ async def get_reviews(approved_only: bool = True):
 
 @api_router.post("/reviews", response_model=Review)
 async def create_review(review_data: ReviewCreate):
-    review = Review(**review_data.dict())
-    await db.reviews.insert_one(review.dict())
-    return review
+    try:
+        review = Review(**review_data.dict())
+        
+        # Convert the review to dict and handle datetime serialization
+        review_dict = review.dict()
+        if 'date' in review_dict and isinstance(review_dict['date'], datetime):
+            # Keep the datetime object for database storage
+            pass
+        
+        await db.reviews.insert_one(review_dict)
+        return review
+    except Exception as e:
+        print(f"Review creation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Review creation failed: {str(e)}")
 
 @api_router.put("/reviews/{review_id}/approve")
 async def approve_review(review_id: str, current_user: User = Depends(get_editor_user)):
