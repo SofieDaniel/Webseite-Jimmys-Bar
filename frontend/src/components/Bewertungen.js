@@ -12,6 +12,26 @@ const Bewertungen = () => {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
 
+  // Helper function to format date
+  const formatDate = (dateString) => {
+    try {
+      if (!dateString) return 'Unbekanntes Datum';
+      
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Unbekanntes Datum';
+      
+      // Format as "März 2024"
+      const options = { 
+        year: 'numeric', 
+        month: 'long'
+      };
+      return date.toLocaleDateString('de-DE', options);
+    } catch (error) {
+      console.error('Date formatting error:', error);
+      return 'Unbekanntes Datum';
+    }
+  };
+
   // Load approved reviews from backend
   useEffect(() => {
     const loadReviews = async () => {
