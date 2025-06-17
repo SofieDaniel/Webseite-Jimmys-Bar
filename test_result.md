@@ -209,11 +209,11 @@ backend:
 
   - task: "Add psutil dependency for system info"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/requirements.txt"
-    stuck_count: 1
+    stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
@@ -221,6 +221,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "The system info endpoint is missing the 'mysql' section in the response. This suggests that the MySQL-specific system information is not being properly collected or returned. The endpoint needs to be updated to include MySQL system information."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the system info endpoint now includes the 'mysql' section in the response during MySQL migration validation. The endpoint returns MySQL connection status as 'Connected', database name as 'jimmys_tapas_bar', and number of tables as 17. The MySQL version is shown as 'N/A', but this is a minor issue as the connection is working correctly."
 
   - task: "Authentication - POST /api/auth/login"
     implemented: true
