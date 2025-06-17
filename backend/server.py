@@ -816,13 +816,53 @@ async def get_homepage_content():
                 "updated_at": default_content.updated_at
             }
         else:
-            # Parse JSON fields
-            if content.get('features_data'):
-                content['features_data'] = json.loads(content['features_data']) if isinstance(content['features_data'], str) else content['features_data']
-            if content.get('specialties_data'):
-                content['specialties_data'] = json.loads(content['specialties_data']) if isinstance(content['specialties_data'], str) else content['specialties_data']
-            if content.get('delivery_data'):
-                content['delivery_data'] = json.loads(content['delivery_data']) if isinstance(content['delivery_data'], str) else content['delivery_data']
+            # Parse JSON fields and structure data for frontend compatibility
+            features_data = content.get('features_data')
+            if features_data and isinstance(features_data, str):
+                features_data = json.loads(features_data)
+            elif not features_data:
+                features_data = {}
+                
+            specialties_data = content.get('specialties_data')
+            if specialties_data and isinstance(specialties_data, str):
+                specialties_data = json.loads(specialties_data)
+            elif not specialties_data:
+                specialties_data = {}
+                
+            delivery_data = content.get('delivery_data')
+            if delivery_data and isinstance(delivery_data, str):
+                delivery_data = json.loads(delivery_data)
+            elif not delivery_data:
+                delivery_data = {}
+            
+            # Structure data in frontend-expected format
+            content = {
+                "id": content.get("id"),
+                "hero_title": content.get("hero_title"),
+                "hero_subtitle": content.get("hero_subtitle"),
+                "hero_description": content.get("hero_description"),
+                "hero_location": content.get("hero_location"),
+                "hero_background_image": content.get("hero_background_image"),
+                "hero_menu_button_text": content.get("hero_menu_button_text"),
+                "hero_locations_button_text": content.get("hero_locations_button_text"),
+                "features_data": features_data,
+                "specialties_data": specialties_data,
+                "delivery_data": delivery_data,
+                "updated_at": content.get("updated_at"),
+                # Add expected top-level keys for frontend compatibility
+                "hero": {
+                    "title": content.get("hero_title"),
+                    "subtitle": content.get("hero_subtitle"),
+                    "description": content.get("hero_description"),
+                    "location": content.get("hero_location"),
+                    "background_image": content.get("hero_background_image"),
+                    "menu_button_text": content.get("hero_menu_button_text"),
+                    "locations_button_text": content.get("hero_locations_button_text")
+                },
+                "features": features_data,
+                "specialties": specialties_data,
+                "delivery": delivery_data
+            }
         
         return content
     finally:
