@@ -516,8 +516,9 @@ const Layout = () => {
 // Create the router with new React Router v7 API
 const router = createBrowserRouter([
   {
-    path: "/admin/*",
-    element: <AdminPanel />
+    path: "/admin",
+    element: <AdminPanel />,
+    children: []
   },
   {
     path: "/",
