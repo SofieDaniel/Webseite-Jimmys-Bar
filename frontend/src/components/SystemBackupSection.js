@@ -486,7 +486,7 @@ const SystemBackupSection = () => {
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-4">
-                  Erstellt ein JSON-Backup aller Datenbank-Inhalte (Menü, Bewertungen, Benutzer, etc.).
+                  Erstellt einen vollständigen MySQL-Dump aller Datenbank-Inhalte (Menü, Bewertungen, Benutzer, etc.).
                   Empfohlen für tägliche Backups.
                 </p>
                 <div className="mb-4">
