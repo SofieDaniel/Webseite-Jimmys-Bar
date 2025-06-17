@@ -621,9 +621,9 @@ frontend:
 
   - task: "Admin CMS Implementation"
     implemented: true
-    working: true
+    working: false
     file: "/app/frontend/src/App.js"
-    stuck_count: 2
+    stuck_count: 3
     priority: "high"
     needs_retesting: false
     status_history:
@@ -639,6 +639,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Comprehensive testing of the Admin CMS with the new routing solution confirms it's working correctly. Direct navigation to /admin loads the admin login page properly. Login with admin/jimmy2024 credentials works and displays the dashboard. All admin sections (Homepage editor, Locations, About Us, Menu, Reviews, Contact Messages, Users) load correctly. The Hero section in the Homepage editor wasn't found during testing, but this appears to be a content loading issue rather than a routing problem. Logout functionality works correctly. The normal website still functions properly, and browser back/forward navigation between admin and main site works as expected. The pathname-based routing solution has successfully resolved the previous routing issues."
+      - working: false
+        agent: "testing"
+        comment: "Conducted comprehensive testing of the Admin CMS implementation in the current environment. The backend API endpoints are working correctly, with successful authentication using admin/jimmy2024 credentials and proper JWT token handling. API tests confirm that the reviews system is functioning, with one approved review visible in the system. However, there are issues with the frontend routing - when navigating to /admin, the main site is displayed instead of the admin login page. This appears to be a client-side routing issue with React Router v7. The pathname-based routing solution mentioned in previous tests is not working in the current environment. This is a critical issue that needs to be addressed before the admin panel can be fully tested."
 
 metadata:
   created_by: "testing_agent"
