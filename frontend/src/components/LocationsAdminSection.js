@@ -68,13 +68,20 @@ const LocationsAdminSection = () => {
     setMessage('');
 
     try {
+      // Prepare data in the format expected by MySQL backend
+      const updatedData = {
+        page_title: locationsData.page_title,
+        page_description: locationsData.page_description,
+        locations_data: locationsData.locations
+      };
+
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/locations`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
-        body: JSON.stringify(locationsData)
+        body: JSON.stringify(updatedData)
       });
 
       if (response.ok) {
