@@ -41,7 +41,19 @@ const LocationsAdminSection = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/locations`);
       if (response.ok) {
         const data = await response.json();
-        setLocationsData(data);
+        console.log('Loaded locations data:', data);
+        
+        // Handle MySQL response structure
+        const normalizedData = {
+          page_title: data.page_title || 'Unsere Standorte',
+          page_description: data.page_description || 'Besuchen Sie uns an einem unserer beiden Standorte',
+          locations: data.locations_data || data.locations || []
+        };
+        
+        setLocationsData(normalizedData);
+      } else {
+        console.error('Failed to load locations:', response.status);
+        setMessage('Fehler beim Laden der Standort-Daten');
       }
     } catch (error) {
       console.error('Error loading locations data:', error);
