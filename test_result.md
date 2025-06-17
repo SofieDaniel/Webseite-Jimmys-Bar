@@ -303,7 +303,7 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "testing"
@@ -314,6 +314,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "The GET /api/cms/about endpoint is missing the required 'values' field after MySQL migration. This suggests that the data structure has changed during the migration or the data is not being properly retrieved from the MySQL database."
+      - working: false
+        agent: "testing"
+        comment: "Confirmed that the GET /api/cms/about endpoint is missing the required 'values' field during MySQL migration validation. The endpoint needs to be updated to properly transform the MySQL data structure to match the expected format."
 
   - task: "CMS Legal Pages Endpoints"
     implemented: true
