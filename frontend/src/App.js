@@ -282,96 +282,98 @@ const AdminPanel = () => {
 
   // Admin Dashboard
   return (
-    <div className="min-h-screen bg-gray-100" style={{paddingTop: '80px'}}>
-      <div className="flex" style={{minHeight: 'calc(100vh - 80px)'}}>
+    <div className="min-h-screen bg-gray-100">
+      <div className="flex" style={{minHeight: '100vh'}}>
         {/* Sidebar */}
-        <div className="w-64 bg-white shadow-lg" style={{position: 'fixed', height: 'calc(100vh - 80px)', top: '80px', zIndex: 40}}>
-          <div className="p-6">
-            <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
-            <p className="text-sm text-gray-600">Willkommen, {user?.username}</p>
+        <div className="w-64 bg-white shadow-lg" style={{position: 'fixed', height: '100vh', zIndex: 40}}>
+          <div className="p-6 border-b">
+            <h1 className="text-xl font-bold text-gray-900">Jimmy's Tapas Bar</h1>
+            <p className="text-sm text-gray-600">Admin Panel</p>
+            <p className="text-xs text-blue-600 mt-1">Willkommen, {user?.username}</p>
           </div>
           <nav className="mt-6">
             <button
               onClick={() => setActiveSection('dashboard')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'dashboard' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              Dashboard
+              📊 Dashboard
             </button>
             <button
-              onClick={() => setActiveSection('content')}
-              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'content' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+              onClick={() => setActiveSection('homepage')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'homepage' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              Homepage bearbeiten
+              🏠 Homepage bearbeiten
             </button>
             <button
               onClick={() => setActiveSection('menu')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'menu' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              Speisekarte
+              🍽️ Speisekarte
             </button>
             <button
               onClick={() => setActiveSection('reviews')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'reviews' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              Bewertungen
+              ⭐ Bewertungen
             </button>
             <button
               onClick={() => setActiveSection('contacts')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'contacts' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              Kontakt-Nachrichten
+              📧 Kontakt-Nachrichten
+            </button>
+            <button
+              onClick={() => setActiveSection('newsletter')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'newsletter' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              📮 Newsletter
             </button>
             <button
               onClick={() => setActiveSection('users')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'users' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              Benutzer-Verwaltung
+              👥 Benutzer-Verwaltung
             </button>
             <button
               onClick={() => setActiveSection('legal')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'legal' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              Impressum & Datenschutz
-            </button>
-            <button
-              onClick={() => setActiveSection('media')}
-              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'media' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
-            >
-              Medien
+              📋 Impressum & Datenschutz
             </button>
             <button
               onClick={() => setActiveSection('maintenance')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'maintenance' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              Wartungsmodus
+              🔧 Wartungsmodus
             </button>
-            <button
-              onClick={handleLogout}
-              className="w-full text-left px-6 py-3 text-sm text-red-600 hover:bg-red-50 mt-4 border-t"
-            >
-              Abmelden
-            </button>
+            <div className="border-t mt-6 pt-6">
+              <a
+                href="/"
+                target="_blank"
+                className="w-full text-left px-6 py-3 text-sm text-green-600 hover:bg-green-50 block"
+              >
+                🌐 Website ansehen
+              </a>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-6 py-3 text-sm text-red-600 hover:bg-red-50"
+              >
+                🚪 Abmelden
+              </button>
+            </div>
           </nav>
         </div>
 
         {/* Main Content */}
         <div className="flex-1 p-8" style={{marginLeft: '256px'}}>
-          {activeSection === 'dashboard' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
-              <div className="bg-white rounded-lg shadow p-6">
-                <p className="text-gray-600">Willkommen im Admin-Panel von Jimmy's Tapas Bar!</p>
-                <p className="text-gray-600 mt-2">Verwenden Sie das Menü links, um verschiedene Bereiche zu verwalten.</p>
-              </div>
-            </div>
-          )}
-          {activeSection === 'content' && <ContentSection />}
+          {activeSection === 'dashboard' && <DashboardSection />}
+          {activeSection === 'homepage' && <ContentSection />}
           {activeSection === 'menu' && <MenuSection />}
           {activeSection === 'reviews' && <ReviewsSection />}
           {activeSection === 'contacts' && <ContactsSection />}
+          {activeSection === 'newsletter' && <NewsletterSection />}
           {activeSection === 'users' && <UsersSection />}
           {activeSection === 'legal' && <LegalEditor />}
-          {activeSection === 'media' && <MediaSection />}
           {activeSection === 'maintenance' && <MaintenanceSection />}
         </div>
       </div>
