@@ -572,6 +572,7 @@ function App() {
                 <CookieBanner />
               </>
             } />
+            <Route path="/admin" element={<AdminPanel />} />
             <Route path="/admin/*" element={<AdminPanel />} />
           </Routes>
         </BrowserRouter>
