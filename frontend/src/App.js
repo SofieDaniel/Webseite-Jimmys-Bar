@@ -479,22 +479,73 @@ function App() {
     <LanguageProvider>
       <div className="App">
         <BrowserRouter>
-          {/* Conditional Header - not shown on admin pages */}
-          {window.location.pathname !== '/admin' && <Header />}
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/standorte" element={<Standorte />} />
-            <Route path="/speisekarte" element={<Speisekarte />} />
-            <Route path="/bewertungen" element={<Bewertungen />} />
-            <Route path="/ueber-uns" element={<UeberUns />} />
-            <Route path="/kontakt" element={<Kontakt />} />
-            <Route path="/impressum" element={<Impressum />} />
-            <Route path="/datenschutz" element={<Datenschutz />} />
+            <Route path="/" element={
+              <>
+                <Header />
+                <Home />
+                <Footer />
+                <CookieBanner />
+              </>
+            } />
+            <Route path="/standorte" element={
+              <>
+                <Header />
+                <Standorte />
+                <Footer />
+                <CookieBanner />
+              </>
+            } />
+            <Route path="/speisekarte" element={
+              <>
+                <Header />
+                <Speisekarte />
+                <Footer />
+                <CookieBanner />
+              </>
+            } />
+            <Route path="/bewertungen" element={
+              <>
+                <Header />
+                <Bewertungen />
+                <Footer />
+                <CookieBanner />
+              </>
+            } />
+            <Route path="/ueber-uns" element={
+              <>
+                <Header />
+                <UeberUns />
+                <Footer />
+                <CookieBanner />
+              </>
+            } />
+            <Route path="/kontakt" element={
+              <>
+                <Header />
+                <Kontakt />
+                <Footer />
+                <CookieBanner />
+              </>
+            } />
+            <Route path="/impressum" element={
+              <>
+                <Header />
+                <Impressum />
+                <Footer />
+                <CookieBanner />
+              </>
+            } />
+            <Route path="/datenschutz" element={
+              <>
+                <Header />
+                <Datenschutz />
+                <Footer />
+                <CookieBanner />
+              </>
+            } />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
-          {/* Conditional Footer - not shown on admin pages */}
-          {window.location.pathname !== '/admin' && <Footer />}
-          <CookieBanner />
         </BrowserRouter>
       </div>
     </LanguageProvider>
