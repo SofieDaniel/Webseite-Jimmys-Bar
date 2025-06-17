@@ -8,6 +8,16 @@ const NewsletterSection = () => {
   const [smtpConfig, setSmtpConfig] = useState({});
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  
+  // Template Modal States
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [editingTemplate, setEditingTemplate] = useState(null);
+  const [templateForm, setTemplateForm] = useState({
+    name: '',
+    subject: '',
+    content: '',
+    description: ''
+  });
 
   useEffect(() => {
     loadNewsletterData();
