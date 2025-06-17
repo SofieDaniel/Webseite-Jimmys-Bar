@@ -1876,7 +1876,768 @@ def run_cms_tests():
     
     return all_passed
 
+def test_cms_legal_get(page_type):
+    """Test GET /api/cms/legal/{page_type} endpoint"""
+    print(f"\n🧪 Testing GET /api/cms/legal/{page_type} endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/legal/{page_type}")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print(f"✅ Successfully retrieved {page_type} page content")
+        else:
+            print(f"❌ Failed to retrieve {page_type} page content. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "page_type", "title", "content"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if page_type matches the requested page_type
+        if data["page_type"] == page_type:
+            print(f"✅ Page type matches requested type: {page_type}")
+        else:
+            print(f"❌ Page type doesn't match requested type. Expected: {page_type}, Got: {data['page_type']}")
+            return False
+        
+        # Print some content info
+        print(f"✅ Page title: {data['title']}")
+        print(f"✅ Content length: {len(data['content'])} characters")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/legal/{page_type} endpoint: {e}")
+        return False
+
+def test_cms_legal_put(page_type):
+    """Test PUT /api/cms/legal/{page_type} endpoint"""
+    print(f"\n🧪 Testing PUT /api/cms/legal/{page_type} endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # First get the current legal page content
+        get_response = requests.get(f"{API_BASE_URL}/cms/legal/{page_type}")
+        if get_response.status_code != 200:
+            print(f"❌ Failed to retrieve current {page_type} page content. Status code: {get_response.status_code}")
+            return False
+        
+        current_data = get_response.json()
+        
+        # Make a copy of the current data to modify
+        updated_data = current_data.copy()
+        
+        # Update the title with a timestamp to ensure it's different
+        timestamp = int(time.time())
+        updated_data["title"] = f"{current_data['title']} - {timestamp}"
+        
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        
+        # Make PUT request
+        response = requests.put(f"{API_BASE_URL}/cms/legal/{page_type}", json=updated_data, headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print(f"✅ Successfully updated {page_type} page content")
+        else:
+            print(f"❌ Failed to update {page_type} page content. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Verify the update by getting the page again
+        verify_response = requests.get(f"{API_BASE_URL}/cms/legal/{page_type}")
+        if verify_response.status_code != 200:
+            print(f"❌ Failed to verify {page_type} page update. Status code: {verify_response.status_code}")
+            return False
+        
+        verify_data = verify_response.json()
+        if verify_data["title"] == updated_data["title"]:
+            print(f"✅ Title was updated correctly to: {verify_data['title']}")
+        else:
+            print(f"❌ Title was not updated correctly. Expected: {updated_data['title']}, Got: {verify_data['title']}")
+            return False
+        
+        # Restore the original data
+        restore_response = requests.put(f"{API_BASE_URL}/cms/legal/{page_type}", json=current_data, headers=headers)
+        if restore_response.status_code == 200:
+            print(f"✅ Successfully restored original {page_type} page content")
+        else:
+            print(f"❌ Failed to restore original {page_type} page content. Status code: {restore_response.status_code}")
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/legal/{page_type} endpoint: {e}")
+        return False
+
+def test_admin_system_info():
+    """Test GET /api/admin/system/info endpoint"""
+    print("\n🧪 Testing GET /api/admin/system/info endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/admin/system/info", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved system information")
+        else:
+            print(f"❌ Failed to retrieve system information. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected sections
+        required_sections = ["system", "mysql", "application"]
+        missing_sections = [section for section in required_sections if section not in data]
+        
+        if not missing_sections:
+            print("✅ Response contains all required sections")
+        else:
+            print(f"❌ Response is missing required sections: {missing_sections}")
+            return False
+        
+        # Check MySQL section
+        if "mysql" in data:
+            mysql_info = data["mysql"]
+            print(f"✅ MySQL version: {mysql_info.get('version', 'N/A')}")
+            print(f"✅ MySQL connection status: {mysql_info.get('connection_status', 'N/A')}")
+            
+            # Check if database info is present
+            if "database_info" in mysql_info:
+                db_info = mysql_info["database_info"]
+                print(f"✅ Database name: {db_info.get('name', 'N/A')}")
+                print(f"✅ Number of tables: {db_info.get('tables_count', 'N/A')}")
+            else:
+                print("❌ MySQL database_info section is missing")
+                return False
+        else:
+            print("❌ MySQL section is missing")
+            return False
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to admin/system/info endpoint: {e}")
+        return False
+
+def test_backup_list():
+    """Test GET /api/admin/backup/list endpoint"""
+    print("\n🧪 Testing GET /api/admin/backup/list endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/admin/backup/list", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved backup list")
+        else:
+            print(f"❌ Failed to retrieve backup list. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} backups")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # If there are backups, verify the structure of the first one
+        if data:
+            required_fields = ["id", "filename", "type", "created_at", "created_by", "size_human"]
+            missing_fields = [field for field in required_fields if field not in data[0]]
+            
+            if not missing_fields:
+                print("✅ Backup objects contain all required fields")
+            else:
+                print(f"❌ Backup objects are missing required fields: {missing_fields}")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample backups:")
+            for i, backup in enumerate(data[:3]):  # Show up to 3 samples
+                print(f"  {i+1}. {backup['filename']} - Type: {backup['type']}, Size: {backup['size_human']}, Created: {backup['created_at']}")
+                
+            # Check if created_at is properly formatted as ISO date string
+            try:
+                datetime.fromisoformat(data[0]['created_at'].replace('Z', '+00:00'))
+                print("✅ created_at is properly formatted as ISO date string")
+            except (ValueError, TypeError):
+                print("❌ created_at is not properly formatted as ISO date string")
+                return False
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to admin/backup/list endpoint: {e}")
+        return False
+
+def test_create_database_backup():
+    """Test POST /api/admin/backup/database endpoint"""
+    print("\n🧪 Testing POST /api/admin/backup/database endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/admin/backup/database", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully created database backup")
+        else:
+            print(f"❌ Failed to create database backup. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False, None
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False, None
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "filename", "type", "created_at", "created_by", "size_human"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False, None
+        
+        # Check if backup type is correct
+        if data["type"] == "database":
+            print("✅ Backup type is correctly set to 'database'")
+        else:
+            print(f"❌ Backup type is not 'database', got: {data['type']}")
+            return False, None
+            
+        # Check if created_at is properly formatted as ISO date string
+        try:
+            datetime.fromisoformat(data['created_at'].replace('Z', '+00:00'))
+            print("✅ created_at is properly formatted as ISO date string")
+        except (ValueError, TypeError):
+            print("❌ created_at is not properly formatted as ISO date string")
+            return False, None
+            
+        return True, data["id"]
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to admin/backup/database endpoint: {e}")
+        return False, None
+
+def test_create_full_backup():
+    """Test POST /api/admin/backup/full endpoint"""
+    print("\n🧪 Testing POST /api/admin/backup/full endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/admin/backup/full", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully created full backup")
+        else:
+            print(f"❌ Failed to create full backup. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False, None
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False, None
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "filename", "type", "created_at", "created_by", "size_human"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False, None
+        
+        # Check if backup type is correct
+        if data["type"] == "full":
+            print("✅ Backup type is correctly set to 'full'")
+        else:
+            print(f"❌ Backup type is not 'full', got: {data['type']}")
+            return False, None
+            
+        # Check if created_at is properly formatted as ISO date string
+        try:
+            datetime.fromisoformat(data['created_at'].replace('Z', '+00:00'))
+            print("✅ created_at is properly formatted as ISO date string")
+        except (ValueError, TypeError):
+            print("❌ created_at is not properly formatted as ISO date string")
+            return False, None
+            
+        return True, data["id"]
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to admin/backup/full endpoint: {e}")
+        return False, None
+
+def test_backup_download(backup_id):
+    """Test GET /api/admin/backup/download/{backup_id} endpoint"""
+    print(f"\n🧪 Testing GET /api/admin/backup/download/{backup_id} endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/admin/backup/download/{backup_id}", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved backup download information")
+        else:
+            print(f"❌ Failed to retrieve backup download information. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            elif response.status_code == 404:
+                print("   Backup not found")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "filename", "download_url", "type", "created_at"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if backup ID matches
+        if data["id"] == backup_id:
+            print("✅ Backup ID matches requested ID")
+        else:
+            print(f"❌ Backup ID doesn't match requested ID. Expected: {backup_id}, Got: {data['id']}")
+            return False
+            
+        # Check if download_url is present
+        if data["download_url"]:
+            print(f"✅ Download URL is present: {data['download_url']}")
+        else:
+            print("❌ Download URL is missing or empty")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to admin/backup/download/{backup_id} endpoint: {e}")
+        return False
+
+def test_delete_backup(backup_id):
+    """Test DELETE /api/admin/backup/{backup_id} endpoint"""
+    print(f"\n🧪 Testing DELETE /api/admin/backup/{backup_id} endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make DELETE request
+        response = requests.delete(f"{API_BASE_URL}/admin/backup/{backup_id}", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully deleted backup")
+        else:
+            print(f"❌ Failed to delete backup. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            elif response.status_code == 404:
+                print("   Backup not found")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains success message
+        if "message" in data and "deleted" in data["message"].lower():
+            print(f"✅ Response contains success message: {data['message']}")
+        else:
+            print("❌ Response does not contain expected success message")
+            return False
+            
+        # Verify deletion by trying to download the backup
+        verify_response = requests.get(f"{API_BASE_URL}/admin/backup/download/{backup_id}", headers=headers)
+        if verify_response.status_code == 404:
+            print("✅ Backup was successfully deleted (404 Not Found when trying to download)")
+        else:
+            print(f"❌ Backup may not have been deleted. Got status code {verify_response.status_code} when trying to download")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to admin/backup/{backup_id} endpoint: {e}")
+        return False
+
+def test_reviews_with_datetime():
+    """Test POST /api/reviews endpoint with datetime handling"""
+    print("\n🧪 Testing POST /api/reviews endpoint with datetime handling...")
+    
+    try:
+        # Create payload
+        payload = {
+            "customer_name": "Elena Rodríguez",
+            "rating": 5,
+            "comment": "¡Excelente experiencia! La comida estaba deliciosa y el servicio fue impecable. Volveré pronto."
+        }
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/reviews", json=payload)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully created new review")
+        else:
+            print(f"❌ Failed to create review. Status code: {response.status_code}")
+            return False, None
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False, None
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "customer_name", "rating", "comment", "date", "is_approved"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False, None
+        
+        # Check if date field is properly formatted as ISO date string
+        try:
+            datetime.fromisoformat(data['date'].replace('Z', '+00:00'))
+            print("✅ Date field is properly formatted as ISO date string")
+        except (ValueError, TypeError):
+            print("❌ Date field is not properly formatted as ISO date string")
+            return False, None
+            
+        # Check if fields match what we sent
+        if (data["customer_name"] == payload["customer_name"] and 
+            data["rating"] == payload["rating"] and
+            data["comment"] == payload["comment"]):
+            print("✅ Returned review data matches input")
+        else:
+            print(f"❌ Returned review data doesn't match input")
+            return False, None
+            
+        return True, data["id"]
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to reviews endpoint: {e}")
+        return False, None
+
+def test_get_reviews_with_datetime():
+    """Test GET /api/reviews endpoint with datetime handling"""
+    print("\n🧪 Testing GET /api/reviews endpoint with datetime handling...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/reviews?approved_only=false")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved reviews")
+        else:
+            print(f"❌ Failed to retrieve reviews. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} reviews")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # If there are reviews, verify the structure of the first one
+        if data:
+            required_fields = ["id", "customer_name", "rating", "comment", "date", "is_approved"]
+            missing_fields = [field for field in required_fields if field not in data[0]]
+            
+            if not missing_fields:
+                print("✅ Review objects contain all required fields")
+            else:
+                print(f"❌ Review objects are missing required fields: {missing_fields}")
+                return False
+                
+            # Check if date field is properly formatted as ISO date string
+            try:
+                datetime.fromisoformat(data[0]['date'].replace('Z', '+00:00'))
+                print("✅ Date field is properly formatted as ISO date string")
+            except (ValueError, TypeError):
+                print("❌ Date field is not properly formatted as ISO date string")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample reviews:")
+            for i, review in enumerate(data[:3]):  # Show up to 3 samples
+                print(f"  {i+1}. {review['customer_name']} - {review['rating']}★ - {review['date']}")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to reviews endpoint: {e}")
+        return False
+
+def run_mysql_migration_tests():
+    """Run tests for MySQL migration and enhanced backup system"""
+    print("\n🔍 Starting Jimmy's Tapas Bar MySQL Migration and Backup System Tests")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # Test authentication first
+    auth_success, token = test_auth_login()
+    results["auth_login"] = auth_success
+    
+    if auth_success:
+        results["auth_me"] = test_auth_me()
+    else:
+        results["auth_me"] = False
+        print("❌ Skipping auth/me test due to failed login")
+    
+    # Test CMS endpoints
+    results["cms_homepage_get"] = test_cms_homepage_get()
+    results["cms_locations_get"] = test_cms_locations_get()
+    results["cms_about_get"] = test_cms_about_get()
+    
+    # Test legal pages
+    for page_type in ["imprint", "privacy"]:
+        results[f"cms_legal_get_{page_type}"] = test_cms_legal_get(page_type)
+    
+    # Test menu items
+    results["menu_items_get"] = test_get_menu_items()
+    
+    # Test reviews with datetime handling
+    review_success, review_id = test_reviews_with_datetime()
+    results["reviews_create_with_datetime"] = review_success
+    results["reviews_get_with_datetime"] = test_get_reviews_with_datetime()
+    
+    if auth_success:
+        results["pending_reviews_get"] = test_get_pending_reviews()
+    else:
+        results["pending_reviews_get"] = False
+        print("❌ Skipping pending reviews test due to failed login")
+    
+    # Test enhanced backup system
+    if auth_success:
+        results["backup_list"] = test_backup_list()
+        
+        # Create database backup
+        db_backup_success, db_backup_id = test_create_database_backup()
+        results["create_database_backup"] = db_backup_success
+        
+        # Test backup download if database backup was created
+        if db_backup_success and db_backup_id:
+            results["backup_download"] = test_backup_download(db_backup_id)
+        else:
+            results["backup_download"] = False
+            print("❌ Skipping backup download test due to failed database backup creation")
+        
+        # Create full backup
+        full_backup_success, full_backup_id = test_create_full_backup()
+        results["create_full_backup"] = full_backup_success
+        
+        # Test backup deletion if any backup was created
+        if db_backup_success and db_backup_id:
+            results["delete_backup"] = test_delete_backup(db_backup_id)
+        elif full_backup_success and full_backup_id:
+            results["delete_backup"] = test_delete_backup(full_backup_id)
+        else:
+            results["delete_backup"] = False
+            print("❌ Skipping backup deletion test due to failed backup creation")
+        
+        # Test system info
+        results["system_info"] = test_admin_system_info()
+    else:
+        results["backup_list"] = False
+        results["create_database_backup"] = False
+        results["create_full_backup"] = False
+        results["backup_download"] = False
+        results["delete_backup"] = False
+        results["system_info"] = False
+        print("❌ Skipping backup system tests due to failed login")
+    
+    # Test user management
+    if auth_success:
+        results["users_get"] = test_get_users()
+    else:
+        results["users_get"] = False
+        print("❌ Skipping user management test due to failed login")
+    
+    # Test contact system
+    contact_success, contact_id = test_create_contact_message()
+    results["contact_create"] = contact_success
+    
+    if auth_success:
+        results["contact_messages_get"] = test_get_contact_messages()
+    else:
+        results["contact_messages_get"] = False
+        print("❌ Skipping contact messages test due to failed login")
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    for test_name, result in results.items():
+        status = "✅ PASSED" if result else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
 if __name__ == "__main__":
-    # Run the CMS tests
-    success = run_cms_tests()
+    # Run the MySQL migration and backup system tests
+    success = run_mysql_migration_tests()
     sys.exit(0 if success else 1)
