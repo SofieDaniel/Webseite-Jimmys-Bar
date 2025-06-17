@@ -1546,6 +1546,48 @@ async def create_database_backup(current_user: User = Depends(get_admin_user)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Backup creation failed: {str(e)}")
 
+def convert_nested_datetime(data):
+    """Convert datetime objects in nested dictionaries"""
+    if not isinstance(data, dict):
+        return data
+    
+    result = {}
+    for key, value in data.items():
+        if isinstance(value, datetime):
+            result[key] = value.isoformat()
+        elif isinstance(value, dict):
+            result[key] = convert_nested_datetime(value)
+        elif isinstance(value, list):
+            result[key] = convert_list_datetime(value)
+        else:
+            result[key] = value
+    return result
+
+def convert_list_datetime(data):
+    """Convert datetime objects in lists"""
+    if not isinstance(data, list):
+        return data
+    
+    result = []
+    for item in data:
+        if isinstance(item, datetime):
+            result.append(item.isoformat())
+        elif isinstance(item, dict):
+            result.append(convert_nested_datetime(item))
+        elif isinstance(item, list):
+            result.append(convert_list_datetime(item))
+        else:
+            result.append(item)
+    return result
+
+def format_bytes(size):
+    """Convert bytes to human readable format"""
+    for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+        if size < 1024.0:
+            return f"{size:.1f} {unit}"
+        size /= 1024.0
+    return f"{size:.1f} PB"
+
 @api_router.post("/admin/backup/full")
 async def create_full_backup(current_user: User = Depends(get_admin_user)):
     """Create and download full backup (database + files)"""
