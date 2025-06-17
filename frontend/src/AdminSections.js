@@ -34,7 +34,25 @@ export const ContentSection = ({ user, token, apiCall }) => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/homepage`);
         if (response.ok) {
           const data = await response.json();
-          setHomepageContent(data);
+          console.log('Loaded homepage data:', data);
+          
+          // Convert MySQL format to frontend format
+          const convertedData = {
+            hero: {
+              title: data.hero_title || 'JIMMY\'S TAPAS BAR',
+              subtitle: data.hero_subtitle || 'an der Ostsee',
+              description: data.hero_description || 'Genießen Sie authentische mediterrane Spezialitäten',
+              location: data.hero_location || 'direkt an der malerischen Ostseeküste',
+              background_image: data.hero_background_image,
+              menu_button_text: data.hero_menu_button_text || 'Zur Speisekarte',
+              locations_button_text: data.hero_locations_button_text || 'Unsere Standorte'
+            },
+            features: data.features_data || {},
+            specialties: data.specialties_data || {},
+            delivery: data.delivery_data || {}
+          };
+          
+          setHomepageContent(convertedData);
         } else {
           setError('Fehler beim Laden der Homepage-Inhalte');
         }
