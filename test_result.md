@@ -141,11 +141,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Added GET /admin/backup/download/{backup_id} endpoint to handle individual backup downloads with proper error handling and backup info retrieval."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the backup download endpoint is working correctly. It returns backup information with proper datetime serialization. The endpoint handles non-existent backup IDs correctly with a 404 error."
 
   - task: "Implement backup deletion endpoint - /admin/backup/{backup_id}"
     implemented: true
