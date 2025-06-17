@@ -513,13 +513,8 @@ const Layout = () => {
   );
 };
 
-// Create the router with new React Router v7 API
+// Create the router with new React Router v7 API (without admin route)
 const router = createBrowserRouter([
-  {
-    path: "/admin",
-    element: <AdminPanel />,
-    children: []
-  },
   {
     path: "/",
     element: <Layout />,
