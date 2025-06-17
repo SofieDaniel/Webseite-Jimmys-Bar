@@ -628,7 +628,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: <ErrorBoundary><Home /></ErrorBoundary>
       },
       {
         path: "standorte",
@@ -636,15 +636,15 @@ const router = createBrowserRouter([
       },
       {
         path: "speisekarte", 
-        element: <Speisekarte />
+        element: <ErrorBoundary><Speisekarte /></ErrorBoundary>
       },
       {
         path: "bewertungen",
-        element: <Bewertungen />
+        element: <ErrorBoundary><Bewertungen /></ErrorBoundary>
       },
       {
         path: "ueber-uns",
-        element: <UeberUns />
+        element: <ErrorBoundary><UeberUns /></ErrorBoundary>
       },
       {
         path: "kontakt",
