@@ -2638,7 +2638,118 @@ def run_mysql_migration_tests():
     
     return all_passed
 
+def run_mysql_migration_validation():
+    """Run comprehensive validation tests for MySQL migration"""
+    print("\n🔍 Starting Jimmy's Tapas Bar MySQL Migration Validation Tests")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # Test 1: MySQL Backend Authentication
+    auth_success, token = test_auth_login()
+    results["mysql_auth_login"] = auth_success
+    
+    if auth_success:
+        results["mysql_auth_me"] = test_auth_me()
+    else:
+        results["mysql_auth_me"] = False
+        print("❌ Skipping auth/me test due to failed login")
+    
+    # Test 2: MySQL CMS Data Structure
+    results["mysql_cms_homepage"] = test_cms_homepage_get()
+    results["mysql_cms_locations"] = test_cms_locations_get()
+    results["mysql_cms_about"] = test_cms_about_get()
+    
+    # Test 3: MySQL Menu Items
+    results["mysql_menu_items"] = test_get_menu_items()
+    
+    # Test 4: MySQL Review System with Datetime Serialization
+    review_success, review_id = test_reviews_with_datetime()
+    results["mysql_review_create"] = review_success
+    results["mysql_reviews_get"] = test_get_reviews_with_datetime()
+    
+    if auth_success:
+        results["mysql_pending_reviews"] = test_get_pending_reviews()
+    else:
+        results["mysql_pending_reviews"] = False
+        print("❌ Skipping pending reviews test due to failed login")
+    
+    # Test 5: MySQL Enhanced Backup System
+    if auth_success:
+        results["mysql_backup_list"] = test_backup_list()
+        
+        # Create database backup
+        db_backup_success, db_backup_id = test_create_database_backup()
+        results["mysql_database_backup"] = db_backup_success
+        
+        # Create full backup
+        full_backup_success, full_backup_id = test_create_full_backup()
+        results["mysql_full_backup"] = full_backup_success
+        
+        # Test backup download if database backup was created
+        if db_backup_success and db_backup_id:
+            results["mysql_backup_download"] = test_backup_download(db_backup_id)
+        else:
+            results["mysql_backup_download"] = False
+            print("❌ Skipping backup download test due to failed database backup creation")
+        
+        # Test backup deletion if any backup was created
+        if db_backup_success and db_backup_id:
+            results["mysql_backup_delete"] = test_delete_backup(db_backup_id)
+        elif full_backup_success and full_backup_id:
+            results["mysql_backup_delete"] = test_delete_backup(full_backup_id)
+        else:
+            results["mysql_backup_delete"] = False
+            print("❌ Skipping backup deletion test due to failed backup creation")
+    else:
+        results["mysql_backup_list"] = False
+        results["mysql_database_backup"] = False
+        results["mysql_full_backup"] = False
+        results["mysql_backup_download"] = False
+        results["mysql_backup_delete"] = False
+        print("❌ Skipping backup system tests due to failed login")
+    
+    # Test 6: MySQL User Management
+    if auth_success:
+        results["mysql_users"] = test_get_users()
+    else:
+        results["mysql_users"] = False
+        print("❌ Skipping user management test due to failed login")
+    
+    # Test 7: MySQL Contact Management
+    contact_success, contact_id = test_create_contact_message()
+    results["mysql_contact_create"] = contact_success
+    
+    if auth_success:
+        results["mysql_contact_messages"] = test_get_contact_messages()
+    else:
+        results["mysql_contact_messages"] = False
+        print("❌ Skipping contact messages test due to failed login")
+    
+    # Test 8: MySQL System Info
+    if auth_success:
+        results["mysql_system_info"] = test_admin_system_info()
+    else:
+        results["mysql_system_info"] = False
+        print("❌ Skipping system info test due to failed login")
+    
+    # Print summary
+    print("\n📋 MySQL Migration Validation Summary")
+    print("=" * 80)
+    for test_name, result in results.items():
+        status = "✅ PASSED" if result else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall MySQL Migration Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
 if __name__ == "__main__":
+    # Run the MySQL migration validation tests
+    run_mysql_migration_validation()
     # Run the MySQL migration and backup system tests
     success = run_mysql_migration_tests()
     sys.exit(0 if success else 1)
