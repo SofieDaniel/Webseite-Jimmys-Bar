@@ -555,55 +555,56 @@ const router = createBrowserRouter([
   }
 ]);
 
-// Main App Component with pathname-based routing
-function App() {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+// Direct Admin Check Component
+const AppRouter = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const handleLocationChange = () => {
-      setCurrentPath(window.location.pathname);
+    const checkPath = () => {
+      const path = window.location.pathname;
+      setIsAdmin(path === '/admin' || path.startsWith('/admin/'));
     };
 
-    // Listen for popstate events (back/forward button)
-    window.addEventListener('popstate', handleLocationChange);
+    checkPath();
     
-    // Listen for programmatic navigation
+    // Listen for navigation changes
+    const handlePopState = () => checkPath();
+    window.addEventListener('popstate', handlePopState);
+    
+    // Override pushState and replaceState to detect programmatic navigation
     const originalPushState = window.history.pushState;
     const originalReplaceState = window.history.replaceState;
     
     window.history.pushState = function(...args) {
       originalPushState.apply(this, args);
-      handleLocationChange();
+      checkPath();
     };
     
     window.history.replaceState = function(...args) {
       originalReplaceState.apply(this, args);
-      handleLocationChange();
+      checkPath();
     };
 
     return () => {
-      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('popstate', handlePopState);
       window.history.pushState = originalPushState;
       window.history.replaceState = originalReplaceState;
     };
   }, []);
 
-  // If on admin page, show AdminPanel directly
-  if (currentPath === '/admin' || currentPath.startsWith('/admin/')) {
-    return (
-      <LanguageProvider>
-        <div className="App">
-          <AdminPanel />
-        </div>
-      </LanguageProvider>
-    );
+  if (isAdmin) {
+    return <AdminPanel />;
   }
 
-  // Otherwise show normal site with RouterProvider
+  return <RouterProvider router={router} />;
+};
+
+// Main App Component with direct routing
+function App() {
   return (
     <LanguageProvider>
       <div className="App">
-        <RouterProvider router={router} />
+        <AppRouter />
       </div>
     </LanguageProvider>
   );
