@@ -332,10 +332,16 @@ const AdminPanel = () => {
               📊 Dashboard
             </button>
             <button
+              onClick={() => setActiveSection('startseite')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'startseite' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              🏠 Startseite
+            </button>
+            <button
               onClick={() => setActiveSection('homepage')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'homepage' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              🏠 Homepage bearbeiten
+              ✏️ Homepage bearbeiten
             </button>
             <button
               onClick={() => setActiveSection('locations')}
