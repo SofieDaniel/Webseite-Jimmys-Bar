@@ -1596,6 +1596,16 @@ async def create_full_backup(current_user: User = Depends(get_admin_user)):
         import zipfile
         import io
         from datetime import datetime
+        from bson import ObjectId
+        
+        # Custom JSON encoder for datetime and ObjectId
+        class CustomJSONEncoder(json.JSONEncoder):
+            def default(self, obj):
+                if isinstance(obj, datetime):
+                    return obj.isoformat()
+                if isinstance(obj, ObjectId):
+                    return str(obj)
+                return super().default(obj)
         
         # Create in-memory zip file
         zip_buffer = io.BytesIO()
@@ -1607,56 +1617,138 @@ async def create_full_backup(current_user: User = Depends(get_admin_user)):
                 "backup_info": {
                     "created_at": datetime.now().isoformat(),
                     "created_by": current_user.username,
-                    "version": "1.0"
+                    "version": "1.0",
+                    "type": "full",
+                    "collections_count": len(collections)
                 },
                 "data": {}
             }
             
+            total_documents = 0
             for collection_name in collections:
                 collection = db[collection_name]
                 documents = await collection.find({}).to_list(length=None)
                 
+                # Convert ObjectId and datetime objects for JSON serialization
+                serialized_documents = []
                 for doc in documents:
-                    if '_id' in doc:
-                        doc['_id'] = str(doc['_id'])
+                    serialized_doc = {}
+                    for key, value in doc.items():
+                        if isinstance(value, ObjectId):
+                            serialized_doc[key] = str(value)
+                        elif isinstance(value, datetime):
+                            serialized_doc[key] = value.isoformat()
+                        elif isinstance(value, dict):
+                            serialized_doc[key] = convert_nested_datetime(value)
+                        elif isinstance(value, list):
+                            serialized_doc[key] = convert_list_datetime(value)
+                        else:
+                            serialized_doc[key] = value
+                    
+                    serialized_documents.append(serialized_doc)
                 
-                backup_data["data"][collection_name] = documents
+                backup_data["data"][collection_name] = serialized_documents
+                total_documents += len(serialized_documents)
+            
+            backup_data["backup_info"]["total_documents"] = total_documents
             
             # Add database.json to zip
-            zip_file.writestr("database.json", json.dumps(backup_data, indent=2, ensure_ascii=False))
+            database_json = json.dumps(backup_data, indent=2, ensure_ascii=False, cls=CustomJSONEncoder)
+            zip_file.writestr("database.json", database_json)
             
-            # Add a readme file
-            readme_content = """Jimmy's Tapas Bar - Vollständiges Backup
-            
-Inhalt:
-- database.json: Vollständige Datenbank (MongoDB Collections)
-- uploads/: Alle hochgeladenen Dateien und Bilder
+            # Add a detailed readme file
+            readme_content = f"""Jimmy's Tapas Bar - Vollständiges System-Backup
 
-Wiederherstellung:
-1. Importieren Sie database.json in Ihre MongoDB-Instanz
-2. Extrahieren Sie den uploads/ Ordner an den entsprechenden Ort
+=== BACKUP-INFORMATIONEN ===
+Typ: Vollständiges Backup (Datenbank + Medien)
+Erstellt am: {datetime.now().strftime('%d.%m.%Y um %H:%M:%S')}
+Erstellt von: {current_user.username}
+Collections: {len(collections)}
+Dokumente: {total_documents}
 
-Erstellt am: {created_at}
-Erstellt von: {created_by}
-""".format(
-    created_at=datetime.now().strftime('%d.%m.%Y %H:%M:%S'),
-    created_by=current_user.username
-)
+=== INHALT ===
+- database.json: Vollständige MongoDB-Datenbank-Export
+- uploads/: Alle hochgeladenen Dateien und Bilder (falls vorhanden)
+- README.txt: Diese Datei
+
+=== WIEDERHERSTELLUNG ===
+1. MongoDB-Datenbank:
+   - Importieren Sie database.json in Ihre MongoDB-Instanz
+   - Verwenden Sie: mongoimport oder MongoDB Compass
+   
+2. Mediendateien:
+   - Extrahieren Sie den uploads/ Ordner
+   - Kopieren Sie die Dateien an den entsprechenden Ort in Ihrem System
+   
+3. Konfiguration:
+   - Stellen Sie sicher, dass alle Umgebungsvariablen korrekt gesetzt sind
+   - Prüfen Sie die Datenbankverbindung
+
+=== TECHNISCHE DETAILS ===
+- Format: ZIP-Archiv
+- Datenbank-Format: JSON (UTF-8)
+- Dateikodierung: UTF-8
+- Kompatibilität: MongoDB 4.0+
+
+=== SUPPORT ===
+Bei Problemen mit der Wiederherstellung wenden Sie sich an:
+- System-Administrator
+- Technischer Support
+
+Erstellt mit Jimmy's Tapas Bar CMS v1.0
+"""
             zip_file.writestr("README.txt", readme_content)
+            
+            # Add system configuration info
+            system_info = {
+                "backup_created": datetime.now().isoformat(),
+                "cms_version": "1.0",
+                "collections": list(collections),
+                "total_documents": total_documents,
+                "created_by": current_user.username
+            }
+            zip_file.writestr("system_info.json", json.dumps(system_info, indent=2))
         
         zip_buffer.seek(0)
+        zip_content = zip_buffer.getvalue()
+        zip_size = len(zip_content)
+        
+        # Save backup metadata
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"full-backup-{timestamp}.zip"
+        
+        backup_metadata = {
+            "id": f"full_{timestamp}",
+            "filename": filename,
+            "type": "full",
+            "created_at": datetime.now(),
+            "created_by": current_user.username,
+            "size_bytes": zip_size,
+            "size_human": format_bytes(zip_size),
+            "collections_count": len(collections),
+            "total_documents": total_documents,
+            "includes_media": True
+        }
+        
+        # Store in database for backup list
+        backups_collection = db["system_backups"]
+        await backups_collection.insert_one(backup_metadata)
         
         # Return as downloadable zip file
         from fastapi.responses import Response
-        filename = f"full-backup-{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
         
         return Response(
-            content=zip_buffer.getvalue(),
+            content=zip_content,
             media_type="application/zip",
-            headers={"Content-Disposition": f"attachment; filename={filename}"}
+            headers={
+                "Content-Disposition": f"attachment; filename={filename}",
+                "X-Backup-ID": backup_metadata["id"],
+                "X-Backup-Size": str(zip_size)
+            }
         )
         
     except Exception as e:
+        print(f"Full backup error details: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Full backup creation failed: {str(e)}")
 
 @api_router.get("/admin/backup/status")
