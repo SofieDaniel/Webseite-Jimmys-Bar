@@ -1148,6 +1148,459 @@ async def update_about_content(content_data: Dict, current_user: User = Depends(
     finally:
         mysql_pool.release(conn)
 
+# Legal Pages API endpoints
+@api_router.get("/cms/legal/{page_type}")
+async def get_legal_page(page_type: str):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM legal_pages WHERE page_type = %s", (page_type,))
+        page = await cursor.fetchone()
+        
+        if not page:
+            # Create default content
+            if page_type == "imprint":
+                default_page = {
+                    "id": str(uuid.uuid4()),
+                    "page_type": "imprint",
+                    "title": "Impressum",
+                    "content": """**Angaben gemäß § 5 TMG:**
+
+Jimmy's Tapas Bar GmbH
+Strandstraße 1
+18225 Kühlungsborn
+
+**Vertreten durch:**
+Geschäftsführer: Jimmy Rodriguez
+
+**Kontakt:**
+Telefon: +49 38293 12345
+E-Mail: info@jimmys-tapasbar.de
+
+**Registereintrag:**
+Eintragung im Handelsregister
+Registergericht: Amtsgericht Rostock
+Registernummer: HRB 12345
+
+**Umsatzsteuer-ID:**
+Umsatzsteuer-Identifikationsnummer gemäß §27a Umsatzsteuergesetz: DE123456789
+
+**Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:**
+Jimmy Rodriguez
+Strandstraße 1
+18225 Kühlungsborn
+
+**Streitschlichtung:**
+Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.""",
+                    "contact_name": "Jimmy Rodriguez",
+                    "contact_address": "Strandstraße 1, 18225 Kühlungsborn",
+                    "contact_phone": "+49 38293 12345",
+                    "contact_email": "info@jimmys-tapasbar.de",
+                    "company_info": {
+                        "company_name": "Jimmy's Tapas Bar GmbH",
+                        "register_court": "Amtsgericht Rostock",
+                        "register_number": "HRB 12345",
+                        "vat_id": "DE123456789"
+                    }
+                }
+            elif page_type == "privacy":
+                default_page = {
+                    "id": str(uuid.uuid4()),
+                    "page_type": "privacy",
+                    "title": "Datenschutzerklärung",
+                    "content": """**1. Datenschutz auf einen Blick**
+
+**Allgemeine Hinweise**
+Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere Website besuchen.
+
+**Datenerfassung auf unserer Website**
+Wer ist verantwortlich für die Datenerfassung auf dieser Website?
+Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
+
+**Wie erfassen wir Ihre Daten?**
+Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z.B. um Daten handeln, die Sie in ein Kontaktformular eingeben.
+
+**2. Hosting**
+Wir hosten die Inhalte unserer Website bei unserem externen Dienstleister.
+
+**3. Allgemeine Hinweise und Pflichtinformationen**
+
+**Datenschutz**
+Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst.
+
+**4. Datenerfassung auf dieser Website**
+
+**Cookies**
+Unsere Internetseiten verwenden teilweise sogenannte Cookies.
+
+**Server-Log-Dateien**
+Der Provider der Seiten erhebt und speichert automatisch Informationen in sogenannten Server-Log-Dateien.""",
+                    "contact_name": "Jimmy Rodriguez",
+                    "contact_address": "Strandstraße 1, 18225 Kühlungsborn",
+                    "contact_phone": "+49 38293 12345",
+                    "contact_email": "info@jimmys-tapasbar.de"
+                }
+            else:
+                raise HTTPException(status_code=404, detail="Page type not found")
+            
+            # Insert default page
+            await cursor.execute("""
+                INSERT INTO legal_pages (id, page_type, title, content, contact_name, contact_address,
+                                       contact_phone, contact_email, company_info, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                default_page["id"], default_page["page_type"], default_page["title"],
+                default_page["content"], default_page["contact_name"], default_page["contact_address"],
+                default_page["contact_phone"], default_page["contact_email"],
+                json.dumps(default_page.get("company_info")), datetime.utcnow()
+            ))
+            
+            page = default_page
+        else:
+            # Parse JSON field
+            if page.get('company_info'):
+                page['company_info'] = json.loads(page['company_info']) if isinstance(page['company_info'], str) else page['company_info']
+        
+        return page
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/legal/{page_type}")
+async def update_legal_page(page_type: str, page_data: Dict, current_user: User = Depends(get_editor_user)):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        company_info_json = json.dumps(page_data.get('company_info', {}))
+        
+        # Check if page exists
+        await cursor.execute("SELECT COUNT(*) as count FROM legal_pages WHERE page_type = %s", (page_type,))
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new page
+            await cursor.execute("""
+                INSERT INTO legal_pages (id, page_type, title, content, contact_name, contact_address,
+                                       contact_phone, contact_email, company_info, updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()), page_type, page_data.get('title', ''),
+                page_data.get('content', ''), page_data.get('contact_name'),
+                page_data.get('contact_address'), page_data.get('contact_phone'),
+                page_data.get('contact_email'), company_info_json,
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing page
+            await cursor.execute("""
+                UPDATE legal_pages SET title = %s, content = %s, contact_name = %s,
+                                     contact_address = %s, contact_phone = %s, contact_email = %s,
+                                     company_info = %s, updated_at = %s, updated_by = %s
+                WHERE page_type = %s
+            """, (
+                page_data.get('title', ''), page_data.get('content', ''),
+                page_data.get('contact_name'), page_data.get('contact_address'),
+                page_data.get('contact_phone'), page_data.get('contact_email'),
+                company_info_json, datetime.utcnow(), current_user.username, page_type
+            ))
+        
+        return {"message": "Legal page updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
+# Website Texts API endpoints
+@api_router.get("/cms/website-texts/{section}")
+async def get_website_texts(section: str):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM website_texts WHERE section = %s", (section,))
+        texts = await cursor.fetchone()
+        
+        if not texts:
+            # Create default texts based on section
+            default_texts = {"section": section}
+            
+            if section == "navigation":
+                default_texts["navigation_data"] = {
+                    "home": "Startseite",
+                    "locations": "Standorte",
+                    "menu": "Speisekarte",
+                    "reviews": "Bewertungen",
+                    "about": "Über uns",
+                    "contact": "Kontakt",
+                    "privacy": "Datenschutz",
+                    "imprint": "Impressum"
+                }
+            elif section == "footer":
+                default_texts["footer_data"] = {
+                    "opening_hours_title": "Öffnungszeiten",
+                    "contact_title": "Kontakt",
+                    "follow_us_title": "Folgen Sie uns",
+                    "copyright": "© 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten."
+                }
+            elif section == "buttons":
+                default_texts["buttons_data"] = {
+                    "menu_button": "Zur Speisekarte",
+                    "locations_button": "Unsere Standorte",
+                    "contact_button": "Kontakt aufnehmen",
+                    "reserve_button": "Tisch reservieren",
+                    "order_button": "Jetzt bestellen"
+                }
+            elif section == "general":
+                default_texts["general_data"] = {
+                    "loading": "Lädt...",
+                    "error": "Fehler beim Laden",
+                    "success": "Erfolgreich gespeichert",
+                    "required_field": "Dieses Feld ist erforderlich",
+                    "email_invalid": "E-Mail-Adresse ist ungültig"
+                }
+            
+            # Insert default texts
+            await cursor.execute("""
+                INSERT INTO website_texts (id, section, navigation_data, footer_data, buttons_data, general_data, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()), section,
+                json.dumps(default_texts.get('navigation_data')),
+                json.dumps(default_texts.get('footer_data')),
+                json.dumps(default_texts.get('buttons_data')),
+                json.dumps(default_texts.get('general_data')),
+                datetime.utcnow()
+            ))
+            
+            return default_texts
+        
+        # Parse JSON fields
+        result = {"section": texts["section"]}
+        if texts.get('navigation_data'):
+            result['navigation'] = json.loads(texts['navigation_data']) if isinstance(texts['navigation_data'], str) else texts['navigation_data']
+        if texts.get('footer_data'):
+            result['footer'] = json.loads(texts['footer_data']) if isinstance(texts['footer_data'], str) else texts['footer_data']
+        if texts.get('buttons_data'):
+            result['buttons'] = json.loads(texts['buttons_data']) if isinstance(texts['buttons_data'], str) else texts['buttons_data']
+        if texts.get('general_data'):
+            result['general'] = json.loads(texts['general_data']) if isinstance(texts['general_data'], str) else texts['general_data']
+        
+        return result
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/website-texts/{section}")
+async def update_website_texts(section: str, texts_data: Dict, current_user: User = Depends(get_editor_user)):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        # Convert data to JSON strings
+        navigation_json = json.dumps(texts_data.get('navigation')) if texts_data.get('navigation') else None
+        footer_json = json.dumps(texts_data.get('footer')) if texts_data.get('footer') else None
+        buttons_json = json.dumps(texts_data.get('buttons')) if texts_data.get('buttons') else None
+        general_json = json.dumps(texts_data.get('general')) if texts_data.get('general') else None
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM website_texts WHERE section = %s", (section,))
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO website_texts (id, section, navigation_data, footer_data, buttons_data, general_data, updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()), section, navigation_json, footer_json,
+                buttons_json, general_json, datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE website_texts SET navigation_data = %s, footer_data = %s, buttons_data = %s,
+                                        general_data = %s, updated_at = %s, updated_by = %s
+                WHERE section = %s
+            """, (
+                navigation_json, footer_json, buttons_json, general_json,
+                datetime.utcnow(), current_user.username, section
+            ))
+        
+        return {"message": "Website texts updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
+# Content sections (generic CMS content)
+@api_router.get("/content/{page}")
+async def get_page_content(page: str):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM content_sections WHERE page = %s", (page,))
+        sections = await cursor.fetchall()
+        
+        # Parse JSON fields
+        for section in sections:
+            if section.get('content'):
+                section['content'] = json.loads(section['content']) if isinstance(section['content'], str) else section['content']
+            if section.get('images'):
+                section['images'] = json.loads(section['images']) if isinstance(section['images'], str) else section['images']
+        
+        return sections
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/content/{page}/{section}")
+async def update_content_section(
+    page: str, 
+    section: str, 
+    content_data: ContentSectionUpdate,
+    current_user: User = Depends(get_editor_user)
+):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        content_json = json.dumps(content_data.content)
+        images_json = json.dumps(content_data.images or [])
+        
+        # Check if content section exists
+        await cursor.execute("SELECT COUNT(*) as count FROM content_sections WHERE page = %s AND section = %s", (page, section))
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new content section
+            await cursor.execute("""
+                INSERT INTO content_sections (id, page, section, content, images, updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()), page, section, content_json, images_json,
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing content section
+            await cursor.execute("""
+                UPDATE content_sections SET content = %s, images = %s, updated_at = %s, updated_by = %s
+                WHERE page = %s AND section = %s
+            """, (content_json, images_json, datetime.utcnow(), current_user.username, page, section))
+        
+        return {"message": "Content section updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
+# Enhanced Backup System
+@api_router.post("/admin/backup/database")
+async def create_database_backup(current_user: User = Depends(get_admin_user)):
+    """Create and download MySQL database backup"""
+    try:
+        import subprocess
+        import tempfile
+        import os
+        from datetime import datetime
+        
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"mysql-database-backup-{timestamp}.sql"
+        
+        # Create temporary file for mysqldump
+        with tempfile.NamedTemporaryFile(mode='w+b', delete=False, suffix='.sql') as temp_file:
+            temp_path = temp_file.name
+        
+        try:
+            # Create MySQL dump using mysqldump
+            dump_command = [
+                'mysqldump',
+                '-u', os.environ['MYSQL_USER'],
+                f'-p{os.environ["MYSQL_PASSWORD"]}',
+                '--single-transaction',
+                '--routines',
+                '--triggers',
+                '--add-drop-table',
+                '--complete-insert',
+                os.environ['MYSQL_DATABASE']
+            ]
+            
+            with open(temp_path, 'w') as dump_file:
+                result = subprocess.run(dump_command, stdout=dump_file, stderr=subprocess.PIPE, text=True)
+            
+            if result.returncode != 0:
+                raise Exception(f"mysqldump failed: {result.stderr}")
+            
+            # Read the dump file
+            with open(temp_path, 'r') as dump_file:
+                backup_content = dump_file.read()
+            
+            backup_size = len(backup_content.encode('utf-8'))
+            
+            # Count tables in database
+            conn = await get_mysql_connection()
+            try:
+                cursor = await conn.cursor()
+                await cursor.execute("SHOW TABLES")
+                tables = await cursor.fetchall()
+                tables_count = len(tables)
+                
+                # Count total rows
+                total_rows = 0
+                for table in tables:
+                    table_name = table[0]
+                    await cursor.execute(f"SELECT COUNT(*) FROM `{table_name}`")
+                    count_result = await cursor.fetchone()
+                    total_rows += count_result[0]
+                
+            finally:
+                mysql_pool.release(conn)
+            
+            # Save backup metadata
+            backup_metadata = {
+                "id": f"mysql_db_{timestamp}",
+                "filename": filename,
+                "type": "database",
+                "created_at": datetime.now(),
+                "created_by": current_user.username,
+                "size_bytes": backup_size,
+                "size_human": format_bytes(backup_size),
+                "collections_count": tables_count,
+                "total_documents": total_rows,
+                "includes_media": False
+            }
+            
+            # Store in database for backup list
+            conn = await get_mysql_connection()
+            try:
+                cursor = await conn.cursor()
+                await cursor.execute("""
+                    INSERT INTO system_backups (id, filename, type, created_at, created_by, 
+                                               size_bytes, size_human, collections_count, 
+                                               total_documents, includes_media)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (
+                    backup_metadata["id"], backup_metadata["filename"], backup_metadata["type"],
+                    backup_metadata["created_at"], backup_metadata["created_by"],
+                    backup_metadata["size_bytes"], backup_metadata["size_human"],
+                    backup_metadata["collections_count"], backup_metadata["total_documents"],
+                    backup_metadata["includes_media"]
+                ))
+            finally:
+                mysql_pool.release(conn)
+            
+            # Return as downloadable file
+            from fastapi.responses import Response
+            
+            return Response(
+                content=backup_content,
+                media_type="application/sql",
+                headers={
+                    "Content-Disposition": f"attachment; filename={filename}",
+                    "X-Backup-ID": backup_metadata["id"],
+                    "X-Backup-Size": str(backup_size)
+                }
+            )
+            
+        finally:
+            # Clean up temporary file
+            if os.path.exists(temp_path):
+                os.unlink(temp_path)
+        
+    except Exception as e:
+        print(f"MySQL backup error details: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database backup creation failed: {str(e)}")
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
