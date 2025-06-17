@@ -14,6 +14,7 @@ import AboutAdminSection from './components/AboutAdminSection';
 import ReviewsAdminSection from './components/ReviewsAdminSection';
 import ContactAdminSection from './components/ContactAdminSection';
 import UsersAdminSection from './components/UsersAdminSection';
+import SystemBackupSection from './components/SystemBackupSection';
 
 // Import Page Components
 import Home from './components/Home';
