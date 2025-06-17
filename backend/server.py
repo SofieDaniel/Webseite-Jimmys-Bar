@@ -641,6 +641,513 @@ def format_bytes(bytes_count):
         bytes_count /= 1024.0
     return f"{bytes_count:.1f} TB"
 
+# Extended CMS Models
+class HomepageContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    hero_title: str = "JIMMY'S TAPAS BAR"
+    hero_subtitle: str = "an der Ostsee"
+    hero_description: str = "Genießen Sie authentische mediterrane Spezialitäten"
+    hero_location: str = "direkt an der malerischen Ostseeküste"
+    hero_background_image: Optional[str] = None
+    hero_menu_button_text: str = "Zur Speisekarte"
+    hero_locations_button_text: str = "Unsere Standorte"
+    features_data: Optional[Dict] = None
+    specialties_data: Optional[Dict] = None
+    delivery_data: Optional[Dict] = None
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
+class LocationsContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_title: str = "Unsere Standorte"
+    page_description: str = "Besuchen Sie uns an einem unserer beiden Standorte"
+    locations_data: List[Dict] = []
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
+class AboutContent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_title: str = "Über uns"
+    hero_title: str = "Unsere Geschichte"
+    hero_description: str = "Entdecken Sie die Leidenschaft hinter Jimmy's Tapas Bar"
+    story_title: str = "Unsere Leidenschaft"
+    story_content: str = ""
+    story_image: Optional[str] = None
+    team_title: str = "Unser Team"
+    team_members: List[Dict] = []
+    values_title: str = "Unsere Werte"
+    values_data: List[str] = []
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
+class LegalPage(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_type: str  # "imprint" or "privacy"
+    title: str
+    content: str
+    contact_name: Optional[str] = None
+    contact_address: Optional[str] = None
+    contact_phone: Optional[str] = None
+    contact_email: Optional[str] = None
+    company_info: Optional[Dict] = None
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
+class ContentSection(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page: str
+    section: str
+    content: Dict[str, Any]
+    images: List[str] = []
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: str
+
+class ContentSectionUpdate(BaseModel):
+    content: Dict[str, Any]
+    images: Optional[List[str]] = None
+
+# CMS Routes
+@api_router.get("/cms/homepage")
+async def get_homepage_content():
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM homepage_content LIMIT 1")
+        content = await cursor.fetchone()
+        
+        if not content:
+            # Create default content
+            default_content = HomepageContent()
+            default_features = {
+                "title": "Mediterrane Tradition",
+                "subtitle": "Erleben Sie authentische mediterrane Gastfreundschaft an der deutschen Ostseeküste",
+                "cards": [
+                    {
+                        "title": "Authentische Tapas",
+                        "description": "Traditionelle mediterrane Gerichte, mit Liebe zubereitet und perfekt zum Teilen",
+                        "image_url": "https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg"
+                    },
+                    {
+                        "title": "Frische Paella",
+                        "description": "Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn",
+                        "image_url": "https://images.unsplash.com/photo-1694685367640-05d6624e57f1"
+                    },
+                    {
+                        "title": "Strandnähe",
+                        "description": "Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden",
+                        "image_url": "https://images.pexels.com/photos/32508247/pexels-photo-32508247.jpeg"
+                    }
+                ]
+            }
+            
+            default_specialties = {
+                "title": "Unsere Spezialitäten",
+                "cards": [
+                    {
+                        "title": "Patatas Bravas",
+                        "description": "Klassische mediterrane Kartoffeln",
+                        "image_url": "https://images.unsplash.com/photo-1565599837634-134bc3aadce8",
+                        "category_link": "tapas-vegetarian"
+                    },
+                    {
+                        "title": "Paella Valenciana",
+                        "description": "Traditionelle mediterrane Paella",
+                        "image_url": "https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg",
+                        "category_link": "tapa-paella"
+                    },
+                    {
+                        "title": "Tapas Variación",
+                        "description": "Auswahl mediterraner Köstlichkeiten",
+                        "image_url": "https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg",
+                        "category_link": "inicio"
+                    },
+                    {
+                        "title": "Gambas al Ajillo",
+                        "description": "Garnelen in Knoblauchöl",
+                        "image_url": "https://images.unsplash.com/photo-1619860705243-dbef552e7118",
+                        "category_link": "tapas-pescado"
+                    }
+                ]
+            }
+            
+            default_delivery = {
+                "title": "Jetzt auch bequem nach Hause bestellen",
+                "description": "Genießen Sie unsere authentischen mediterranen Spezialitäten gemütlich zu Hause.",
+                "description_2": "Bestellen Sie direkt über Lieferando und lassen Sie sich verwöhnen.",
+                "delivery_feature_title": "Schnelle Lieferung",
+                "delivery_feature_description": "Frisch und warm zu Ihnen",
+                "delivery_feature_image": "https://images.pexels.com/photos/6969962/pexels-photo-6969962.jpeg",
+                "button_text": "Jetzt bei Lieferando bestellen",
+                "button_url": "https://www.lieferando.de",
+                "availability_text": "Verfügbar für beide Standorte",
+                "authentic_feature_title": "Authentisch Mediterran",
+                "authentic_feature_description": "Direkt vom Küchenchef",
+                "authentic_feature_image": "https://images.pexels.com/photos/31748679/pexels-photo-31748679.jpeg"
+            }
+            
+            await cursor.execute("""
+                INSERT INTO homepage_content (id, hero_title, hero_subtitle, hero_description, 
+                                             hero_location, hero_background_image, hero_menu_button_text,
+                                             hero_locations_button_text, features_data, specialties_data,
+                                             delivery_data, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                default_content.id, default_content.hero_title, default_content.hero_subtitle,
+                default_content.hero_description, default_content.hero_location,
+                "https://images.unsplash.com/photo-1656423521731-9665583f100c",
+                default_content.hero_menu_button_text, default_content.hero_locations_button_text,
+                json.dumps(default_features), json.dumps(default_specialties),
+                json.dumps(default_delivery), default_content.updated_at
+            ))
+            
+            content = {
+                "id": default_content.id,
+                "hero_title": default_content.hero_title,
+                "hero_subtitle": default_content.hero_subtitle,
+                "hero_description": default_content.hero_description,
+                "hero_location": default_content.hero_location,
+                "hero_background_image": "https://images.unsplash.com/photo-1656423521731-9665583f100c",
+                "hero_menu_button_text": default_content.hero_menu_button_text,
+                "hero_locations_button_text": default_content.hero_locations_button_text,
+                "features_data": default_features,
+                "specialties_data": default_specialties,
+                "delivery_data": default_delivery,
+                "updated_at": default_content.updated_at
+            }
+        else:
+            # Parse JSON fields
+            if content.get('features_data'):
+                content['features_data'] = json.loads(content['features_data']) if isinstance(content['features_data'], str) else content['features_data']
+            if content.get('specialties_data'):
+                content['specialties_data'] = json.loads(content['specialties_data']) if isinstance(content['specialties_data'], str) else content['specialties_data']
+            if content.get('delivery_data'):
+                content['delivery_data'] = json.loads(content['delivery_data']) if isinstance(content['delivery_data'], str) else content['delivery_data']
+        
+        return content
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/homepage")
+async def update_homepage_content(content_data: Dict, current_user: User = Depends(get_editor_user)):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        # Convert nested objects to JSON strings
+        features_json = json.dumps(content_data.get('features_data', {}))
+        specialties_json = json.dumps(content_data.get('specialties_data', {}))
+        delivery_json = json.dumps(content_data.get('delivery_data', {}))
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM homepage_content")
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO homepage_content (id, hero_title, hero_subtitle, hero_description,
+                                             hero_location, hero_background_image, hero_menu_button_text,
+                                             hero_locations_button_text, features_data, specialties_data,
+                                             delivery_data, updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()),
+                content_data.get('hero_title', 'JIMMY\'S TAPAS BAR'),
+                content_data.get('hero_subtitle', 'an der Ostsee'),
+                content_data.get('hero_description', 'Genießen Sie authentische mediterrane Spezialitäten'),
+                content_data.get('hero_location', 'direkt an der malerischen Ostseeküste'),
+                content_data.get('hero_background_image'),
+                content_data.get('hero_menu_button_text', 'Zur Speisekarte'),
+                content_data.get('hero_locations_button_text', 'Unsere Standorte'),
+                features_json, specialties_json, delivery_json,
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE homepage_content SET hero_title = %s, hero_subtitle = %s, hero_description = %s,
+                                           hero_location = %s, hero_background_image = %s, 
+                                           hero_menu_button_text = %s, hero_locations_button_text = %s,
+                                           features_data = %s, specialties_data = %s, delivery_data = %s,
+                                           updated_at = %s, updated_by = %s
+            """, (
+                content_data.get('hero_title', 'JIMMY\'S TAPAS BAR'),
+                content_data.get('hero_subtitle', 'an der Ostsee'),
+                content_data.get('hero_description', 'Genießen Sie authentische mediterrane Spezialitäten'),
+                content_data.get('hero_location', 'direkt an der malerischen Ostseeküste'),
+                content_data.get('hero_background_image'),
+                content_data.get('hero_menu_button_text', 'Zur Speisekarte'),
+                content_data.get('hero_locations_button_text', 'Unsere Standorte'),
+                features_json, specialties_json, delivery_json,
+                datetime.utcnow(), current_user.username
+            ))
+        
+        return {"message": "Homepage content updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.get("/cms/locations")
+async def get_locations_content():
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM locations LIMIT 1")
+        content = await cursor.fetchone()
+        
+        if not content:
+            # Create default locations
+            default_locations = [
+                {
+                    "name": "Jimmy's Tapas Bar Kühlungsborn",
+                    "address": "Strandstraße 1, 18225 Kühlungsborn",
+                    "phone": "+49 38293 12345",
+                    "email": "kuehlungsborn@jimmys-tapasbar.de",
+                    "opening_hours": {
+                        "Montag": "16:00 - 23:00",
+                        "Dienstag": "16:00 - 23:00", 
+                        "Mittwoch": "16:00 - 23:00",
+                        "Donnerstag": "16:00 - 23:00",
+                        "Freitag": "16:00 - 24:00",
+                        "Samstag": "12:00 - 24:00",
+                        "Sonntag": "12:00 - 23:00"
+                    },
+                    "description": "Unser Hauptstandort direkt am Strand von Kühlungsborn",
+                    "image_url": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f"
+                },
+                {
+                    "name": "Jimmy's Tapas Bar Warnemünde",
+                    "address": "Am Strom 2, 18119 Warnemünde",
+                    "phone": "+49 381 987654",
+                    "email": "warnemuende@jimmys-tapasbar.de",
+                    "opening_hours": {
+                        "Montag": "17:00 - 23:00",
+                        "Dienstag": "17:00 - 23:00",
+                        "Mittwoch": "17:00 - 23:00", 
+                        "Donnerstag": "17:00 - 23:00",
+                        "Freitag": "17:00 - 24:00",
+                        "Samstag": "12:00 - 24:00",
+                        "Sonntag": "12:00 - 23:00"
+                    },
+                    "description": "Gemütlich am alten Strom mit Blick auf die Warnow",
+                    "image_url": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d"
+                }
+            ]
+            
+            content_id = str(uuid.uuid4())
+            await cursor.execute("""
+                INSERT INTO locations (id, page_title, page_description, locations_data, updated_at)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (
+                content_id,
+                "Unsere Standorte",
+                "Besuchen Sie uns an einem unserer beiden Standorte",
+                json.dumps(default_locations),
+                datetime.utcnow()
+            ))
+            
+            content = {
+                "id": content_id,
+                "page_title": "Unsere Standorte",
+                "page_description": "Besuchen Sie uns an einem unserer beiden Standorte",
+                "locations_data": default_locations,
+                "updated_at": datetime.utcnow()
+            }
+        else:
+            # Parse JSON field
+            if content.get('locations_data'):
+                content['locations_data'] = json.loads(content['locations_data']) if isinstance(content['locations_data'], str) else content['locations_data']
+        
+        return content
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/locations")
+async def update_locations_content(content_data: Dict, current_user: User = Depends(get_editor_user)):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        locations_json = json.dumps(content_data.get('locations_data', []))
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM locations")
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO locations (id, page_title, page_description, locations_data, updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()),
+                content_data.get('page_title', 'Unsere Standorte'),
+                content_data.get('page_description', 'Besuchen Sie uns an einem unserer beiden Standorte'),
+                locations_json,
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE locations SET page_title = %s, page_description = %s, locations_data = %s,
+                                   updated_at = %s, updated_by = %s
+            """, (
+                content_data.get('page_title', 'Unsere Standorte'),
+                content_data.get('page_description', 'Besuchen Sie uns an einem unserer beiden Standorte'),
+                locations_json,
+                datetime.utcnow(), current_user.username
+            ))
+        
+        return {"message": "Locations content updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.get("/cms/about")
+async def get_about_content():
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM about_content LIMIT 1")
+        content = await cursor.fetchone()
+        
+        if not content:
+            # Create default about content
+            default_team = [
+                {
+                    "name": "Jimmy Rodriguez",
+                    "position": "Inhaber & Küchenchef",
+                    "description": "Jimmy bringt über 20 Jahre Erfahrung in der mediterranen Küche mit",
+                    "image_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
+                },
+                {
+                    "name": "Maria Santos",
+                    "position": "Sous Chef",
+                    "description": "Spezialistin für authentische Tapas und Paellas",
+                    "image_url": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80"
+                }
+            ]
+            
+            default_values = [
+                "Authentische mediterrane Küche",
+                "Frische, regionale Zutaten",
+                "Familiäre Atmosphäre",
+                "Leidenschaft für Qualität",
+                "Gastfreundschaft"
+            ]
+            
+            default_story = """Seit der Gründung steht Jimmy's Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.
+            
+Unsere Leidenschaft gilt den traditionellen Rezepten und frischen Zutaten, die wir täglich mit Liebe zubereiten.
+Von den ersten kleinen Tapas bis hin zu unseren berühmten Paellas - jedes Gericht erzählt eine Geschichte
+von Tradition und Qualität.
+
+An beiden Standorten erleben Sie die entspannte Atmosphäre des Mittelmeers, 
+während Sie den Blick auf die Ostsee genießen können."""
+            
+            content_id = str(uuid.uuid4())
+            await cursor.execute("""
+                INSERT INTO about_content (id, page_title, hero_title, hero_description, story_title,
+                                         story_content, story_image, team_title, team_members,
+                                         values_title, values_data, updated_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                content_id,
+                "Über uns",
+                "Unsere Geschichte",
+                "Entdecken Sie die Leidenschaft hinter Jimmy's Tapas Bar",
+                "Unsere Leidenschaft",
+                default_story,
+                "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
+                "Unser Team",
+                json.dumps(default_team),
+                "Unsere Werte",
+                json.dumps(default_values),
+                datetime.utcnow()
+            ))
+            
+            content = {
+                "id": content_id,
+                "page_title": "Über uns",
+                "hero_title": "Unsere Geschichte",
+                "hero_description": "Entdecken Sie die Leidenschaft hinter Jimmy's Tapas Bar",
+                "story_title": "Unsere Leidenschaft",
+                "story_content": default_story,
+                "story_image": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
+                "team_title": "Unser Team",
+                "team_members": default_team,
+                "values_title": "Unsere Werte",
+                "values_data": default_values,
+                "updated_at": datetime.utcnow()
+            }
+        else:
+            # Parse JSON fields
+            if content.get('team_members'):
+                content['team_members'] = json.loads(content['team_members']) if isinstance(content['team_members'], str) else content['team_members']
+            if content.get('values_data'):
+                content['values_data'] = json.loads(content['values_data']) if isinstance(content['values_data'], str) else content['values_data']
+        
+        return content
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/about")
+async def update_about_content(content_data: Dict, current_user: User = Depends(get_editor_user)):
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        team_json = json.dumps(content_data.get('team_members', []))
+        values_json = json.dumps(content_data.get('values_data', []))
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM about_content")
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO about_content (id, page_title, hero_title, hero_description, story_title,
+                                         story_content, story_image, team_title, team_members,
+                                         values_title, values_data, updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()),
+                content_data.get('page_title', 'Über uns'),
+                content_data.get('hero_title', 'Unsere Geschichte'),
+                content_data.get('hero_description', 'Entdecken Sie die Leidenschaft hinter Jimmy\'s Tapas Bar'),
+                content_data.get('story_title', 'Unsere Leidenschaft'),
+                content_data.get('story_content', ''),
+                content_data.get('story_image'),
+                content_data.get('team_title', 'Unser Team'),
+                team_json,
+                content_data.get('values_title', 'Unsere Werte'),
+                values_json,
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE about_content SET page_title = %s, hero_title = %s, hero_description = %s,
+                                       story_title = %s, story_content = %s, story_image = %s,
+                                       team_title = %s, team_members = %s, values_title = %s,
+                                       values_data = %s, updated_at = %s, updated_by = %s
+            """, (
+                content_data.get('page_title', 'Über uns'),
+                content_data.get('hero_title', 'Unsere Geschichte'),
+                content_data.get('hero_description', 'Entdecken Sie die Leidenschaft hinter Jimmy\'s Tapas Bar'),
+                content_data.get('story_title', 'Unsere Leidenschaft'),
+                content_data.get('story_content', ''),
+                content_data.get('story_image'),
+                content_data.get('team_title', 'Unser Team'),
+                team_json,
+                content_data.get('values_title', 'Unsere Werte'),
+                values_json,
+                datetime.utcnow(), current_user.username
+            ))
+        
+        return {"message": "About content updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
