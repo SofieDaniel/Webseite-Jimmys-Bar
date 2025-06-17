@@ -416,10 +416,10 @@ const AdminPanel = () => {
           {activeSection === 'locations' && <LocationsAdminSection />}
           {activeSection === 'about' && <AboutAdminSection />}
           {activeSection === 'menu' && <MenuSection user={user} token={token} apiCall={apiCall} />}
-          {activeSection === 'reviews' && <ReviewsSection />}
-          {activeSection === 'contacts' && <ContactsSection />}
+          {activeSection === 'reviews' && <ReviewsAdminSection />}
+          {activeSection === 'contacts' && <ContactAdminSection />}
           {activeSection === 'newsletter' && <NewsletterSection />}
-          {activeSection === 'users' && <UsersSection />}
+          {activeSection === 'users' && <UsersAdminSection />}
           {activeSection === 'legal' && <LegalEditor />}
           {activeSection === 'maintenance' && <MaintenanceSection />}
         </div>
