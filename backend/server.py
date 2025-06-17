@@ -994,9 +994,23 @@ async def get_locations_content():
                 "updated_at": datetime.utcnow()
             }
         else:
-            # Parse JSON field
-            if content.get('locations_data'):
-                content['locations_data'] = json.loads(content['locations_data']) if isinstance(content['locations_data'], str) else content['locations_data']
+            # Parse JSON field and structure for frontend compatibility
+            locations_data = content.get('locations_data')
+            if locations_data and isinstance(locations_data, str):
+                locations_data = json.loads(locations_data)
+            elif not locations_data:
+                locations_data = []
+            
+            # Structure data for frontend compatibility
+            content = {
+                "id": content.get("id"),
+                "page_title": content.get("page_title"),
+                "page_description": content.get("page_description"),
+                "locations_data": locations_data,
+                "updated_at": content.get("updated_at"),
+                # Add expected 'locations' key for frontend compatibility
+                "locations": locations_data
+            }
         
         return content
     finally:
