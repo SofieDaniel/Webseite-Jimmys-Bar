@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "re
 
 // Import Admin Sections
 import { ContentSection, MenuSection } from './AdminSections';
-import { ReviewsSection, ContactsSection, UsersSection } from './AdminSectionsExtended';
 import { MediaSection } from './AdminSectionsFinal';
 import LegalEditor from './components/LegalEditor';
 import DashboardSection from './components/DashboardSection';
@@ -12,6 +11,9 @@ import NewsletterSection from './components/NewsletterSection';
 import MaintenanceSection from './components/MaintenanceSection';
 import LocationsAdminSection from './components/LocationsAdminSection';
 import AboutAdminSection from './components/AboutAdminSection';
+import ReviewsAdminSection from './components/ReviewsAdminSection';
+import ContactAdminSection from './components/ContactAdminSection';
+import UsersAdminSection from './components/UsersAdminSection';
 
 // Import Page Components
 import Home from './components/Home';
