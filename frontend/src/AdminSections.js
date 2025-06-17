@@ -348,19 +348,19 @@ const HomeContentEditor = ({ saveContent, saving }) => {
                   ...content,
                   features: { ...content.features, title: e.target.value }
                 })}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Bereichs-Untertitel</label>
-              <input
-                type="text"
+              <textarea
                 value={content.features.subtitle}
                 onChange={(e) => setContent({
                   ...content,
                   features: { ...content.features, subtitle: e.target.value }
                 })}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                rows={2}
+                className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -368,7 +368,7 @@ const HomeContentEditor = ({ saveContent, saving }) => {
           <div className="space-y-4">
             <h4 className="font-medium text-gray-900">Features-Karten bearbeiten:</h4>
             {content.features.cards.map((card, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+              <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 bg-gray-50 rounded-lg border">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Karte {index + 1} Titel</label>
                   <input
@@ -382,7 +382,7 @@ const HomeContentEditor = ({ saveContent, saving }) => {
                         features: { ...content.features, cards: newCards }
                       });
                     }}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -397,8 +397,8 @@ const HomeContentEditor = ({ saveContent, saving }) => {
                         features: { ...content.features, cards: newCards }
                       });
                     }}
-                    rows={2}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    rows={3}
+                    className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -414,8 +414,13 @@ const HomeContentEditor = ({ saveContent, saving }) => {
                         features: { ...content.features, cards: newCards }
                       });
                     }}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
+                  {card.image_url && (
+                    <div className="mt-2">
+                      <img src={card.image_url} alt="Vorschau" className="w-20 h-20 object-cover rounded border" />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
