@@ -56,12 +56,18 @@ const Bewertungen = () => {
     setMessage('');
 
     try {
+      const reviewData = {
+        customer_name: newReview.name,
+        rating: parseInt(newReview.rating),
+        comment: newReview.comment
+      };
+
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(newReview)
+        body: JSON.stringify(reviewData)
       });
 
       if (response.ok) {
