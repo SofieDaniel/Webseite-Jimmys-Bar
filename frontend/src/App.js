@@ -501,81 +501,70 @@ const Header = () => {
   );
 };
 
-// Main App Component
+// Layout Component for normal pages
+const Layout = () => {
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+      <CookieBanner />
+    </>
+  );
+};
+
+// Create the router with new React Router v7 API
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: "standorte",
+        element: <Standorte />
+      },
+      {
+        path: "speisekarte", 
+        element: <Speisekarte />
+      },
+      {
+        path: "bewertungen",
+        element: <Bewertungen />
+      },
+      {
+        path: "ueber-uns",
+        element: <UeberUns />
+      },
+      {
+        path: "kontakt",
+        element: <Kontakt />
+      },
+      {
+        path: "impressum",
+        element: <Impressum />
+      },
+      {
+        path: "datenschutz",
+        element: <Datenschutz />
+      }
+    ]
+  },
+  {
+    path: "/admin",
+    element: <AdminPanel />
+  }
+]);
+
+// Main App Component with new Router
 function App() {
   return (
     <LanguageProvider>
       <div className="App">
-        <BrowserRouter basename="/">
-          <Routes>
-            <Route path="/" element={
-              <>
-                <Header />
-                <Home />
-                <Footer />
-                <CookieBanner />
-              </>
-            } />
-            <Route path="/standorte" element={
-              <>
-                <Header />
-                <Standorte />
-                <Footer />
-                <CookieBanner />
-              </>
-            } />
-            <Route path="/speisekarte" element={
-              <>
-                <Header />
-                <Speisekarte />
-                <Footer />
-                <CookieBanner />
-              </>
-            } />
-            <Route path="/bewertungen" element={
-              <>
-                <Header />
-                <Bewertungen />
-                <Footer />
-                <CookieBanner />
-              </>
-            } />
-            <Route path="/ueber-uns" element={
-              <>
-                <Header />
-                <UeberUns />
-                <Footer />
-                <CookieBanner />
-              </>
-            } />
-            <Route path="/kontakt" element={
-              <>
-                <Header />
-                <Kontakt />
-                <Footer />
-                <CookieBanner />
-              </>
-            } />
-            <Route path="/impressum" element={
-              <>
-                <Header />
-                <Impressum />
-                <Footer />
-                <CookieBanner />
-              </>
-            } />
-            <Route path="/datenschutz" element={
-              <>
-                <Header />
-                <Datenschutz />
-                <Footer />
-                <CookieBanner />
-              </>
-            } />
-            <Route path="/admin" element={<AdminPanel />} />
-            <Route path="/admin/*" element={<AdminPanel />} />
-          </Routes>
-        </BrowserRouter>
+        <RouterProvider router={router} />
       </div>
     </LanguageProvider>
   );
