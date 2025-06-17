@@ -11,6 +11,9 @@ import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
 import Home from './components/Home';
 import Standorte from './components/Standorte';
 import UeberUns from './components/UeberUns';
+import Speisekarte from './components/Speisekarte';
+import Bewertungen from './components/Bewertungen';
+import Kontakt from './components/Kontakt';
 import Footer from './components/Footer';
 
 // Language Context - Only German
