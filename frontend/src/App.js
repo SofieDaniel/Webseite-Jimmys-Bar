@@ -9,6 +9,7 @@ import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
 import LegalEditor from './components/LegalEditor';
 import DashboardSection from './components/DashboardSection';
 import NewsletterSection from './components/NewsletterSection';
+import MaintenanceSection from './components/MaintenanceSection';
 
 // Import Page Components
 import Home from './components/Home';
