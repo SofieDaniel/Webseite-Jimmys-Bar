@@ -15,6 +15,7 @@ BACKEND_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://a35db976-944a-4ad
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 print(f"Using backend URL: {BACKEND_URL}")
+print(f"API base URL: {API_BASE_URL}")
 
 # Spanish restaurant client names for testing
 SPANISH_CLIENTS = [
