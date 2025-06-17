@@ -132,7 +132,7 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
@@ -143,6 +143,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "The backup list endpoint is returning a dictionary instead of a list as expected. This is causing the test to fail. The endpoint needs to be updated to return a list of backup objects."
+      - working: false
+        agent: "testing"
+        comment: "Confirmed that the backup list endpoint is returning a dictionary instead of a list during MySQL migration validation. The response contains a 'backups' key with a value of 1, but it's not returning the actual list of backups."
 
   - task: "Implement backup download endpoint - /admin/backup/download/{backup_id}"
     implemented: true
