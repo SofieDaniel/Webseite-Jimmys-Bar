@@ -258,80 +258,80 @@ const HomeContentEditor = ({ saveContent, saving }) => {
       {/* Hero Section Editor */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Hero-Bereich (Hauptbereich)</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Haupttitel</label>
-            <input
-              type="text"
-              value={content.hero.title}
-              onChange={(e) => setContent({
-                ...content,
-                hero: { ...content.hero, title: e.target.value }
-              })}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Untertitel</label>
-            <input
-              type="text"
-              value={content.hero.subtitle}
-              onChange={(e) => setContent({
-                ...content,
-                hero: { ...content.hero, subtitle: e.target.value }
-              })}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Beschreibung</label>
-            <input
-              type="text"
-              value={content.hero.description}
-              onChange={(e) => setContent({
-                ...content,
-                hero: { ...content.hero, description: e.target.value }
-              })}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Standort-Text</label>
-            <input
-              type="text"
-              value={content.hero.location}
-              onChange={(e) => setContent({
-                ...content,
-                hero: { ...content.hero, location: e.target.value }
-              })}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Hintergrundbild URL</label>
-            <input
-              type="url"
-              value={content.hero.background_image}
-              onChange={(e) => setContent({
-                ...content,
-                hero: { ...content.hero, background_image: e.target.value }
-              })}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Menü-Button Text</label>
-            <input
-              type="text"
-              value={content.hero.menu_button_text}
-              onChange={(e) => setContent({
-                ...content,
-                hero: { ...content.hero, menu_button_text: e.target.value }
-              })}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Haupttitel</label>
+          <input
+            type="text"
+            value={content.hero.title}
+            onChange={(e) => setContent({
+              ...content,
+              hero: { ...content.hero, title: e.target.value }
+            })}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Untertitel</label>
+          <input
+            type="text"
+            value={content.hero.subtitle}
+            onChange={(e) => setContent({
+              ...content,
+              hero: { ...content.hero, subtitle: e.target.value }
+            })}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Beschreibung</label>
+          <input
+            type="text"
+            value={content.hero.description}
+            onChange={(e) => setContent({
+              ...content,
+              hero: { ...content.hero, description: e.target.value }
+            })}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Standort-Text</label>
+          <input
+            type="text"
+            value={content.hero.location}
+            onChange={(e) => setContent({
+              ...content,
+              hero: { ...content.hero, location: e.target.value }
+            })}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Hintergrundbild URL</label>
+          <input
+            type="url"
+            value={content.hero.background_image}
+            onChange={(e) => setContent({
+              ...content,
+              hero: { ...content.hero, background_image: e.target.value }
+            })}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Menü-Button Text</label>
+          <input
+            type="text"
+            value={content.hero.menu_button_text}
+            onChange={(e) => setContent({
+              ...content,
+              hero: { ...content.hero, menu_button_text: e.target.value }
+            })}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
       </div>
 
       {/* Features Section Editor */}
