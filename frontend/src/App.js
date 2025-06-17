@@ -560,12 +560,55 @@ const router = createBrowserRouter([
   }
 ]);
 
-// Main App Component with new Router
+// Main App Component with pathname-based routing
 function App() {
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    // Listen for popstate events (back/forward button)
+    window.addEventListener('popstate', handleLocationChange);
+    
+    // Listen for programmatic navigation
+    const originalPushState = window.history.pushState;
+    const originalReplaceState = window.history.replaceState;
+    
+    window.history.pushState = function(...args) {
+      originalPushState.apply(this, args);
+      handleLocationChange();
+    };
+    
+    window.history.replaceState = function(...args) {
+      originalReplaceState.apply(this, args);
+      handleLocationChange();
+    };
+
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.history.pushState = originalPushState;
+      window.history.replaceState = originalReplaceState;
+    };
+  }, []);
+
+  // If on admin page, show AdminPanel directly
+  if (currentPath === '/admin' || currentPath.startsWith('/admin/')) {
+    return (
+      <LanguageProvider>
+        <div className="App">
+          <AdminPanel />
+        </div>
+      </LanguageProvider>
+    );
+  }
+
+  // Otherwise show normal site with RouterProvider
   return (
     <LanguageProvider>
       <div className="App">
-        <RouterProvider router={router} basename="/" />
+        <RouterProvider router={router} />
       </div>
     </LanguageProvider>
   );
