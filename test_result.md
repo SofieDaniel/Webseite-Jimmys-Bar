@@ -102,14 +102,14 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Erstelle ein professionelles, responsives Admin-Menü für meine gastronomische Website. BACKUP-FUNKTIONALITÄT – Fehlerbehebung & Feature-Erweiterung: 1. Fehlerbehebung Backup-Erstellung - Fehler bei datetime JSON serialization, 2. Backup-Liste & Download-Funktion implementieren, 3. Backup-Typen (Datenbank & Full Backup) reparieren, 4. UI/UX-Anforderungen erfüllen, 5. Bewertungsfehler beheben"
+user_problem_statement: "Test the complete MySQL-based backend for Jimmy's Tapas Bar CMS system. This is a CRITICAL test after a complete migration from MongoDB to MySQL."
 
 backend:
   - task: "Fix JSON datetime serialization in backup functions"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -119,14 +119,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "Verified that datetime serialization is working correctly in backup functions. The CustomJSONEncoder properly converts datetime objects to ISO format strings. The convert_nested_datetime and convert_list_datetime functions handle nested objects correctly."
+      - working: false
+        agent: "testing"
+        comment: "Found issues with the backup functions during MySQL migration testing. The backup list endpoint returns a dictionary instead of a list, and the database backup endpoint has issues with JSON serialization. The full backup endpoint fails with error: 'dumps() takes 1 positional argument but 2 positional arguments (and 2 keyword-only arguments) were given'. This suggests there's an issue with how json.dumps() is being used in the backup functions."
 
   - task: "Implement missing backup endpoints - /admin/backup/list"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
@@ -134,14 +137,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "Verified that the backup list endpoint is working correctly. It returns a list of backups sorted by creation date (newest first). Each backup object contains all required fields (id, filename, type, created_at, created_by, size_human) and datetime objects are properly serialized to ISO format."
+      - working: false
+        agent: "testing"
+        comment: "The backup list endpoint is returning a dictionary instead of a list as expected. This is causing the test to fail. The endpoint needs to be updated to return a list of backup objects."
 
   - task: "Implement backup download endpoint - /admin/backup/download/{backup_id}"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
@@ -149,14 +155,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "Verified that the backup download endpoint is working correctly. It returns backup information with proper datetime serialization. The endpoint handles non-existent backup IDs correctly with a 404 error."
+      - working: false
+        agent: "testing"
+        comment: "Could not properly test the backup download endpoint because the backup creation endpoints are failing. This endpoint needs to be retested after the backup creation endpoints are fixed."
 
   - task: "Implement backup deletion endpoint - /admin/backup/{backup_id}"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
@@ -164,6 +173,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Verified that the backup deletion endpoint is working correctly. It successfully deletes backup records from the database and returns a confirmation message with the deleted backup details. The endpoint handles non-existent backup IDs correctly with a 404 error."
+      - working: false
+        agent: "testing"
+        comment: "Could not properly test the backup deletion endpoint because the backup creation endpoints are failing. This endpoint needs to be retested after the backup creation endpoints are fixed."
 
   - task: "Fix review creation endpoint JSON serialization"
     implemented: true
@@ -179,95 +191,25 @@ backend:
       - working: true
         agent: "testing"
         comment: "Verified that the review creation endpoint is working correctly with proper datetime serialization. The endpoint successfully creates reviews and returns a response with the date field properly formatted in ISO format."
+      - working: true
+        agent: "testing"
+        comment: "Confirmed that the review creation endpoint is working correctly after MySQL migration. The endpoint successfully creates reviews and returns a response with the date field properly formatted in ISO format. Created a test review with customer name 'Elena Rodríguez' and verified that the date field is properly formatted as an ISO date string."
 
   - task: "Add psutil dependency for system info"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/requirements.txt"
-    stuck_count: 0
+    stuck_count: 1
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
         comment: "Added psutil>=5.9.0 to requirements.txt and installed it to support system information monitoring in /admin/system/info endpoint."
-
-backend:
-  - task: "Root endpoint GET /api/"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Root endpoint returns status code 200 with expected 'Hello World' message in valid JSON format."
-
-  - task: "POST /api/status endpoint"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Successfully created status check with Spanish restaurant name. Response contains all required fields (id, client_name, timestamp) and returns valid JSON."
-
-  - task: "GET /api/status endpoint"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Successfully retrieved status checks. Response is a valid JSON array with status check objects containing all required fields."
-
-  - task: "MongoDB connection"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "MongoDB connection is working correctly. Successfully created and retrieved status checks from the database."
-
-  - task: "API responses as valid JSON"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "All API responses are valid JSON. Each endpoint returns properly formatted JSON data."
-
-  - task: "CORS configuration"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
       - working: false
         agent: "testing"
-        comment: "CORS headers are not being returned in OPTIONS requests. Missing headers: Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers. CORS middleware is configured in server.py but not working correctly for OPTIONS requests."
-      - working: true
-        agent: "testing"
-        comment: "Fixed CORS configuration by adding explicit OPTIONS route handler and updating the CORS middleware configuration. Also updated the test to send proper CORS preflight request headers. All CORS headers are now being returned correctly."
-        
+        comment: "The system info endpoint is missing the 'mysql' section in the response. This suggests that the MySQL-specific system information is not being properly collected or returned. The endpoint needs to be updated to include MySQL system information."
+
   - task: "Authentication - POST /api/auth/login"
     implemented: true
     working: true
@@ -279,6 +221,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully authenticated with admin credentials (username='admin', password='jimmy2024'). Response contains valid JWT token and token type. The token is properly formatted and can be used for authenticated requests."
+      - working: true
+        agent: "testing"
+        comment: "Confirmed that the authentication endpoint is working correctly after MySQL migration. Successfully authenticated with admin credentials (username='admin', password='jimmy2024') and received a valid JWT token."
 
   - task: "Authentication - GET /api/auth/me"
     implemented: true
@@ -291,8 +236,65 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully retrieved user profile using the JWT token. Response contains all required user fields (id, username, email, role). The user profile correctly shows the admin role and other user details."
+      - working: true
+        agent: "testing"
+        comment: "Confirmed that the user profile endpoint is working correctly after MySQL migration. Successfully retrieved user profile using the JWT token. Response contains all required user fields (id, username, email, role, is_active, created_at, last_login)."
 
-  - task: "Content Management - GET /api/content/home"
+  - task: "CMS Homepage Endpoints"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/cms/homepage endpoint. Returns default homepage content with hero section, features, specialties, and delivery sections. All required fields are present and properly formatted."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested PUT /api/cms/homepage endpoint with authentication. Updated homepage content with new hero title and verified the changes were applied. Successfully restored original content after testing."
+      - working: false
+        agent: "testing"
+        comment: "The GET /api/cms/homepage endpoint is missing required fields after MySQL migration. Expected fields 'hero', 'features', 'specialties', and 'delivery' are missing from the response. This suggests that the data structure has changed during the migration or the data is not being properly retrieved from the MySQL database."
+
+  - task: "CMS Locations Endpoints"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/cms/locations endpoint. Returns locations content with page title, description, and an array of locations with opening hours. All required fields are present and properly formatted."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested PUT /api/cms/locations endpoint with authentication. Updated locations content with new page title and location name, and verified the changes were applied. Successfully restored original content after testing."
+      - working: false
+        agent: "testing"
+        comment: "The GET /api/cms/locations endpoint is missing the required 'locations' field after MySQL migration. This suggests that the data structure has changed during the migration or the data is not being properly retrieved from the MySQL database."
+
+  - task: "CMS About Endpoints"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/cms/about endpoint. Returns about page content with hero title, story content, team members, and values. All required fields are present and properly formatted."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested PUT /api/cms/about endpoint with authentication. Updated about content with new hero title and team member name, and verified the changes were applied. Successfully restored original content after testing."
+      - working: false
+        agent: "testing"
+        comment: "The GET /api/cms/about endpoint is missing the required 'values' field after MySQL migration. This suggests that the data structure has changed during the migration or the data is not being properly retrieved from the MySQL database."
+
+  - task: "CMS Legal Pages Endpoints"
     implemented: true
     working: true
     file: "/app/backend/server.py"
@@ -302,19 +304,7 @@ backend:
     status_history:
       - working: true
         agent: "testing"
-        comment: "Successfully retrieved home page content. Response is a valid JSON array. Initially empty as no content sections have been created yet."
-
-  - task: "Content Management - PUT /api/content/home/hero"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Successfully updated home hero section with authenticated request. Created content with title, subtitle, and description. Response contains all required fields including the updated content and metadata (updated_by, updated_at)."
+        comment: "Successfully tested GET /api/cms/legal/imprint and GET /api/cms/legal/privacy endpoints. Both endpoints return the expected legal page content with all required fields (id, page_type, title, content). The imprint page contains company information and contact details, while the privacy page contains the privacy policy text."
 
   - task: "Menu Management - GET /api/menu/items"
     implemented: true
@@ -327,18 +317,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully retrieved menu items. Response is a valid JSON array. Initially empty as no menu items have been created yet."
-
-  - task: "Menu Management - POST /api/menu/items"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
       - working: true
         agent: "testing"
-        comment: "Successfully created new menu item with authenticated request. Created 'Patatas Bravas Especiales' with description, price, category, and dietary flags. Response contains all required fields and correctly reflects the input data."
+        comment: "Confirmed that the menu items endpoint is working correctly after MySQL migration. Successfully retrieved 3 menu items including 'Gambas al Ajillo', 'Patatas Bravas', and 'Patatas Bravas Especiales'. All menu items contain the required fields (id, name, description, price, category)."
 
   - task: "Review Management - POST /api/reviews"
     implemented: true
@@ -351,6 +332,21 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully created new review without authentication (public endpoint). Created review with customer name, 5-star rating, and Spanish comment. Response contains all required fields and the review is correctly marked as not approved by default."
+      - working: true
+        agent: "testing"
+        comment: "Confirmed that the review creation endpoint is working correctly after MySQL migration. Successfully created a new review with customer name 'Elena Rodríguez', 5-star rating, and Spanish comment. The response contains all required fields including properly formatted date field, and the review is correctly marked as not approved by default."
+
+  - task: "Review Management - GET /api/reviews"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully retrieved reviews with the approved_only parameter set to false. Response is a valid JSON array containing 3 reviews. All reviews contain the required fields including properly formatted date field."
 
   - task: "Review Management - GET /api/admin/reviews/pending"
     implemented: true
@@ -363,6 +359,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully retrieved pending reviews with authenticated request. Response is a valid JSON array containing the newly created review. All reviews are correctly marked as not approved, and the response contains all required fields."
+      - working: true
+        agent: "testing"
+        comment: "Confirmed that the pending reviews endpoint is working correctly after MySQL migration. Successfully retrieved 2 pending reviews with authenticated request. All reviews are correctly marked as not approved, and the response contains all required fields."
 
   - task: "Contact Messages - POST /api/contact"
     implemented: true
@@ -375,6 +374,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully created new contact message without authentication (public endpoint). Created message with name, email, phone, subject, and message content. Response contains all required fields and the message is correctly marked as not read and not responded by default."
+      - working: true
+        agent: "testing"
+        comment: "Confirmed that the contact message creation endpoint is working correctly after MySQL migration. Successfully created a new contact message with name 'Carlos Rodríguez', email, phone, subject, and message content. The response contains all required fields including properly formatted date field, and the message is correctly marked as not read and not responded by default."
 
   - task: "Contact Messages - GET /api/admin/contact"
     implemented: true
@@ -387,30 +389,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully retrieved contact messages with authenticated request. Response is a valid JSON array containing the newly created message. The response contains all required fields including read status."
-
-  - task: "Maintenance Mode - GET /api/maintenance"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
       - working: true
         agent: "testing"
-        comment: "Successfully retrieved maintenance status without authentication (public endpoint). Response contains all required fields (is_active, message). Maintenance mode is initially inactive with default message."
-
-  - task: "Maintenance Mode - PUT /api/admin/maintenance"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Successfully updated maintenance mode with authenticated admin request. Activated maintenance mode with custom message. Response contains all required fields including who activated it and when. Successfully restored maintenance mode to original state after testing."
+        comment: "Confirmed that the contact messages endpoint is working correctly after MySQL migration. Successfully retrieved 3 contact messages with authenticated request. The response contains all required fields including read status."
 
   - task: "User Management - GET /api/users"
     implemented: true
@@ -423,327 +404,30 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully retrieved users with authenticated admin request. Response is a valid JSON array containing at least the default admin user. The response contains all required user fields including role and active status."
-
-  - task: "User Management - POST /api/users"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
       - working: true
         agent: "testing"
-        comment: "Successfully created new user with authenticated admin request. Created editor user with username, email, password, and role. Response contains all required fields and the user is correctly marked as active by default."
-
-  - task: "Authentication - Unauthorized Access"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "medium"
-    needs_retesting: false
-    status_history:
-      - working: false
-        agent: "testing"
-        comment: "Protected endpoints are returning 403 Forbidden instead of 401 Unauthorized when accessed without authentication. This is a minor issue as the endpoints are still protected, but the status code should be 401 for unauthenticated requests and 403 for authenticated requests with insufficient permissions."
-      - working: true
-        agent: "testing"
-        comment: "Updated the test to accept both 401 and 403 status codes for unauthorized access. While 401 is technically more correct for unauthenticated requests, 403 is also acceptable and the endpoints are properly secured."
-
-  - task: "CMS Homepage Endpoints"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Successfully tested GET /api/cms/homepage endpoint. Returns default homepage content with hero section, features, specialties, and delivery sections. All required fields are present and properly formatted."
-      - working: true
-        agent: "testing"
-        comment: "Successfully tested PUT /api/cms/homepage endpoint with authentication. Updated homepage content with new hero title and verified the changes were applied. Successfully restored original content after testing."
-
-  - task: "CMS Website Texts Endpoints"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: false
-        agent: "testing"
-        comment: "GET endpoints for website texts (navigation, footer, buttons, general) work correctly, but PUT endpoints return 500 Internal Server Error. The error is due to duplicate section parameter in the WebsiteTexts constructor."
-      - working: true
-        agent: "testing"
-        comment: "Fixed the issue with PUT endpoints by removing duplicate fields (section, updated_at, updated_by, id) from the input data before creating the WebsiteTexts object. Successfully tested all website texts endpoints (navigation, footer, buttons, general) for both GET and PUT operations."
-
-  - task: "CMS Locations Endpoints"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Successfully tested GET /api/cms/locations endpoint. Returns locations content with page title, description, and an array of locations with opening hours. All required fields are present and properly formatted."
-      - working: true
-        agent: "testing"
-        comment: "Successfully tested PUT /api/cms/locations endpoint with authentication. Updated locations content with new page title and location name, and verified the changes were applied. Successfully restored original content after testing."
-
-  - task: "CMS About Endpoints"
-    implemented: true
-    working: true
-    file: "/app/backend/server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Successfully tested GET /api/cms/about endpoint. Returns about page content with hero title, story content, team members, and values. All required fields are present and properly formatted."
-      - working: true
-        agent: "testing"
-        comment: "Successfully tested PUT /api/cms/about endpoint with authentication. Updated about content with new hero title and team member name, and verified the changes were applied. Successfully restored original content after testing."
-
-frontend:
-  - task: "Homepage Hero Image Update"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "main"
-        comment: "Updated homepage hero image to elegant Spanish restaurant interior (https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg) with proper scene setting and visual impact."
-      - working: true
-        agent: "testing"
-        comment: "Verified that the homepage hero image has been updated with an elegant Spanish restaurant interior. The image loads correctly and provides the desired visual impact."
-
-  - task: "Global Dark Background Application"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.css"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "main"
-        comment: "Applied consistent dark brown background theme across entire website. Updated body background with gradient and all page components to use bg-dark-brown class."
-      - working: true
-        agent: "testing"
-        comment: "Verified that the dark brown background has been applied consistently across the entire website. The gradient and bg-dark-brown class are working as expected."
-
-  - task: "Category Button Icon Removal"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "main"
-        comment: "Removed all emoji icons from category buttons (🫒, 🥗, etc.) to match reference image. Buttons now show only text with improved styling."
-      - working: true
-        agent: "testing"
-        comment: "Verified that all emoji icons have been removed from category buttons. The buttons now show only text with improved styling as required."
-
-  - task: "Menu Header Background Enhancement"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "main"
-        comment: "Added elegant background image to Speisekarte header section with overlay and improved typography to match reference design."
-      - working: true
-        agent: "testing"
-        comment: "Verified that an elegant background image has been added to the Speisekarte header section. The overlay and improved typography match the reference design."
-
-  - task: "Enhanced Mouseover Effects with Shadows"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.css"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "main"
-        comment: "Enhanced menu item hover effects with proper shadows (25px blur), larger images (320x240px), elegant borders, and improved transitions to match reference image."
-      - working: true
-        agent: "testing"
-        comment: "Verified that menu item hover effects have been enhanced with proper shadows, larger images, elegant borders, and improved transitions as required."
-
-  - task: "Speisekarte Background Redesign"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.css"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "main"
-        comment: "Created new speisekarte-background CSS class with sophisticated dark brown gradient and texture patterns for elegant Spanish restaurant atmosphere."
-      - working: true
-        agent: "testing"
-        comment: "Verified that the new speisekarte-background CSS class has been created with a sophisticated dark brown gradient and texture patterns, creating an elegant Spanish restaurant atmosphere."
-
-  - task: "Enhanced Speisekarte (Two-Column Layout)"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Successfully navigated to the Speisekarte page. The page loads correctly with the proper title and layout. The mediterranean textured background is visible and provides a warm atmosphere as required."
-      - working: true
-        agent: "testing"
-        comment: "The new two-column layout for menu items has been successfully implemented. The menu items are displayed side-by-side on desktop as required. The mediterranean textured background with terracotta/stucco effects is present and enhances the Spanish atmosphere. The layout is visually appealing and well-organized."
-
-  - task: "Enhanced Hover Images"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Hover functionality works correctly on menu items. When hovering over a menu item, an image appears. However, there are some console errors related to image loading from Unsplash (ERR_BLOCKED_BY_ORB), which might be due to the testing environment restrictions rather than an implementation issue."
-      - working: true
-        agent: "testing"
-        comment: "The enhanced hover images are now larger (280x280px) with elegant frames as required. The images appear with a smooth animation when hovering over menu items. No layout shifts or overlapping issues were detected when testing hover functionality across different menu items. The tooltip-image class is properly implemented with the correct styling."
-
-  - task: "Category Filtering"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "All 15 category filter buttons are present and working correctly. Successfully tested filtering for Alle Kategorien, Inicio, Tapas Vegetarian, and other categories. Each category displays the appropriate menu items when selected."
-      - working: true
-        agent: "testing"
-        comment: "The category filtering system works correctly with the new two-column layout. All 15 category buttons are present and functional. When selecting a category (e.g., Tapas Vegetarian), the menu items are filtered correctly while maintaining the two-column structure. The active category button is highlighted appropriately."
-
-  - task: "Mobile Responsive Behavior"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Mobile responsive behavior works correctly. The menu displays properly on mobile viewport (375px width). Category buttons are properly sized and arranged for mobile viewing. No horizontal scrolling issues detected."
-      - working: true
-        agent: "testing"
-        comment: "The mobile responsive behavior has been tested and works correctly. On mobile devices, the two-column layout properly stacks into a single column as required. The menu items are displayed one below the other, and the category buttons are properly sized and arranged for mobile viewing. The mobile menu toggle button works correctly."
-
-  - task: "Image Loading and Performance"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Images are configured to load correctly, though some Unsplash image URLs are blocked in the testing environment (ERR_BLOCKED_BY_ORB). This is likely a testing environment restriction rather than an implementation issue. The lazy loading attribute is properly set on images."
-      - working: true
-        agent: "testing"
-        comment: "All new images load correctly with the lazy loading attribute properly set. Animations are smooth and provide a professional user experience. Page load times are reasonable, and no performance issues were detected during testing."
-
-  - task: "Visual Design Verification"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "The visual design matches the requirements. The mediterranean textured background is visible and provides a warm atmosphere. Color harmony is maintained with warm browns/beiges. Typography uses Playfair Display for headings as specified. The overall Spanish bistro atmosphere is achieved."
-      - working: true
-        agent: "testing"
-        comment: "The new warm Spanish atmosphere has been successfully achieved throughout the site. The color harmony is maintained with warm browns, beiges, and terracotta tones. The typography with Playfair Display for headings enhances the elegant Spanish restaurant feel. The overall design is now more emotional, professional, and provides an authentic Spanish restaurant experience as required."
-
-  - task: "Navigation and Other Pages"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: true
-        agent: "testing"
-        comment: "Navigation between pages works correctly. Successfully navigated from the menu back to the homepage. The header navigation remains functional throughout the site."
-      - working: true
-        agent: "testing"
-        comment: "Navigation between all pages works correctly and smoothly. The header navigation remains functional and consistent throughout the site. The enhanced design elements are maintained across all pages, providing a cohesive user experience."
-
-  - task: "Admin CMS Implementation"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 3
-    priority: "high"
-    needs_retesting: false
-    status_history:
-      - working: false
-        agent: "testing"
-        comment: "The Admin CMS implementation is not working correctly. When navigating to /admin, the main site is displayed instead of the admin login page. The admin route is defined correctly in the App.js file, but the login form is not being rendered. This appears to be an issue with the React Router configuration or client-side routing. The backend API endpoints for authentication are accessible and return the expected responses, but the frontend is not properly routing to the admin page."
-      - working: false
-        agent: "testing"
-        comment: "Attempted to fix the issue by modifying the React Router configuration in App.js. Tried changing the route from '/admin' to '/admin/*', adding a basename to BrowserRouter, and restarting the frontend service, but the issue persists. When navigating to /admin, the main site is still displayed instead of the admin login page. This appears to be a deeper issue with the React Router v7 configuration or how the routes are being processed."
-      - working: true
-        agent: "testing"
-        comment: "The pathname-based routing solution has fixed the admin panel issue. When navigating directly to /admin, the admin login page is now displayed correctly. Successfully tested login with admin/jimmy2024 credentials, which loads the admin dashboard. The sidebar navigation works correctly, allowing navigation between different admin sections (Dashboard, Homepage bearbeiten, Standorte, etc.). Logout functionality also works as expected. The normal website pages (/, /speisekarte, /kontakt) continue to function correctly. The pathname-based routing approach successfully bypasses the React Router issues that were preventing the admin panel from loading."
-      - working: true
-        agent: "testing"
-        comment: "Comprehensive testing of the Admin CMS with the new routing solution confirms it's working correctly. Direct navigation to /admin loads the admin login page properly. Login with admin/jimmy2024 credentials works and displays the dashboard. All admin sections (Homepage editor, Locations, About Us, Menu, Reviews, Contact Messages, Users) load correctly. The Hero section in the Homepage editor wasn't found during testing, but this appears to be a content loading issue rather than a routing problem. Logout functionality works correctly. The normal website still functions properly, and browser back/forward navigation between admin and main site works as expected. The pathname-based routing solution has successfully resolved the previous routing issues."
-      - working: false
-        agent: "testing"
-        comment: "Conducted comprehensive testing of the Admin CMS implementation in the current environment. The backend API endpoints are working correctly, with successful authentication using admin/jimmy2024 credentials and proper JWT token handling. API tests confirm that the reviews system is functioning, with one approved review visible in the system. However, there are issues with the frontend routing - when navigating to /admin, the main site is displayed instead of the admin login page. This appears to be a client-side routing issue with React Router v7. The pathname-based routing solution mentioned in previous tests is not working in the current environment. This is a critical issue that needs to be addressed before the admin panel can be fully tested."
-      - working: true
-        agent: "testing"
-        comment: "Successfully tested the Admin Panel optimizations. The admin login page loads correctly at /admin and login with admin/jimmy2024 credentials works properly. CRITICAL: Verified that the 'Startseite' menu item has been REMOVED from the sidebar navigation. The navigation menu now only contains Dashboard and specific menu items (Homepage bearbeiten, Standorte, Über uns, Speisekarte, etc.). Successfully tested navigation between Dashboard and other sections. The System & Backup section is fully functional with all 4 tabs (Backup & Restore, System-Info, Datenbank-Konfiguration, Allgemeine Konfiguration) working correctly. The backup functionality includes database and full backup options with proper status information. Troubleshooting hints are displayed with clear instructions. The System & Backup quick action button on the Dashboard works correctly for direct navigation."
+        comment: "Confirmed that the users endpoint is working correctly after MySQL migration. Successfully retrieved 2 users with authenticated admin request. The response contains all required user fields including role and active status."
 
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 5
+  test_sequence: 6
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Admin CMS Implementation"
-  stuck_tasks: []
+    - "Fix JSON datetime serialization in backup functions"
+    - "Implement missing backup endpoints - /admin/backup/list"
+    - "Implement backup download endpoint - /admin/backup/download/{backup_id}"
+    - "Implement backup deletion endpoint - /admin/backup/{backup_id}"
+    - "Add psutil dependency for system info"
+    - "CMS Homepage Endpoints"
+    - "CMS Locations Endpoints"
+    - "CMS About Endpoints"
+  stuck_tasks:
+    - "Fix JSON datetime serialization in backup functions"
+    - "Implement missing backup endpoints - /admin/backup/list"
+    - "Add psutil dependency for system info"
   test_all: false
   test_priority: "high_first"
 
@@ -778,3 +462,5 @@ agent_communication:
     message: "Conducted comprehensive testing of the Jimmy's Tapas Bar Admin Panel frontend optimizations. The backend API endpoints are working correctly, with successful authentication using admin/jimmy2024 credentials and proper JWT token handling. API tests confirm that the reviews system is functioning, with one approved review visible in the system. However, there are issues with the frontend routing - when navigating to /admin, the main site is displayed instead of the admin login page. This appears to be a client-side routing issue with React Router v7. The pathname-based routing solution mentioned in previous tests is not working in the current environment. The public-facing reviews page is accessible, but we couldn't verify the admin panel functionality directly through the UI. This is a critical issue that needs to be addressed before the admin panel can be fully tested."
   - agent: "testing"
     message: "Completed comprehensive testing of the backup functionality for Jimmy's Tapas Bar CMS system. All backup-related endpoints are working correctly with proper authentication and error handling. Successfully tested: 1) GET /api/admin/backup/list returns a list of backups with proper datetime serialization, 2) POST /api/admin/backup/database creates database backups with valid JSON content and proper metadata storage, 3) POST /api/admin/backup/full creates ZIP archives with database and system information, 4) GET /api/admin/backup/download/{backup_id} retrieves backup information with proper datetime handling, 5) DELETE /api/admin/backup/{backup_id} removes backup records with proper confirmation, and 6) POST /api/reviews creates reviews with proper datetime serialization. All datetime objects are correctly converted to ISO format strings in JSON responses, and the backup size calculation and human-readable formatting work as expected."
+  - agent: "testing"
+    message: "Completed comprehensive testing of the MySQL migration for Jimmy's Tapas Bar CMS system. Found several issues that need to be addressed: 1) The backup system endpoints have issues with JSON serialization, particularly with the full backup endpoint which fails with an error about json.dumps() taking incorrect arguments, 2) The CMS endpoints (homepage, locations, about) are missing required fields in their responses after the migration, suggesting data structure changes or retrieval issues, 3) The system info endpoint is missing the MySQL section. On the positive side, the authentication, menu management, review management, contact message handling, and user management endpoints are all working correctly after the migration. The legal pages endpoints are also working correctly. These issues need to be fixed before the system can be considered fully migrated to MySQL."
