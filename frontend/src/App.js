@@ -117,7 +117,33 @@ const AdminPanel = () => {
   // API Base URL
   const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
-  console.log('AdminPanel loaded, API_BASE_URL:', API_BASE_URL);
+  // Helper function for API calls
+  const apiCall = async (endpoint, method = 'GET', data = null) => {
+    try {
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const config = {
+        method,
+        headers
+      };
+
+      if (data && (method === 'POST' || method === 'PUT')) {
+        config.body = JSON.stringify(data);
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api${endpoint}`, config);
+      return response;
+    } catch (error) {
+      console.error('API call error:', error);
+      throw error;
+    }
+  };
 
   // Check for existing login on mount
   useEffect(() => {
