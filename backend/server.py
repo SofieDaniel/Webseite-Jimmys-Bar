@@ -231,6 +231,20 @@ class SMTPConfig(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     updated_by: Optional[str] = None
 
+# Legal Pages Models
+class LegalPage(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_type: str  # "imprint" or "privacy"
+    title: str
+    content: str
+    contact_name: Optional[str] = None
+    contact_address: Optional[str] = None
+    contact_phone: Optional[str] = None
+    contact_email: Optional[str] = None
+    company_info: Optional[dict] = None
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_by: Optional[str] = None
+
 class AboutContent(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     page_title: str = "Über uns"
