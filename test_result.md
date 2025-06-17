@@ -171,11 +171,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Enhanced POST /reviews endpoint with better error handling and proper datetime object handling to prevent JSON serialization errors during review creation."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the review creation endpoint is working correctly with proper datetime serialization. The endpoint successfully creates reviews and returns a response with the date field properly formatted in ISO format."
 
   - task: "Add psutil dependency for system info"
     implemented: true
