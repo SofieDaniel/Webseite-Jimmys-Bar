@@ -564,7 +564,7 @@ function App() {
   return (
     <LanguageProvider>
       <div className="App">
-        <RouterProvider router={router} />
+        <RouterProvider router={router} basename="/" />
       </div>
     </LanguageProvider>
   );
