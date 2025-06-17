@@ -111,11 +111,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Fixed datetime serialization issues by implementing CustomJSONEncoder for both database and full backup functions. Added proper ObjectId and datetime handling throughout backup creation process."
+      - working: true
+        agent: "testing"
+        comment: "Verified that datetime serialization is working correctly in backup functions. The CustomJSONEncoder properly converts datetime objects to ISO format strings. The convert_nested_datetime and convert_list_datetime functions handle nested objects correctly."
 
   - task: "Implement missing backup endpoints - /admin/backup/list"
     implemented: true
