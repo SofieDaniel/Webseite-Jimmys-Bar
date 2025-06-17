@@ -281,10 +281,10 @@ const AdminPanel = () => {
 
   // Admin Dashboard
   return (
-    <div className="min-h-screen bg-gray-100" style={{paddingTop: '0', marginTop: '0'}}>
-      <div className="flex" style={{minHeight: '100vh'}}>
+    <div className="min-h-screen bg-gray-100" style={{paddingTop: '80px'}}>
+      <div className="flex" style={{minHeight: 'calc(100vh - 80px)'}}>
         {/* Sidebar */}
-        <div className="w-64 bg-white shadow-lg" style={{position: 'fixed', height: '100vh', zIndex: 1000}}>
+        <div className="w-64 bg-white shadow-lg" style={{position: 'fixed', height: 'calc(100vh - 80px)', top: '80px', zIndex: 40}}>
           <div className="p-6">
             <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
             <p className="text-sm text-gray-600">Willkommen, {user?.username}</p>
@@ -369,32 +369,7 @@ const AdminPanel = () => {
           {activeSection === 'reviews' && <ReviewsSection />}
           {activeSection === 'contacts' && <ContactsSection />}
           {activeSection === 'users' && <UsersSection />}
-          {activeSection === 'legal' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Impressum & Datenschutz</h2>
-              <div className="bg-white rounded-lg shadow p-6">
-                <p className="text-gray-600 mb-4">Hier können Sie die Inhalte für Impressum und Datenschutzerklärung bearbeiten.</p>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <a
-                    href="/impressum"
-                    target="_blank"
-                    className="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
-                  >
-                    <h3 className="font-medium text-gray-900 mb-2">Impressum</h3>
-                    <p className="text-sm text-gray-600">Rechtliche Informationen verwalten</p>
-                  </a>
-                  <a
-                    href="/datenschutz"
-                    target="_blank"
-                    className="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
-                  >
-                    <h3 className="font-medium text-gray-900 mb-2">Datenschutzerklärung</h3>
-                    <p className="text-sm text-gray-600">Datenschutz-Informationen verwalten</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
+          {activeSection === 'legal' && <LegalEditor />}
           {activeSection === 'media' && <MediaSection />}
           {activeSection === 'maintenance' && <MaintenanceSection />}
         </div>
