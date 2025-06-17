@@ -936,83 +936,40 @@ async def get_locations_content():
         content = await cursor.fetchone()
         
         if not content:
-            # Create default locations
-            default_locations = [
-                {
-                    "name": "Jimmy's Tapas Bar Kühlungsborn",
-                    "address": "Strandstraße 1, 18225 Kühlungsborn",
-                    "phone": "+49 38293 12345",
-                    "email": "kuehlungsborn@jimmys-tapasbar.de",
-                    "opening_hours": {
-                        "Montag": "16:00 - 23:00",
-                        "Dienstag": "16:00 - 23:00", 
-                        "Mittwoch": "16:00 - 23:00",
-                        "Donnerstag": "16:00 - 23:00",
-                        "Freitag": "16:00 - 24:00",
-                        "Samstag": "12:00 - 24:00",
-                        "Sonntag": "12:00 - 23:00"
-                    },
-                    "description": "Unser Hauptstandort direkt am Strand von Kühlungsborn",
-                    "image_url": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f"
-                },
-                {
-                    "name": "Jimmy's Tapas Bar Warnemünde",
-                    "address": "Am Strom 2, 18119 Warnemünde",
-                    "phone": "+49 381 987654",
-                    "email": "warnemuende@jimmys-tapasbar.de",
-                    "opening_hours": {
-                        "Montag": "17:00 - 23:00",
-                        "Dienstag": "17:00 - 23:00",
-                        "Mittwoch": "17:00 - 23:00", 
-                        "Donnerstag": "17:00 - 23:00",
-                        "Freitag": "17:00 - 24:00",
-                        "Samstag": "12:00 - 24:00",
-                        "Sonntag": "12:00 - 23:00"
-                    },
-                    "description": "Gemütlich am alten Strom mit Blick auf die Warnow",
-                    "image_url": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d"
-                }
-            ]
-            
-            content_id = str(uuid.uuid4())
-            await cursor.execute("""
-                INSERT INTO locations (id, page_title, page_description, locations_data, updated_at)
-                VALUES (%s, %s, %s, %s, %s)
-            """, (
-                content_id,
-                "Unsere Standorte",
-                "Besuchen Sie uns an einem unserer beiden Standorte",
-                json.dumps(default_locations),
-                datetime.utcnow()
-            ))
-            
-            content = {
-                "id": content_id,
+            # Return default structure if no data exists
+            return {
                 "page_title": "Unsere Standorte",
                 "page_description": "Besuchen Sie uns an einem unserer beiden Standorte",
-                "locations_data": default_locations,
-                "updated_at": datetime.utcnow()
-            }
-        else:
-            # Parse JSON field and structure for frontend compatibility
-            locations_data = content.get('locations_data')
-            if locations_data and isinstance(locations_data, str):
-                locations_data = json.loads(locations_data)
-            elif not locations_data:
-                locations_data = []
-            
-            # Structure data for frontend compatibility
-            content = {
-                "id": content.get("id"),
-                "page_title": content.get("page_title"),
-                "page_description": content.get("page_description"),
-                "locations_data": locations_data,
-                "updated_at": content.get("updated_at"),
-                # Add expected 'locations' key for frontend compatibility
-                "locations": locations_data
+                "locations_data": [],
+                "locations": [],
+                "info_sections": [],
+                "general_info": {}
             }
         
-        return content
+        # Parse the complete locations data
+        locations_data = content.get('locations_data')
+        if locations_data and isinstance(locations_data, str):
+            locations_data = json.loads(locations_data)
+        elif not locations_data:
+            locations_data = {}
+        
+        # Extract locations array for backward compatibility
+        locations_array = locations_data.get('locations', []) if isinstance(locations_data, dict) else []
+        
+        # Structure response for both old and new frontend compatibility
+        response = {
+            "id": content.get("id"),
+            "page_title": content.get("page_title", "Unsere Standorte"),
+            "page_description": content.get("page_description", "Besuchen Sie uns an einem unserer beiden Standorte"),
+            "locations_data": locations_array,  # For backend compatibility
+            "locations": locations_array,       # For frontend compatibility
+            "info_sections": locations_data.get('info_sections', []) if isinstance(locations_data, dict) else [],
+            "general_info": locations_data.get('general_info', {}) if isinstance(locations_data, dict) else {},
+            "updated_at": content.get("updated_at"),
+            "updated_by": content.get("updated_by")
+        }
+        
+        return response
     finally:
         mysql_pool.release(conn)
 
