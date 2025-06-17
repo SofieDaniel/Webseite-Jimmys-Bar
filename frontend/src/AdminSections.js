@@ -91,10 +91,24 @@ export const ContentSection = ({ user, token, apiCall }) => {
       };
 
       if (activePageTab === 'homepage') {
+        // Convert frontend format back to MySQL format
+        const backendData = {
+          hero_title: homepageContent.hero?.title,
+          hero_subtitle: homepageContent.hero?.subtitle,
+          hero_description: homepageContent.hero?.description,
+          hero_location: homepageContent.hero?.location,
+          hero_background_image: homepageContent.hero?.background_image,
+          hero_menu_button_text: homepageContent.hero?.menu_button_text,
+          hero_locations_button_text: homepageContent.hero?.locations_button_text,
+          features_data: homepageContent.features,
+          specialties_data: homepageContent.specialties,
+          delivery_data: homepageContent.delivery
+        };
+        
         response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/homepage`, {
           method: 'PUT',
           headers,
-          body: JSON.stringify(homepageContent)
+          body: JSON.stringify(backendData)
         });
       } else {
         response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/website-texts/${activePageTab}`, {
