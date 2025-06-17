@@ -676,7 +676,7 @@ def test_backup_list():
         # If there are backups, verify the structure of the first one
         if backups:
             required_fields = ["id", "filename", "type", "created_at", "created_by", "size_human"]
-            missing_fields = [field for field in required_fields if field not in data[0]]
+            missing_fields = [field for field in required_fields if field not in backups[0]]
             
             if not missing_fields:
                 print("✅ Backup objects contain all required fields")
@@ -686,12 +686,12 @@ def test_backup_list():
                 
             # Print some sample data
             print(f"📊 Sample backups:")
-            for i, backup in enumerate(data[:3]):  # Show up to 3 samples
+            for i, backup in enumerate(backups[:3]):  # Show up to 3 samples
                 print(f"  {i+1}. {backup['filename']} - Type: {backup['type']}, Size: {backup['size_human']}, Created: {backup['created_at']}")
                 
             # Check if created_at is properly formatted as ISO date string
             try:
-                datetime.fromisoformat(data[0]['created_at'].replace('Z', '+00:00'))
+                datetime.fromisoformat(backups[0]['created_at'].replace('Z', '+00:00'))
                 print("✅ created_at is properly formatted as ISO date string")
             except (ValueError, TypeError):
                 print("❌ created_at is not properly formatted as ISO date string")
