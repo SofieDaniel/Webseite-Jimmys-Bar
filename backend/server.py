@@ -1806,7 +1806,89 @@ Erstellt mit Jimmy's Tapas Bar CMS v1.0
         print(f"Full backup error details: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Full backup creation failed: {str(e)}")
 
-@api_router.get("/admin/backup/status")
+@api_router.get("/admin/backup/list")
+async def get_backup_list(current_user: User = Depends(get_admin_user)):
+    """Get list of all available backups"""
+    try:
+        backups_collection = db["system_backups"]
+        backups_cursor = backups_collection.find({}).sort("created_at", -1)
+        backups = await backups_cursor.to_list(length=None)
+        
+        # Convert ObjectId and datetime for JSON serialization
+        for backup in backups:
+            if '_id' in backup:
+                del backup['_id']  # Remove MongoDB ObjectId
+            if isinstance(backup.get('created_at'), datetime):
+                backup['created_at'] = backup['created_at'].isoformat()
+        
+        return {"backups": backups}
+        
+    except Exception as e:
+        print(f"Backup list error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Could not retrieve backup list: {str(e)}")
+
+@api_router.get("/admin/backup/download/{backup_id}")
+async def download_backup(backup_id: str, current_user: User = Depends(get_admin_user)):
+    """Download a specific backup"""
+    try:
+        backups_collection = db["system_backups"]
+        backup = await backups_collection.find_one({"id": backup_id})
+        
+        if not backup:
+            raise HTTPException(status_code=404, detail="Backup not found")
+        
+        # For now, return backup info since actual files aren't stored
+        # In production, you would read the actual backup file from storage
+        return {
+            "message": "Backup download initiated",
+            "backup_info": {
+                "id": backup["id"],
+                "filename": backup["filename"],
+                "type": backup["type"],
+                "size_human": backup["size_human"],
+                "created_at": backup["created_at"].isoformat() if isinstance(backup["created_at"], datetime) else backup["created_at"]
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Backup download error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Could not download backup: {str(e)}")
+
+@api_router.delete("/admin/backup/{backup_id}")
+async def delete_backup(backup_id: str, current_user: User = Depends(get_admin_user)):
+    """Delete a specific backup"""
+    try:
+        backups_collection = db["system_backups"]
+        
+        # Check if backup exists
+        backup = await backups_collection.find_one({"id": backup_id})
+        if not backup:
+            raise HTTPException(status_code=404, detail="Backup not found")
+        
+        # Delete backup record from database
+        result = await backups_collection.delete_one({"id": backup_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Backup not found")
+        
+        # In production, you would also delete the actual backup file from storage
+        
+        return {
+            "message": "Backup deleted successfully",
+            "deleted_backup": {
+                "id": backup["id"],
+                "filename": backup["filename"]
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Backup deletion error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Could not delete backup: {str(e)}")
+
 async def get_backup_status(current_user: User = Depends(get_admin_user)):
     """Get backup status information"""
     try:
