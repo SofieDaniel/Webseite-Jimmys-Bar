@@ -488,6 +488,12 @@ const AdminPanel = () => {
               📋 Impressum & Datenschutz
             </button>
             <button
+              onClick={() => setActiveSection('system')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'system' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              ⚙️ System & Backup
+            </button>
+            <button
               onClick={() => setActiveSection('maintenance')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'maintenance' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
