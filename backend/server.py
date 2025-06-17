@@ -896,6 +896,128 @@ async def update_about_content(content_data: AboutContent, current_user: User = 
     )
     return content_data
 
+    return content_data
+
+# Legal Pages API endpoints
+@api_router.get("/cms/legal/{page_type}")
+async def get_legal_page(page_type: str):
+    try:
+        page = await db.legal_pages.find_one({"page_type": page_type})
+        if not page:
+            # Create default content
+            if page_type == "imprint":
+                default_page = LegalPage(
+                    page_type="imprint",
+                    title="Impressum",
+                    content="""**Angaben gemäß § 5 TMG:**
+
+Jimmy's Tapas Bar GmbH
+Strandstraße 1
+18225 Kühlungsborn
+
+**Vertreten durch:**
+Geschäftsführer: Jimmy Rodriguez
+
+**Kontakt:**
+Telefon: +49 38293 12345
+E-Mail: info@jimmys-tapasbar.de
+
+**Registereintrag:**
+Eintragung im Handelsregister
+Registergericht: Amtsgericht Rostock
+Registernummer: HRB 12345
+
+**Umsatzsteuer-ID:**
+Umsatzsteuer-Identifikationsnummer gemäß §27a Umsatzsteuergesetz: DE123456789
+
+**Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:**
+Jimmy Rodriguez
+Strandstraße 1
+18225 Kühlungsborn
+
+**Streitschlichtung:**
+Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.""",
+                    contact_name="Jimmy Rodriguez",
+                    contact_address="Strandstraße 1, 18225 Kühlungsborn",
+                    contact_phone="+49 38293 12345",
+                    contact_email="info@jimmys-tapasbar.de",
+                    company_info={
+                        "company_name": "Jimmy's Tapas Bar GmbH",
+                        "register_court": "Amtsgericht Rostock",
+                        "register_number": "HRB 12345",
+                        "vat_id": "DE123456789"
+                    }
+                )
+            elif page_type == "privacy":
+                default_page = LegalPage(
+                    page_type="privacy",
+                    title="Datenschutzerklärung",
+                    content="""**1. Datenschutz auf einen Blick**
+
+**Allgemeine Hinweise**
+Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere Website besuchen.
+
+**Datenerfassung auf unserer Website**
+Wer ist verantwortlich für die Datenerfassung auf dieser Website?
+Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
+
+**Wie erfassen wir Ihre Daten?**
+Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z.B. um Daten handeln, die Sie in ein Kontaktformular eingeben.
+
+**2. Allgemeine Hinweise und Pflichtinformationen**
+
+**Datenschutz**
+Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzbestimmungen sowie dieser Datenschutzerklärung.
+
+**3. Datenerfassung auf unserer Website**
+
+**Cookies**
+Die Internetseiten verwenden teilweise so genannte Cookies. Cookies richten auf Ihrem Rechner keinen Schaden an und enthalten keine Viren.
+
+**Server-Log-Dateien**
+Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien.
+
+**Kontaktformular**
+Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.
+
+**Newsletter**
+Wenn Sie den auf der Website angebotenen Newsletter beziehen möchten, benötigen wir von Ihnen eine E-Mail-Adresse sowie Informationen, welche uns die Überprüfung gestatten, dass Sie der Inhaber der angegebenen E-Mail-Adresse sind.""",
+                    contact_name="Jimmy Rodriguez", 
+                    contact_address="Strandstraße 1, 18225 Kühlungsborn",
+                    contact_phone="+49 38293 12345",
+                    contact_email="datenschutz@jimmys-tapasbar.de"
+                )
+            else:
+                raise HTTPException(status_code=404, detail="Seite nicht gefunden")
+            
+            await db.legal_pages.insert_one(default_page.dict())
+            page = default_page.dict()
+        else:
+            # Remove MongoDB ObjectId
+            if '_id' in page:
+                del page['_id']
+        
+        return page
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Laden der Seite: {str(e)}")
+
+@api_router.put("/cms/legal/{page_type}")
+async def update_legal_page(page_type: str, page_data: dict, current_user: User = Depends(get_editor_user)):
+    try:
+        page_data['page_type'] = page_type
+        page_data['updated_at'] = datetime.utcnow()
+        page_data['updated_by'] = current_user.username
+        
+        await db.legal_pages.update_one(
+            {"page_type": page_type},
+            {"$set": page_data},
+            upsert=True
+        )
+        
+        return {"message": f"{page_type.title()}-Seite erfolgreich aktualisiert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Speichern der Seite: {str(e)}")
+
 # Newsletter API endpoints
 @api_router.post("/newsletter/subscribe")
 async def subscribe_newsletter(subscriber_data: dict):
