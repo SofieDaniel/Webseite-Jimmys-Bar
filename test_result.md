@@ -652,7 +652,8 @@ metadata:
 test_plan:
   current_focus:
     - "Admin CMS Implementation"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Admin CMS Implementation"
   test_all: false
   test_priority: "high_first"
 
