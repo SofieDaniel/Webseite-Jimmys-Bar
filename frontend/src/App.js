@@ -310,6 +310,18 @@ const AdminPanel = () => {
               🏠 Homepage bearbeiten
             </button>
             <button
+              onClick={() => setActiveSection('locations')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'locations' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              📍 Standorte
+            </button>
+            <button
+              onClick={() => setActiveSection('about')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'about' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              ℹ️ Über uns
+            </button>
+            <button
               onClick={() => setActiveSection('menu')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'menu' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
