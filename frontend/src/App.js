@@ -10,6 +10,8 @@ import LegalEditor from './components/LegalEditor';
 import DashboardSection from './components/DashboardSection';
 import NewsletterSection from './components/NewsletterSection';
 import MaintenanceSection from './components/MaintenanceSection';
+import LocationsAdminSection from './components/LocationsAdminSection';
+import AboutAdminSection from './components/AboutAdminSection';
 
 // Import Page Components
 import Home from './components/Home';
