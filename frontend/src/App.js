@@ -410,10 +410,10 @@ const AdminPanel = () => {
         {/* Main Content */}
         <div className="flex-1 p-8" style={{marginLeft: '256px'}}>
           {activeSection === 'dashboard' && <DashboardSection />}
-          {activeSection === 'homepage' && <ContentSection />}
+          {activeSection === 'homepage' && <ContentSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'locations' && <LocationsAdminSection />}
           {activeSection === 'about' && <AboutAdminSection />}
-          {activeSection === 'menu' && <MenuSection />}
+          {activeSection === 'menu' && <MenuSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'reviews' && <ReviewsSection />}
           {activeSection === 'contacts' && <ContactsSection />}
           {activeSection === 'newsletter' && <NewsletterSection />}
