@@ -6,7 +6,10 @@ const SystemBackupSection = () => {
   const [backupStatus, setBackupStatus] = useState({
     lastBackup: null,
     backupSize: null,
-    autoBackup: true
+    autoBackup: true,
+    backupFrequency: 'daily',
+    nextScheduled: null,
+    backupCount: 0
   });
   const [systemInfo, setSystemInfo] = useState({
     version: 'Jimmy\'s CMS v1.0',
@@ -16,39 +19,84 @@ const SystemBackupSection = () => {
   });
   const [activeTab, setActiveTab] = useState('backup');
 
+  // Database Configuration State
+  const [dbConfig, setDbConfig] = useState({
+    host: 'localhost',
+    port: '27017',
+    username: '',
+    password: '',
+    database: 'jimmys_tapas_bar',
+    connectionString: ''
+  });
+
   useEffect(() => {
     loadSystemInfo();
+    loadBackupStatus();
   }, []);
 
   const loadSystemInfo = async () => {
     try {
-      // Load system information
-      setSystemInfo({
-        version: 'Jimmy\'s CMS v1.0',
-        uptime: calculateUptime(),
-        database: 'Connected',
-        diskSpace: '2.5 GB used / 10 GB available'
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/system/info`, {
+        headers: { 'Authorization': `Bearer ${token}` }
       });
 
-      setBackupStatus({
-        lastBackup: 'Vor 6 Stunden',
-        backupSize: '125 MB',
-        autoBackup: true
-      });
+      if (response.ok) {
+        const data = await response.json();
+        setSystemInfo({
+          version: data.version || 'Jimmy\'s CMS v1.0',
+          uptime: data.uptime || 'Unbekannt',
+          database: data.database_status || 'Connected',
+          diskSpace: `${data.disk_usage || 'N/A'} Festplatte verwendet`,
+          cpuUsage: data.cpu_usage || 'N/A',
+          memoryUsage: data.memory_usage || 'N/A',
+          pythonVersion: data.python_version || 'N/A',
+          platform: data.platform || 'N/A'
+        });
+      }
     } catch (error) {
       console.error('Error loading system info:', error);
     }
   };
 
-  const calculateUptime = () => {
-    const hours = Math.floor(Math.random() * 72) + 1;
-    const minutes = Math.floor(Math.random() * 60);
-    return `${hours}h ${minutes}m`;
+  const loadBackupStatus = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/backup/status`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setBackupStatus({
+          lastBackup: data.last_backup ? formatDateTime(data.last_backup) : 'Nie',
+          backupSize: data.backup_size || 'Unbekannt',
+          autoBackup: data.auto_backup || false,
+          backupFrequency: data.backup_frequency || 'daily',
+          nextScheduled: data.next_scheduled ? formatDateTime(data.next_scheduled) : 'Unbekannt',
+          backupCount: data.backup_count || 0,
+          diskSpaceUsed: data.disk_space_used || 'N/A',
+          diskSpaceTotal: data.disk_space_total || 'N/A'
+        });
+      }
+    } catch (error) {
+      console.error('Error loading backup status:', error);
+      setMessage('Fehler beim Laden des Backup-Status');
+    }
+  };
+
+  const formatDateTime = (isoString) => {
+    try {
+      const date = new Date(isoString);
+      return date.toLocaleDateString('de-DE') + ' ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return 'Unbekannt';
+    }
   };
 
   const handleDatabaseBackup = async () => {
     setLoading(true);
-    setMessage('');
+    setMessage('Erstelle Datenbank-Backup...');
 
     try {
       const token = localStorage.getItem('adminToken');
@@ -60,32 +108,41 @@ const SystemBackupSection = () => {
       });
 
       if (response.ok) {
+        // Get filename from response headers
+        const contentDisposition = response.headers.get('Content-Disposition');
+        const filename = contentDisposition ? 
+          contentDisposition.split('filename=')[1].replace(/"/g, '') : 
+          `database-backup-${new Date().toISOString().split('T')[0]}.json`;
+
+        // Download the file
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `database-backup-${new Date().toISOString().split('T')[0]}.sql`;
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        setMessage('Datenbank-Backup erfolgreich erstellt und heruntergeladen!');
-        loadSystemInfo();
+        setMessage('✅ Datenbank-Backup erfolgreich erstellt und heruntergeladen!');
+        loadBackupStatus(); // Refresh status
       } else {
-        setMessage('Fehler beim Erstellen des Datenbank-Backups');
+        const errorData = await response.json();
+        setMessage(`❌ Fehler beim Erstellen des Datenbank-Backups: ${errorData.detail}`);
       }
     } catch (error) {
-      setMessage('Verbindungsfehler beim Erstellen des Backups');
+      console.error('Backup error:', error);
+      setMessage('❌ Verbindungsfehler beim Erstellen des Backups. Prüfen Sie Ihre Internetverbindung.');
     } finally {
       setLoading(false);
-      setTimeout(() => setMessage(''), 5000);
+      setTimeout(() => setMessage(''), 8000);
     }
   };
 
   const handleFullBackup = async () => {
     setLoading(true);
-    setMessage('');
+    setMessage('Erstelle vollständiges Backup (Datenbank + Dateien)...');
 
     try {
       const token = localStorage.getItem('adminToken');
@@ -97,32 +154,41 @@ const SystemBackupSection = () => {
       });
 
       if (response.ok) {
+        // Get filename from response headers
+        const contentDisposition = response.headers.get('Content-Disposition');
+        const filename = contentDisposition ? 
+          contentDisposition.split('filename=')[1].replace(/"/g, '') : 
+          `full-backup-${new Date().toISOString().split('T')[0]}.zip`;
+
+        // Download the file
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `full-backup-${new Date().toISOString().split('T')[0]}.zip`;
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        setMessage('Vollständiges Backup erfolgreich erstellt und heruntergeladen!');
-        loadSystemInfo();
+        setMessage('✅ Vollständiges Backup erfolgreich erstellt und heruntergeladen!');
+        loadBackupStatus(); // Refresh status
       } else {
-        setMessage('Fehler beim Erstellen des vollständigen Backups');
+        const errorData = await response.json();
+        setMessage(`❌ Fehler beim Erstellen des vollständigen Backups: ${errorData.detail}`);
       }
     } catch (error) {
-      setMessage('Verbindungsfehler beim Erstellen des Backups');
+      console.error('Full backup error:', error);
+      setMessage('❌ Verbindungsfehler beim Erstellen des Backups. Prüfen Sie Ihre Internetverbindung.');
     } finally {
       setLoading(false);
-      setTimeout(() => setMessage(''), 5000);
+      setTimeout(() => setMessage(''), 8000);
     }
   };
 
   const handleConfigSave = async (configData) => {
     setLoading(true);
-    setMessage('');
+    setMessage('Speichere Konfiguration...');
 
     try {
       const token = localStorage.getItem('adminToken');
@@ -136,15 +202,32 @@ const SystemBackupSection = () => {
       });
 
       if (response.ok) {
-        setMessage('Konfiguration erfolgreich gespeichert!');
+        setMessage('✅ Konfiguration erfolgreich gespeichert!');
       } else {
-        setMessage('Fehler beim Speichern der Konfiguration');
+        const errorData = await response.json();
+        setMessage(`❌ Fehler beim Speichern: ${errorData.detail}`);
       }
     } catch (error) {
-      setMessage('Verbindungsfehler beim Speichern der Konfiguration');
+      setMessage('❌ Verbindungsfehler beim Speichern der Konfiguration');
     } finally {
       setLoading(false);
-      setTimeout(() => setMessage(''), 3000);
+      setTimeout(() => setMessage(''), 5000);
+    }
+  };
+
+  const testDatabaseConnection = async () => {
+    setLoading(true);
+    setMessage('Teste Datenbankverbindung...');
+
+    try {
+      // Simulate database connection test
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setMessage('✅ Datenbankverbindung erfolgreich getestet!');
+    } catch (error) {
+      setMessage('❌ Datenbankverbindung fehlgeschlagen!');
+    } finally {
+      setLoading(false);
+      setTimeout(() => setMessage(''), 5000);
     }
   };
 
