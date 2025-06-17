@@ -254,7 +254,8 @@ const SystemBackupSection = () => {
           {[
             { key: 'backup', label: 'Backup & Restore', icon: '💾' },
             { key: 'system', label: 'System-Info', icon: '📊' },
-            { key: 'config', label: 'Konfiguration', icon: '⚙️' }
+            { key: 'database', label: 'Datenbank-Konfiguration', icon: '🗄️' },
+            { key: 'config', label: 'Allgemeine Konfiguration', icon: '⚙️' }
           ].map(tab => (
             <button
               key={tab.key}
@@ -275,38 +276,89 @@ const SystemBackupSection = () => {
       {/* Backup Tab */}
       {activeTab === 'backup' && (
         <div className="space-y-6">
-          {/* Backup Status */}
+          {/* Enhanced Backup Status */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Backup-Status</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Backup-Status</h3>
+              <button
+                onClick={loadBackupStatus}
+                disabled={loading}
+                className="text-blue-600 hover:text-blue-800 text-sm disabled:opacity-50"
+              >
+                🔄 Aktualisieren
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="flex items-center p-4 bg-blue-50 rounded-lg">
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Letztes Backup</p>
-                    <p className="text-xs text-blue-600">{backupStatus.lastBackup}</p>
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Letztes Backup</p>
+                      <p className="text-xs text-blue-600">{backupStatus.lastBackup}</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center p-4 bg-green-50 rounded-lg">
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Backup-Größe</p>
-                    <p className="text-xs text-green-600">{backupStatus.backupSize}</p>
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Backup-Größe</p>
+                      <p className="text-xs text-green-600">{backupStatus.backupSize}</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center p-4 bg-purple-50 rounded-lg">
-                <div className="flex items-center">
-                  <div className={`w-3 h-3 ${backupStatus.autoBackup ? 'bg-green-500' : 'bg-red-500'} rounded-full mr-3`}></div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Auto-Backup</p>
-                    <p className={`text-xs ${backupStatus.autoBackup ? 'text-green-600' : 'text-red-600'}`}>
-                      {backupStatus.autoBackup ? 'Aktiviert' : 'Deaktiviert'}
-                    </p>
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className={`w-3 h-3 ${backupStatus.autoBackup ? 'bg-green-500' : 'bg-red-500'} rounded-full mr-3`}></div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Auto-Backup</p>
+                      <p className={`text-xs ${backupStatus.autoBackup ? 'text-green-600' : 'text-red-600'}`}>
+                        {backupStatus.autoBackup ? 'Aktiviert' : 'Deaktiviert'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center p-4 bg-orange-50 rounded-lg">
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-orange-500 rounded-full mr-3"></div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Nächstes Backup</p>
+                      <p className="text-xs text-orange-600">{backupStatus.nextScheduled}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center p-4 bg-gray-50 rounded-lg">
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-gray-500 rounded-full mr-3"></div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Backup-Anzahl</p>
+                      <p className="text-xs text-gray-600">{backupStatus.backupCount} Backups</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center p-4 bg-indigo-50 rounded-lg">
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-indigo-500 rounded-full mr-3"></div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Speicherplatz</p>
+                      <p className="text-xs text-indigo-600">{backupStatus.diskSpaceUsed} / {backupStatus.diskSpaceTotal}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -318,33 +370,46 @@ const SystemBackupSection = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Backup erstellen</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Database Backup */}
-              <div className="border border-gray-200 rounded-lg p-6">
+              <div className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <span className="text-blue-600 text-lg">🗄️</span>
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                    <span className="text-blue-600 text-2xl">🗄️</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Datenbank-Backup</h4>
-                    <p className="text-sm text-gray-600">Nur Datenbank-Inhalte (SQL)</p>
+                    <p className="text-sm text-gray-600">Nur Datenbank-Inhalte (JSON)</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-4">
-                  Erstellt ein SQL-Backup aller Datenbank-Inhalte (Menü, Bewertungen, Benutzer, etc.)
+                  Erstellt ein JSON-Backup aller Datenbank-Inhalte (Menü, Bewertungen, Benutzer, etc.).
+                  Empfohlen für tägliche Backups.
                 </p>
+                <div className="mb-4">
+                  <div className="text-xs text-gray-500">
+                    💡 <strong>Verwendung:</strong> Schnelle Datensicherung, kleinere Dateigröße
+                  </div>
+                </div>
                 <button
                   onClick={handleDatabaseBackup}
                   disabled={loading}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? 'Erstelle Backup...' : 'Datenbank-Backup erstellen'}
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Erstelle Backup...
+                    </div>
+                  ) : (
+                    'Datenbank-Backup erstellen'
+                  )}
                 </button>
               </div>
 
               {/* Full Backup */}
-              <div className="border border-gray-200 rounded-lg p-6">
+              <div className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                    <span className="text-green-600 text-lg">📦</span>
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                    <span className="text-green-600 text-2xl">📦</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Vollständiges Backup</h4>
@@ -352,45 +417,99 @@ const SystemBackupSection = () => {
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-4">
-                  Erstellt ein komplettes Backup inklusive aller Bilder und Mediendateien
+                  Erstellt ein komplettes Backup inklusive aller Bilder und Mediendateien.
+                  Empfohlen für vollständige Systemsicherung.
                 </p>
+                <div className="mb-4">
+                  <div className="text-xs text-gray-500">
+                    💡 <strong>Verwendung:</strong> Vollständige Wiederherstellung, größere Dateigröße
+                  </div>
+                </div>
                 <button
                   onClick={handleFullBackup}
                   disabled={loading}
-                  className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 disabled:opacity-50"
+                  className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? 'Erstelle Backup...' : 'Vollständiges Backup erstellen'}
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Erstelle Backup...
+                    </div>
+                  ) : (
+                    'Vollständiges Backup erstellen'
+                  )}
                 </button>
               </div>
             </div>
           </div>
+
+          {/* Troubleshooting */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+            <h4 className="font-semibold text-yellow-800 mb-2">🛠️ Troubleshooting-Hinweise</h4>
+            <div className="text-sm text-yellow-700 space-y-2">
+              <p><strong>Backup schlägt fehl:</strong> Prüfen Sie die Datenbankverbindung und Speicherplatz.</p>
+              <p><strong>Download startet nicht:</strong> Deaktivieren Sie temporär Pop-up-Blocker im Browser.</p>
+              <p><strong>Große Backups:</strong> Bei großen Datenmengen kann der Download einige Minuten dauern.</p>
+              <p><strong>Automatische Backups:</strong> Werden täglich um 02:00 Uhr erstellt (falls aktiviert).</p>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* System Info Tab */}
+      {/* Enhanced System Info Tab */}
       {activeTab === 'system' && (
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">System-Informationen</h3>
-          <div className="space-y-4">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">System-Informationen</h3>
+            <button
+              onClick={loadSystemInfo}
+              disabled={loading}
+              className="text-blue-600 hover:text-blue-800 text-sm disabled:opacity-50"
+            >
+              🔄 Aktualisieren
+            </button>
+          </div>
+          <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium text-gray-700">CMS-Version</span>
-                  <span className="text-sm text-gray-900">{systemInfo.version}</span>
+                  <span className="text-sm text-gray-900 font-mono">{systemInfo.version}</span>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium text-gray-700">System-Uptime</span>
-                  <span className="text-sm text-gray-900">{systemInfo.uptime}</span>
+                  <span className="text-sm text-gray-900 font-mono">{systemInfo.uptime}</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Python Version</span>
+                  <span className="text-sm text-gray-900 font-mono">{systemInfo.pythonVersion}</span>
                 </div>
               </div>
               <div className="space-y-4">
-                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium text-gray-700">Datenbank-Status</span>
-                  <span className="text-sm text-green-600">🟢 {systemInfo.database}</span>
+                  <span className="text-sm text-green-600 font-medium">🟢 {systemInfo.database}</span>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">Speicherplatz</span>
-                  <span className="text-sm text-gray-900">{systemInfo.diskSpace}</span>
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">CPU-Auslastung</span>
+                  <span className="text-sm text-gray-900 font-mono">{systemInfo.cpuUsage}</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Speicher-Auslastung</span>
+                  <span className="text-sm text-gray-900 font-mono">{systemInfo.memoryUsage}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="border-t border-gray-200 pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Festplatten-Auslastung</span>
+                  <span className="text-sm text-blue-600 font-mono">{systemInfo.diskSpace}</span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Plattform</span>
+                  <span className="text-sm text-purple-600 font-mono">{systemInfo.platform}</span>
                 </div>
               </div>
             </div>
@@ -398,9 +517,20 @@ const SystemBackupSection = () => {
         </div>
       )}
 
-      {/* Configuration Tab */}
+      {/* Database Configuration Tab */}
+      {activeTab === 'database' && (
+        <DatabaseConfigPanel 
+          dbConfig={dbConfig} 
+          setDbConfig={setDbConfig}
+          onSave={handleConfigSave}
+          onTest={testDatabaseConnection}
+          loading={loading}
+        />
+      )}
+
+      {/* General Configuration Tab */}
       {activeTab === 'config' && (
-        <ConfigurationPanel onSave={handleConfigSave} loading={loading} />
+        <GeneralConfigPanel onSave={handleConfigSave} loading={loading} />
       )}
     </div>
   );
