@@ -174,7 +174,7 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
@@ -185,6 +185,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Could not properly test the backup deletion endpoint because the backup creation endpoints are failing. This endpoint needs to be retested after the backup creation endpoints are fixed."
+      - working: false
+        agent: "testing"
+        comment: "Confirmed that the backup deletion endpoint cannot be properly tested because the backup creation endpoints are failing during MySQL migration validation. Neither the database backup nor the full backup endpoints return valid JSON responses."
 
   - task: "Fix review creation endpoint JSON serialization"
     implemented: true
