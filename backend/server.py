@@ -2122,13 +2122,14 @@ async def get_system_info(current_user: User = Depends(get_admin_user)):
                     "used_percent": psutil.disk_usage('/').percent
                 }
             },
-            "database": {
-                "type": "MySQL/MariaDB",
-                "database_name": os.environ['MYSQL_DATABASE'],
-                "tables_count": table_count,
-                "total_records": total_records,
-                "database_size_mb": float(db_size_mb),
-                "connection_status": "Connected"
+            "mysql": {
+                "connection_status": "Connected",
+                "database_info": {
+                    "name": os.environ['MYSQL_DATABASE'],
+                    "tables_count": table_count,
+                    "total_records": total_records,
+                    "size_mb": float(db_size_mb)
+                }
             },
             "application": {
                 "cms_version": "2.0-mysql",
