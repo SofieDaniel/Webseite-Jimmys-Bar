@@ -69,10 +69,32 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-serif text-warm-beige mb-6 tracking-wide">Newsletter</h3>
             <p className="text-light-beige text-sm mb-4">Bleiben Sie informiert über neue Gerichte und Events</p>
-            <form className="space-y-3">
+            <form className="space-y-3" onSubmit={async (e) => {
+              e.preventDefault();
+              const email = e.target.email.value;
+              if (email) {
+                try {
+                  const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter/subscribe`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                  });
+                  if (response.ok) {
+                    alert('Erfolgreich für Newsletter angemeldet!');
+                    e.target.reset();
+                  } else {
+                    alert('Fehler bei der Anmeldung');
+                  }
+                } catch (error) {
+                  alert('Verbindungsfehler');
+                }
+              }
+            }}>
               <input
                 type="email"
+                name="email"
                 placeholder="E-Mail-Adresse"
+                required
                 className="w-full px-3 py-2 bg-medium-brown border border-warm-brown rounded text-light-beige placeholder-gray-400 focus:ring-2 focus:ring-warm-beige focus:border-transparent"
               />
               <button
