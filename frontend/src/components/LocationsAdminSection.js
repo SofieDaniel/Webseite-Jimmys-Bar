@@ -202,7 +202,7 @@ const LocationsAdminSection = () => {
 
         {/* Locations List */}
         <div className="space-y-6">
-          {locationsData.locations.map((location, index) => (
+          {(locationsData.locations || []).map((location, index) => (
             <div key={location.id || index} className="border border-gray-200 rounded-lg p-6">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
