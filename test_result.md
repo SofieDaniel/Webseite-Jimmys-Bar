@@ -126,11 +126,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Added GET /admin/backup/list endpoint to retrieve all available backups with proper JSON serialization of datetime objects and removal of MongoDB ObjectIds."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the backup list endpoint is working correctly. It returns a list of backups sorted by creation date (newest first). Each backup object contains all required fields (id, filename, type, created_at, created_by, size_human) and datetime objects are properly serialized to ISO format."
 
   - task: "Implement backup download endpoint - /admin/backup/download/{backup_id}"
     implemented: true
