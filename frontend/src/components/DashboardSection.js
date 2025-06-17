@@ -194,13 +194,6 @@ const DashboardSection = ({ setActiveSection }) => {
     }
   };
 
-    } catch (error) {
-      console.error('Error loading dashboard data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
