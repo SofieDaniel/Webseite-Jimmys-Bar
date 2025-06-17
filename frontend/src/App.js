@@ -458,8 +458,8 @@ function App() {
             <Route path="/bewertungen" element={<Bewertungen />} />
             <Route path="/ueber-uns" element={<UeberUns />} />
             <Route path="/kontakt" element={<Kontakt />} />
-            <Route path="/impressum" element={<div className="min-h-screen bg-dark-brown pt-24 px-4"><div className="container mx-auto"><h1 className="text-4xl font-serif text-warm-beige mb-8">Impressum</h1><div className="text-light-beige"><p>Angaben gemäß § 5 TMG</p></div></div></div>} />
-            <Route path="/datenschutz" element={<div className="min-h-screen bg-dark-brown pt-24 px-4"><div className="container mx-auto"><h1 className="text-4xl font-serif text-warm-beige mb-8">Datenschutz</h1><div className="text-light-beige"><p>Datenschutzerklärung</p></div></div></div>} />
+            <Route path="/impressum" element={<Impressum />} />
+            <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
           <Footer />
