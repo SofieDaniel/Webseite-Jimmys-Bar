@@ -506,7 +506,7 @@ function App() {
   return (
     <LanguageProvider>
       <div className="App">
-        <BrowserRouter>
+        <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={
               <>
