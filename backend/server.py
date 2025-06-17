@@ -1018,6 +1018,283 @@ async def update_legal_page(page_type: str, page_data: dict, current_user: User 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Fehler beim Speichern der Seite: {str(e)}")
 
+# Admin Menu endpoints - FULL CRUD
+@api_router.get("/admin/menu/items")
+async def get_all_menu_items_admin(current_user: User = Depends(get_editor_user)):
+    try:
+        items = []
+        async for item in db.menu_items.find():
+            if '_id' in item:
+                del item['_id']
+            items.append(item)
+        return items
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Menu-Items")
+
+@api_router.get("/admin/menu/items/{item_id}")
+async def get_menu_item_admin(item_id: str, current_user: User = Depends(get_editor_user)):
+    try:
+        item = await db.menu_items.find_one({"id": item_id})
+        if not item:
+            raise HTTPException(status_code=404, detail="Menu-Item nicht gefunden")
+        if '_id' in item:
+            del item['_id']
+        return item
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden des Menu-Items")
+
+@api_router.put("/admin/menu/items/{item_id}")
+async def update_menu_item(item_id: str, item_data: dict, current_user: User = Depends(get_editor_user)):
+    try:
+        item_data['updated_at'] = datetime.utcnow()
+        item_data['updated_by'] = current_user.username
+        
+        result = await db.menu_items.update_one(
+            {"id": item_id},
+            {"$set": item_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Menu-Item nicht gefunden")
+        
+        return {"message": "Menu-Item erfolgreich aktualisiert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Aktualisieren des Menu-Items")
+
+@api_router.delete("/admin/menu/items/{item_id}")
+async def delete_menu_item(item_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        result = await db.menu_items.delete_one({"id": item_id})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Menu-Item nicht gefunden")
+        return {"message": "Menu-Item erfolgreich gelöscht"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Löschen des Menu-Items")
+
+# Admin Reviews endpoints - FULL CRUD
+@api_router.put("/admin/reviews/{review_id}")
+async def update_review(review_id: str, review_data: dict, current_user: User = Depends(get_admin_user)):
+    try:
+        review_data['updated_at'] = datetime.utcnow()
+        review_data['updated_by'] = current_user.username
+        
+        result = await db.reviews.update_one(
+            {"id": review_id},
+            {"$set": review_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Bewertung nicht gefunden")
+        
+        return {"message": "Bewertung erfolgreich aktualisiert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Aktualisieren der Bewertung")
+
+@api_router.get("/admin/reviews/{review_id}")
+async def get_review_admin(review_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        review = await db.reviews.find_one({"id": review_id})
+        if not review:
+            raise HTTPException(status_code=404, detail="Bewertung nicht gefunden")
+        if '_id' in review:
+            del review['_id']
+        return review
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Bewertung")
+
+# Admin Contact endpoints - FULL CRUD
+@api_router.get("/admin/contact/{contact_id}")
+async def get_contact_message(contact_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        contact = await db.contact_messages.find_one({"id": contact_id})
+        if not contact:
+            raise HTTPException(status_code=404, detail="Kontakt-Nachricht nicht gefunden")
+        if '_id' in contact:
+            del contact['_id']
+        return contact
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Kontakt-Nachricht")
+
+@api_router.put("/admin/contact/{contact_id}")
+async def update_contact_message(contact_id: str, contact_data: dict, current_user: User = Depends(get_admin_user)):
+    try:
+        contact_data['updated_at'] = datetime.utcnow()
+        contact_data['updated_by'] = current_user.username
+        
+        result = await db.contact_messages.update_one(
+            {"id": contact_id},
+            {"$set": contact_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Kontakt-Nachricht nicht gefunden")
+        
+        return {"message": "Kontakt-Nachricht erfolgreich aktualisiert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Aktualisieren der Kontakt-Nachricht")
+
+# Admin Locations endpoints - FULL CRUD  
+@api_router.put("/admin/cms/locations/{location_id}")
+async def update_single_location(location_id: str, location_data: dict, current_user: User = Depends(get_editor_user)):
+    try:
+        location_data['updated_at'] = datetime.utcnow()
+        location_data['updated_by'] = current_user.username
+        
+        # Update specific location in the locations array
+        result = await db.locations.update_one(
+            {"locations.id": location_id},
+            {"$set": {"locations.$": location_data}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Standort nicht gefunden")
+        
+        return {"message": "Standort erfolgreich aktualisiert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Aktualisieren des Standorts")
+
+@api_router.delete("/admin/cms/locations/{location_id}")
+async def delete_location(location_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        result = await db.locations.update_one(
+            {},
+            {"$pull": {"locations": {"id": location_id}}}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Standort nicht gefunden")
+        
+        return {"message": "Standort erfolgreich gelöscht"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Löschen des Standorts")
+
+@api_router.post("/admin/cms/locations")
+async def add_new_location(location_data: dict, current_user: User = Depends(get_editor_user)):
+    try:
+        location_data['id'] = str(uuid.uuid4())
+        location_data['created_at'] = datetime.utcnow()
+        location_data['created_by'] = current_user.username
+        
+        result = await db.locations.update_one(
+            {},
+            {"$push": {"locations": location_data}},
+            upsert=True
+        )
+        
+        return {"message": "Standort erfolgreich hinzugefügt", "location": location_data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Hinzufügen des Standorts")
+
+# Admin Newsletter Templates - FULL CRUD
+@api_router.get("/admin/newsletter/templates/{template_id}")
+async def get_newsletter_template(template_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        template = await db.newsletter_templates.find_one({"id": template_id})
+        if not template:
+            raise HTTPException(status_code=404, detail="Newsletter-Vorlage nicht gefunden")
+        if '_id' in template:
+            del template['_id']
+        return template
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Newsletter-Vorlage")
+
+@api_router.put("/admin/newsletter/templates/{template_id}")
+async def update_newsletter_template(template_id: str, template_data: dict, current_user: User = Depends(get_admin_user)):
+    try:
+        template_data['updated_at'] = datetime.utcnow()
+        template_data['updated_by'] = current_user.username
+        
+        result = await db.newsletter_templates.update_one(
+            {"id": template_id},
+            {"$set": template_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Newsletter-Vorlage nicht gefunden")
+        
+        return {"message": "Newsletter-Vorlage erfolgreich aktualisiert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Aktualisieren der Newsletter-Vorlage")
+
+@api_router.delete("/admin/newsletter/templates/{template_id}")
+async def delete_newsletter_template(template_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        result = await db.newsletter_templates.delete_one({"id": template_id})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Newsletter-Vorlage nicht gefunden")
+        return {"message": "Newsletter-Vorlage erfolgreich gelöscht"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Löschen der Newsletter-Vorlage")
+
+# Admin Newsletter Campaigns - FULL CRUD
+@api_router.get("/admin/newsletter/campaigns/{campaign_id}")
+async def get_newsletter_campaign(campaign_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        campaign = await db.newsletter_campaigns.find_one({"id": campaign_id})
+        if not campaign:
+            raise HTTPException(status_code=404, detail="Newsletter-Kampagne nicht gefunden")
+        if '_id' in campaign:
+            del campaign['_id']
+        return campaign
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Newsletter-Kampagne")
+
+@api_router.put("/admin/newsletter/campaigns/{campaign_id}")
+async def update_newsletter_campaign(campaign_id: str, campaign_data: dict, current_user: User = Depends(get_admin_user)):
+    try:
+        campaign_data['updated_at'] = datetime.utcnow()
+        campaign_data['updated_by'] = current_user.username
+        
+        result = await db.newsletter_campaigns.update_one(
+            {"id": campaign_id},
+            {"$set": campaign_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Newsletter-Kampagne nicht gefunden")
+        
+        return {"message": "Newsletter-Kampagne erfolgreich aktualisiert"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Aktualisieren der Newsletter-Kampagne")
+
+@api_router.delete("/admin/newsletter/campaigns/{campaign_id}")
+async def delete_newsletter_campaign(campaign_id: str, current_user: User = Depends(get_admin_user)):
+    try:
+        result = await db.newsletter_campaigns.delete_one({"id": campaign_id})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Newsletter-Kampagne nicht gefunden")
+        return {"message": "Newsletter-Kampagne erfolgreich gelöscht"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Löschen der Newsletter-Kampagne")
+
+# Bulk Operations
+@api_router.post("/admin/menu/items/bulk-delete")
+async def bulk_delete_menu_items(item_ids: list, current_user: User = Depends(get_admin_user)):
+    try:
+        result = await db.menu_items.delete_many({"id": {"$in": item_ids}})
+        return {"message": f"{result.deleted_count} Menu-Items erfolgreich gelöscht"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Löschen der Menu-Items")
+
+@api_router.post("/admin/reviews/bulk-approve")
+async def bulk_approve_reviews(review_ids: list, current_user: User = Depends(get_admin_user)):
+    try:
+        result = await db.reviews.update_many(
+            {"id": {"$in": review_ids}},
+            {"$set": {"approved": True, "approved_by": current_user.username, "approved_at": datetime.utcnow()}}
+        )
+        return {"message": f"{result.modified_count} Bewertungen erfolgreich genehmigt"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Genehmigen der Bewertungen")
+
+@api_router.post("/admin/reviews/bulk-delete")
+async def bulk_delete_reviews(review_ids: list, current_user: User = Depends(get_admin_user)):
+    try:
+        result = await db.reviews.delete_many({"id": {"$in": review_ids}})
+        return {"message": f"{result.deleted_count} Bewertungen erfolgreich gelöscht"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Fehler beim Löschen der Bewertungen")
+
 # Newsletter API endpoints
 @api_router.post("/newsletter/subscribe")
 async def subscribe_newsletter(subscriber_data: dict):
