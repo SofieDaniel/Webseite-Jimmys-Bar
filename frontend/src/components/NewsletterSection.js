@@ -329,8 +329,18 @@ const NewsletterSection = () => {
                       Erstellt: {new Date(template.created_at).toLocaleDateString('de-DE')}
                     </p>
                     <div className="mt-3 flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-800 text-sm">Bearbeiten</button>
-                      <button className="text-red-600 hover:text-red-800 text-sm">Löschen</button>
+                      <button 
+                        onClick={() => handleEditTemplate(template)}
+                        className="text-blue-600 hover:text-blue-800 text-sm"
+                      >
+                        Bearbeiten
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteTemplate(template.id)}
+                        className="text-red-600 hover:text-red-800 text-sm"
+                      >
+                        Löschen
+                      </button>
                     </div>
                   </div>
                 ))}
