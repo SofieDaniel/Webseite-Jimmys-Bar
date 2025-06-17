@@ -62,13 +62,84 @@ const NewsletterSection = () => {
       });
 
       if (response.ok) {
-        setSubscribers(subscribers.filter(s => s.id !== subscriberId));
-        setMessage('Abonnent erfolgreich gelöscht');
-      } else {
-        setMessage('Fehler beim Löschen des Abonnenten');
+        setMessage('Abonnent erfolgreich gelöscht!');
+        loadNewsletterData();
+        setTimeout(() => setMessage(''), 3000);
       }
     } catch (error) {
-      setMessage('Verbindungsfehler');
+      setMessage('Fehler beim Löschen des Abonnenten');
+    }
+  };
+
+  // Template Management Functions
+  const handleCreateTemplate = () => {
+    setTemplateForm({ name: '', subject: '', content: '', description: '' });
+    setEditingTemplate(null);
+    setShowTemplateModal(true);
+  };
+
+  const handleEditTemplate = (template) => {
+    setTemplateForm({
+      name: template.name,
+      subject: template.subject,
+      content: template.content,
+      description: template.description || ''
+    });
+    setEditingTemplate(template);
+    setShowTemplateModal(true);
+  };
+
+  const handleSaveTemplate = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const method = editingTemplate ? 'PUT' : 'POST';
+      const url = editingTemplate 
+        ? `${process.env.REACT_APP_BACKEND_URL}/api/admin/newsletter/templates/${editingTemplate.id}`
+        : `${process.env.REACT_APP_BACKEND_URL}/api/admin/newsletter/templates`;
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          ...templateForm,
+          id: editingTemplate?.id || `template_${Date.now()}`
+        })
+      });
+
+      if (response.ok) {
+        setMessage(editingTemplate ? 'Vorlage erfolgreich aktualisiert!' : 'Vorlage erfolgreich erstellt!');
+        setShowTemplateModal(false);
+        loadNewsletterData();
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage('Fehler beim Speichern der Vorlage');
+      }
+    } catch (error) {
+      setMessage('Verbindungsfehler beim Speichern');
+    }
+  };
+
+  const handleDeleteTemplate = async (templateId) => {
+    if (!confirm('Möchten Sie diese Vorlage wirklich löschen?')) return;
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/newsletter/templates/${templateId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
+
+      if (response.ok) {
+        setMessage('Vorlage erfolgreich gelöscht!');
+        loadNewsletterData();
+        setTimeout(() => setMessage(''), 3000);
+      }
+    } catch (error) {
+      setMessage('Fehler beim Löschen der Vorlage');
     }
   };
 
