@@ -29,10 +29,33 @@ const SystemBackupSection = () => {
     connectionString: ''
   });
 
+  const [backupList, setBackupList] = useState([]);
+  const [loadingList, setLoadingList] = useState(false);
+
   useEffect(() => {
     loadSystemInfo();
     loadBackupStatus();
+    loadBackupList();
   }, []);
+
+  const loadBackupList = async () => {
+    try {
+      setLoadingList(true);
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/backup/list`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setBackupList(data.backups || []);
+      }
+    } catch (error) {
+      console.error('Error loading backup list:', error);
+    } finally {
+      setLoadingList(false);
+    }
+  };
 
   const loadSystemInfo = async () => {
     try {
