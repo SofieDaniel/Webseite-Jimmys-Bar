@@ -491,7 +491,7 @@ const SystemBackupSection = () => {
                 </p>
                 <div className="mb-4">
                   <div className="text-xs text-gray-500">
-                    💡 <strong>Verwendung:</strong> Schnelle Datensicherung, kleinere Dateigröße
+                    💡 <strong>Verwendung:</strong> MySQL-Dump für vollständige Datenbank-Wiederherstellung
                   </div>
                 </div>
                 <button
