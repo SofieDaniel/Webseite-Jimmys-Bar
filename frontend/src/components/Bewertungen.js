@@ -16,7 +16,7 @@ const Bewertungen = () => {
   useEffect(() => {
     const loadReviews = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews/approved`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews?approved_only=true`);
         if (response.ok) {
           const data = await response.json();
           setReviews(data);
