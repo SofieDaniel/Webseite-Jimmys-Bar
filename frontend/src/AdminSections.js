@@ -432,8 +432,8 @@ const MenuItemModal = ({ item, categories, categoryNames, onSave, onCancel, savi
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
+      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-900">
@@ -441,7 +441,7 @@ const MenuItemModal = ({ item, categories, categoryNames, onSave, onCancel, savi
             </h2>
             <button
               onClick={onCancel}
-              className="text-gray-400 hover:text-gray-600 p-2"
+              className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
