@@ -482,7 +482,7 @@ const SystemBackupSection = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Datenbank-Backup</h4>
-                    <p className="text-sm text-gray-600">Nur Datenbank-Inhalte (JSON)</p>
+                    <p className="text-sm text-gray-600">MySQL Datenbank-Dump (SQL)</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-4">
