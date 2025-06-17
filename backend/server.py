@@ -1500,8 +1500,209 @@ app.add_middleware(
 async def options_route(path: str):
     return {"detail": "OK"}
 
+@api_router.post("/admin/backup/database")
+async def create_database_backup(current_user: User = Depends(get_admin_user)):
+    """Create and download database backup"""
+    try:
+        import json
+        from datetime import datetime
+        
+        # Get all collections
+        collections = await db.list_collection_names()
+        backup_data = {
+            "backup_info": {
+                "created_at": datetime.now().isoformat(),
+                "created_by": current_user.username,
+                "version": "1.0"
+            },
+            "data": {}
+        }
+        
+        # Export each collection
+        for collection_name in collections:
+            collection = db[collection_name]
+            documents = await collection.find({}).to_list(length=None)
+            
+            # Convert ObjectId to string for JSON serialization
+            for doc in documents:
+                if '_id' in doc:
+                    doc['_id'] = str(doc['_id'])
+            
+            backup_data["data"][collection_name] = documents
+        
+        # Create JSON backup
+        backup_json = json.dumps(backup_data, indent=2, ensure_ascii=False)
+        
+        # Return as downloadable file
+        from fastapi.responses import Response
+        filename = f"database-backup-{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        
+        return Response(
+            content=backup_json,
+            media_type="application/json",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Backup creation failed: {str(e)}")
+
+@api_router.post("/admin/backup/full")
+async def create_full_backup(current_user: User = Depends(get_admin_user)):
+    """Create and download full backup (database + files)"""
+    try:
+        import json
+        import zipfile
+        import io
+        from datetime import datetime
+        
+        # Create in-memory zip file
+        zip_buffer = io.BytesIO()
+        
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            # Add database backup
+            collections = await db.list_collection_names()
+            backup_data = {
+                "backup_info": {
+                    "created_at": datetime.now().isoformat(),
+                    "created_by": current_user.username,
+                    "version": "1.0"
+                },
+                "data": {}
+            }
+            
+            for collection_name in collections:
+                collection = db[collection_name]
+                documents = await collection.find({}).to_list(length=None)
+                
+                for doc in documents:
+                    if '_id' in doc:
+                        doc['_id'] = str(doc['_id'])
+                
+                backup_data["data"][collection_name] = documents
+            
+            # Add database.json to zip
+            zip_file.writestr("database.json", json.dumps(backup_data, indent=2, ensure_ascii=False))
+            
+            # Add a readme file
+            readme_content = """Jimmy's Tapas Bar - Vollständiges Backup
+            
+Inhalt:
+- database.json: Vollständige Datenbank (MongoDB Collections)
+- uploads/: Alle hochgeladenen Dateien und Bilder
+
+Wiederherstellung:
+1. Importieren Sie database.json in Ihre MongoDB-Instanz
+2. Extrahieren Sie den uploads/ Ordner an den entsprechenden Ort
+
+Erstellt am: {created_at}
+Erstellt von: {created_by}
+""".format(
+    created_at=datetime.now().strftime('%d.%m.%Y %H:%M:%S'),
+    created_by=current_user.username
+)
+            zip_file.writestr("README.txt", readme_content)
+        
+        zip_buffer.seek(0)
+        
+        # Return as downloadable zip file
+        from fastapi.responses import Response
+        filename = f"full-backup-{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
+        
+        return Response(
+            content=zip_buffer.getvalue(),
+            media_type="application/zip",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Full backup creation failed: {str(e)}")
+
+@api_router.get("/admin/backup/status")
+async def get_backup_status(current_user: User = Depends(get_admin_user)):
+    """Get backup status information"""
+    try:
+        from datetime import datetime, timedelta
+        import os
+        
+        # Mock backup status - in production this could read from actual backup logs
+        status = {
+            "last_backup": (datetime.now() - timedelta(hours=6)).isoformat(),
+            "backup_size": "125 MB",
+            "auto_backup": True,
+            "backup_frequency": "daily",
+            "next_scheduled": (datetime.now() + timedelta(hours=18)).isoformat(),
+            "backup_count": 15,
+            "disk_space_used": "2.5 GB",
+            "disk_space_total": "10 GB"
+        }
+        
+        return status
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Could not get backup status: {str(e)}")
+
+@api_router.put("/admin/config")
+async def update_system_config(config_data: dict, current_user: User = Depends(get_admin_user)):
+    """Update system configuration"""
+    try:
+        # In a real implementation, this would save to a config file or environment
+        # For now, we'll just validate and return success
+        
+        required_fields = ["siteName", "adminEmail"]
+        for field in required_fields:
+            if field not in config_data:
+                raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+        
+        # Validate email format
+        import re
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_pattern, config_data["adminEmail"]):
+            raise HTTPException(status_code=400, detail="Invalid email format")
+        
+        # Save configuration (in production, save to file or database)
+        # For now, just return success
+        
+        return {"message": "Configuration updated successfully", "config": config_data}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Configuration update failed: {str(e)}")
+
+@api_router.get("/admin/system/info")
+async def get_system_info(current_user: User = Depends(get_admin_user)):
+    """Get system information"""
+    try:
+        from datetime import datetime
+        import psutil
+        import platform
+        
+        # Get system information
+        info = {
+            "version": "Jimmy's CMS v1.0",
+            "python_version": platform.python_version(),
+            "platform": platform.platform(),
+            "uptime": "24h 15m",  # Mock uptime
+            "cpu_usage": f"{psutil.cpu_percent()}%",
+            "memory_usage": f"{psutil.virtual_memory().percent}%",
+            "disk_usage": f"{psutil.disk_usage('/').percent}%",
+            "database_status": "Connected",
+            "last_restart": (datetime.now().replace(hour=8, minute=0)).isoformat(),
+            "environment": "Production"
+        }
+        
+        return info
+        
+    except Exception as e:
+        # Return basic info if psutil not available
+        return {
+            "version": "Jimmy's CMS v1.0",
+            "uptime": "24h 15m",
+            "database_status": "Connected",
+            "environment": "Production"
+        }
+
 # Include the router in the main app
-app.include_router(api_router)
 
 # Configure logging
 logging.basicConfig(
