@@ -102,7 +102,80 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Teste das erweiterte CMS-Backend für Jimmy's Tapas Bar Admin-System. Das Backend wurde gerade stark erweitert mit einem kompletten Content Management System."
+user_problem_statement: "Erstelle ein professionelles, responsives Admin-Menü für meine gastronomische Website. BACKUP-FUNKTIONALITÄT – Fehlerbehebung & Feature-Erweiterung: 1. Fehlerbehebung Backup-Erstellung - Fehler bei datetime JSON serialization, 2. Backup-Liste & Download-Funktion implementieren, 3. Backup-Typen (Datenbank & Full Backup) reparieren, 4. UI/UX-Anforderungen erfüllen, 5. Bewertungsfehler beheben"
+
+backend:
+  - task: "Fix JSON datetime serialization in backup functions"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Fixed datetime serialization issues by implementing CustomJSONEncoder for both database and full backup functions. Added proper ObjectId and datetime handling throughout backup creation process."
+
+  - task: "Implement missing backup endpoints - /admin/backup/list"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added GET /admin/backup/list endpoint to retrieve all available backups with proper JSON serialization of datetime objects and removal of MongoDB ObjectIds."
+
+  - task: "Implement backup download endpoint - /admin/backup/download/{backup_id}"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added GET /admin/backup/download/{backup_id} endpoint to handle individual backup downloads with proper error handling and backup info retrieval."
+
+  - task: "Implement backup deletion endpoint - /admin/backup/{backup_id}"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added DELETE /admin/backup/{backup_id} endpoint to allow deletion of backup records from database with proper error handling and confirmation messages."
+
+  - task: "Fix review creation endpoint JSON serialization"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Enhanced POST /reviews endpoint with better error handling and proper datetime object handling to prevent JSON serialization errors during review creation."
+
+  - task: "Add psutil dependency for system info"
+    implemented: true
+    working: true
+    file: "/app/backend/requirements.txt"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added psutil>=5.9.0 to requirements.txt and installed it to support system information monitoring in /admin/system/info endpoint."
 
 backend:
   - task: "Root endpoint GET /api/"
