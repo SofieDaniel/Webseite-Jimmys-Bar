@@ -49,9 +49,13 @@ const SystemBackupSection = () => {
       if (response.ok) {
         const data = await response.json();
         setBackupList(data.backups || []);
+      } else {
+        console.error('Failed to load backup list:', response.status);
+        setMessage('❌ Fehler beim Laden der Backup-Liste');
       }
     } catch (error) {
       console.error('Error loading backup list:', error);
+      setMessage('❌ Verbindungsfehler beim Laden der Backup-Liste');
     } finally {
       setLoadingList(false);
     }
