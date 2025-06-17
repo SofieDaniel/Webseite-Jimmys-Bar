@@ -530,6 +530,7 @@ const AdminPanel = () => {
           {activeSection === 'newsletter' && <NewsletterSection />}
           {activeSection === 'users' && <UsersAdminSection />}
           {activeSection === 'legal' && <LegalEditor />}
+          {activeSection === 'system' && <SystemBackupSection />}
           {activeSection === 'maintenance' && <MaintenanceSection />}
         </div>
       </div>
