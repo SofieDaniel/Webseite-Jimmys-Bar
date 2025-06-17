@@ -660,15 +660,21 @@ def test_backup_list():
             print("❌ Response is not valid JSON")
             return False
         
-        # Check if response is a list
-        if not isinstance(data, list):
-            print("❌ Response is not a list")
+        # Check if response is a dictionary with a 'backups' key
+        if isinstance(data, dict) and 'backups' in data:
+            print(f"✅ Response is a dictionary with a 'backups' key containing {len(data['backups'])} backups")
+            backups = data['backups']
+        elif isinstance(data, list):
+            print(f"✅ Response is a list with {len(data)} backups")
+            backups = data
+        else:
+            print("❌ Response is neither a list nor a dictionary with a 'backups' key")
             print(f"Response type: {type(data)}")
             print(f"Response content: {data}")
             return False
         
         # If there are backups, verify the structure of the first one
-        if data:
+        if backups:
             required_fields = ["id", "filename", "type", "created_at", "created_by", "size_human"]
             missing_fields = [field for field in required_fields if field not in data[0]]
             
