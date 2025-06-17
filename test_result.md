@@ -156,11 +156,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Added DELETE /admin/backup/{backup_id} endpoint to allow deletion of backup records from database with proper error handling and confirmation messages."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the backup deletion endpoint is working correctly. It successfully deletes backup records from the database and returns a confirmation message with the deleted backup details. The endpoint handles non-existent backup IDs correctly with a 404 error."
 
   - task: "Fix review creation endpoint JSON serialization"
     implemented: true
