@@ -1899,7 +1899,7 @@ Bei Problemen mit der Wiederherstellung:
             }
             
             with open(os.path.join(backup_dir, 'system_info.json'), 'w', encoding='utf-8') as f:
-                json.dumps(system_info, f, indent=2, ensure_ascii=False)
+                json.dump(system_info, f, indent=2, ensure_ascii=False)
             
             # 10. Create ZIP archive
             zip_buffer = io.BytesIO()
