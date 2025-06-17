@@ -642,6 +642,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "Conducted comprehensive testing of the Admin CMS implementation in the current environment. The backend API endpoints are working correctly, with successful authentication using admin/jimmy2024 credentials and proper JWT token handling. API tests confirm that the reviews system is functioning, with one approved review visible in the system. However, there are issues with the frontend routing - when navigating to /admin, the main site is displayed instead of the admin login page. This appears to be a client-side routing issue with React Router v7. The pathname-based routing solution mentioned in previous tests is not working in the current environment. This is a critical issue that needs to be addressed before the admin panel can be fully tested."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested the Admin Panel optimizations. The admin login page loads correctly at /admin and login with admin/jimmy2024 credentials works properly. CRITICAL: Verified that the 'Startseite' menu item has been REMOVED from the sidebar navigation. The navigation menu now only contains Dashboard and specific menu items (Homepage bearbeiten, Standorte, Über uns, Speisekarte, etc.). Successfully tested navigation between Dashboard and other sections. The System & Backup section is fully functional with all 4 tabs (Backup & Restore, System-Info, Datenbank-Konfiguration, Allgemeine Konfiguration) working correctly. The backup functionality includes database and full backup options with proper status information. Troubleshooting hints are displayed with clear instructions. The System & Backup quick action button on the Dashboard works correctly for direct navigation."
 
 metadata:
   created_by: "testing_agent"
