@@ -632,7 +632,7 @@ const router = createBrowserRouter([
       },
       {
         path: "standorte",
-        element: <Standorte />
+        element: <ErrorBoundary><Locations /></ErrorBoundary>
       },
       {
         path: "speisekarte", 
