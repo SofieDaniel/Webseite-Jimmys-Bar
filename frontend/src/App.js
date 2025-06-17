@@ -327,6 +327,12 @@ const AdminPanel = () => {
               Benutzer-Verwaltung
             </button>
             <button
+              onClick={() => setActiveSection('legal')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'legal' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              Impressum & Datenschutz
+            </button>
+            <button
               onClick={() => setActiveSection('media')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'media' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
