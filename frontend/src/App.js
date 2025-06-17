@@ -458,7 +458,8 @@ function App() {
     <LanguageProvider>
       <div className="App">
         <BrowserRouter>
-          <Header />
+          {/* Conditional Header - not shown on admin pages */}
+          {window.location.pathname !== '/admin' && <Header />}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/standorte" element={<Standorte />} />
@@ -470,7 +471,8 @@ function App() {
             <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
-          <Footer />
+          {/* Conditional Footer - not shown on admin pages */}
+          {window.location.pathname !== '/admin' && <Footer />}
           <CookieBanner />
         </BrowserRouter>
       </div>
