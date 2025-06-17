@@ -385,6 +385,8 @@ const AdminPanel = () => {
         <div className="flex-1 p-8" style={{marginLeft: '256px'}}>
           {activeSection === 'dashboard' && <DashboardSection />}
           {activeSection === 'homepage' && <ContentSection />}
+          {activeSection === 'locations' && <LocationsAdminSection />}
+          {activeSection === 'about' && <AboutAdminSection />}
           {activeSection === 'menu' && <MenuSection />}
           {activeSection === 'reviews' && <ReviewsSection />}
           {activeSection === 'contacts' && <ContactsSection />}
