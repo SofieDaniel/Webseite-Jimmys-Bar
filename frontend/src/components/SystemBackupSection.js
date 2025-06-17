@@ -108,18 +108,9 @@ const SystemBackupSection = () => {
     }
   };
 
-  const formatDateTime = (isoString) => {
-    try {
-      const date = new Date(isoString);
-      return date.toLocaleDateString('de-DE') + ' ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-    } catch {
-      return 'Unbekannt';
-    }
-  };
-
   const handleDatabaseBackup = async () => {
     setLoading(true);
-    setMessage('Erstelle Datenbank-Backup...');
+    setMessage('📋 Erstelle Datenbank-Backup...');
 
     try {
       const token = localStorage.getItem('adminToken');
@@ -131,8 +122,11 @@ const SystemBackupSection = () => {
       });
 
       if (response.ok) {
-        // Get filename from response headers
+        // Get filename and backup info from response headers
         const contentDisposition = response.headers.get('Content-Disposition');
+        const backupId = response.headers.get('X-Backup-ID');
+        const backupSize = response.headers.get('X-Backup-Size');
+        
         const filename = contentDisposition ? 
           contentDisposition.split('filename=')[1].replace(/"/g, '') : 
           `database-backup-${new Date().toISOString().split('T')[0]}.json`;
@@ -148,8 +142,13 @@ const SystemBackupSection = () => {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        setMessage('✅ Datenbank-Backup erfolgreich erstellt und heruntergeladen!');
-        loadBackupStatus(); // Refresh status
+        setMessage(`✅ Datenbank-Backup erfolgreich erstellt! 
+                   📁 Datei: ${filename}
+                   📊 Größe: ${formatBytes(parseInt(backupSize || '0'))}`);
+        
+        // Refresh lists
+        loadBackupStatus();
+        loadBackupList();
       } else {
         const errorData = await response.json();
         setMessage(`❌ Fehler beim Erstellen des Datenbank-Backups: ${errorData.detail}`);
@@ -159,13 +158,13 @@ const SystemBackupSection = () => {
       setMessage('❌ Verbindungsfehler beim Erstellen des Backups. Prüfen Sie Ihre Internetverbindung.');
     } finally {
       setLoading(false);
-      setTimeout(() => setMessage(''), 8000);
+      setTimeout(() => setMessage(''), 10000);
     }
   };
 
   const handleFullBackup = async () => {
     setLoading(true);
-    setMessage('Erstelle vollständiges Backup (Datenbank + Dateien)...');
+    setMessage('📦 Erstelle vollständiges Backup (Datenbank + Dateien)...');
 
     try {
       const token = localStorage.getItem('adminToken');
@@ -177,8 +176,11 @@ const SystemBackupSection = () => {
       });
 
       if (response.ok) {
-        // Get filename from response headers
+        // Get filename and backup info from response headers
         const contentDisposition = response.headers.get('Content-Disposition');
+        const backupId = response.headers.get('X-Backup-ID');
+        const backupSize = response.headers.get('X-Backup-Size');
+        
         const filename = contentDisposition ? 
           contentDisposition.split('filename=')[1].replace(/"/g, '') : 
           `full-backup-${new Date().toISOString().split('T')[0]}.zip`;
@@ -194,8 +196,14 @@ const SystemBackupSection = () => {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        setMessage('✅ Vollständiges Backup erfolgreich erstellt und heruntergeladen!');
-        loadBackupStatus(); // Refresh status
+        setMessage(`✅ Vollständiges Backup erfolgreich erstellt! 
+                   📁 Datei: ${filename}
+                   📊 Größe: ${formatBytes(parseInt(backupSize || '0'))}
+                   💾 Enthält: Datenbank + Mediendateien`);
+        
+        // Refresh lists
+        loadBackupStatus();
+        loadBackupList();
       } else {
         const errorData = await response.json();
         setMessage(`❌ Fehler beim Erstellen des vollständigen Backups: ${errorData.detail}`);
@@ -205,7 +213,77 @@ const SystemBackupSection = () => {
       setMessage('❌ Verbindungsfehler beim Erstellen des Backups. Prüfen Sie Ihre Internetverbindung.');
     } finally {
       setLoading(false);
-      setTimeout(() => setMessage(''), 8000);
+      setTimeout(() => setMessage(''), 10000);
+    }
+  };
+
+  const handleDownloadBackup = async (backupId, filename) => {
+    setLoading(true);
+    setMessage(`📥 Lade Backup herunter: ${filename}...`);
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/backup/download/${backupId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessage(`✅ Backup-Download initiiert: ${data.backup_info?.filename || filename}`);
+      } else {
+        setMessage('❌ Fehler beim Download des Backups');
+      }
+    } catch (error) {
+      setMessage('❌ Verbindungsfehler beim Download');
+    } finally {
+      setLoading(false);
+      setTimeout(() => setMessage(''), 5000);
+    }
+  };
+
+  const handleDeleteBackup = async (backupId, filename) => {
+    if (!window.confirm(`Sind Sie sicher, dass Sie das Backup "${filename}" löschen möchten?`)) {
+      return;
+    }
+
+    setLoading(true);
+    setMessage(`🗑️ Lösche Backup: ${filename}...`);
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/backup/${backupId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        setMessage(`✅ Backup "${filename}" erfolgreich gelöscht!`);
+        loadBackupList(); // Refresh list
+      } else {
+        setMessage('❌ Fehler beim Löschen des Backups');
+      }
+    } catch (error) {
+      setMessage('❌ Verbindungsfehler beim Löschen');
+    } finally {
+      setLoading(false);
+      setTimeout(() => setMessage(''), 5000);
+    }
+  };
+
+  const formatBytes = (bytes) => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  };
+
+  const formatDateTime = (isoString) => {
+    try {
+      const date = new Date(isoString);
+      return date.toLocaleDateString('de-DE') + ' ' + date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return 'Unbekannt';
     }
   };
 
