@@ -121,9 +121,9 @@ const Bewertungen = () => {
                 </div>
               </div>
               <p className="text-light-beige mb-4 italic">"{review.comment}"</p>
-              <div className="text-warm-beige font-medium">{review.name}</div>
+              <div className="text-warm-beige font-medium">{review.customer_name || review.name}</div>
               <div className="text-gray-400 text-sm">
-                {new Date(review.created_at).toLocaleDateString('de-DE')}
+                {formatDate(review.date || review.created_at)}
               </div>
             </div>
           ))}
