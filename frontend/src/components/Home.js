@@ -252,29 +252,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Newsletter Section */}
-      <section className="py-16 bg-dark-brown">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl font-serif text-warm-beige mb-4 tracking-wide">Newsletter</h2>
-            <p className="text-light-beige mb-8">Bleiben Sie über neue Gerichte und Events informiert</p>
-            <form className="flex flex-col md:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Ihre E-Mail-Adresse"
-                className="flex-1 px-4 py-3 rounded-lg border border-warm-brown focus:ring-2 focus:ring-warm-beige focus:border-transparent"
-              />
-              <button
-                type="submit"
-                className="bg-warm-beige text-dark-brown px-8 py-3 rounded-lg font-medium hover:bg-light-beige transition-colors"
-              >
-                Anmelden
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
