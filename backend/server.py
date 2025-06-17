@@ -1506,44 +1506,99 @@ async def create_database_backup(current_user: User = Depends(get_admin_user)):
     try:
         import json
         from datetime import datetime
+        from bson import ObjectId
+        
+        # Custom JSON encoder for datetime and ObjectId
+        class CustomJSONEncoder(json.JSONEncoder):
+            def default(self, obj):
+                if isinstance(obj, datetime):
+                    return obj.isoformat()
+                if isinstance(obj, ObjectId):
+                    return str(obj)
+                return super().default(obj)
         
         # Get all collections
         collections = await db.list_collection_names()
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        
         backup_data = {
             "backup_info": {
                 "created_at": datetime.now().isoformat(),
                 "created_by": current_user.username,
-                "version": "1.0"
+                "version": "1.0",
+                "type": "database",
+                "collections_count": len(collections)
             },
             "data": {}
         }
         
+        total_documents = 0
         # Export each collection
         for collection_name in collections:
             collection = db[collection_name]
             documents = await collection.find({}).to_list(length=None)
             
-            # Convert ObjectId to string for JSON serialization
+            # Convert ObjectId and datetime objects for JSON serialization
+            serialized_documents = []
             for doc in documents:
-                if '_id' in doc:
-                    doc['_id'] = str(doc['_id'])
+                serialized_doc = {}
+                for key, value in doc.items():
+                    if isinstance(value, ObjectId):
+                        serialized_doc[key] = str(value)
+                    elif isinstance(value, datetime):
+                        serialized_doc[key] = value.isoformat()
+                    elif isinstance(value, dict):
+                        serialized_doc[key] = convert_nested_datetime(value)
+                    elif isinstance(value, list):
+                        serialized_doc[key] = convert_list_datetime(value)
+                    else:
+                        serialized_doc[key] = value
+                
+                serialized_documents.append(serialized_doc)
             
-            backup_data["data"][collection_name] = documents
+            backup_data["data"][collection_name] = serialized_documents
+            total_documents += len(serialized_documents)
         
-        # Create JSON backup
-        backup_json = json.dumps(backup_data, indent=2, ensure_ascii=False)
+        backup_data["backup_info"]["total_documents"] = total_documents
+        
+        # Create JSON backup with custom encoder
+        backup_json = json.dumps(backup_data, indent=2, ensure_ascii=False, cls=CustomJSONEncoder)
+        backup_size = len(backup_json.encode('utf-8'))
+        
+        # Save backup metadata
+        filename = f"database-backup-{timestamp}.json"
+        backup_metadata = {
+            "id": f"db_{timestamp}",
+            "filename": filename,
+            "type": "database",
+            "created_at": datetime.now(),
+            "created_by": current_user.username,
+            "size_bytes": backup_size,
+            "size_human": format_bytes(backup_size),
+            "collections_count": len(collections),
+            "total_documents": total_documents,
+            "includes_media": False
+        }
+        
+        # Store in database for backup list
+        backups_collection = db["system_backups"]
+        await backups_collection.insert_one(backup_metadata)
         
         # Return as downloadable file
         from fastapi.responses import Response
-        filename = f"database-backup-{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         
         return Response(
             content=backup_json,
             media_type="application/json",
-            headers={"Content-Disposition": f"attachment; filename={filename}"}
+            headers={
+                "Content-Disposition": f"attachment; filename={filename}",
+                "X-Backup-ID": backup_metadata["id"],
+                "X-Backup-Size": str(backup_size)
+            }
         )
         
     except Exception as e:
+        print(f"Database backup error details: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Backup creation failed: {str(e)}")
 
 def convert_nested_datetime(data):
