@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "re
 import { ContentSection, MenuSection } from './AdminSections';
 import { ReviewsSection, ContactsSection, UsersSection } from './AdminSectionsExtended';
 import { MediaSection, MaintenanceSection } from './AdminSectionsFinal';
+import LegalEditor from './components/LegalEditor';
 
 // Import Page Components
 import Home from './components/Home';
