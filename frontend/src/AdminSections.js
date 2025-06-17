@@ -1,59 +1,97 @@
 import React, { useState, useEffect } from 'react';
 
-// Content Management Section
+// Content Management Section - FIXED VERSION
 export const ContentSection = ({ user, token, apiCall }) => {
-  const [pages, setPages] = useState({
-    home: { sections: [] },
-    locations: { sections: [] },
-    about: { sections: [] },
-    contact: { sections: [] },
-    privacy: { sections: [] },
-    imprint: { sections: [] }
-  });
-  const [activePageTab, setActivePageTab] = useState('home');
-  const [loading, setLoading] = useState(true);
+  const [activePageTab, setActivePageTab] = useState('homepage');
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
+  // Homepage Content
+  const [homepageContent, setHomepageContent] = useState(null);
+  
+  // Website Texts
+  const [websiteTexts, setWebsiteTexts] = useState({
+    navigation: null,
+    footer: null,
+    buttons: null,
+    general: null
+  });
+
   useEffect(() => {
-    loadPageContent();
+    loadContent();
   }, [activePageTab]);
 
-  const loadPageContent = async () => {
+  const loadContent = async () => {
     try {
       setLoading(true);
-      const response = await apiCall(`/content/${activePageTab}`);
-      if (response.ok) {
-        const data = await response.json();
-        setPages(prev => ({
-          ...prev,
-          [activePageTab]: { sections: data }
-        }));
+      setError('');
+
+      if (activePageTab === 'homepage') {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/homepage`);
+        if (response.ok) {
+          const data = await response.json();
+          setHomepageContent(data);
+        } else {
+          setError('Fehler beim Laden der Homepage-Inhalte');
+        }
+      } else {
+        // Load website texts for other sections
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/website-texts/${activePageTab}`);
+        if (response.ok) {
+          const data = await response.json();
+          setWebsiteTexts(prev => ({
+            ...prev,
+            [activePageTab]: data
+          }));
+        } else {
+          setError(`Fehler beim Laden der ${activePageTab}-Inhalte`);
+        }
       }
     } catch (error) {
-      setError('Fehler beim Laden der Inhalte');
+      console.error('Error loading content:', error);
+      setError('Verbindungsfehler beim Laden der Inhalte');
     } finally {
       setLoading(false);
     }
   };
 
-  const saveContent = async (section, content) => {
+  const saveContent = async () => {
     try {
       setSaving(true);
-      const response = await apiCall(`/content/${activePageTab}/${section}`, 'PUT', {
-        content: content,
-        images: []
-      });
-      
-      if (response.ok) {
-        setSuccess('Inhalt erfolgreich gespeichert!');
-        setTimeout(() => setSuccess(''), 3000);
-        loadPageContent();
+      setError('');
+      setSuccess('');
+
+      let response;
+      const token = localStorage.getItem('adminToken');
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+
+      if (activePageTab === 'homepage') {
+        response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/homepage`, {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify(homepageContent)
+        });
       } else {
-        setError('Fehler beim Speichern');
+        response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/website-texts/${activePageTab}`, {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify(websiteTexts[activePageTab])
+        });
+      }
+
+      if (response.ok) {
+        setSuccess('Inhalte erfolgreich gespeichert!');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Fehler beim Speichern der Inhalte');
       }
     } catch (error) {
+      console.error('Error saving content:', error);
       setError('Verbindungsfehler beim Speichern');
     } finally {
       setSaving(false);
@@ -61,19 +99,18 @@ export const ContentSection = ({ user, token, apiCall }) => {
   };
 
   const pageNames = {
-    home: 'Startseite',
-    locations: 'Standorte',
-    about: 'Über uns',
-    contact: 'Kontakt',
-    privacy: 'Datenschutz',
-    imprint: 'Impressum'
+    homepage: 'Homepage',
+    navigation: 'Navigation', 
+    footer: 'Footer',
+    buttons: 'Buttons',
+    general: 'Allgemein'
   };
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Inhalte verwalten</h1>
-        <p className="text-gray-600">Bearbeiten Sie die Inhalte Ihrer Website-Seiten</p>
+        <p className="text-gray-600">Bearbeiten Sie die Inhalte Ihrer Website</p>
       </div>
 
       {success && (
@@ -113,13 +150,40 @@ export const ContentSection = ({ user, token, apiCall }) => {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Content Editors */}
-          {activePageTab === 'home' && <HomeContentEditor saveContent={saveContent} saving={saving} />}
-          {activePageTab === 'locations' && <LocationsContentEditor saveContent={saveContent} saving={saving} />}
-          {activePageTab === 'about' && <AboutContentEditor saveContent={saveContent} saving={saving} />}
-          {activePageTab === 'contact' && <ContactContentEditor saveContent={saveContent} saving={saving} />}
-          {activePageTab === 'privacy' && <PrivacyContentEditor saveContent={saveContent} saving={saving} />}
-          {activePageTab === 'imprint' && <ImprintContentEditor saveContent={saveContent} saving={saving} />}
+          {/* Homepage Content Editor */}
+          {activePageTab === 'homepage' && homepageContent && (
+            <HomeContentEditor 
+              content={homepageContent} 
+              setContent={setHomepageContent}
+              onSave={saveContent}
+              saving={saving}
+            />
+          )}
+
+          {/* Website Texts Editors */}
+          {activePageTab !== 'homepage' && websiteTexts[activePageTab] && (
+            <WebsiteTextsEditor 
+              section={activePageTab}
+              texts={websiteTexts[activePageTab]}
+              setTexts={(newTexts) => setWebsiteTexts(prev => ({
+                ...prev,
+                [activePageTab]: newTexts
+              }))}
+              onSave={saveContent}
+              saving={saving}
+            />
+          )}
+
+          {/* Save Button */}
+          <div className="flex justify-end">
+            <button
+              onClick={saveContent}
+              disabled={saving || loading}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            >
+              {saving ? 'Speichern...' : 'Änderungen speichern'}
+            </button>
+          </div>
         </div>
       )}
     </div>
