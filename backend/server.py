@@ -1703,6 +1703,7 @@ async def get_system_info(current_user: User = Depends(get_admin_user)):
         }
 
 # Include the router in the main app
+app.include_router(api_router)
 
 # Configure logging
 logging.basicConfig(
