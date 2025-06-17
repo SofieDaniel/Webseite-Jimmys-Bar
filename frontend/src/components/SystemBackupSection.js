@@ -548,6 +548,74 @@ const SystemBackupSection = () => {
             </div>
           </div>
 
+          {/* Backup List */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Verfügbare Backups</h3>
+              <button
+                onClick={loadBackupList}
+                disabled={loadingList}
+                className="text-blue-600 hover:text-blue-800 text-sm disabled:opacity-50"
+              >
+                {loadingList ? '🔄 Lade...' : '🔄 Aktualisieren'}
+              </button>
+            </div>
+            
+            {loadingList ? (
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span className="ml-2 text-gray-600">Lade Backup-Liste...</span>
+              </div>
+            ) : backupList.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                📂 Keine Backups vorhanden. Erstellen Sie Ihr erstes Backup oben.
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {backupList.map((backup, index) => (
+                  <div key={backup.id || index} className="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                          <span className="text-xl">
+                            {backup.type === 'database' ? '🗄️' : '📦'}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">{backup.filename}</p>
+                          <div className="flex items-center space-x-4 text-sm text-gray-500">
+                            <span>📅 {formatDateTime(backup.created_at)}</span>
+                            <span>📊 {backup.size_human}</span>
+                            <span>🔹 {backup.type === 'database' ? 'Datenbank' : 'Vollständig'}</span>
+                            {backup.total_documents && (
+                              <span>📄 {backup.total_documents} Dokumente</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => handleDownloadBackup(backup.id, backup.filename)}
+                          disabled={loading}
+                          className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 disabled:opacity-50"
+                        >
+                          📥 Download
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBackup(backup.id, backup.filename)}
+                          disabled={loading}
+                          className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 disabled:opacity-50"
+                        >
+                          🗑️ Löschen
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Troubleshooting */}
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
             <h4 className="font-semibold text-yellow-800 mb-2">🛠️ Troubleshooting-Hinweise</h4>
