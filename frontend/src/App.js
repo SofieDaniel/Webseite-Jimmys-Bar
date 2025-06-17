@@ -666,44 +666,60 @@ const router = createBrowserRouter([
   }
 ]);
 
-// Direct Admin Check Component
+// Direct Admin Check Component with better detection
 const AppRouter = () => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [currentPath, setCurrentPath] = useState('');
 
   useEffect(() => {
-    const checkPath = () => {
+    const checkAndSetPath = () => {
       const path = window.location.pathname;
-      setIsAdmin(path === '/admin' || path.startsWith('/admin/'));
+      const hash = window.location.hash.substring(1); // Remove the #
+      setCurrentPath(path + (hash ? `#${hash}` : ''));
+      
+      // Check for admin path in multiple ways
+      const isAdminPath = path === '/admin' || 
+                         path.startsWith('/admin/') || 
+                         hash === 'admin' || 
+                         hash.startsWith('admin/');
+      
+      setIsAdmin(isAdminPath);
     };
 
-    checkPath();
+    checkAndSetPath();
     
-    // Listen for navigation changes
-    const handlePopState = () => checkPath();
-    window.addEventListener('popstate', handlePopState);
+    // Listen for all navigation changes
+    const handleNavigation = () => {
+      setTimeout(checkAndSetPath, 10); // Small delay to ensure updates
+    };
     
-    // Override pushState and replaceState to detect programmatic navigation
+    window.addEventListener('popstate', handleNavigation);
+    window.addEventListener('hashchange', handleNavigation);
+    
+    // Override history methods
     const originalPushState = window.history.pushState;
     const originalReplaceState = window.history.replaceState;
     
     window.history.pushState = function(...args) {
       originalPushState.apply(this, args);
-      checkPath();
+      handleNavigation();
     };
     
     window.history.replaceState = function(...args) {
       originalReplaceState.apply(this, args);
-      checkPath();
+      handleNavigation();
     };
 
     return () => {
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('popstate', handleNavigation);
+      window.removeEventListener('hashchange', handleNavigation);
       window.history.pushState = originalPushState;
       window.history.replaceState = originalReplaceState;
     };
   }, []);
 
-  if (isAdmin) {
+  // Force admin if URL contains admin
+  if (isAdmin || window.location.pathname === '/admin' || window.location.hash === '#admin') {
     return <AdminPanel />;
   }
 
