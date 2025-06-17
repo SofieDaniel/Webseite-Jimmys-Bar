@@ -1,0 +1,11 @@
+  - task: "Fix duplicate newsletter forms"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/Home.js, /app/frontend/src/components/Footer.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Confirmed that there are duplicate newsletter signup forms on the main website - one in the content area (Home.js) and one in the footer (Footer.js). This creates a confusing user experience and should be fixed by removing one of the forms or consolidating them."
