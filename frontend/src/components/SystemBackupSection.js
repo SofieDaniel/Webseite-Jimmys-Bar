@@ -536,27 +536,241 @@ const SystemBackupSection = () => {
   );
 };
 
-// Configuration Panel Component
-const ConfigurationPanel = ({ onSave, loading }) => {
+// Database Configuration Panel Component
+const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [testResult, setTestResult] = useState('');
+
+  const handleSave = () => {
+    onSave({
+      type: 'database',
+      ...dbConfig
+    });
+  };
+
+  const handleTest = async () => {
+    setTestResult('');
+    await onTest();
+    setTestResult('Verbindung erfolgreich getestet!');
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Datenbank-Konfiguration</h3>
+      
+      {/* Connection String */}
+      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <h4 className="font-medium text-blue-900 mb-2">🔗 Aktuelle Verbindung</h4>
+        <p className="text-sm text-blue-800 font-mono bg-white px-3 py-2 rounded border">
+          {process.env.REACT_APP_BACKEND_URL || 'Umgebungsvariable nicht verfügbar'}
+        </p>
+        <p className="text-xs text-blue-600 mt-2">
+          Die Datenbankverbindung wird über Umgebungsvariablen verwaltet.
+        </p>
+      </div>
+
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <span className="flex items-center">
+                🖥️ Host/Server
+                <span className="ml-1 text-red-500">*</span>
+              </span>
+            </label>
+            <input
+              type="text"
+              value={dbConfig.host}
+              onChange={(e) => setDbConfig({...dbConfig, host: e.target.value})}
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="localhost oder IP-Adresse"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <span className="flex items-center">
+                🔌 Port
+                <span className="ml-1 text-red-500">*</span>
+              </span>
+            </label>
+            <input
+              type="text"
+              value={dbConfig.port}
+              onChange={(e) => setDbConfig({...dbConfig, port: e.target.value})}
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="27017"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            <span className="flex items-center">
+              🗄️ Datenbank-Name
+              <span className="ml-1 text-red-500">*</span>
+            </span>
+          </label>
+          <input
+            type="text"
+            value={dbConfig.database}
+            onChange={(e) => setDbConfig({...dbConfig, database: e.target.value})}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="jimmys_tapas_bar"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              👤 Benutzername (optional)
+            </label>
+            <input
+              type="text"
+              value={dbConfig.username}
+              onChange={(e) => setDbConfig({...dbConfig, username: e.target.value})}
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Leer für lokale Verbindung"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              🔐 Passwort (optional)
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={dbConfig.password}
+                onChange={(e) => setDbConfig({...dbConfig, password: e.target.value})}
+                className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12"
+                placeholder="Leer für lokale Verbindung"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                {showPassword ? '🙈' : '👁️'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            🔗 Vollständige Verbindungszeichenfolge (optional)
+          </label>
+          <textarea
+            value={dbConfig.connectionString}
+            onChange={(e) => setDbConfig({...dbConfig, connectionString: e.target.value})}
+            rows={3}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="mongodb://username:password@host:port/database"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Falls angegeben, überschreibt dies die einzelnen Felder oben.
+          </p>
+        </div>
+
+        {/* Security Warning */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <span className="text-yellow-400 text-lg">⚠️</span>
+            </div>
+            <div className="ml-3">
+              <h4 className="text-sm font-medium text-yellow-800">Sicherheitshinweis</h4>
+              <div className="mt-2 text-sm text-yellow-700">
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Stellen Sie sicher, dass nur autorisierte Personen Zugang zu diesen Daten haben</li>
+                  <li>Verwenden Sie starke Passwörter für Datenbankverbindungen</li>
+                  <li>Aktivieren Sie SSL/TLS für Produktionsumgebungen</li>
+                  <li>Erstellen Sie regelmäßige Backups vor Konfigurationsänderungen</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {testResult && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+            ✅ {testResult}
+          </div>
+        )}
+
+        <div className="flex justify-between pt-6 border-t border-gray-200">
+          <button
+            onClick={handleTest}
+            disabled={loading}
+            className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 disabled:opacity-50 flex items-center"
+          >
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Teste...
+              </>
+            ) : (
+              <>
+                🔍 Verbindung testen
+              </>
+            )}
+          </button>
+          
+          <button
+            onClick={handleSave}
+            disabled={loading}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center"
+          >
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Speichern...
+              </>
+            ) : (
+              <>
+                💾 Konfiguration speichern
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// General Configuration Panel Component
+const GeneralConfigPanel = ({ onSave, loading }) => {
   const [config, setConfig] = useState({
     siteName: 'Jimmy\'s Tapas Bar',
     adminEmail: 'admin@jimmys-tapas.de',
     backupFrequency: 'daily',
     maintenanceMode: false,
-    debugMode: false
+    debugMode: false,
+    emailNotifications: true,
+    autoBackup: true,
+    maxFileSize: '10',
+    sessionTimeout: '60',
+    allowRegistration: false
   });
 
   const handleSave = () => {
-    onSave(config);
+    onSave({
+      type: 'general',
+      ...config
+    });
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">System-Konfiguration</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Allgemeine Konfiguration</h3>
       <div className="space-y-6">
+        {/* Basic Settings */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Website-Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              🏪 Website-Name
+            </label>
             <input
               type="text"
               value={config.siteName}
@@ -565,7 +779,9 @@ const ConfigurationPanel = ({ onSave, loading }) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Admin E-Mail</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              📧 Admin E-Mail
+            </label>
             <input
               type="email"
               value={config.adminEmail}
@@ -575,45 +791,93 @@ const ConfigurationPanel = ({ onSave, loading }) => {
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Backup-Häufigkeit</label>
-          <select
-            value={config.backupFrequency}
-            onChange={(e) => setConfig({...config, backupFrequency: e.target.value})}
-            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="hourly">Stündlich</option>
-            <option value="daily">Täglich</option>
-            <option value="weekly">Wöchentlich</option>
-            <option value="manual">Manuell</option>
-          </select>
+        {/* System Settings */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              💾 Backup-Häufigkeit
+            </label>
+            <select
+              value={config.backupFrequency}
+              onChange={(e) => setConfig({...config, backupFrequency: e.target.value})}
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="hourly">Stündlich</option>
+              <option value="daily">Täglich</option>
+              <option value="weekly">Wöchentlich</option>
+              <option value="manual">Nur manuell</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              📁 Max. Dateigröße (MB)
+            </label>
+            <input
+              type="number"
+              min="1"
+              max="100"
+              value={config.maxFileSize}
+              onChange={(e) => setConfig({...config, maxFileSize: e.target.value})}
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="maintenanceMode"
-              checked={config.maintenanceMode}
-              onChange={(e) => setConfig({...config, maintenanceMode: e.target.checked})}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label htmlFor="maintenanceMode" className="ml-2 text-sm text-gray-700">
-              Wartungsmodus aktiviert
-            </label>
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            ⏱️ Session-Timeout (Minuten)
+          </label>
+          <input
+            type="number"
+            min="15"
+            max="480"
+            value={config.sessionTimeout}
+            onChange={(e) => setConfig({...config, sessionTimeout: e.target.value})}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Automatische Abmeldung nach Inaktivität (15-480 Minuten)
+          </p>
+        </div>
 
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="debugMode"
-              checked={config.debugMode}
-              onChange={(e) => setConfig({...config, debugMode: e.target.checked})}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label htmlFor="debugMode" className="ml-2 text-sm text-gray-700">
-              Debug-Modus aktiviert
-            </label>
+        {/* Toggle Settings */}
+        <div className="space-y-4">
+          <h4 className="font-medium text-gray-900">System-Optionen</h4>
+          
+          <div className="space-y-3">
+            {[
+              { key: 'autoBackup', label: 'Automatische Backups aktiviert', icon: '💾' },
+              { key: 'emailNotifications', label: 'E-Mail-Benachrichtigungen aktiviert', icon: '📧' },
+              { key: 'maintenanceMode', label: 'Wartungsmodus aktiviert', icon: '🔧' },
+              { key: 'debugMode', label: 'Debug-Modus aktiviert', icon: '🐛' },
+              { key: 'allowRegistration', label: 'Benutzer-Registrierung erlauben', icon: '👥' }
+            ].map(({ key, label, icon }) => (
+              <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <label className="flex items-center text-sm text-gray-700">
+                  <span className="mr-2">{icon}</span>
+                  {label}
+                </label>
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={config[key]}
+                    onChange={(e) => setConfig({...config, [key]: e.target.checked})}
+                    className="sr-only"
+                  />
+                  <div 
+                    onClick={() => setConfig({...config, [key]: !config[key]})}
+                    className={`w-11 h-6 rounded-full cursor-pointer transition-colors ${
+                      config[key] ? 'bg-blue-600' : 'bg-gray-300'
+                    }`}
+                  >
+                    <div className={`w-4 h-4 bg-white rounded-full shadow transform transition-transform ${
+                      config[key] ? 'translate-x-6' : 'translate-x-1'
+                    } mt-1`}></div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -621,9 +885,18 @@ const ConfigurationPanel = ({ onSave, loading }) => {
           <button
             onClick={handleSave}
             disabled={loading}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center"
           >
-            {loading ? 'Speichern...' : 'Konfiguration speichern'}
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Speichern...
+              </>
+            ) : (
+              <>
+                💾 Konfiguration speichern
+              </>
+            )}
           </button>
         </div>
       </div>
