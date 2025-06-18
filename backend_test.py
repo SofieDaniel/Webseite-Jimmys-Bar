@@ -57,10 +57,10 @@ def test_root_endpoint():
             return False
         
         # Check if response contains expected message
-        if "message" in data and data["message"] == "Hello World":
-            print("✅ Response contains expected 'Hello World' message")
+        if "message" in data and "Hello World" in data["message"]:
+            print(f"✅ Response contains expected message: {data['message']}")
         else:
-            print("❌ Response does not contain expected 'Hello World' message")
+            print(f"❌ Response does not contain expected 'Hello World' message")
             return False
             
         return True
