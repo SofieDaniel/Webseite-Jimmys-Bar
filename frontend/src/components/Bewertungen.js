@@ -1,65 +1,61 @@
 import React, { useState, useEffect } from 'react';
 
 const Bewertungen = () => {
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [newReview, setNewReview] = useState({
+  const [feedback, setFeedback] = useState({
     name: '',
     email: '',
     rating: 5,
     comment: ''
   });
-  const [submitting, setSubmitting] = useState(false);
+  
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [pageData, setPageData] = useState(null);
 
-  // Helper function to format date
-  const formatDate = (dateString) => {
-    try {
-      if (!dateString) return 'Unbekanntes Datum';
-      
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) return 'Unbekanntes Datum';
-      
-      // Format as "März 2024"
-      const options = { 
-        year: 'numeric', 
-        month: 'long'
-      };
-      return date.toLocaleDateString('de-DE', options);
-    } catch (error) {
-      console.error('Date formatting error:', error);
-      return 'Unbekanntes Datum';
-    }
-  };
-
-  // Load approved reviews from backend
   useEffect(() => {
-    const loadReviews = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews?approved_only=true`);
-        if (response.ok) {
-          const data = await response.json();
-          setReviews(data);
-        }
-      } catch (error) {
-        console.error('Error loading reviews:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    loadPageData();
     loadReviews();
   }, []);
 
-  const handleSubmitReview = async (e) => {
+  const loadPageData = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/bewertungen-page`);
+      if (response.ok) {
+        const data = await response.json();
+        setPageData(data);
+      }
+    } catch (error) {
+      console.error('Error loading page data:', error);
+    }
+  };
+
+  const loadReviews = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews?approved_only=true`);
+      if (response.ok) {
+        const data = await response.json();
+        setReviews(data);
+      }
+    } catch (error) {
+      console.error('Error loading reviews:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     setMessage('');
-
+    
     try {
       const reviewData = {
-        customer_name: newReview.name,
-        rating: parseInt(newReview.rating),
-        comment: newReview.comment
+        customer_name: feedback.name,
+        rating: parseInt(feedback.rating),
+        comment: feedback.comment
       };
 
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews`, {
@@ -71,151 +67,172 @@ const Bewertungen = () => {
       });
 
       if (response.ok) {
-        setMessage('Vielen Dank für Ihre Bewertung! Sie wird nach Prüfung veröffentlicht.');
-        setNewReview({ name: '', email: '', rating: 5, comment: '' });
+        setMessage('Vielen Dank für Ihr Feedback! Es wurde intern gespeichert.');
+        setFeedback({ name: '', email: '', rating: 5, comment: '' });
       } else {
         setMessage('Fehler beim Senden der Bewertung. Bitte versuchen Sie es erneut.');
       }
     } catch (error) {
-      setMessage('Verbindungsfehler. Bitte versuchen Sie es später erneut.');
+      console.error('Error submitting review:', error);
+      setMessage('Fehler beim Senden der Bewertung. Bitte versuchen Sie es erneut.');
     } finally {
       setSubmitting(false);
     }
   };
 
   const renderStars = (rating) => {
-    return Array(5).fill(0).map((_, i) => (
-      <span key={i} className={`text-2xl ${i < rating ? 'text-yellow-400' : 'text-gray-400'}`}>
+    return Array.from({ length: 5 }, (_, i) => (
+      <span key={i} className={`text-2xl ${i < rating ? 'text-yellow-400' : 'text-warm-brown'}`}>
         ★
       </span>
     ));
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-warm-beige"></div>
-      </div>
-    );
-  }
+  const formatDate = (dateString) => {
+    try {
+      if (!dateString) return 'Unbekanntes Datum';
+      
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Unbekanntes Datum';
+      
+      const options = { 
+        year: 'numeric', 
+        month: 'long'
+      };
+      return date.toLocaleDateString('de-DE', options);
+    } catch (error) {
+      console.error('Date formatting error:', error);
+      return 'Unbekanntes Datum';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-dark-brown">
-      {/* Header Section */}
-      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('https://images.unsplash.com/photo-1559329007-40df8a9345d8')`}}>
+      {/* Elegant Header Section with Background */}
+      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('${pageData?.header_background || 'https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg'}')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative z-10 pt-24 pb-16">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide drop-shadow-text">
-              Bewertungen
+              {pageData?.page_title || 'Bewertungen & Feedback'}
             </h1>
             <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
-              Was unsere Gäste über uns sagen
+              {pageData?.page_subtitle || 'Was unsere Gäste über uns sagen'}
             </p>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-16">
-        {/* Reviews Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {reviews.map((review, index) => (
-            <div key={index} className="bg-medium-brown rounded-lg border border-warm-brown p-6 shadow-lg">
-              <div className="flex items-center mb-4">
-                <div className="flex">
-                  {renderStars(review.rating)}
+        
+        <div className="grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+          {/* Public Reviews */}
+          <div>
+            <h2 className="text-3xl font-serif text-warm-beige mb-8 tracking-wide">
+              {pageData?.reviews_section_title || 'Kundenbewertungen'}
+            </h2>
+            <div className="space-y-8">
+              {loading ? (
+                <div className="text-warm-beige text-center">Lade Bewertungen...</div>
+              ) : reviews.length === 0 ? (
+                <div className="bg-dark-brown rounded-lg border border-warm-brown p-8">
+                  <p className="text-light-beige font-light text-center">Noch keine Bewertungen vorhanden.</p>
                 </div>
-              </div>
-              <p className="text-light-beige mb-4 italic">"{review.comment}"</p>
-              <div className="text-warm-beige font-medium">{review.customer_name || review.name}</div>
-              <div className="text-gray-400 text-sm">
-                {formatDate(review.date || review.created_at)}
-              </div>
+              ) : (
+                reviews.map((review, index) => (
+                  <div key={index} className="bg-dark-brown rounded-lg border border-warm-brown p-8">
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className="font-light text-warm-beige text-lg tracking-wide">
+                        {review.customer_name || review.name}
+                      </h3>
+                      <span className="text-sm text-light-beige font-light">
+                        {formatDate(review.date || review.created_at)}
+                      </span>
+                    </div>
+                    <div className="flex mb-4">
+                      {renderStars(review.rating)}
+                    </div>
+                    <p className="text-light-beige font-light leading-relaxed">{review.comment}</p>
+                  </div>
+                ))
+              )}
             </div>
-          ))}
-        </div>
-
-        {reviews.length === 0 && (
-          <div className="text-center mb-16">
-            <p className="text-light-beige text-lg">Noch keine Bewertungen vorhanden. Seien Sie der Erste!</p>
           </div>
-        )}
 
-        {/* Review Form */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-medium-brown rounded-lg border border-warm-brown p-8">
-            <h2 className="text-3xl font-serif text-warm-beige mb-6 text-center">Ihre Bewertung</h2>
-            
-            {message && (
-              <div className={`mb-6 p-4 rounded-lg ${
-                message.includes('Vielen Dank') 
-                  ? 'bg-green-600 text-white' 
-                  : 'bg-red-600 text-white'
-              }`}>
-                {message}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmitReview} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+          {/* Feedback Form */}
+          <div>
+            <h2 className="text-3xl font-serif text-warm-beige mb-8 tracking-wide">
+              {pageData?.feedback_section_title || 'Ihr Feedback'}
+            </h2>
+            <div className="bg-dark-brown rounded-lg border border-warm-brown p-8">
+              <p className="text-light-beige mb-6 text-sm font-light">
+                {pageData?.feedback_note || 'Dieses Feedback wird intern gespeichert und nicht öffentlich angezeigt.'}
+              </p>
+              
+              {message && (
+                <div className={`mb-6 p-4 rounded-lg ${message.includes('Vielen Dank') ? 'bg-green-800 border border-green-600' : 'bg-red-800 border border-red-600'}`}>
+                  <p className="text-white text-sm">{message}</p>
+                </div>
+              )}
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-warm-beige font-medium mb-2">Name *</label>
+                  <label className="block text-warm-beige font-light mb-3 tracking-wide">Name</label>
                   <input
                     type="text"
+                    value={feedback.name}
+                    onChange={(e) => setFeedback({...feedback, name: e.target.value})}
+                    className="w-full p-4 bg-medium-brown border border-warm-brown rounded-lg focus:ring-2 focus:ring-warm-beige focus:border-warm-beige text-warm-beige font-light"
                     required
-                    value={newReview.name}
-                    onChange={(e) => setNewReview({...newReview, name: e.target.value})}
-                    className="w-full px-4 py-3 bg-dark-brown border border-warm-brown rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
+                    disabled={submitting}
                   />
                 </div>
                 <div>
-                  <label className="block text-warm-beige font-medium mb-2">E-Mail *</label>
+                  <label className="block text-warm-beige font-light mb-3 tracking-wide">E-Mail</label>
                   <input
                     type="email"
+                    value={feedback.email}
+                    onChange={(e) => setFeedback({...feedback, email: e.target.value})}
+                    className="w-full p-4 bg-medium-brown border border-warm-brown rounded-lg focus:ring-2 focus:ring-warm-beige focus:border-warm-beige text-warm-beige font-light"
                     required
-                    value={newReview.email}
-                    onChange={(e) => setNewReview({...newReview, email: e.target.value})}
-                    className="w-full px-4 py-3 bg-dark-brown border border-warm-brown rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
+                    disabled={submitting}
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-warm-beige font-medium mb-2">Bewertung *</label>
-                <div className="flex space-x-2">
-                  {[1, 2, 3, 4, 5].map(star => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => setNewReview({...newReview, rating: star})}
-                      className={`text-3xl ${star <= newReview.rating ? 'text-yellow-400' : 'text-gray-400'} hover:text-yellow-300 transition-colors`}
-                    >
-                      ★
-                    </button>
-                  ))}
+                <div>
+                  <label className="block text-warm-beige font-light mb-3 tracking-wide">Bewertung</label>
+                  <div className="flex space-x-2">
+                    {[1,2,3,4,5].map(star => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setFeedback({...feedback, rating: star})}
+                        className={`text-3xl ${star <= feedback.rating ? 'text-yellow-400' : 'text-warm-brown'} hover:text-yellow-400 transition-colors`}
+                        disabled={submitting}
+                      >
+                        ★
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-warm-beige font-medium mb-2">Kommentar *</label>
-                <textarea
-                  required
-                  rows={4}
-                  value={newReview.comment}
-                  onChange={(e) => setNewReview({...newReview, comment: e.target.value})}
-                  className="w-full px-4 py-3 bg-dark-brown border border-warm-brown rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
-                  placeholder="Teilen Sie Ihre Erfahrung mit uns..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full bg-warm-beige text-dark-brown py-3 rounded-lg font-medium hover:bg-light-beige transition-colors disabled:opacity-50"
-              >
-                {submitting ? 'Wird gesendet...' : 'Bewertung absenden'}
-              </button>
-            </form>
+                <div>
+                  <label className="block text-warm-beige font-light mb-3 tracking-wide">Kommentar</label>
+                  <textarea
+                    value={feedback.comment}
+                    onChange={(e) => setFeedback({...feedback, comment: e.target.value})}
+                    className="w-full p-4 bg-medium-brown border border-warm-brown rounded-lg focus:ring-2 focus:ring-warm-beige focus:border-warm-beige h-32 text-warm-beige font-light"
+                    required
+                    disabled={submitting}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-warm-beige hover:bg-light-beige text-dark-brown py-4 rounded-lg font-light transition-colors tracking-wide disabled:opacity-50"
+                  disabled={submitting}
+                >
+                  {submitting ? 'Wird gesendet...' : 'Feedback senden'}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
