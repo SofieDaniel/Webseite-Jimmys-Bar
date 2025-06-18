@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Locations = () => {
+const Standorte = () => {
   const [locationsData, setLocationsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,10 +14,10 @@ const Locations = () => {
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/locations`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/standorte-enhanced`);
       if (response.ok) {
         const data = await response.json();
-        console.log('Loaded locations data:', data);
+        console.log('Loaded enhanced locations data:', data);
         setLocationsData(data);
       } else {
         throw new Error('Failed to load locations data');
@@ -30,42 +30,12 @@ const Locations = () => {
     }
   };
 
-  const formatPhoneNumber = (phone) => {
-    return phone?.replace(/^\+49\s?/, '0').replace(/\s/g, ' ') || '';
-  };
-
-  const getGoogleMapsUrl = (location) => {
-    if (location.coordinates) {
-      return `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.lat},${location.coordinates.lng}`;
-    }
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`;
-  };
-
-  const getReservationUrl = (location) => {
-    return `tel:${location.phone}`;
-  };
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-warm-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-300 rounded mb-4 mx-auto max-w-xs"></div>
-            <div className="h-4 bg-gray-300 rounded mb-8 mx-auto max-w-md"></div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {[1, 2].map((i) => (
-                <div key={i} className="bg-white rounded-xl shadow-lg p-6">
-                  <div className="h-48 bg-gray-300 rounded-lg mb-4"></div>
-                  <div className="h-6 bg-gray-300 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-300 rounded mb-4 w-3/4"></div>
-                  <div className="space-y-2">
-                    <div className="h-4 bg-gray-300 rounded"></div>
-                    <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
+        <div className="text-warm-beige text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-warm-beige mx-auto mb-4"></div>
+          <p className="text-xl">Lade Standorte...</p>
         </div>
       </div>
     );
@@ -73,227 +43,228 @@ const Locations = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-warm-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-md mx-auto bg-red-50 border border-red-200 rounded-lg p-6">
-            <div className="text-red-600 text-6xl mb-4">⚠️</div>
-            <h2 className="text-xl font-semibold text-red-800 mb-2">Fehler beim Laden</h2>
-            <p className="text-red-600 mb-4">{error}</p>
-            <button
-              onClick={loadLocationsData}
-              className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
-            >
-              Erneut versuchen
-            </button>
-          </div>
+      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
+        <div className="text-red-400 text-center max-w-md mx-auto">
+          <p className="text-xl mb-4">{error}</p>
+          <button
+            onClick={loadLocationsData}
+            className="bg-warm-beige text-dark-brown px-6 py-3 rounded-lg hover:bg-light-beige transition-colors"
+          >
+            Erneut versuchen
+          </button>
         </div>
       </div>
     );
   }
 
-  if (!locationsData || !locationsData.locations || locationsData.locations.length === 0) {
+  if (!locationsData) {
     return (
-      <div className="min-h-screen bg-warm-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-md mx-auto">
-            <div className="text-6xl mb-4">🏖️</div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">Keine Standorte verfügbar</h2>
-            <p className="text-gray-600">Derzeit sind keine Standortinformationen verfügbar.</p>
-          </div>
+      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
+        <div className="text-warm-beige text-center">
+          <p className="text-xl">Keine Standortdaten verfügbar</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-warm-white">
-      {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-dark-brown to-warm-brown">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-serif text-warm-beige mb-4 tracking-wide">
-            {locationsData.page_title || 'Unsere Standorte'}
-          </h1>
-          <p className="text-lg text-light-beige max-w-2xl mx-auto">
-            {locationsData.page_description || 'Besuchen Sie uns an einem unserer beiden Standorte'}
-          </p>
+    <div className="min-h-screen bg-dark-brown">
+      {/* Elegant Header Section with Background */}
+      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('${locationsData.header_background || 'https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg'}')`}}>
+        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+        <div className="relative z-10 pt-24 pb-16">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide drop-shadow-text">
+              {locationsData.page_title || 'Unsere Standorte'}
+            </h1>
+            <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
+              {locationsData.page_subtitle || 'Besuchen Sie uns an der malerischen Ostseeküste'}
+            </p>
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* Locations Grid */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {locationsData.locations.map((location, index) => (
-              <div key={location.id || index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                {/* Location Image */}
-                <div className="h-64 bg-gray-300 overflow-hidden">
-                  {location.image_url ? (
-                    <img
-                      src={location.image_url}
-                      alt={location.name}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextElementSibling.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <div className="w-full h-full bg-gradient-to-br from-dark-brown to-warm-brown flex items-center justify-center" style={{ display: location.image_url ? 'none' : 'flex' }}>
-                    <div className="text-warm-beige text-6xl">🏖️</div>
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
+          {/* Neustadt Location - Enhanced */}
+          <div className="bg-dark-brown rounded-xl border border-warm-brown overflow-hidden shadow-2xl">
+            <div className="relative">
+              <img 
+                src={locationsData.neustadt?.image || "https://images.unsplash.com/photo-1665758564776-f2aa6b41327e"} 
+                alt="Jimmy's Tapas Bar Neustadt" 
+                className="w-full h-72 object-cover"
+              />
+              <div className="absolute top-4 left-4 bg-warm-beige text-dark-brown px-4 py-2 rounded-lg">
+                <span className="font-serif font-semibold">{locationsData.neustadt?.badge || 'Hauptstandort'}</span>
+              </div>
+            </div>
+            <div className="p-8">
+              <h2 className="text-3xl font-serif text-warm-beige mb-6 tracking-wide">
+                {locationsData.neustadt?.name || "Jimmy's Tapas Bar Neustadt"}
+              </h2>
+              <div className="space-y-6 text-light-beige">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl text-dark-brown">📍</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-warm-beige mb-1">Adresse</h3>
+                    <p className="font-light text-lg">{locationsData.neustadt?.address_line1 || 'Am Strande 21'}</p>
+                    <p className="font-light">{locationsData.neustadt?.address_line2 || '23730 Neustadt in Holstein'}</p>
                   </div>
                 </div>
-
-                {/* Location Content */}
-                <div className="p-6">
-                  <h2 className="text-2xl font-serif text-dark-brown mb-2">{location.name}</h2>
-                  <p className="text-gray-600 mb-4">{location.description}</p>
-
-                  {/* Address */}
-                  <div className="mb-4">
-                    <h3 className="font-semibold text-dark-brown mb-2 flex items-center">
-                      <span className="mr-2">📍</span>
-                      Adresse
-                    </h3>
-                    <p className="text-gray-700">{location.address}</p>
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl text-dark-brown">🕒</span>
                   </div>
-
-                  {/* Contact */}
-                  <div className="mb-4">
-                    <h3 className="font-semibold text-dark-brown mb-2 flex items-center">
-                      <span className="mr-2">📞</span>
-                      Kontakt
-                    </h3>
-                    <p className="text-gray-700">
-                      Tel: <a href={`tel:${location.phone}`} className="text-warm-brown hover:underline">
-                        {formatPhoneNumber(location.phone)}
-                      </a>
-                    </p>
-                    {location.email && (
-                      <p className="text-gray-700">
-                        E-Mail: <a href={`mailto:${location.email}`} className="text-warm-brown hover:underline">
-                          {location.email}
-                        </a>
-                      </p>
-                    )}
+                  <div>
+                    <h3 className="font-semibold text-warm-beige mb-1">Öffnungszeiten</h3>
+                    <p className="font-light">{locationsData.neustadt?.opening_hours || 'Mo-So: 12:00–22:00 Uhr'}</p>
+                    <p className="text-sm text-warm-beige font-light">{locationsData.neustadt?.season_note || '(Sommersaison)'}</p>
+                    <p className="text-sm text-orange-400 font-light">{locationsData.neustadt?.winter_note || 'Winterbetrieb unregelmäßig'}</p>
                   </div>
-
-                  {/* Opening Hours */}
-                  {location.opening_hours && (
-                    <div className="mb-4">
-                      <h3 className="font-semibold text-dark-brown mb-2 flex items-center">
-                        <span className="mr-2">🕒</span>
-                        Öffnungszeiten
-                      </h3>
-                      <div className="text-sm text-gray-700 space-y-1">
-                        {Object.entries(location.opening_hours).map(([day, hours]) => (
-                          <div key={day} className="flex justify-between">
-                            <span className="font-medium">{day}:</span>
-                            <span>{hours}</span>
-                          </div>
-                        ))}
-                      </div>
-                      {location.seasonal_note && (
-                        <p className="text-xs text-warm-brown mt-2 italic">
-                          {location.seasonal_note}
-                        </p>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Specialties */}
-                  {location.specialties && location.specialties.length > 0 && (
-                    <div className="mb-6">
-                      <h3 className="font-semibold text-dark-brown mb-2 flex items-center">
-                        <span className="mr-2">✨</span>
-                        Besonderheiten
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {location.specialties.map((specialty, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-warm-beige text-dark-brown px-3 py-1 rounded-full text-sm"
-                          >
-                            {specialty}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <a
-                      href={getGoogleMapsUrl(location)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-warm-brown text-white text-center py-3 px-4 rounded-lg hover:bg-dark-brown transition-colors"
-                    >
-                      📍 Route planen
-                    </a>
-                    <a
-                      href={getReservationUrl(location)}
-                      className="flex-1 bg-warm-beige text-dark-brown text-center py-3 px-4 rounded-lg hover:bg-light-beige transition-colors"
-                    >
-                      📞 Reservieren
-                    </a>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl text-dark-brown">📞</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-warm-beige mb-1">Kontakt</h3>
+                    <p className="font-light">{locationsData.neustadt?.phone || '+49 (0) 4561 123456'}</p>
+                    <p className="font-light text-sm">{locationsData.neustadt?.email || 'neustadt@jimmys-tapasbar.de'}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl text-dark-brown">🏖️</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-warm-beige mb-1">Besonderheiten</h3>
+                    <p className="font-light text-sm">{locationsData.neustadt?.features_line1 || 'Direkt am Strand • Terrasse mit Meerblick'}</p>
+                    <p className="font-light text-sm">{locationsData.neustadt?.features_line2 || 'Parkplätze vorhanden • Familienfreundlich'}</p>
                   </div>
                 </div>
               </div>
-            ))}
+              <div className="mt-8 flex space-x-4">
+                <button className="bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+                  Route planen
+                </button>
+                <button className="border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+                  Reservieren
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Großenbrode Location - Enhanced */}
+          <div className="bg-dark-brown rounded-xl border border-warm-brown overflow-hidden shadow-2xl">
+            <div className="relative">
+              <img 
+                src={locationsData.grossenbrode?.image || "https://images.unsplash.com/photo-1665758564796-5162ff406254"} 
+                alt="Jimmy's Tapas Bar Großenbrode" 
+                className="w-full h-72 object-cover"
+              />
+              <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-lg">
+                <span className="font-serif font-semibold">{locationsData.grossenbrode?.badge || 'Zweigstelle'}</span>
+              </div>
+            </div>
+            <div className="p-8">
+              <h2 className="text-3xl font-serif text-warm-beige mb-6 tracking-wide">
+                {locationsData.grossenbrode?.name || "Jimmy's Tapas Bar Großenbrode"}
+              </h2>
+              <div className="space-y-6 text-light-beige">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl text-dark-brown">📍</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-warm-beige mb-1">Adresse</h3>
+                    <p className="font-light text-lg">{locationsData.grossenbrode?.address_line1 || 'Südstrand 54'}</p>
+                    <p className="font-light">{locationsData.grossenbrode?.address_line2 || '23755 Großenbrode'}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl text-dark-brown">🕒</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-warm-beige mb-1">Öffnungszeiten</h3>
+                    <p className="font-light">{locationsData.grossenbrode?.opening_hours || 'Mo-So: 12:00–22:00 Uhr'}</p>
+                    <p className="text-sm text-warm-beige font-light">{locationsData.grossenbrode?.season_note || '(Sommersaison)'}</p>
+                    <p className="text-sm text-orange-400 font-light">{locationsData.grossenbrode?.winter_note || 'Winterbetrieb unregelmäßig'}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl text-dark-brown">📞</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-warm-beige mb-1">Kontakt</h3>
+                    <p className="font-light">{locationsData.grossenbrode?.phone || '+49 (0) 4561 789012'}</p>
+                    <p className="font-light text-sm">{locationsData.grossenbrode?.email || 'grossenbrode@jimmys-tapasbar.de'}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl text-dark-brown">🌊</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-warm-beige mb-1">Besonderheiten</h3>
+                    <p className="font-light text-sm">{locationsData.grossenbrode?.features_line1 || 'Strandnähe • Gemütliche Atmosphäre'}</p>
+                    <p className="font-light text-sm">{locationsData.grossenbrode?.features_line2 || 'Kostenlose Parkplätze • Hundefreundlich'}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-8 flex space-x-4">
+                <button className="bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+                  Route planen
+                </button>
+                <button className="border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+                  Reservieren
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* Info Section - "Gut zu wissen" */}
-      {locationsData.info_sections && locationsData.info_sections.length > 0 && (
-        <section className="py-16 bg-light-beige">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-serif text-dark-brown text-center mb-12">
-              Gut zu wissen
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              {locationsData.info_sections.map((info, index) => (
-                <div key={info.id || index} className="text-center">
-                  <div className="text-4xl mb-4">{info.icon}</div>
-                  <h3 className="text-xl font-semibold text-dark-brown mb-3">
-                    {info.title}
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {info.description}
-                  </p>
-                </div>
-              ))}
+        {/* Additional Information Section */}
+        <div className="mt-16 bg-dark-brown rounded-xl border border-warm-brown p-8">
+          <h3 className="text-3xl font-serif text-warm-beige mb-8 text-center tracking-wide">
+            {locationsData.info_section?.title || 'Gut zu wissen'}
+          </h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl text-dark-brown">🚗</span>
+              </div>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">{locationsData.info_section?.anreise_title || 'Anreise'}</h4>
+              <p className="text-light-beige font-light text-sm">
+                {locationsData.info_section?.anreise_text || 'Beide Standorte sind gut mit dem Auto erreichbar und bieten ausreichend Parkplätze.'}
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl text-dark-brown">📱</span>
+              </div>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">{locationsData.info_section?.reservierung_title || 'Reservierung'}</h4>
+              <p className="text-light-beige font-light text-sm">
+                {locationsData.info_section?.reservierung_text || 'Wir empfehlen eine Reservierung, besonders an Wochenenden und in der Sommersaison.'}
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl text-dark-brown">🎉</span>
+              </div>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">{locationsData.info_section?.events_title || 'Events'}</h4>
+              <p className="text-light-beige font-light text-sm">
+                {locationsData.info_section?.events_text || 'Beide Restaurants bieten Platz für private Feiern und Firmenevents.'}
+              </p>
             </div>
           </div>
-        </section>
-      )}
-
-      {/* General Info */}
-      {locationsData.general_info && (
-        <section className="py-12 bg-warm-brown">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-2xl mx-auto text-warm-beige">
-              {locationsData.general_info.special_note && (
-                <p className="text-lg mb-4">{locationsData.general_info.special_note}</p>
-              )}
-              {locationsData.general_info.reservation_phone && (
-                <p className="mb-2">
-                  Reservierungen: <a href={`tel:${locationsData.general_info.reservation_phone}`} className="text-light-beige hover:underline">
-                    {formatPhoneNumber(locationsData.general_info.reservation_phone)}
-                  </a>
-                </p>
-              )}
-              {locationsData.general_info.opening_season && (
-                <p className="text-sm opacity-90">
-                  Saison: {locationsData.general_info.opening_season}
-                </p>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Locations;
+export default Standorte;
