@@ -14,19 +14,20 @@ const SystemBackupSection = () => {
   const [systemInfo, setSystemInfo] = useState({
     version: 'Jimmy\'s CMS v1.0',
     uptime: '24h 15m',
-    database: 'Connected',
+    database: 'MySQL Connected',
     diskSpace: '2.5 GB used / 10 GB available'
   });
   const [activeTab, setActiveTab] = useState('backup');
 
-  // Database Configuration State
+  // MySQL Database Configuration State
   const [dbConfig, setDbConfig] = useState({
     host: 'localhost',
-    port: '27017',
-    username: '',
+    port: '3306',
+    username: 'jimmy_user',
     password: '',
     database: 'jimmys_tapas_bar',
-    connectionString: ''
+    ssl: false,
+    charset: 'utf8mb4'
   });
 
   const [backupList, setBackupList] = useState([]);
@@ -36,7 +37,32 @@ const SystemBackupSection = () => {
     loadSystemInfo();
     loadBackupStatus();
     loadBackupList();
+    loadDbConfig();
   }, []);
+
+  const loadDbConfig = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/database/config`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setDbConfig({
+          host: data.host || 'localhost',
+          port: data.port || '3306',
+          username: data.username || 'jimmy_user',
+          password: '', // Never display actual password
+          database: data.database || 'jimmys_tapas_bar',
+          ssl: data.ssl || false,
+          charset: data.charset || 'utf8mb4'
+        });
+      }
+    } catch (error) {
+      console.error('Error loading database config:', error);
+    }
+  };
 
   const loadBackupList = async () => {
     try {
@@ -49,8 +75,6 @@ const SystemBackupSection = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Loaded backup list:', data);
-        
-        // Backend now returns list directly
         setBackupList(Array.isArray(data) ? data : []);
       } else {
         console.error('Failed to load backup list:', response.status);
@@ -76,12 +100,13 @@ const SystemBackupSection = () => {
         setSystemInfo({
           version: data.version || 'Jimmy\'s CMS v1.0',
           uptime: data.uptime || 'Unbekannt',
-          database: data.database_status || 'Connected',
+          database: data.database_status || 'MySQL Connected',
           diskSpace: `${data.disk_usage || 'N/A'} Festplatte verwendet`,
           cpuUsage: data.cpu_usage || 'N/A',
           memoryUsage: data.memory_usage || 'N/A',
           pythonVersion: data.python_version || 'N/A',
-          platform: data.platform || 'N/A'
+          platform: data.platform || 'N/A',
+          mysqlVersion: data.mysql_version || 'N/A'
         });
       }
     } catch (error) {
@@ -117,7 +142,7 @@ const SystemBackupSection = () => {
 
   const handleDatabaseBackup = async () => {
     setLoading(true);
-    setMessage('📋 Erstelle Datenbank-Backup...');
+    setMessage('📋 Erstelle MySQL Datenbank-Backup...');
 
     try {
       const token = localStorage.getItem('adminToken');
@@ -129,16 +154,13 @@ const SystemBackupSection = () => {
       });
 
       if (response.ok) {
-        // Get filename and backup info from response headers
         const contentDisposition = response.headers.get('Content-Disposition');
-        const backupId = response.headers.get('X-Backup-ID');
         const backupSize = response.headers.get('X-Backup-Size');
         
         const filename = contentDisposition ? 
           contentDisposition.split('filename=')[1].replace(/"/g, '') : 
-          `database-backup-${new Date().toISOString().split('T')[0]}.json`;
+          `mysql-backup-${new Date().toISOString().split('T')[0]}.sql`;
 
-        // Download the file
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -149,16 +171,16 @@ const SystemBackupSection = () => {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        setMessage(`✅ Datenbank-Backup erfolgreich erstellt! 
+        setMessage(`✅ MySQL Datenbank-Backup erfolgreich erstellt! 
                    📁 Datei: ${filename}
-                   📊 Größe: ${formatBytes(parseInt(backupSize || '0'))}`);
+                   📊 Größe: ${formatBytes(parseInt(backupSize || '0'))}
+                   🗄️ Format: MySQL SQL-Dump`);
         
-        // Refresh lists
         loadBackupStatus();
         loadBackupList();
       } else {
         const errorData = await response.json();
-        setMessage(`❌ Fehler beim Erstellen des Datenbank-Backups: ${errorData.detail}`);
+        setMessage(`❌ Fehler beim Erstellen des MySQL Backups: ${errorData.detail}`);
       }
     } catch (error) {
       console.error('Backup error:', error);
@@ -171,7 +193,7 @@ const SystemBackupSection = () => {
 
   const handleFullBackup = async () => {
     setLoading(true);
-    setMessage('📦 Erstelle vollständiges Backup (Datenbank + Dateien)...');
+    setMessage('📦 Erstelle vollständiges Backup (MySQL + Medien)...');
 
     try {
       const token = localStorage.getItem('adminToken');
@@ -183,16 +205,13 @@ const SystemBackupSection = () => {
       });
 
       if (response.ok) {
-        // Get filename and backup info from response headers
         const contentDisposition = response.headers.get('Content-Disposition');
-        const backupId = response.headers.get('X-Backup-ID');
         const backupSize = response.headers.get('X-Backup-Size');
         
         const filename = contentDisposition ? 
           contentDisposition.split('filename=')[1].replace(/"/g, '') : 
-          `full-backup-${new Date().toISOString().split('T')[0]}.zip`;
+          `full-backup-mysql-${new Date().toISOString().split('T')[0]}.zip`;
 
-        // Download the file
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -203,12 +222,11 @@ const SystemBackupSection = () => {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        setMessage(`✅ Vollständiges Backup erfolgreich erstellt! 
+        setMessage(`✅ Vollständiges MySQL Backup erfolgreich erstellt! 
                    📁 Datei: ${filename}
                    📊 Größe: ${formatBytes(parseInt(backupSize || '0'))}
-                   💾 Enthält: Datenbank + Mediendateien`);
+                   💾 Enthält: MySQL Datenbank + Mediendateien`);
         
-        // Refresh lists
         loadBackupStatus();
         loadBackupList();
       } else {
@@ -235,8 +253,17 @@ const SystemBackupSection = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setMessage(`✅ Backup-Download initiiert: ${data.backup_info?.filename || filename}`);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        setMessage(`✅ Backup erfolgreich heruntergeladen: ${filename}`);
       } else {
         setMessage('❌ Fehler beim Download des Backups');
       }
@@ -265,7 +292,7 @@ const SystemBackupSection = () => {
 
       if (response.ok) {
         setMessage(`✅ Backup "${filename}" erfolgreich gelöscht!`);
-        loadBackupList(); // Refresh list
+        loadBackupList();
       } else {
         setMessage('❌ Fehler beim Löschen des Backups');
       }
@@ -300,7 +327,13 @@ const SystemBackupSection = () => {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/config`, {
+      let endpoint = '/api/admin/config';
+      
+      if (configData.type === 'database') {
+        endpoint = '/api/admin/database/config';
+      }
+
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}${endpoint}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -311,6 +344,9 @@ const SystemBackupSection = () => {
 
       if (response.ok) {
         setMessage('✅ Konfiguration erfolgreich gespeichert!');
+        if (configData.type === 'database') {
+          loadDbConfig();
+        }
       } else {
         const errorData = await response.json();
         setMessage(`❌ Fehler beim Speichern: ${errorData.detail}`);
@@ -325,14 +361,30 @@ const SystemBackupSection = () => {
 
   const testDatabaseConnection = async () => {
     setLoading(true);
-    setMessage('Teste Datenbankverbindung...');
+    setMessage('🔍 Teste MySQL Datenbankverbindung...');
 
     try {
-      // Simulate database connection test
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setMessage('✅ Datenbankverbindung erfolgreich getestet!');
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/database/test`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(dbConfig)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessage(`✅ MySQL Datenbankverbindung erfolgreich! 
+                   🗄️ Server: ${data.server_info || 'MySQL'}
+                   📊 Status: ${data.status || 'Connected'}`);
+      } else {
+        const errorData = await response.json();
+        setMessage(`❌ MySQL Verbindung fehlgeschlagen: ${errorData.detail}`);
+      }
     } catch (error) {
-      setMessage('❌ Datenbankverbindung fehlgeschlagen!');
+      setMessage('❌ Fehler beim Testen der MySQL Verbindung');
     } finally {
       setLoading(false);
       setTimeout(() => setMessage(''), 5000);
@@ -343,11 +395,11 @@ const SystemBackupSection = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">System & Backup</h1>
-        <p className="text-gray-600">System-Verwaltung, Backup und Konfiguration</p>
+        <p className="text-gray-600">MySQL System-Verwaltung, Backup und Konfiguration</p>
       </div>
 
       {message && (
-        <div className={`p-4 rounded-lg ${
+        <div className={`p-4 rounded-lg whitespace-pre-line ${
           message.includes('erfolgreich') 
             ? 'bg-green-100 text-green-700 border border-green-200' 
             : 'bg-red-100 text-red-700 border border-red-200'
@@ -360,9 +412,9 @@ const SystemBackupSection = () => {
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
           {[
-            { key: 'backup', label: 'Backup & Restore', icon: '💾' },
+            { key: 'backup', label: 'MySQL Backup & Restore', icon: '💾' },
             { key: 'system', label: 'System-Info', icon: '📊' },
-            { key: 'database', label: 'Datenbank-Konfiguration', icon: '🗄️' },
+            { key: 'database', label: 'MySQL Konfiguration', icon: '🗄️' },
             { key: 'config', label: 'Allgemeine Konfiguration', icon: '⚙️' }
           ].map(tab => (
             <button
@@ -381,13 +433,13 @@ const SystemBackupSection = () => {
         </nav>
       </div>
 
-      {/* Backup Tab */}
+      {/* MySQL Backup Tab */}
       {activeTab === 'backup' && (
         <div className="space-y-6">
           {/* Enhanced Backup Status */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Backup-Status</h3>
+              <h3 className="text-lg font-semibold text-gray-900">MySQL Backup-Status</h3>
               <button
                 onClick={loadBackupStatus}
                 disabled={loading}
@@ -473,28 +525,28 @@ const SystemBackupSection = () => {
             </div>
           </div>
 
-          {/* Backup Actions */}
+          {/* MySQL Backup Actions */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Backup erstellen</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">MySQL Backup erstellen</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Database Backup */}
+              {/* MySQL Database Backup */}
               <div className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                     <span className="text-blue-600 text-2xl">🗄️</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">Datenbank-Backup</h4>
-                    <p className="text-sm text-gray-600">MySQL Datenbank-Dump (SQL)</p>
+                    <h4 className="font-semibold text-gray-900">MySQL Datenbank-Backup</h4>
+                    <p className="text-sm text-gray-600">Vollständiger MySQL SQL-Dump</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-4">
-                  Erstellt einen vollständigen MySQL-Dump aller Datenbank-Inhalte (Menü, Bewertungen, Benutzer, etc.).
-                  Empfohlen für tägliche Backups.
+                  Erstellt einen vollständigen MySQL-Dump aller Tabellen und Daten (Menü, Bewertungen, Benutzer, etc.).
+                  Empfohlen für tägliche Sicherungen.
                 </p>
                 <div className="mb-4">
                   <div className="text-xs text-gray-500">
-                    💡 <strong>Verwendung:</strong> MySQL-Dump für vollständige Datenbank-Wiederherstellung
+                    💡 <strong>Format:</strong> SQL-Dump für vollständige MySQL Wiederherstellung
                   </div>
                 </div>
                 <button
@@ -505,10 +557,10 @@ const SystemBackupSection = () => {
                   {loading ? (
                     <div className="flex items-center justify-center">
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Erstelle Backup...
+                      Erstelle MySQL Backup...
                     </div>
                   ) : (
-                    'Datenbank-Backup erstellen'
+                    'MySQL Datenbank-Backup erstellen'
                   )}
                 </button>
               </div>
@@ -521,16 +573,16 @@ const SystemBackupSection = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Vollständiges Backup</h4>
-                    <p className="text-sm text-gray-600">Datenbank + Mediendateien (ZIP)</p>
+                    <p className="text-sm text-gray-600">MySQL + Mediendateien (ZIP)</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 mb-4">
-                  Erstellt ein komplettes Backup inklusive aller Bilder und Mediendateien.
+                  Erstellt ein komplettes Backup inklusive MySQL-Dump und aller Bilder/Mediendateien.
                   Empfohlen für vollständige Systemsicherung.
                 </p>
                 <div className="mb-4">
                   <div className="text-xs text-gray-500">
-                    💡 <strong>Verwendung:</strong> Vollständige Wiederherstellung, größere Dateigröße
+                    💡 <strong>Format:</strong> ZIP mit SQL-Dump + Medien, größere Dateigröße
                   </div>
                 </div>
                 <button
@@ -541,7 +593,7 @@ const SystemBackupSection = () => {
                   {loading ? (
                     <div className="flex items-center justify-center">
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Erstelle Backup...
+                      Erstelle vollständiges Backup...
                     </div>
                   ) : (
                     'Vollständiges Backup erstellen'
@@ -554,7 +606,7 @@ const SystemBackupSection = () => {
           {/* Backup List */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Verfügbare Backups</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Verfügbare MySQL Backups</h3>
               <button
                 onClick={loadBackupList}
                 disabled={loadingList}
@@ -571,7 +623,7 @@ const SystemBackupSection = () => {
               </div>
             ) : backupList.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
-                📂 Keine Backups vorhanden. Erstellen Sie Ihr erstes Backup oben.
+                📂 Keine MySQL Backups vorhanden. Erstellen Sie Ihr erstes Backup oben.
               </div>
             ) : (
               <div className="space-y-3">
@@ -589,9 +641,9 @@ const SystemBackupSection = () => {
                           <div className="flex items-center space-x-4 text-sm text-gray-500">
                             <span>📅 {formatDateTime(backup.created_at)}</span>
                             <span>📊 {backup.size_human}</span>
-                            <span>🔹 {backup.type === 'database' ? 'Datenbank' : 'Vollständig'}</span>
+                            <span>🔹 {backup.type === 'database' ? 'MySQL Dump' : 'Vollständig'}</span>
                             {backup.total_documents && (
-                              <span>📄 {backup.total_documents} Dokumente</span>
+                              <span>📄 {backup.total_documents} Datensätze</span>
                             )}
                           </div>
                         </div>
@@ -619,14 +671,15 @@ const SystemBackupSection = () => {
             )}
           </div>
 
-          {/* Troubleshooting */}
+          {/* MySQL Troubleshooting */}
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-            <h4 className="font-semibold text-yellow-800 mb-2">🛠️ Troubleshooting-Hinweise</h4>
+            <h4 className="font-semibold text-yellow-800 mb-2">🛠️ MySQL Troubleshooting-Hinweise</h4>
             <div className="text-sm text-yellow-700 space-y-2">
-              <p><strong>Backup schlägt fehl:</strong> Prüfen Sie die Datenbankverbindung und Speicherplatz.</p>
+              <p><strong>Backup schlägt fehl:</strong> Prüfen Sie die MySQL-Verbindung und Speicherplatz.</p>
               <p><strong>Download startet nicht:</strong> Deaktivieren Sie temporär Pop-up-Blocker im Browser.</p>
-              <p><strong>Große Backups:</strong> Bei großen Datenmengen kann der Download einige Minuten dauern.</p>
+              <p><strong>Große MySQL Dumps:</strong> Bei vielen Daten kann der Export einige Minuten dauern.</p>
               <p><strong>Automatische Backups:</strong> Werden täglich um 02:00 Uhr erstellt (falls aktiviert).</p>
+              <p><strong>MySQL-Kompatibilität:</strong> SQL-Dumps sind mit MySQL 5.7+ und MariaDB kompatibel.</p>
             </div>
           </div>
         </div>
@@ -660,10 +713,14 @@ const SystemBackupSection = () => {
                   <span className="text-sm font-medium text-gray-700">Python Version</span>
                   <span className="text-sm text-gray-900 font-mono">{systemInfo.pythonVersion}</span>
                 </div>
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">MySQL Version</span>
+                  <span className="text-sm text-blue-600 font-mono">{systemInfo.mysqlVersion}</span>
+                </div>
               </div>
               <div className="space-y-4">
                 <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">Datenbank-Status</span>
+                  <span className="text-sm font-medium text-gray-700">MySQL-Status</span>
                   <span className="text-sm text-green-600 font-medium">🟢 {systemInfo.database}</span>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
@@ -674,6 +731,10 @@ const SystemBackupSection = () => {
                   <span className="text-sm font-medium text-gray-700">Speicher-Auslastung</span>
                   <span className="text-sm text-gray-900 font-mono">{systemInfo.memoryUsage}</span>
                 </div>
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Plattform</span>
+                  <span className="text-sm text-purple-600 font-mono">{systemInfo.platform}</span>
+                </div>
               </div>
             </div>
             
@@ -683,9 +744,9 @@ const SystemBackupSection = () => {
                   <span className="text-sm font-medium text-gray-700">Festplatten-Auslastung</span>
                   <span className="text-sm text-blue-600 font-mono">{systemInfo.diskSpace}</span>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">Plattform</span>
-                  <span className="text-sm text-purple-600 font-mono">{systemInfo.platform}</span>
+                <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Backup-Anzahl</span>
+                  <span className="text-sm text-green-600 font-mono">{backupStatus.backupCount} MySQL Backups</span>
                 </div>
               </div>
             </div>
@@ -693,9 +754,9 @@ const SystemBackupSection = () => {
         </div>
       )}
 
-      {/* Database Configuration Tab */}
+      {/* MySQL Database Configuration Tab */}
       {activeTab === 'database' && (
-        <DatabaseConfigPanel 
+        <MySQLConfigPanel 
           dbConfig={dbConfig} 
           setDbConfig={setDbConfig}
           onSave={handleConfigSave}
@@ -712,8 +773,8 @@ const SystemBackupSection = () => {
   );
 };
 
-// Database Configuration Panel Component
-const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading }) => {
+// MySQL Database Configuration Panel Component
+const MySQLConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [testResult, setTestResult] = useState('');
 
@@ -727,21 +788,21 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
   const handleTest = async () => {
     setTestResult('');
     await onTest();
-    setTestResult('Verbindung erfolgreich getestet!');
+    setTestResult('MySQL Verbindung erfolgreich getestet!');
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Datenbank-Konfiguration</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">MySQL Datenbank-Konfiguration</h3>
       
-      {/* Connection String */}
+      {/* Current Connection */}
       <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <h4 className="font-medium text-blue-900 mb-2">🔗 Aktuelle Verbindung</h4>
+        <h4 className="font-medium text-blue-900 mb-2">🔗 Aktuelle MySQL Verbindung</h4>
         <p className="text-sm text-blue-800 font-mono bg-white px-3 py-2 rounded border">
-          {process.env.REACT_APP_BACKEND_URL || 'Umgebungsvariable nicht verfügbar'}
+          mysql://{dbConfig.username}@{dbConfig.host}:{dbConfig.port}/{dbConfig.database}
         </p>
         <p className="text-xs text-blue-600 mt-2">
-          Die Datenbankverbindung wird über Umgebungsvariablen verwaltet.
+          Sichere MySQL-Verbindung über Environment-Variablen verwaltet.
         </p>
       </div>
 
@@ -750,7 +811,7 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <span className="flex items-center">
-                🖥️ Host/Server
+                🖥️ MySQL Host/Server
                 <span className="ml-1 text-red-500">*</span>
               </span>
             </label>
@@ -766,7 +827,7 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <span className="flex items-center">
-                🔌 Port
+                🔌 MySQL Port
                 <span className="ml-1 text-red-500">*</span>
               </span>
             </label>
@@ -775,7 +836,7 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
               value={dbConfig.port}
               onChange={(e) => setDbConfig({...dbConfig, port: e.target.value})}
               className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="27017"
+              placeholder="3306 (Standard MySQL Port)"
             />
           </div>
         </div>
@@ -783,7 +844,7 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             <span className="flex items-center">
-              🗄️ Datenbank-Name
+              🗄️ MySQL Datenbank-Name
               <span className="ml-1 text-red-500">*</span>
             </span>
           </label>
@@ -799,20 +860,22 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              👤 Benutzername (optional)
+              👤 MySQL Benutzername
+              <span className="ml-1 text-red-500">*</span>
             </label>
             <input
               type="text"
               value={dbConfig.username}
               onChange={(e) => setDbConfig({...dbConfig, username: e.target.value})}
               className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Leer für lokale Verbindung"
+              placeholder="MySQL Benutzername"
             />
           </div>
           
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              🔐 Passwort (optional)
+              🔐 MySQL Passwort
+              <span className="ml-1 text-red-500">*</span>
             </label>
             <div className="relative">
               <input
@@ -820,7 +883,7 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
                 value={dbConfig.password}
                 onChange={(e) => setDbConfig({...dbConfig, password: e.target.value})}
                 className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12"
-                placeholder="Leer für lokale Verbindung"
+                placeholder="MySQL Passwort"
               />
               <button
                 type="button"
@@ -833,20 +896,38 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            🔗 Vollständige Verbindungszeichenfolge (optional)
-          </label>
-          <textarea
-            value={dbConfig.connectionString}
-            onChange={(e) => setDbConfig({...dbConfig, connectionString: e.target.value})}
-            rows={3}
-            className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="mongodb://username:password@host:port/database"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Falls angegeben, überschreibt dies die einzelnen Felder oben.
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              🔒 SSL Verbindung
+            </label>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                checked={dbConfig.ssl}
+                onChange={(e) => setDbConfig({...dbConfig, ssl: e.target.checked})}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label className="ml-2 text-sm text-gray-700">
+                SSL/TLS für MySQL Verbindung verwenden
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              📝 Zeichensatz
+            </label>
+            <select
+              value={dbConfig.charset}
+              onChange={(e) => setDbConfig({...dbConfig, charset: e.target.value})}
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="utf8mb4">utf8mb4 (empfohlen)</option>
+              <option value="utf8">utf8</option>
+              <option value="latin1">latin1</option>
+            </select>
+          </div>
         </div>
 
         {/* Security Warning */}
@@ -856,13 +937,14 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
               <span className="text-yellow-400 text-lg">⚠️</span>
             </div>
             <div className="ml-3">
-              <h4 className="text-sm font-medium text-yellow-800">Sicherheitshinweis</h4>
+              <h4 className="text-sm font-medium text-yellow-800">MySQL Sicherheitshinweise</h4>
               <div className="mt-2 text-sm text-yellow-700">
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>Stellen Sie sicher, dass nur autorisierte Personen Zugang zu diesen Daten haben</li>
-                  <li>Verwenden Sie starke Passwörter für Datenbankverbindungen</li>
+                  <li>Nur autorisierte Admins haben Zugang zu MySQL-Konfigurationen</li>
+                  <li>Verwenden Sie starke Passwörter für MySQL-Benutzer</li>
                   <li>Aktivieren Sie SSL/TLS für Produktionsumgebungen</li>
-                  <li>Erstellen Sie regelmäßige Backups vor Konfigurationsänderungen</li>
+                  <li>Erstellen Sie MySQL-Backups vor Konfigurationsänderungen</li>
+                  <li>utf8mb4 unterstützt alle Unicode-Zeichen inkl. Emojis</li>
                 </ul>
               </div>
             </div>
@@ -884,11 +966,11 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
             {loading ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Teste...
+                Teste MySQL...
               </>
             ) : (
               <>
-                🔍 Verbindung testen
+                🔍 MySQL Verbindung testen
               </>
             )}
           </button>
@@ -905,7 +987,7 @@ const DatabaseConfigPanel = ({ dbConfig, setDbConfig, onSave, onTest, loading })
               </>
             ) : (
               <>
-                💾 Konfiguration speichern
+                💾 MySQL Konfiguration speichern
               </>
             )}
           </button>
@@ -927,7 +1009,8 @@ const GeneralConfigPanel = ({ onSave, loading }) => {
     autoBackup: true,
     maxFileSize: '10',
     sessionTimeout: '60',
-    allowRegistration: false
+    allowRegistration: false,
+    mysqlVersion: 'auto-detect'
   });
 
   const handleSave = () => {
@@ -971,7 +1054,7 @@ const GeneralConfigPanel = ({ onSave, loading }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              💾 Backup-Häufigkeit
+              💾 MySQL Backup-Häufigkeit
             </label>
             <select
               value={config.backupFrequency}
@@ -979,7 +1062,7 @@ const GeneralConfigPanel = ({ onSave, loading }) => {
               className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="hourly">Stündlich</option>
-              <option value="daily">Täglich</option>
+              <option value="daily">Täglich (empfohlen)</option>
               <option value="weekly">Wöchentlich</option>
               <option value="manual">Nur manuell</option>
             </select>
@@ -1019,11 +1102,11 @@ const GeneralConfigPanel = ({ onSave, loading }) => {
 
         {/* Toggle Settings */}
         <div className="space-y-4">
-          <h4 className="font-medium text-gray-900">System-Optionen</h4>
+          <h4 className="font-medium text-gray-900">MySQL System-Optionen</h4>
           
           <div className="space-y-3">
             {[
-              { key: 'autoBackup', label: 'Automatische Backups aktiviert', icon: '💾' },
+              { key: 'autoBackup', label: 'Automatische MySQL Backups aktiviert', icon: '💾' },
               { key: 'emailNotifications', label: 'E-Mail-Benachrichtigungen aktiviert', icon: '📧' },
               { key: 'maintenanceMode', label: 'Wartungsmodus aktiviert', icon: '🔧' },
               { key: 'debugMode', label: 'Debug-Modus aktiviert', icon: '🐛' },
