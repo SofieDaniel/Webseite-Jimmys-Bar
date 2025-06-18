@@ -431,67 +431,6 @@ const DashboardSection = ({ setActiveSection }) => {
           </div>
         </div>
       </div>
-          <button
-            onClick={() => handleQuickAction('add-dish')}
-            className="flex items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
-          >
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white text-sm">+</span>
-            </div>
-            <span className="font-medium text-blue-700">Neues Gericht hinzufügen</span>
-          </button>
-
-          <button
-            onClick={() => handleQuickAction('check-reviews')}
-            className="flex items-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition-colors"
-          >
-            <div className="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white text-sm">⭐</span>
-            </div>
-            <span className="font-medium text-yellow-700">Bewertungen prüfen</span>
-          </button>
-
-          <button
-            onClick={() => handleQuickAction('read-messages')}
-            className="flex items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors"
-          >
-            <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white text-sm">📧</span>
-            </div>
-            <span className="font-medium text-green-700">Nachrichten lesen</span>
-          </button>
-
-          <button
-            onClick={() => handleQuickAction('newsletter')}
-            className="flex items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors"
-          >
-            <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white text-sm">📮</span>
-            </div>
-            <span className="font-medium text-purple-700">Newsletter senden</span>
-          </button>
-
-          <button
-            onClick={() => handleQuickAction('maintenance')}
-            className="flex items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors"
-          >
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white text-sm">🔧</span>
-            </div>
-            <span className="font-medium text-orange-700">Wartungsmodus</span>
-          </button>
-
-          <button
-            onClick={() => handleQuickAction('system')}
-            className="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors"
-          >
-            <div className="w-8 h-8 bg-gray-500 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white text-sm">⚙️</span>
-            </div>
-            <span className="font-medium text-gray-700">System & Backup</span>
-          </button>
-        </div>
-      </div>
 
       {/* Recent Activity & System Status */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
