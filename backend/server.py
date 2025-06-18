@@ -2683,39 +2683,45 @@ async def test_database_connection(
 async def get_backup_status(current_user: User = Depends(get_admin_user)):
     """Get backup status and statistics"""
     try:
-        import os
-        from pathlib import Path
+        import psutil
+        from datetime import datetime, timedelta
         
-        backup_dir = Path("/tmp/backups")
-        backup_dir.mkdir(exist_ok=True)
-        
-        # Get backup files
-        backup_files = list(backup_dir.glob("*.sql")) + list(backup_dir.glob("*.zip"))
-        backup_count = len(backup_files)
-        
-        # Get last backup info
-        last_backup = None
-        backup_size = "0 B"
-        
-        if backup_files:
-            # Sort by modification time
-            backup_files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
-            latest_file = backup_files[0]
-            last_backup = datetime.fromtimestamp(latest_file.stat().st_mtime).isoformat()
+        conn = await get_mysql_connection()
+        try:
+            cursor = await conn.cursor(aiomysql.DictCursor)
             
-            # Calculate total size
-            total_size = sum(f.stat().st_size for f in backup_files)
-            if total_size > 1024**3:  # GB
-                backup_size = f"{total_size / (1024**3):.1f} GB"
-            elif total_size > 1024**2:  # MB
-                backup_size = f"{total_size / (1024**2):.1f} MB"
-            elif total_size > 1024:  # KB
-                backup_size = f"{total_size / 1024:.1f} KB"
-            else:
-                backup_size = f"{total_size} B"
+            # Get backup count and latest backup from database
+            await cursor.execute("SELECT COUNT(*) as backup_count FROM system_backups")
+            count_result = await cursor.fetchone()
+            backup_count = count_result['backup_count'] if count_result else 0
+            
+            # Get latest backup info
+            await cursor.execute("""
+                SELECT * FROM system_backups 
+                ORDER BY created_at DESC 
+                LIMIT 1
+            """)
+            latest_backup = await cursor.fetchone()
+            
+            # Format latest backup data
+            last_backup = None
+            backup_size = "0 B"
+            if latest_backup:
+                if isinstance(latest_backup['created_at'], datetime):
+                    last_backup = latest_backup['created_at'].isoformat()
+                else:
+                    last_backup = latest_backup['created_at']
+                backup_size = latest_backup.get('size_human', '0 B')
+            
+            # Calculate next scheduled backup (tomorrow at 02:00)
+            now = datetime.now()
+            tomorrow_2am = (now + timedelta(days=1)).replace(hour=2, minute=0, second=0, microsecond=0)
+            next_scheduled = tomorrow_2am.isoformat()
+            
+        finally:
+            mysql_pool.release(conn)
         
         # Get disk space
-        import psutil
         disk_usage = psutil.disk_usage('/')
         
         return {
@@ -2724,7 +2730,7 @@ async def get_backup_status(current_user: User = Depends(get_admin_user)):
             "backup_count": backup_count,
             "auto_backup": True,  # Default setting
             "backup_frequency": "daily",
-            "next_scheduled": "02:00 tomorrow",  # Default schedule
+            "next_scheduled": next_scheduled,
             "disk_space_used": f"{disk_usage.used / (1024**3):.1f} GB",
             "disk_space_total": f"{disk_usage.total / (1024**3):.1f} GB",
             "disk_space_free": f"{disk_usage.free / (1024**3):.1f} GB"
