@@ -48,7 +48,10 @@ const SystemBackupSection = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setBackupList(data.backups || []);
+        console.log('Loaded backup list:', data);
+        
+        // Backend now returns list directly
+        setBackupList(Array.isArray(data) ? data : []);
       } else {
         console.error('Failed to load backup list:', response.status);
         setMessage('❌ Fehler beim Laden der Backup-Liste');
