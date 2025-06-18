@@ -618,7 +618,364 @@ async def update_maintenance_mode(
     finally:
         mysql_pool.release(conn)
 
-# Image upload route
+# Enhanced CMS Endpoints für die drei neuen Seiten
+
+@api_router.get("/cms/standorte-enhanced")
+async def get_standorte_enhanced():
+    """Get enhanced locations page data according to exact code specification"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM standorte_enhanced LIMIT 1")
+        content = await cursor.fetchone()
+        
+        if not content:
+            # Create default enhanced content exactly as per code specification
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Unsere Standorte",
+                "page_subtitle": "Besuchen Sie uns an der malerischen Ostseeküste",
+                "header_background": "https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg",
+                "neustadt": {
+                    "name": "Jimmy's Tapas Bar Neustadt",
+                    "badge": "Hauptstandort",
+                    "image": "https://images.unsplash.com/photo-1665758564776-f2aa6b41327e",
+                    "address_line1": "Am Strande 21",
+                    "address_line2": "23730 Neustadt in Holstein",
+                    "opening_hours": "Mo-So: 12:00–22:00 Uhr",
+                    "season_note": "(Sommersaison)",
+                    "winter_note": "Winterbetrieb unregelmäßig",
+                    "phone": "+49 (0) 4561 123456",
+                    "email": "neustadt@jimmys-tapasbar.de",
+                    "features_line1": "Direkt am Strand • Terrasse mit Meerblick",
+                    "features_line2": "Parkplätze vorhanden • Familienfreundlich"
+                },
+                "grossenbrode": {
+                    "name": "Jimmy's Tapas Bar Großenbrode",
+                    "badge": "Zweigstelle",
+                    "image": "https://images.unsplash.com/photo-1665758564796-5162ff406254",
+                    "address_line1": "Südstrand 54",
+                    "address_line2": "23755 Großenbrode",
+                    "opening_hours": "Mo-So: 12:00–22:00 Uhr",
+                    "season_note": "(Sommersaison)",
+                    "winter_note": "Winterbetrieb unregelmäßig",
+                    "phone": "+49 (0) 4561 789012",
+                    "email": "grossenbrode@jimmys-tapasbar.de",
+                    "features_line1": "Strandnähe • Gemütliche Atmosphäre",
+                    "features_line2": "Kostenlose Parkplätze • Hundefreundlich"
+                },
+                "info_section": {
+                    "title": "Gut zu wissen",
+                    "anreise_title": "Anreise",
+                    "anreise_text": "Beide Standorte sind gut mit dem Auto erreichbar und bieten ausreichend Parkplätze.",
+                    "reservierung_title": "Reservierung",
+                    "reservierung_text": "Wir empfehlen eine Reservierung, besonders an Wochenenden und in der Sommersaison.",
+                    "events_title": "Events",
+                    "events_text": "Beide Restaurants bieten Platz für private Feiern und Firmenevents."
+                },
+                "updated_at": datetime.utcnow()
+            }
+            
+            # Insert default content
+            await cursor.execute("""
+                INSERT INTO standorte_enhanced (id, page_title, page_subtitle, header_background,
+                                               neustadt_data, grossenbrode_data, info_section_data, 
+                                               updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                default_content["id"], default_content["page_title"], default_content["page_subtitle"],
+                default_content["header_background"], json.dumps(default_content["neustadt"]),
+                json.dumps(default_content["grossenbrode"]), json.dumps(default_content["info_section"]),
+                default_content["updated_at"], "system"
+            ))
+            
+            return default_content
+            
+        # Parse JSON fields
+        neustadt_data = json.loads(content['neustadt_data']) if content.get('neustadt_data') else {}
+        grossenbrode_data = json.loads(content['grossenbrode_data']) if content.get('grossenbrode_data') else {}
+        info_section_data = json.loads(content['info_section_data']) if content.get('info_section_data') else {}
+        
+        return {
+            "id": content["id"],
+            "page_title": content["page_title"],
+            "page_subtitle": content["page_subtitle"],
+            "header_background": content["header_background"],
+            "neustadt": neustadt_data,
+            "grossenbrode": grossenbrode_data,
+            "info_section": info_section_data,
+            "updated_at": content["updated_at"]
+        }
+        
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/standorte-enhanced")
+async def update_standorte_enhanced(content_data: Dict, current_user: User = Depends(get_editor_user)):
+    """Update enhanced locations page data"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM standorte_enhanced")
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO standorte_enhanced (id, page_title, page_subtitle, header_background,
+                                               neustadt_data, grossenbrode_data, info_section_data,
+                                               updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()), content_data.get('page_title'), content_data.get('page_subtitle'),
+                content_data.get('header_background'), json.dumps(content_data.get('neustadt', {})),
+                json.dumps(content_data.get('grossenbrode', {})), json.dumps(content_data.get('info_section', {})),
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE standorte_enhanced SET page_title = %s, page_subtitle = %s, header_background = %s,
+                                             neustadt_data = %s, grossenbrode_data = %s, info_section_data = %s,
+                                             updated_at = %s, updated_by = %s
+            """, (
+                content_data.get('page_title'), content_data.get('page_subtitle'),
+                content_data.get('header_background'), json.dumps(content_data.get('neustadt', {})),
+                json.dumps(content_data.get('grossenbrode', {})), json.dumps(content_data.get('info_section', {})),
+                datetime.utcnow(), current_user.username
+            ))
+        
+        return {"message": "Enhanced locations content updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.get("/cms/bewertungen-page")
+async def get_bewertungen_page():
+    """Get reviews page configuration data"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM bewertungen_page LIMIT 1")
+        content = await cursor.fetchone()
+        
+        if not content:
+            # Create default content exactly as per code specification
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Bewertungen & Feedback",
+                "page_subtitle": "Was unsere Gäste über uns sagen",
+                "header_background": "https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg",
+                "reviews_section_title": "Kundenbewertungen",
+                "feedback_section_title": "Ihr Feedback",
+                "feedback_note": "Dieses Feedback wird intern gespeichert und nicht öffentlich angezeigt.",
+                "updated_at": datetime.utcnow()
+            }
+            
+            # Insert default content
+            await cursor.execute("""
+                INSERT INTO bewertungen_page (id, page_title, page_subtitle, header_background,
+                                             reviews_section_title, feedback_section_title, feedback_note,
+                                             updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                default_content["id"], default_content["page_title"], default_content["page_subtitle"],
+                default_content["header_background"], default_content["reviews_section_title"],
+                default_content["feedback_section_title"], default_content["feedback_note"],
+                default_content["updated_at"], "system"
+            ))
+            
+            return default_content
+            
+        return {
+            "id": content["id"],
+            "page_title": content["page_title"],
+            "page_subtitle": content["page_subtitle"],
+            "header_background": content["header_background"],
+            "reviews_section_title": content["reviews_section_title"],
+            "feedback_section_title": content["feedback_section_title"],
+            "feedback_note": content["feedback_note"],
+            "updated_at": content["updated_at"]
+        }
+        
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/bewertungen-page")
+async def update_bewertungen_page(content_data: Dict, current_user: User = Depends(get_editor_user)):
+    """Update reviews page configuration data"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM bewertungen_page")
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO bewertungen_page (id, page_title, page_subtitle, header_background,
+                                             reviews_section_title, feedback_section_title, feedback_note,
+                                             updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()), content_data.get('page_title'), content_data.get('page_subtitle'),
+                content_data.get('header_background'), content_data.get('reviews_section_title'),
+                content_data.get('feedback_section_title'), content_data.get('feedback_note'),
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE bewertungen_page SET page_title = %s, page_subtitle = %s, header_background = %s,
+                                           reviews_section_title = %s, feedback_section_title = %s, 
+                                           feedback_note = %s, updated_at = %s, updated_by = %s
+            """, (
+                content_data.get('page_title'), content_data.get('page_subtitle'),
+                content_data.get('header_background'), content_data.get('reviews_section_title'),
+                content_data.get('feedback_section_title'), content_data.get('feedback_note'),
+                datetime.utcnow(), current_user.username
+            ))
+        
+        return {"message": "Reviews page content updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.get("/cms/ueber-uns-enhanced")
+async def get_ueber_uns_enhanced():
+    """Get enhanced about page data according to exact code specification"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM ueber_uns_enhanced LIMIT 1")
+        content = await cursor.fetchone()
+        
+        if not content:
+            # Create default enhanced content exactly as per code specification
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Über uns",
+                "page_subtitle": "Die Geschichte hinter Jimmy's Tapas Bar",
+                "header_background": "https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg",
+                "jimmy": {
+                    "name": "Jimmy Rodríguez",
+                    "image": "https://images.unsplash.com/photo-1665758564802-f611df512d8d",
+                    "story_paragraph1": "Seit über 15 Jahren bringe ich die authentischen Aromen Spaniens an die deutsche Ostseeküste. Meine Leidenschaft für die spanische Küche begann in den kleinen Tapas-Bars von Sevilla, wo ich die Geheimnisse traditioneller Rezepte erlernte.",
+                    "story_paragraph2": "In Jimmy's Tapas Bar verwenden wir nur die besten Zutaten - von handverlesenem Olivenöl aus Andalusien bis hin zu frischen Meeresfrüchten aus der Ostsee. Jedes Gericht wird mit Liebe und Respekt vor der spanischen Tradition zubereitet.",
+                    "quote": "Essen ist nicht nur Nahrung - es ist Kultur, Tradition und Leidenschaft auf einem Teller."
+                },
+                "values_section": {
+                    "title": "Unsere Werte",
+                    "qualitat": {
+                        "title": "Qualität",
+                        "description": "Nur die besten Zutaten für authentische spanische Geschmackserlebnisse. Frische und Qualität stehen bei uns an erster Stelle.",
+                        "image": "https://images.unsplash.com/photo-1694685367640-05d6624e57f1"
+                    },
+                    "gastfreundschaft": {
+                        "title": "Gastfreundschaft",
+                        "description": "Herzliche Atmosphäre und persönlicher Service für jeden Gast. Bei uns sollen Sie sich wie zu Hause fühlen.",
+                        "image": "https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg"
+                    },
+                    "lebensfreude": {
+                        "title": "Lebensfreude",
+                        "description": "Spanische Lebensart und Genuss in gemütlicher Atmosphäre. Erleben Sie das echte España-Gefühl an der Ostsee.",
+                        "image": "https://images.unsplash.com/photo-1656423521731-9665583f100c"
+                    }
+                },
+                "team_section": {
+                    "title": "Unser Team",
+                    "carlos": {
+                        "name": "Carlos Mendez",
+                        "position": "Küchenchef",
+                        "description": "Mit 20 Jahren Erfahrung in der spanischen Küche sorgt Carlos für die authentischen Geschmäcker in jedem unserer Gerichte.",
+                        "image": "https://images.unsplash.com/photo-1665758564802-f611df512d8d"
+                    },
+                    "maria": {
+                        "name": "Maria Santos",
+                        "position": "Service Manager",
+                        "description": "Maria sorgt dafür, dass sich jeder Gast bei uns willkommen fühlt und einen unvergesslichen Abend erlebt.",
+                        "image": "https://images.unsplash.com/photo-1665758564802-f611df512d8d"
+                    }
+                },
+                "updated_at": datetime.utcnow()
+            }
+            
+            # Insert default content
+            await cursor.execute("""
+                INSERT INTO ueber_uns_enhanced (id, page_title, page_subtitle, header_background,
+                                               jimmy_data, values_section_data, team_section_data,
+                                               updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                default_content["id"], default_content["page_title"], default_content["page_subtitle"],
+                default_content["header_background"], json.dumps(default_content["jimmy"]),
+                json.dumps(default_content["values_section"]), json.dumps(default_content["team_section"]),
+                default_content["updated_at"], "system"
+            ))
+            
+            return default_content
+            
+        # Parse JSON fields
+        jimmy_data = json.loads(content['jimmy_data']) if content.get('jimmy_data') else {}
+        values_section_data = json.loads(content['values_section_data']) if content.get('values_section_data') else {}
+        team_section_data = json.loads(content['team_section_data']) if content.get('team_section_data') else {}
+        
+        return {
+            "id": content["id"],
+            "page_title": content["page_title"],
+            "page_subtitle": content["page_subtitle"],
+            "header_background": content["header_background"],
+            "jimmy": jimmy_data,
+            "values_section": values_section_data,
+            "team_section": team_section_data,
+            "updated_at": content["updated_at"]
+        }
+        
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/ueber-uns-enhanced")
+async def update_ueber_uns_enhanced(content_data: Dict, current_user: User = Depends(get_editor_user)):
+    """Update enhanced about page data"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM ueber_uns_enhanced")
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO ueber_uns_enhanced (id, page_title, page_subtitle, header_background,
+                                               jimmy_data, values_section_data, team_section_data,
+                                               updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()), content_data.get('page_title'), content_data.get('page_subtitle'),
+                content_data.get('header_background'), json.dumps(content_data.get('jimmy', {})),
+                json.dumps(content_data.get('values_section', {})), json.dumps(content_data.get('team_section', {})),
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE ueber_uns_enhanced SET page_title = %s, page_subtitle = %s, header_background = %s,
+                                             jimmy_data = %s, values_section_data = %s, team_section_data = %s,
+                                             updated_at = %s, updated_by = %s
+            """, (
+                content_data.get('page_title'), content_data.get('page_subtitle'),
+                content_data.get('header_background'), json.dumps(content_data.get('jimmy', {})),
+                json.dumps(content_data.get('values_section', {})), json.dumps(content_data.get('team_section', {})),
+                datetime.utcnow(), current_user.username
+            ))
+        
+        return {"message": "Enhanced about page content updated successfully"}
+    finally:
+        mysql_pool.release(conn)
 @api_router.post("/admin/upload-image")
 async def upload_image(
     file: UploadFile = File(...),
