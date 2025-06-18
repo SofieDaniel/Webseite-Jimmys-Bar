@@ -798,7 +798,7 @@ def test_backup_download(backup_id):
             return False
         
         # Check if response contains expected fields
-        required_fields = ["id", "filename", "download_url", "type", "created_at"]
+        required_fields = ["message", "backup_info"]
         missing_fields = [field for field in required_fields if field not in data]
         
         if not missing_fields:
@@ -807,18 +807,30 @@ def test_backup_download(backup_id):
             print(f"❌ Response is missing required fields: {missing_fields}")
             return False
         
-        # Check if backup ID matches
-        if data["id"] == backup_id:
-            print("✅ Backup ID matches requested ID")
+        # Check if backup_info contains expected fields
+        backup_info = data["backup_info"]
+        required_info_fields = ["id", "filename", "type", "created_at", "size_human"]
+        missing_info_fields = [field for field in required_info_fields if field not in backup_info]
+        
+        if not missing_info_fields:
+            print("✅ Backup info contains all required fields")
         else:
-            print(f"❌ Backup ID doesn't match requested ID. Expected: {backup_id}, Got: {data['id']}")
+            print(f"❌ Backup info is missing required fields: {missing_info_fields}")
+            return False
+        
+        # Check if backup ID matches
+        if backup_info["id"] == backup_id:
+            print(f"✅ Backup ID matches: {backup_id}")
+        else:
+            print(f"❌ Backup ID doesn't match requested ID. Expected: {backup_id}, Got: {backup_info['id']}")
             return False
             
-        # Check if download_url is present
-        if data["download_url"]:
-            print(f"✅ Download URL is present: {data['download_url']}")
-        else:
-            print("❌ Download URL is missing or empty")
+        # Check if created_at is properly formatted as ISO date string
+        try:
+            datetime.fromisoformat(backup_info['created_at'].replace('Z', '+00:00'))
+            print("✅ created_at is properly formatted as ISO date string")
+        except (ValueError, TypeError):
+            print("❌ created_at is not properly formatted as ISO date string")
             return False
             
         return True
