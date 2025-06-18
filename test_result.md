@@ -107,7 +107,7 @@ user_problem_statement: "Test the complete MySQL-based backend for Jimmy's Tapas
 backend:
   - task: "Fix JSON datetime serialization in backup functions"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -125,6 +125,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Confirmed issues with backup functions during MySQL migration validation. The backup list endpoint returns a dictionary instead of a list, and both database and full backup endpoints have issues with JSON serialization. The response is not valid JSON."
+      - working: true
+        agent: "testing"
+        comment: "Fixed the backup functions for MySQL migration. The backup list endpoint now correctly returns a list of backups, and the database backup endpoint properly handles datetime serialization. The backup download and delete endpoints are also working correctly. All backup operations now work with MySQL."
 
   - task: "Implement missing backup endpoints - /admin/backup/list"
     implemented: true
