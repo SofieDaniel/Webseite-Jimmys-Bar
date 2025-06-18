@@ -300,6 +300,139 @@ const DashboardSection = ({ setActiveSection }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <button
             onClick={() => handleQuickAction('add-dish')}
+            className="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group"
+          >
+            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors mr-3">
+              <span className="text-white text-lg">🍽️</span>
+            </div>
+            <span className="text-sm font-medium text-gray-900 group-hover:text-blue-800">Speisekarte verwalten</span>
+          </button>
+
+          <button
+            onClick={() => handleQuickAction('add-review')}
+            className="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors group"
+          >
+            <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center group-hover:bg-yellow-600 transition-colors mr-3">
+              <span className="text-white text-lg">⭐</span>
+            </div>
+            <span className="text-sm font-medium text-gray-900 group-hover:text-yellow-800">Bewertungen prüfen</span>
+          </button>
+
+          <button
+            onClick={() => handleQuickAction('newsletter')}
+            className="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors group"
+          >
+            <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center group-hover:bg-green-600 transition-colors mr-3">
+              <span className="text-white text-lg">📧</span>
+            </div>
+            <span className="text-sm font-medium text-gray-900 group-hover:text-green-800">Newsletter</span>
+          </button>
+
+          <button
+            onClick={() => handleQuickAction('edit-locations')}
+            className="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors group"
+          >
+            <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center group-hover:bg-purple-600 transition-colors mr-3">
+              <span className="text-white text-lg">📍</span>
+            </div>
+            <span className="text-sm font-medium text-gray-900 group-hover:text-purple-800">Standorte bearbeiten</span>
+          </button>
+
+          <button
+            onClick={() => handleQuickAction('edit-about')}
+            className="flex items-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors group"
+          >
+            <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center group-hover:bg-indigo-600 transition-colors mr-3">
+              <span className="text-white text-lg">👥</span>
+            </div>
+            <span className="text-sm font-medium text-gray-900 group-hover:text-indigo-800">Über uns bearbeiten</span>
+          </button>
+
+          <button
+            onClick={() => handleQuickAction('system-backup')}
+            className="flex items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors group"
+          >
+            <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center group-hover:bg-orange-600 transition-colors mr-3">
+              <span className="text-white text-lg">💾</span>
+            </div>
+            <span className="text-sm font-medium text-gray-900 group-hover:text-orange-800">System & Backup</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Werte & Prinzipien Section */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Werte & Prinzipien</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+            <div className="flex items-center mb-3">
+              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
+                <span className="text-white text-xl">🥘</span>
+              </div>
+              <h4 className="text-lg font-semibold text-blue-900">Authentische mediterrane Küche</h4>
+            </div>
+            <p className="text-sm text-blue-800 leading-relaxed">
+              Traditionelle spanische Rezepte mit den besten Zutaten direkt aus dem Mittelmeerraum.
+              Jedes Gericht erzählt eine Geschichte aus Spanien.
+            </p>
+            <div className="mt-4 flex items-center justify-between">
+              <span className="text-xs text-blue-600 bg-blue-200 px-2 py-1 rounded-full">Kernwert</span>
+              <button 
+                onClick={() => handleQuickAction('edit-about')}
+                className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+              >
+                → Bearbeiten
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-6 border border-orange-200">
+            <div className="flex items-center mb-3">
+              <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mr-4">
+                <span className="text-white text-xl">🤝</span>
+              </div>
+              <h4 className="text-lg font-semibold text-orange-900">Gastfreundschaft</h4>
+            </div>
+            <p className="text-sm text-orange-800 leading-relaxed">
+              Herzliche Atmosphäre und persönlicher Service für jeden Gast. 
+              Bei uns sollen Sie sich wie zu Hause fühlen.
+            </p>
+            <div className="mt-4 flex items-center justify-between">
+              <span className="text-xs text-orange-600 bg-orange-200 px-2 py-1 rounded-full">Kernwert</span>
+              <button 
+                onClick={() => handleQuickAction('edit-about')}
+                className="text-xs text-orange-600 hover:text-orange-800 font-medium"
+              >
+                → Bearbeiten
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+            <div className="flex items-center mb-3">
+              <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
+                <span className="text-white text-xl">🎉</span>
+              </div>
+              <h4 className="text-lg font-semibold text-green-900">Lebensfreude</h4>
+            </div>
+            <p className="text-sm text-green-800 leading-relaxed">
+              Spanische Lebensart und Genuss in gemütlicher Atmosphäre. 
+              Erleben Sie das echte España-Gefühl an der Ostsee.
+            </p>
+            <div className="mt-4 flex items-center justify-between">
+              <span className="text-xs text-green-600 bg-green-200 px-2 py-1 rounded-full">Kernwert</span>
+              <button 
+                onClick={() => handleQuickAction('edit-about')}
+                className="text-xs text-green-600 hover:text-green-800 font-medium"
+              >
+                → Bearbeiten
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+          <button
+            onClick={() => handleQuickAction('add-dish')}
             className="flex items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
           >
             <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
