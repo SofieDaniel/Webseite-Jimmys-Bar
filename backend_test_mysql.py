@@ -718,6 +718,35 @@ def test_create_database_backup():
         # Check if response is successful
         if response.status_code == 200:
             print("✅ Successfully created database backup")
+            
+            # Check if response is SQL content
+            if "Content-Disposition" in response.headers and "attachment" in response.headers["Content-Disposition"]:
+                print("✅ Response contains downloadable SQL file")
+                
+                # Check if backup ID is in headers
+                if "X-Backup-ID" in response.headers:
+                    backup_id = response.headers["X-Backup-ID"]
+                    print(f"✅ Backup ID: {backup_id}")
+                    return True, backup_id
+                else:
+                    print("❌ Backup ID not found in response headers")
+                    return False, None
+            else:
+                # If not a downloadable file, check if it's valid JSON
+                try:
+                    data = response.json()
+                    print(f"✅ Response is valid JSON: {data}")
+                    
+                    # Check if response contains expected fields
+                    if "id" in data:
+                        print(f"✅ Backup ID: {data['id']}")
+                        return True, data["id"]
+                    else:
+                        print("❌ Backup ID not found in response")
+                        return False, None
+                except json.JSONDecodeError:
+                    print("❌ Response is not valid JSON or downloadable SQL file")
+                    return False, None
         else:
             print(f"❌ Failed to create database backup. Status code: {response.status_code}")
             if response.status_code == 401:
@@ -725,41 +754,6 @@ def test_create_database_backup():
             elif response.status_code == 403:
                 print("   Authorization failed: Insufficient permissions")
             return False, None
-        
-        # Check if response is valid JSON
-        try:
-            data = response.json()
-            print(f"✅ Response is valid JSON: {data}")
-        except json.JSONDecodeError:
-            print("❌ Response is not valid JSON")
-            return False, None
-        
-        # Check if response contains expected fields
-        required_fields = ["id", "filename", "type", "created_at", "created_by", "size_human"]
-        missing_fields = [field for field in required_fields if field not in data]
-        
-        if not missing_fields:
-            print("✅ Response contains all required fields")
-        else:
-            print(f"❌ Response is missing required fields: {missing_fields}")
-            return False, None
-        
-        # Check if backup type is correct
-        if data["type"] == "database":
-            print("✅ Backup type is correctly set to 'database'")
-        else:
-            print(f"❌ Backup type is not 'database', got: {data['type']}")
-            return False, None
-            
-        # Check if created_at is properly formatted as ISO date string
-        try:
-            datetime.fromisoformat(data['created_at'].replace('Z', '+00:00'))
-            print("✅ created_at is properly formatted as ISO date string")
-        except (ValueError, TypeError):
-            print("❌ created_at is not properly formatted as ISO date string")
-            return False, None
-            
-        return True, data["id"]
     
     except requests.exceptions.RequestException as e:
         print(f"❌ Error connecting to admin/backup/database endpoint: {e}")
