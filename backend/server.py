@@ -2016,7 +2016,8 @@ async def get_backup_list(current_user: User = Depends(get_admin_user)):
                 if isinstance(backup.get('created_at'), datetime):
                     backup['created_at'] = backup['created_at'].isoformat()
             
-            return {"backups": backups}
+            # Return list directly (not wrapped in dict)
+            return backups
         finally:
             mysql_pool.release(conn)
         
