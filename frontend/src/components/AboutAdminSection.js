@@ -35,10 +35,37 @@ const AboutAdminSection = () => {
   const loadAboutData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/about`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/ueber-uns-enhanced`);
       if (response.ok) {
         const data = await response.json();
-        setAboutData(data);
+        console.log('Loaded enhanced about data:', data);
+        
+        // Transform enhanced data to component format
+        const transformedData = {
+          page_title: data.page_title || 'Über uns',
+          hero_title: data.page_subtitle || 'Die Geschichte hinter Jimmy\'s Tapas Bar',
+          hero_description: data.jimmy?.story_paragraph1 || 'Entdecken Sie die Leidenschaft hinter Jimmy\'s Tapas Bar',
+          story_title: 'Unsere Leidenschaft',
+          story_content: [
+            data.jimmy?.story_paragraph1,
+            data.jimmy?.story_paragraph2,
+            data.jimmy?.quote
+          ].filter(Boolean).join('\n\n') || '',
+          story_image: data.jimmy?.image || '',
+          team_title: data.team_section?.title || 'Unser Team',
+          team_members: [
+            data.team_section?.carlos || {},
+            data.team_section?.maria || {}
+          ].filter(member => member.name),
+          values_title: data.values_section?.title || 'Unsere Werte',
+          values: [
+            data.values_section?.qualitat?.title + ': ' + data.values_section?.qualitat?.description,
+            data.values_section?.gastfreundschaft?.title + ': ' + data.values_section?.gastfreundschaft?.description,
+            data.values_section?.lebensfreude?.title + ': ' + data.values_section?.lebensfreude?.description
+          ].filter(Boolean)
+        };
+        
+        setAboutData(transformedData);
       }
     } catch (error) {
       console.error('Error loading about data:', error);
