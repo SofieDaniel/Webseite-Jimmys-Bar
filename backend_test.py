@@ -2747,9 +2747,285 @@ def run_mysql_migration_validation():
     
     return all_passed
 
+def test_cms_standorte_enhanced():
+    """Test GET /api/cms/standorte-enhanced endpoint"""
+    print("\n🧪 Testing GET /api/cms/standorte-enhanced endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/standorte-enhanced")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved enhanced locations content")
+        else:
+            print(f"❌ Failed to retrieve enhanced locations content. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "page_title", "page_subtitle", "header_background", "neustadt", "grossenbrode", "info_section"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if location data is present
+        if "neustadt" in data and isinstance(data["neustadt"], dict):
+            print(f"✅ Neustadt location data is present")
+            
+            # Check neustadt location fields
+            neustadt_fields = ["name", "badge", "address_line1", "address_line2", "opening_hours"]
+            missing_neustadt_fields = [field for field in neustadt_fields if field not in data["neustadt"]]
+            
+            if not missing_neustadt_fields:
+                print("✅ Neustadt location contains all required fields")
+                print(f"✅ Neustadt location name: {data['neustadt']['name']}")
+            else:
+                print(f"❌ Neustadt location is missing required fields: {missing_neustadt_fields}")
+                return False
+        else:
+            print("❌ Neustadt location data is missing or not a dictionary")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/standorte-enhanced endpoint: {e}")
+        return False
+
+def test_cms_bewertungen_page():
+    """Test GET /api/cms/bewertungen-page endpoint"""
+    print("\n🧪 Testing GET /api/cms/bewertungen-page endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/bewertungen-page")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved reviews page content")
+        else:
+            print(f"❌ Failed to retrieve reviews page content. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "page_title", "page_subtitle", "header_background", "reviews_section_title", "feedback_section_title", "feedback_note"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Print some sample data
+        print(f"✅ Page title: {data['page_title']}")
+        print(f"✅ Reviews section title: {data['reviews_section_title']}")
+        print(f"✅ Feedback section title: {data['feedback_section_title']}")
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/bewertungen-page endpoint: {e}")
+        return False
+
+def test_cms_ueber_uns_enhanced():
+    """Test GET /api/cms/ueber-uns-enhanced endpoint"""
+    print("\n🧪 Testing GET /api/cms/ueber-uns-enhanced endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/cms/ueber-uns-enhanced")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved enhanced about page content")
+        else:
+            print(f"❌ Failed to retrieve enhanced about page content. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["id", "page_title", "page_subtitle", "header_background", "jimmy", "values_section", "team_section"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if jimmy data is present
+        if "jimmy" in data and isinstance(data["jimmy"], dict):
+            print(f"✅ Jimmy data is present")
+            
+            # Check jimmy fields
+            jimmy_fields = ["name", "image", "story_paragraph1", "story_paragraph2", "quote"]
+            missing_jimmy_fields = [field for field in jimmy_fields if field not in data["jimmy"]]
+            
+            if not missing_jimmy_fields:
+                print("✅ Jimmy data contains all required fields")
+                print(f"✅ Jimmy name: {data['jimmy']['name']}")
+            else:
+                print(f"❌ Jimmy data is missing required fields: {missing_jimmy_fields}")
+                return False
+        else:
+            print("❌ Jimmy data is missing or not a dictionary")
+            return False
+            
+        # Check if values section is present
+        if "values_section" in data and isinstance(data["values_section"], dict):
+            print(f"✅ Values section is present")
+            
+            # Check values section fields
+            if "title" in data["values_section"]:
+                print(f"✅ Values section title: {data['values_section']['title']}")
+            else:
+                print("❌ Values section is missing title field")
+                return False
+        else:
+            print("❌ Values section is missing or not a dictionary")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to cms/ueber-uns-enhanced endpoint: {e}")
+        return False
+
+def test_get_reviews_with_approved_param():
+    """Test GET /api/reviews with approved_only parameter"""
+    print("\n🧪 Testing GET /api/reviews?approved_only=true endpoint...")
+    
+    try:
+        # Make GET request with approved_only=true
+        response = requests.get(f"{API_BASE_URL}/reviews?approved_only=true")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved approved reviews")
+        else:
+            print(f"❌ Failed to retrieve approved reviews. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} approved reviews")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # If there are reviews, verify the structure of the first one
+        if data:
+            required_fields = ["id", "customer_name", "rating", "comment", "date", "is_approved"]
+            missing_fields = [field for field in required_fields if field not in data[0]]
+            
+            if not missing_fields:
+                print("✅ Review objects contain all required fields")
+            else:
+                print(f"❌ Review objects are missing required fields: {missing_fields}")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample approved reviews:")
+            for i, review in enumerate(data[:3]):  # Show up to 3 samples
+                print(f"  {i+1}. {review['customer_name']} - {review['rating']}★ - {review['comment'][:30]}...")
+                
+            # Verify all reviews are approved
+            all_approved = all(review["is_approved"] for review in data)
+            if all_approved:
+                print("✅ All reviews are correctly marked as approved")
+            else:
+                print("❌ Some reviews are marked as not approved in the approved reviews list")
+                return False
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to reviews endpoint: {e}")
+        return False
+
+def run_requested_tests():
+    """Run the specific tests requested in the review request"""
+    print("\n🔍 Starting Jimmy's Tapas Bar Backend API Tests")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # Test 1: Authentication & Users
+    auth_success, token = test_auth_login()
+    results["auth_login"] = auth_success
+    
+    if auth_success:
+        results["auth_me"] = test_auth_me()
+        results["users_get"] = test_get_users()
+    else:
+        results["auth_me"] = False
+        results["users_get"] = False
+        print("❌ Skipping auth/me and users tests due to failed login")
+    
+    # Test 2: CMS Enhanced Endpoints
+    results["cms_standorte_enhanced"] = test_cms_standorte_enhanced()
+    results["cms_bewertungen_page"] = test_cms_bewertungen_page()
+    results["cms_ueber_uns_enhanced"] = test_cms_ueber_uns_enhanced()
+    
+    # Test 3: Menu & Reviews
+    results["menu_items"] = test_get_menu_items()
+    results["reviews_approved"] = test_get_reviews_with_approved_param()
+    
+    review_success, review_id = test_create_review()
+    results["review_create"] = review_success
+    
+    # Test 4: System Status
+    results["root_endpoint"] = test_root_endpoint()
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    for test_name, result in results.items():
+        status = "✅ PASSED" if result else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
 if __name__ == "__main__":
-    # Run the MySQL migration validation tests
-    run_mysql_migration_validation()
-    # Run the MySQL migration and backup system tests
-    success = run_mysql_migration_tests()
+    # Run the requested tests
+    success = run_requested_tests()
     sys.exit(0 if success else 1)
