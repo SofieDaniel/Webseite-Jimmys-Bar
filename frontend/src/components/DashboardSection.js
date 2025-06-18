@@ -367,13 +367,13 @@ const DashboardSection = ({ setActiveSection }) => {
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
             <div className="flex items-center mb-3">
               <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-white text-xl">🥘</span>
+                <span className="text-white text-xl">⚡</span>
               </div>
-              <h4 className="text-lg font-semibold text-blue-900">Authentische mediterrane Küche</h4>
+              <h4 className="text-lg font-semibold text-gray-900">Qualität</h4>
             </div>
-            <p className="text-sm text-blue-800 leading-relaxed">
-              Traditionelle spanische Rezepte mit den besten Zutaten direkt aus dem Mittelmeerraum.
-              Jedes Gericht erzählt eine Geschichte aus Spanien.
+            <p className="text-sm text-gray-800 leading-relaxed">
+              Nur die besten Zutaten für authentische spanische Geschmackserlebnisse. 
+              Frische und Qualität stehen bei uns an erster Stelle.
             </p>
             <div className="mt-4 flex items-center justify-between">
               <span className="text-xs text-blue-600 bg-blue-200 px-2 py-1 rounded-full">Kernwert</span>
@@ -391,9 +391,9 @@ const DashboardSection = ({ setActiveSection }) => {
               <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mr-4">
                 <span className="text-white text-xl">🤝</span>
               </div>
-              <h4 className="text-lg font-semibold text-orange-900">Gastfreundschaft</h4>
+              <h4 className="text-lg font-semibold text-gray-900">Gastfreundschaft</h4>
             </div>
-            <p className="text-sm text-orange-800 leading-relaxed">
+            <p className="text-sm text-gray-800 leading-relaxed">
               Herzliche Atmosphäre und persönlicher Service für jeden Gast. 
               Bei uns sollen Sie sich wie zu Hause fühlen.
             </p>
@@ -413,9 +413,9 @@ const DashboardSection = ({ setActiveSection }) => {
               <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
                 <span className="text-white text-xl">🎉</span>
               </div>
-              <h4 className="text-lg font-semibold text-green-900">Lebensfreude</h4>
+              <h4 className="text-lg font-semibold text-gray-900">Lebensfreude</h4>
             </div>
-            <p className="text-sm text-green-800 leading-relaxed">
+            <p className="text-sm text-gray-800 leading-relaxed">
               Spanische Lebensart und Genuss in gemütlicher Atmosphäre. 
               Erleben Sie das echte España-Gefühl an der Ostsee.
             </p>
