@@ -80,13 +80,60 @@ const AboutAdminSection = () => {
     setMessage('');
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/about`, {
+      // Transform data back to enhanced format
+      const enhancedData = {
+        page_title: aboutData.page_title,
+        page_subtitle: aboutData.hero_title,
+        header_background: 'https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg',
+        jimmy: {
+          name: 'Jimmy Rodríguez',
+          image: aboutData.story_image || 'https://images.unsplash.com/photo-1665758564802-f611df512d8d',
+          story_paragraph1: aboutData.story_content.split('\n\n')[0] || '',
+          story_paragraph2: aboutData.story_content.split('\n\n')[1] || '',
+          quote: aboutData.story_content.split('\n\n')[2] || 'Essen ist nicht nur Nahrung - es ist Kultur, Tradition und Leidenschaft auf einem Teller.'
+        },
+        values_section: {
+          title: aboutData.values_title,
+          qualitat: {
+            title: 'Qualität',
+            description: aboutData.values[0]?.split(': ')[1] || 'Nur die besten Zutaten für authentische spanische Geschmackserlebnisse.',
+            image: 'https://images.unsplash.com/photo-1694685367640-05d6624e57f1'
+          },
+          gastfreundschaft: {
+            title: 'Gastfreundschaft',
+            description: aboutData.values[1]?.split(': ')[1] || 'Herzliche Atmosphäre und persönlicher Service für jeden Gast.',
+            image: 'https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg'
+          },
+          lebensfreude: {
+            title: 'Lebensfreude',
+            description: aboutData.values[2]?.split(': ')[1] || 'Spanische Lebensart und Genuss in gemütlicher Atmosphäre.',
+            image: 'https://images.unsplash.com/photo-1656423521731-9665583f100c'
+          }
+        },
+        team_section: {
+          title: aboutData.team_title,
+          carlos: aboutData.team_members[0] || {
+            name: 'Carlos Mendez',
+            position: 'Küchenchef',
+            description: 'Mit 20 Jahren Erfahrung in der spanischen Küche sorgt Carlos für die authentischen Geschmäcker.',
+            image: 'https://images.unsplash.com/photo-1665758564802-f611df512d8d'
+          },
+          maria: aboutData.team_members[1] || {
+            name: 'Maria Santos',
+            position: 'Service Manager',
+            description: 'Maria sorgt dafür, dass sich jeder Gast bei uns willkommen fühlt.',
+            image: 'https://images.unsplash.com/photo-1665758564802-f611df512d8d'
+          }
+        }
+      };
+
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/ueber-uns-enhanced`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
-        body: JSON.stringify(aboutData)
+        body: JSON.stringify(enhancedData)
       });
 
       if (response.ok) {
