@@ -209,10 +209,13 @@ const Home = () => {
                   }
                 }}
               >
-                <img src={card.image_url} alt={card.title} className="w-full h-48 object-cover" />
+                <img src={card.image_url || card.image} alt={card.title} className="w-full h-48 object-cover" />
                 <div className="p-6">
                   <h3 className="font-serif text-warm-beige text-lg tracking-wide">{card.title}</h3>
                   <p className="text-light-beige text-sm font-light">{card.description}</p>
+                  {card.price && (
+                    <p className="text-warm-beige font-semibold mt-2">{card.price}</p>
+                  )}
                 </div>
               </div>
             ))}
