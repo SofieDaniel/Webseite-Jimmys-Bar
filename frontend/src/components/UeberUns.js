@@ -17,7 +17,7 @@ const UeberUns = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/about`);
       if (response.ok) {
         const data = await response.json();
-        console.log('Loaded enhanced about data:', data);
+        console.log('Loaded about data:', data);
         setPageData(data);
       } else {
         throw new Error('Failed to load about page data');
@@ -69,8 +69,8 @@ const UeberUns = () => {
 
   return (
     <div className="min-h-screen bg-dark-brown">
-      {/* Elegant Header Section with Background */}
-      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('${pageData.header_background || 'https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg'}')`}}>
+      {/* Header Section */}
+      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('${pageData.story_image || 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f'}')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative z-10 pt-24 pb-16">
           <div className="container mx-auto px-4 text-center">
@@ -78,7 +78,7 @@ const UeberUns = () => {
               {pageData.page_title || 'Über uns'}
             </h1>
             <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
-              {pageData.page_subtitle || 'Die Geschichte hinter Jimmy\'s Tapas Bar'}
+              {pageData.hero_description || 'Die Geschichte hinter Jimmy\'s Tapas Bar'}
             </p>
           </div>
         </div>
@@ -86,68 +86,107 @@ const UeberUns = () => {
 
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-dark-brown rounded-xl border border-warm-brown p-12 mb-16 shadow-2xl">
+          {/* Story Section */}
+          <div className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-xl border border-warm-brown p-12 mb-16 shadow-2xl">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <img 
-                  src={pageData.jimmy?.image || "https://images.unsplash.com/photo-1665758564802-f611df512d8d"} 
-                  alt="Jimmy Rodríguez" 
+                  src={pageData.story_image || "https://images.unsplash.com/photo-1571197119738-26123cb0d22f"} 
+                  alt="Jimmy's Tapas Bar Story" 
                   className="w-full rounded-xl shadow-lg"
                 />
               </div>
               <div>
                 <h2 className="text-4xl font-serif text-warm-beige mb-6 tracking-wide">
-                  {pageData.jimmy?.name || 'Jimmy Rodríguez'}
+                  {pageData.story_title || 'Unsere Geschichte'}
                 </h2>
                 <div className="text-light-beige space-y-6 leading-relaxed font-light text-lg">
                   <p>
-                    {pageData.jimmy?.story_paragraph1 || 'Seit über 15 Jahren bringe ich die authentischen Aromen Spaniens an die deutsche Ostseeküste. Meine Leidenschaft für die spanische Küche begann in den kleinen Tapas-Bars von Sevilla, wo ich die Geheimnisse traditioneller Rezepte erlernte.'}
-                  </p>
-                  <p>
-                    {pageData.jimmy?.story_paragraph2 || 'In Jimmy\'s Tapas Bar verwenden wir nur die besten Zutaten - von handverlesenem Olivenöl aus Andalusien bis hin zu frischen Meeresfrüchten aus der Ostsee. Jedes Gericht wird mit Liebe und Respekt vor der spanischen Tradition zubereitet.'}
-                  </p>
-                  <p className="text-warm-beige font-medium">
-                    "{pageData.jimmy?.quote || 'Essen ist nicht nur Nahrung - es ist Kultur, Tradition und Leidenschaft auf einem Teller.'}"
+                    {pageData.story_content || 'Seit der Gründung steht Jimmy\'s Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.'}
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Values Section with Images */}
-          <h3 className="text-4xl font-serif text-warm-beige mb-12 text-center tracking-wide">
-            {pageData.values_section?.title || 'Unsere Werte'}
-          </h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-dark-brown rounded-xl border border-warm-brown overflow-hidden shadow-lg">
-              <img 
-                src={pageData.values_section?.qualitat?.image || "https://images.unsplash.com/photo-1694685367640-05d6624e57f1"} 
-                alt="Qualität" 
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-8 text-center">
-                <h4 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">
-                  {pageData.values_section?.qualitat?.title || 'Qualität'}
-                </h4>
-                <p className="text-light-beige font-light leading-relaxed">
-                  {pageData.values_section?.qualitat?.description || 'Nur die besten Zutaten für authentische spanische Geschmackserlebnisse. Frische und Qualität stehen bei uns an erster Stelle.'}
-                </p>
+          {/* Team Section */}
+          {pageData.team_members && pageData.team_members.length > 0 && (
+            <div className="mb-16">
+              <h3 className="text-4xl font-serif text-warm-beige mb-12 text-center tracking-wide">
+                {pageData.team_title || 'Unser Team'}
+              </h3>
+              <div className="grid md:grid-cols-2 gap-8">
+                {pageData.team_members.map((member, index) => (
+                  <div key={index} className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-xl border border-warm-brown overflow-hidden shadow-lg">
+                    <img 
+                      src={member.image_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"} 
+                      alt={member.name} 
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="p-8 text-center">
+                      <h4 className="text-2xl font-serif text-warm-beige mb-2 tracking-wide">
+                        {member.name}
+                      </h4>
+                      <p className="text-orange-400 mb-4 font-medium">
+                        {member.position}
+                      </p>
+                      <p className="text-light-beige font-light leading-relaxed">
+                        {member.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="bg-dark-brown rounded-xl border border-warm-brown overflow-hidden shadow-lg">
-              <img 
-                src={pageData.values_section?.gastfreundschaft?.image || "https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg"} 
-                alt="Gastfreundschaft" 
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-8 text-center">
-                <h4 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">
-                  {pageData.values_section?.gastfreundschaft?.title || 'Gastfreundschaft'}
-                </h4>
-                <p className="text-light-beige font-light leading-relaxed">
-                  {pageData.values_section?.gastfreundschaft?.description || 'Herzliche Atmosphäre und persönlicher Service für jeden Gast. Bei uns sollen Sie sich wie zu Hause fühlen.'}
-                </p>
+          )}
+
+          {/* Values Section */}
+          {pageData.values_data && pageData.values_data.length > 0 && (
+            <div>
+              <h3 className="text-4xl font-serif text-warm-beige mb-12 text-center tracking-wide">
+                {pageData.values_title || 'Unsere Werte'}
+              </h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                {pageData.values_data.slice(0, 3).map((value, index) => (
+                  <div key={index} className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-xl border border-warm-brown p-8 text-center shadow-lg">
+                    <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="text-2xl text-dark-brown">
+                        {index === 0 ? '🍽️' : index === 1 ? '🌿' : '❤️'}
+                      </span>
+                    </div>
+                    <h4 className="text-xl font-serif text-warm-beige mb-4 tracking-wide">
+                      {value}
+                    </h4>
+                    <p className="text-light-beige font-light leading-relaxed text-sm">
+                      {index === 0 && 'Nur die besten Zutaten für authentische spanische Geschmackserlebnisse.'}
+                      {index === 1 && 'Täglich frische Zutaten aus der Region und importierte spanische Spezialitäten.'}
+                      {index === 2 && 'Herzliche Atmosphäre und persönlicher Service für jeden Gast.'}
+                    </p>
+                  </div>
+                ))}
               </div>
+              
+              {/* Additional Values */}
+              {pageData.values_data.length > 3 && (
+                <div className="grid md:grid-cols-2 gap-8 mt-8">
+                  {pageData.values_data.slice(3).map((value, index) => (
+                    <div key={index + 3} className="bg-gradient-to-br from-orange-500/10 to-warm-beige/10 rounded-xl border border-warm-beige/30 p-6 text-center">
+                      <h4 className="text-lg font-serif text-warm-beige mb-2">
+                        {value}
+                      </h4>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UeberUns;
             </div>
             <div className="bg-dark-brown rounded-xl border border-warm-brown overflow-hidden shadow-lg">
               <img 
