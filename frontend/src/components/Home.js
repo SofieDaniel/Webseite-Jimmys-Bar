@@ -174,11 +174,9 @@ const Home = () => {
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {features.cards.map((card, index) => (
               <div key={index} className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
-                <img 
-                  src={card.image_url} 
-                  alt={card.title} 
-                  className="w-full h-48 object-cover"
-                />
+                <div className="w-full h-48 flex items-center justify-center bg-warm-brown">
+                  <span className="text-6xl">{card.icon || '🍽️'}</span>
+                </div>
                 <div className="p-8 text-center">
                   <h3 className="text-2xl font-serif text-warm-beige mb-4 tracking-wide">{card.title}</h3>
                   <p className="text-light-beige font-light leading-relaxed">
