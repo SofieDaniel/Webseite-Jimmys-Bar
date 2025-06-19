@@ -58,54 +58,270 @@ const LanguageProvider = ({ children }) => {
   );
 };
 
-// Cookie Banner Component
+// Enhanced GDPR-Compliant Cookie Banner Component
 const CookieBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [cookiePreferences, setCookiePreferences] = useState({
+    essential: true,
+    analytics: false,
+    marketing: false,
+    comfort: false
+  });
 
   useEffect(() => {
     const cookieConsent = localStorage.getItem('cookieConsent');
+    const cookiePrefs = localStorage.getItem('cookiePreferences');
+    
     if (!cookieConsent) {
       setShowBanner(true);
     }
+    
+    if (cookiePrefs) {
+      setCookiePreferences(JSON.parse(cookiePrefs));
+    }
   }, []);
 
-  const acceptCookies = () => {
-    localStorage.setItem('cookieConsent', 'accepted');
+  const acceptAllCookies = () => {
+    const allAccepted = {
+      essential: true,
+      analytics: true,
+      marketing: true,
+      comfort: true
+    };
+    setCookiePreferences(allAccepted);
+    localStorage.setItem('cookieConsent', 'accepted_all');
+    localStorage.setItem('cookiePreferences', JSON.stringify(allAccepted));
+    localStorage.setItem('cookieConsentDate', new Date().toISOString());
     setShowBanner(false);
+    setShowSettings(false);
   };
 
-  const rejectCookies = () => {
-    localStorage.setItem('cookieConsent', 'rejected');
+  const acceptSelectedCookies = () => {
+    localStorage.setItem('cookieConsent', 'accepted_selected');
+    localStorage.setItem('cookiePreferences', JSON.stringify(cookiePreferences));
+    localStorage.setItem('cookieConsentDate', new Date().toISOString());
     setShowBanner(false);
+    setShowSettings(false);
+  };
+
+  const rejectAllCookies = () => {
+    const essentialOnly = {
+      essential: true,
+      analytics: false,
+      marketing: false,
+      comfort: false
+    };
+    setCookiePreferences(essentialOnly);
+    localStorage.setItem('cookieConsent', 'rejected');
+    localStorage.setItem('cookiePreferences', JSON.stringify(essentialOnly));
+    localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    setShowBanner(false);
+    setShowSettings(false);
   };
 
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-dark-brown border-t-2 border-warm-beige p-4 z-50">
-      <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex-1">
-            <h3 className="text-warm-beige font-serif text-lg mb-2">Diese Website verwendet Cookies</h3>
-            <p className="text-light-beige text-sm">Wir verwenden Cookies, um Ihnen das beste Website-Erlebnis zu bieten. Durch die weitere Nutzung der Website stimmen Sie der Verwendung von Cookies zu.</p>
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={rejectCookies}
-              className="px-4 py-2 border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown transition-colors text-sm"
-            >
-              Ablehnen
-            </button>
-            <button
-              onClick={acceptCookies}
-              className="px-4 py-2 bg-warm-beige text-dark-brown hover:bg-light-beige transition-colors text-sm"
-            >
-              Akzeptieren
-            </button>
+    <>
+      {/* Cookie Banner */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-blue-500 shadow-2xl p-6 z-50">
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex flex-col lg:flex-row items-start justify-between gap-6">
+            <div className="flex-1">
+              <div className="flex items-center space-x-3 mb-3">
+                <span className="text-3xl">🍪</span>
+                <h3 className="text-gray-900 font-serif text-xl font-bold">Diese Website verwendet Cookies</h3>
+              </div>
+              <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                Wir verwenden Cookies und ähnliche Technologien, um Ihnen das beste Website-Erlebnis zu bieten. 
+                <strong className="text-gray-900"> Technisch notwendige Cookies</strong> sind für die Grundfunktionen erforderlich. 
+                <strong className="text-gray-900"> Optionale Cookies</strong> helfen uns, unsere Website zu verbessern und Ihnen relevante Inhalte anzuzeigen.
+              </p>
+              <p className="text-xs text-gray-600">
+                Weitere Informationen finden Sie in unserer{' '}
+                <a href="/datenschutz" className="text-blue-600 hover:text-blue-800 underline font-medium">
+                  Datenschutzerklärung
+                </a>
+                . Sie können Ihre Einstellungen jederzeit ändern.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-3 lg:ml-6">
+              <button
+                onClick={() => setShowSettings(true)}
+                className="px-6 py-3 border-2 border-gray-400 text-gray-700 hover:bg-gray-100 hover:border-gray-500 transition-all duration-200 text-sm font-medium rounded-lg min-w-[140px]"
+              >
+                ⚙️ Einstellungen
+              </button>
+              <button
+                onClick={rejectAllCookies}
+                className="px-6 py-3 border-2 border-red-400 text-red-600 hover:bg-red-50 hover:border-red-500 transition-all duration-200 text-sm font-medium rounded-lg min-w-[140px]"
+              >
+                ❌ Nur Notwendige
+              </button>
+              <button
+                onClick={acceptAllCookies}
+                className="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 border-2 border-blue-600 hover:border-blue-700 transition-all duration-200 text-sm font-medium rounded-lg min-w-[140px]"
+              >
+                ✅ Alle akzeptieren
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Cookie Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">🍪 Cookie-Einstellungen</h2>
+                <button
+                  onClick={() => setShowSettings(false)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+
+              <p className="text-gray-600 mb-8">
+                Wählen Sie, welche Cookies Sie zulassen möchten. Sie können diese Einstellungen jederzeit ändern.
+              </p>
+
+              <div className="space-y-6">
+                {/* Essential Cookies */}
+                <div className="p-6 bg-green-50 border-2 border-green-200 rounded-xl">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <span className="text-2xl">🔒</span>
+                      <h3 className="text-lg font-semibold text-green-900">Technisch notwendige Cookies</h3>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={true}
+                        disabled={true}
+                        className="h-5 w-5 text-green-600 border-2 border-green-300 rounded opacity-50"
+                      />
+                      <span className="text-sm font-medium text-green-700">Immer aktiviert</span>
+                    </div>
+                  </div>
+                  <p className="text-green-800 text-sm">
+                    Diese Cookies sind für die Grundfunktionen der Website erforderlich und können nicht deaktiviert werden. 
+                    Sie speichern beispielsweise Ihre Cookie-Einstellungen und Anmeldedaten.
+                  </p>
+                </div>
+
+                {/* Analytics Cookies */}
+                <div className="p-6 bg-blue-50 border-2 border-blue-200 rounded-xl">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <span className="text-2xl">📊</span>
+                      <h3 className="text-lg font-semibold text-blue-900">Analyse-Cookies</h3>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={cookiePreferences.analytics}
+                        onChange={(e) => setCookiePreferences({...cookiePreferences, analytics: e.target.checked})}
+                        className="h-5 w-5 text-blue-600 border-2 border-blue-300 rounded focus:ring-blue-500"
+                      />
+                      <span className="text-sm font-medium text-blue-700">
+                        {cookiePreferences.analytics ? 'Aktiviert' : 'Deaktiviert'}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-blue-800 text-sm">
+                    Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, 
+                    indem sie Informationen anonym sammeln und weiterleiten.
+                  </p>
+                </div>
+
+                {/* Marketing Cookies */}
+                <div className="p-6 bg-purple-50 border-2 border-purple-200 rounded-xl">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <span className="text-2xl">🎯</span>
+                      <h3 className="text-lg font-semibold text-purple-900">Marketing-Cookies</h3>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={cookiePreferences.marketing}
+                        onChange={(e) => setCookiePreferences({...cookiePreferences, marketing: e.target.checked})}
+                        className="h-5 w-5 text-purple-600 border-2 border-purple-300 rounded focus:ring-purple-500"
+                      />
+                      <span className="text-sm font-medium text-purple-700">
+                        {cookiePreferences.marketing ? 'Aktiviert' : 'Deaktiviert'}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-purple-800 text-sm">
+                    Diese Cookies werden verwendet, um Ihnen relevante Werbeanzeigen und Marketinginhalte anzuzeigen 
+                    und die Effektivität unserer Werbekampagnen zu messen.
+                  </p>
+                </div>
+
+                {/* Comfort Cookies */}
+                <div className="p-6 bg-orange-50 border-2 border-orange-200 rounded-xl">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <span className="text-2xl">🎨</span>
+                      <h3 className="text-lg font-semibold text-orange-900">Komfort-Cookies</h3>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={cookiePreferences.comfort}
+                        onChange={(e) => setCookiePreferences({...cookiePreferences, comfort: e.target.checked})}
+                        className="h-5 w-5 text-orange-600 border-2 border-orange-300 rounded focus:ring-orange-500"
+                      />
+                      <span className="text-sm font-medium text-orange-700">
+                        {cookiePreferences.comfort ? 'Aktiviert' : 'Deaktiviert'}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-orange-800 text-sm">
+                    Diese Cookies verbessern die Benutzerfreundlichkeit der Website, indem sie sich Ihre Präferenzen 
+                    (wie Spracheinstellungen oder Designthema) merken.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 mt-8 pt-6 border-t border-gray-200">
+                <button
+                  onClick={rejectAllCookies}
+                  className="flex-1 px-6 py-3 border-2 border-red-400 text-red-600 hover:bg-red-50 hover:border-red-500 transition-all duration-200 font-medium rounded-lg"
+                >
+                  ❌ Nur technisch notwendige
+                </button>
+                <button
+                  onClick={acceptSelectedCookies}
+                  className="flex-1 px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 border-2 border-blue-600 hover:border-blue-700 transition-all duration-200 font-medium rounded-lg"
+                >
+                  ✅ Auswahl speichern
+                </button>
+                <button
+                  onClick={acceptAllCookies}
+                  className="flex-1 px-6 py-3 bg-green-600 text-white hover:bg-green-700 border-2 border-green-600 hover:border-green-700 transition-all duration-200 font-medium rounded-lg"
+                >
+                  ✅ Alle akzeptieren
+                </button>
+              </div>
+
+              <p className="text-xs text-gray-500 text-center mt-4">
+                Weitere Informationen zum Datenschutz finden Sie in unserer{' '}
+                <a href="/datenschutz" className="text-blue-600 hover:text-blue-800 underline">
+                  Datenschutzerklärung
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
