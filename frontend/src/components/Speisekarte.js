@@ -413,32 +413,18 @@ const Speisekarte = () => {
                   </div>
                 )}
 
-                {/* Herkunft & Zubereitung */}
-                <div className="grid grid-cols-1 gap-3 mb-4">
-                  {hoveredItem.origin && (
-                    <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-500/30">
-                      <h4 className="text-xs font-semibold text-blue-300 mb-1 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
-                        Herkunft
-                      </h4>
-                      <p className="text-blue-100 text-xs">
-                        {hoveredItem.origin}
-                      </p>
-                    </div>
-                  )}
-                  
-                  {hoveredItem.preparation_method && (
-                    <div className="bg-purple-900/20 rounded-lg p-3 border border-purple-500/30">
-                      <h4 className="text-xs font-semibold text-purple-300 mb-1 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
-                        Zubereitung
-                      </h4>
-                      <p className="text-purple-100 text-xs">
-                        {hoveredItem.preparation_method}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                {/* Herkunft */}
+                {hoveredItem.origin && (
+                  <div className="bg-blue-900/20 rounded-lg p-4 mb-4 border border-blue-500/30">
+                    <h4 className="text-sm font-semibold text-blue-300 mb-2 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                      Herkunft
+                    </h4>
+                    <p className="text-blue-100 text-sm">
+                      {hoveredItem.origin}
+                    </p>
+                  </div>
+                )}
 
                 {/* Allergene & Zusatzstoffe */}
                 {(hoveredItem.allergens || hoveredItem.additives) && (
