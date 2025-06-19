@@ -260,7 +260,7 @@ backend:
 
   - task: "CMS Homepage Endpoints"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -278,6 +278,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Confirmed that the GET /api/cms/homepage endpoint is missing required fields during MySQL migration validation. The response is missing the 'hero', 'features', 'specialties', and 'delivery' fields. The endpoint needs to be updated to properly transform the MySQL data structure to match the expected format."
+      - working: true
+        agent: "testing"
+        comment: "After detailed testing, found that the GET /api/cms/homepage endpoint is actually working correctly. The response includes both the raw data fields (hero_title, hero_subtitle, etc.) and the structured objects (hero, features, specialties, delivery) that the frontend expects. The endpoint is correctly transforming the MySQL data to match the expected format."
 
   - task: "CMS Locations Endpoints"
     implemented: true
