@@ -295,6 +295,7 @@ const Speisekarte = () => {
                       } cursor-pointer border border-warm-beige/20`}
                       onMouseEnter={() => setHoveredItem(item)}
                       onMouseLeave={() => setHoveredItem(null)}
+                      onClick={() => setSelectedItem(item)}
                     >
                       <div className="p-5">
                         <div className="flex justify-between items-start">
