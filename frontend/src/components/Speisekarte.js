@@ -69,8 +69,29 @@ const Speisekarte = () => {
     if (!item) return null;
     
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4" style={{top: 0, left: 0, right: 0, bottom: 0}}>
-        <div className="bg-white border-2 border-warm-beige rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+      <div 
+        className="fixed bg-black bg-opacity-75 z-50 p-4"
+        style={{
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}
+      >
+        <div 
+          className="bg-white border-2 border-warm-beige rounded-lg shadow-2xl relative"
+          style={{
+            maxWidth: '32rem',
+            width: '100%',
+            maxHeight: '90vh',
+            overflowY: 'auto'
+          }}
+        >
           {/* Header */}
           <div className="p-6 border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 sticky top-0 z-10">
             <div className="flex justify-between items-start">
@@ -86,6 +107,7 @@ const Speisekarte = () => {
               <button 
                 onClick={onClose}
                 className="text-gray-600 hover:text-gray-800 text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+                style={{ fontSize: '24px', lineHeight: '1' }}
               >
                 ×
               </button>
