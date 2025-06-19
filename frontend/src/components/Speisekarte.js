@@ -450,6 +450,14 @@ const Speisekarte = () => {
           </div>
         </div>
       </div>
+      
+      {/* Detail Modal */}
+      {selectedItem && (
+        <ItemDetailModal 
+          item={selectedItem} 
+          onClose={() => setSelectedItem(null)} 
+        />
+      )}
     </div>
   );
 };
