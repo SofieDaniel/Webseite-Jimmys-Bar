@@ -82,12 +82,11 @@ const Speisekarte = () => {
               height: 100vh !important;
               background: rgba(0, 0, 0, 0.8) !important;
               display: flex !important;
-              align-items: center !important;
+              align-items: flex-start !important;
               justify-content: center !important;
               z-index: 999999 !important;
               padding: 20px !important;
-              padding-top: 10vh !important;
-              padding-bottom: 10vh !important;
+              padding-top: 25vh !important;
             }
             .modal-content {
               background: white !important;
