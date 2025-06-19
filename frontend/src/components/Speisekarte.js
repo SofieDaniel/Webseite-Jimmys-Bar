@@ -70,22 +70,22 @@ const Speisekarte = () => {
     
     return (
       <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-        <div className="bg-dark-brown border border-warm-beige rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="bg-white border-2 border-warm-beige rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
           {/* Header */}
-          <div className="p-6 border-b border-warm-beige/30">
+          <div className="p-6 border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-2xl font-serif text-warm-beige mb-2">{item.name}</h2>
+                <h2 className="text-2xl font-serif text-gray-800 mb-2">{item.name}</h2>
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl font-bold text-warm-beige">{item.price}</span>
-                  <span className="text-sm bg-warm-beige/20 text-warm-beige px-3 py-1 rounded-full">
+                  <span className="text-2xl font-bold text-orange-600">{item.price}</span>
+                  <span className="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full border border-orange-300">
                     {item.category}
                   </span>
                 </div>
               </div>
               <button 
                 onClick={onClose}
-                className="text-warm-beige hover:text-white text-2xl"
+                className="text-gray-600 hover:text-gray-800 text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
               >
                 ×
               </button>
@@ -93,51 +93,91 @@ const Speisekarte = () => {
           </div>
           
           {/* Content */}
-          <div className="p-6 space-y-6">
+          <div className="p-6 space-y-6 bg-white">
             {/* Beschreibung */}
             <div>
-              <h3 className="text-warm-beige font-semibold mb-2">Beschreibung</h3>
-              <p className="text-light-beige leading-relaxed">
+              <h3 className="text-gray-800 font-semibold mb-2 text-lg flex items-center gap-2">
+                <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                Beschreibung
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
                 {item.detailed_description || item.description}
               </p>
             </div>
             
+            {/* Zutaten */}
+            {item.ingredients && (
+              <div>
+                <h3 className="text-gray-800 font-semibold mb-2 text-lg flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  Hauptzutaten
+                </h3>
+                <p className="text-gray-700 leading-relaxed">{item.ingredients}</p>
+              </div>
+            )}
+            
             {/* Herkunft */}
             {item.origin && (
               <div>
-                <h3 className="text-warm-beige font-semibold mb-2">Herkunft</h3>
-                <p className="text-light-beige">{item.origin}</p>
+                <h3 className="text-gray-800 font-semibold mb-2 text-lg flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  Herkunft
+                </h3>
+                <p className="text-gray-700">{item.origin}</p>
               </div>
             )}
             
             {/* Zubereitung */}
             {item.preparation_method && (
               <div>
-                <h3 className="text-warm-beige font-semibold mb-2">Zubereitung</h3>
-                <p className="text-light-beige">{item.preparation_method}</p>
-              </div>
-            )}
-            
-            {/* Zutaten */}
-            {item.ingredients && (
-              <div>
-                <h3 className="text-warm-beige font-semibold mb-2">Hauptzutaten</h3>
-                <p className="text-light-beige">{item.ingredients}</p>
+                <h3 className="text-gray-800 font-semibold mb-2 text-lg flex items-center gap-2">
+                  <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                  Zubereitung
+                </h3>
+                <p className="text-gray-700">{item.preparation_method}</p>
               </div>
             )}
             
             {/* Allergene */}
             {item.allergens && (
-              <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4">
-                <h3 className="text-red-300 font-semibold mb-2 flex items-center">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <h3 className="text-red-700 font-semibold mb-2 flex items-center">
                   ⚠️ Allergene & Unverträglichkeiten
                 </h3>
-                <p className="text-red-200">{item.allergens}</p>
+                <p className="text-red-600">{item.allergens}</p>
               </div>
             )}
             
             {/* Zusatzstoffe */}
             {item.additives && item.additives !== "Keine Zusatzstoffe" && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <h3 className="text-yellow-700 font-semibold mb-2">Zusatzstoffe</h3>
+                <p className="text-yellow-600">{item.additives}</p>
+              </div>
+            )}
+            
+            {/* Eigenschaften */}
+            <div className="flex gap-2 flex-wrap">
+              {item.vegan && (
+                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm border border-green-300">
+                  🌱 Vegan
+                </span>
+              )}
+              {item.vegetarian && !item.vegan && (
+                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm border border-green-300">
+                  🥬 Vegetarisch
+                </span>
+              )}
+              {item.glutenfree && (
+                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm border border-blue-300">
+                  🌾 Glutenfrei
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
               <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4">
                 <h3 className="text-yellow-300 font-semibold mb-2">Zusatzstoffe</h3>
                 <p className="text-yellow-200">{item.additives}</p>
