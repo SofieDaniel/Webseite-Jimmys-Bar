@@ -11,7 +11,7 @@ const Home = () => {
   useEffect(() => {
     const loadHomepageContent = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/homepage`);
+        const response = await fetch(`/api/cms/homepage`);
         if (response.ok) {
           const data = await response.json();
           setHomepageContent(data);
