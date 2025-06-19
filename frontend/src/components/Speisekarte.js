@@ -500,11 +500,12 @@ const Speisekarte = () => {
                     <span className="text-2xl">🍽️</span>
                   </div>
                 </div>
-                <h3 className="text-warm-beige font-medium mb-2">Gericht-Details</h3>
+                <h3 className="text-warm-beige font-medium mb-2">Detaillierte Gericht-Informationen</h3>
                 <p className="text-warm-beige/70 text-sm">
                   Bewegen Sie die Maus über ein Gericht<br/>
-                  um detaillierte Zutatenlisten und<br/>
-                  Allergie-Informationen zu sehen
+                  um detaillierte Beschreibungen,<br/>
+                  Zutaten, Herkunft, Zubereitung<br/>
+                  und Allergie-Informationen zu sehen
                 </p>
               </div>
             )}
