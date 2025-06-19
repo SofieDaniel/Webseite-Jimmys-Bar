@@ -171,70 +171,77 @@ const Speisekarte = () => {
               <div className="bg-gradient-to-br from-medium-brown to-dark-brown border-2 border-warm-beige/40 rounded-xl p-6 shadow-2xl">
                 {/* Header with decorative elements */}
                 <div className="border-b border-warm-beige/30 pb-4 mb-4">
-                
-                {/* Details */}
-                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-serif text-warm-beige">
+                    <h3 className="text-2xl font-serif text-warm-beige">
                       {hoveredItem.name}
                     </h3>
-                    <span className="text-2xl font-bold text-warm-beige">
-                      {hoveredItem.price}
-                    </span>
+                    <div className="text-right">
+                      <div className="bg-warm-beige text-dark-brown px-3 py-1 rounded-full">
+                        <span className="text-xl font-bold">
+                          {hoveredItem.price}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                   
-                  <p className="text-light-beige text-sm leading-relaxed">
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="bg-orange-500/20 text-orange-300 px-2 py-1 rounded text-xs font-medium">
+                      {hoveredItem.category}
+                    </span>
+                    <div className="flex gap-1">
+                      {getAllergyIcons(hoveredItem).map((icon, index) => (
+                        <span key={index} className="text-lg">{icon}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Description */}
+                <div className="bg-dark-brown/50 rounded-lg p-4 mb-4 border border-warm-beige/20">
+                  <p className="text-light-beige leading-relaxed">
                     {hoveredItem.description}
                   </p>
-                  
-                  <div className="text-sm text-warm-beige/70">
-                    <strong>Kategorie:</strong> {hoveredItem.category}
-                  </div>
-                  
-                  {/* Allergy Information */}
-                  <div className="pt-3 border-t border-warm-beige/20">
-                    <h4 className="text-sm font-semibold text-warm-beige mb-2">
-                      Allergie-Informationen:
-                    </h4>
-                    <div className="space-y-1 text-xs">
-                      <div className="flex items-center gap-2">
-                        <span className={hoveredItem.vegan ? 'text-green-400' : 'text-gray-500'}>
-                          🌱
-                        </span>
-                        <span className={hoveredItem.vegan ? 'text-light-beige' : 'text-gray-500'}>
-                          Vegan
-                        </span>
+                </div>
+                
+                {/* Allergy Information */}
+                <div className="bg-warm-beige/5 rounded-lg p-4 border border-warm-beige/20">
+                  <h4 className="text-sm font-semibold text-warm-beige mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-warm-beige rounded-full"></span>
+                    Allergie-Informationen
+                  </h4>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className={`text-center p-2 rounded ${hoveredItem.vegan ? 'bg-green-500/20 border border-green-500/30' : 'bg-gray-500/10 border border-gray-500/20'}`}>
+                      <div className="text-lg mb-1">🌱</div>
+                      <div className={`text-xs ${hoveredItem.vegan ? 'text-green-300' : 'text-gray-400'}`}>
+                        Vegan
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className={hoveredItem.vegetarian ? 'text-green-400' : 'text-gray-500'}>
-                          🌿
-                        </span>
-                        <span className={hoveredItem.vegetarian ? 'text-light-beige' : 'text-gray-500'}>
-                          Vegetarisch
-                        </span>
+                    </div>
+                    <div className={`text-center p-2 rounded ${hoveredItem.vegetarian ? 'bg-green-500/20 border border-green-500/30' : 'bg-gray-500/10 border border-gray-500/20'}`}>
+                      <div className="text-lg mb-1">🌿</div>
+                      <div className={`text-xs ${hoveredItem.vegetarian ? 'text-green-300' : 'text-gray-400'}`}>
+                        Vegetarisch
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className={hoveredItem.glutenfree ? 'text-green-400' : 'text-gray-500'}>
-                          🌾
-                        </span>
-                        <span className={hoveredItem.glutenfree ? 'text-light-beige' : 'text-gray-500'}>
-                          Glutenfrei
-                        </span>
+                    </div>
+                    <div className={`text-center p-2 rounded ${hoveredItem.glutenfree ? 'bg-green-500/20 border border-green-500/30' : 'bg-gray-500/10 border border-gray-500/20'}`}>
+                      <div className="text-lg mb-1">🌾</div>
+                      <div className={`text-xs ${hoveredItem.glutenfree ? 'text-green-300' : 'text-gray-400'}`}>
+                        Glutenfrei
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="bg-dark-brown border border-warm-beige/30 rounded-xl p-6 text-center">
-                <div className="text-warm-beige/50 mb-4">
-                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
+              <div className="bg-gradient-to-br from-warm-beige/10 to-orange-500/10 border-2 border-dashed border-warm-beige/30 rounded-xl p-8 text-center">
+                <div className="text-warm-beige/60 mb-4">
+                  <div className="w-16 h-16 mx-auto bg-warm-beige/10 rounded-full flex items-center justify-center">
+                    <span className="text-2xl">🍽️</span>
+                  </div>
                 </div>
+                <h3 className="text-warm-beige font-medium mb-2">Gericht-Details</h3>
                 <p className="text-warm-beige/70 text-sm">
                   Bewegen Sie die Maus über ein Gericht<br/>
-                  um Details und Bilder zu sehen
+                  um Details und Allergie-Informationen zu sehen
                 </p>
               </div>
             )}
