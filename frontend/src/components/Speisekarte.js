@@ -435,19 +435,6 @@ const Speisekarte = () => {
                     </div>
                   )}
 
-                  {/* Herkunft */}
-                  {hoveredItem.origin && (
-                    <div className="bg-blue-900/20 rounded-lg p-4 mb-4 border border-blue-500/30">
-                      <h4 className="text-sm font-semibold text-blue-300 mb-2 flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                        Herkunft
-                      </h4>
-                      <p className="text-blue-100 text-sm">
-                        {hoveredItem.origin}
-                      </p>
-                    </div>
-                  )}
-
                   {/* Allergene & Zusatzstoffe */}
                   {(hoveredItem.allergens || hoveredItem.additives) && (
                     <div className="bg-red-900/20 rounded-lg p-4 border border-red-500/30">
