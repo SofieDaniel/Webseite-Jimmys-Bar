@@ -140,44 +140,26 @@ const UeberUns = () => {
             </div>
           )}
 
-          {/* Values Section */}
+          {/* Values Section - Kompakter */}
           {pageData.values_data && pageData.values_data.length > 0 && (
             <div>
-              <h3 className="text-4xl font-serif text-warm-beige mb-12 text-center tracking-wide">
+              <h3 className="text-3xl font-serif text-warm-beige mb-8 text-center tracking-wide">
                 {pageData.values_title || 'Unsere Werte'}
               </h3>
-              <div className="grid md:grid-cols-3 gap-8">
-                {pageData.values_data.slice(0, 3).map((value, index) => (
-                  <div key={index} className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-xl border border-warm-brown p-8 text-center shadow-lg">
-                    <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-6">
-                      <span className="text-2xl text-dark-brown">
-                        {index === 0 ? '🍽️' : index === 1 ? '🌿' : '❤️'}
+              <div className="grid md:grid-cols-5 gap-4 max-w-5xl mx-auto">
+                {pageData.values_data.slice(0, 5).map((value, index) => (
+                  <div key={index} className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-lg border border-warm-brown p-4 text-center shadow-md">
+                    <div className="w-12 h-12 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-3">
+                      <span className="text-lg text-dark-brown">
+                        {index === 0 ? '🍽️' : index === 1 ? '🌿' : index === 2 ? '❤️' : index === 3 ? '⭐' : '🏆'}
                       </span>
                     </div>
-                    <h4 className="text-xl font-serif text-warm-beige mb-4 tracking-wide">
+                    <h4 className="text-sm font-serif text-warm-beige mb-2 tracking-wide leading-tight">
                       {value}
                     </h4>
-                    <p className="text-light-beige font-light leading-relaxed text-sm">
-                      {index === 0 && 'Nur die besten Zutaten für authentische spanische Geschmackserlebnisse.'}
-                      {index === 1 && 'Täglich frische Zutaten aus der Region und importierte spanische Spezialitäten.'}
-                      {index === 2 && 'Herzliche Atmosphäre und persönlicher Service für jeden Gast.'}
-                    </p>
                   </div>
                 ))}
               </div>
-              
-              {/* Additional Values */}
-              {pageData.values_data.length > 3 && (
-                <div className="grid md:grid-cols-2 gap-8 mt-8">
-                  {pageData.values_data.slice(3).map((value, index) => (
-                    <div key={index + 3} className="bg-gradient-to-br from-orange-500/10 to-warm-beige/10 rounded-xl border border-warm-beige/30 p-6 text-center">
-                      <h4 className="text-lg font-serif text-warm-beige mb-2">
-                        {value}
-                      </h4>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           )}
         </div>
