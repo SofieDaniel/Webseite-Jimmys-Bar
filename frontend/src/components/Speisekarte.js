@@ -86,6 +86,8 @@ const Speisekarte = () => {
               justify-content: center !important;
               z-index: 999999 !important;
               padding: 20px !important;
+              padding-top: 10vh !important;
+              padding-bottom: 10vh !important;
             }
             .modal-content {
               background: white !important;
