@@ -315,6 +315,20 @@ const Speisekarte = () => {
                                 ? `${item.description.substring(0, 100)}...` 
                                 : item.description}
                             </p>
+                            
+                            {/* Kleine Vorschau der Details */}
+                            <div className="mt-3 space-y-1 text-xs">
+                              {item.origin && (
+                                <div className="text-orange-300 truncate">
+                                  <span className="font-semibold">🌍</span> {item.origin}
+                                </div>
+                              )}
+                              {item.allergens && (
+                                <div className="text-red-300 truncate">
+                                  <span className="font-semibold">⚠️</span> {item.allergens.length > 30 ? `${item.allergens.substring(0, 30)}...` : item.allergens}
+                                </div>
+                              )}
+                            </div>
                             <div className="flex items-center gap-2 mt-2">
                               <span className={`text-xs px-3 py-1 rounded-full font-medium ${
                                 index % 3 === 0 ? 'bg-orange-500/20 text-orange-300'
