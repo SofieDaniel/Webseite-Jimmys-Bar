@@ -109,6 +109,327 @@ const CookieBanner = () => {
   );
 };
 
+// New Admin Sections
+const PageEditorSection = () => {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">📝 Seiten-Editor</h1>
+        <p className="text-gray-600">Erweiterte Seiten-Bearbeitung und Content-Management</p>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Verfügbare Editor-Tools</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <h4 className="font-medium text-blue-900 mb-2">Rich Text Editor</h4>
+            <p className="text-sm text-blue-700">Erweiterte Textbearbeitung mit Formatierungsoptionen</p>
+          </div>
+          <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+            <h4 className="font-medium text-green-900 mb-2">Media Manager</h4>
+            <p className="text-sm text-green-700">Bilder und Videos verwalten und optimieren</p>
+          </div>
+          <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <h4 className="font-medium text-purple-900 mb-2">Template Editor</h4>
+            <p className="text-sm text-purple-700">Seiten-Templates bearbeiten und anpassen</p>
+          </div>
+          <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+            <h4 className="font-medium text-orange-900 mb-2">SEO Tools</h4>
+            <p className="text-sm text-orange-700">Meta-Tags und SEO-Einstellungen verwalten</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const NavigationSection = () => {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">🧭 Navigation</h1>
+        <p className="text-gray-600">Website-Navigation und Menü-Struktur verwalten</p>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Hauptnavigation</h3>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span className="font-medium">Startseite</span>
+            <div className="flex space-x-2">
+              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
+              <button className="text-gray-600 hover:text-gray-800">↕️</button>
+            </div>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span className="font-medium">Standorte</span>
+            <div className="flex space-x-2">
+              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
+              <button className="text-gray-600 hover:text-gray-800">↕️</button>
+            </div>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span className="font-medium">Speisekarte</span>
+            <div className="flex space-x-2">
+              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
+              <button className="text-gray-600 hover:text-gray-800">↕️</button>
+            </div>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span className="font-medium">Bewertungen</span>
+            <div className="flex space-x-2">
+              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
+              <button className="text-gray-600 hover:text-gray-800">↕️</button>
+            </div>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span className="font-medium">Über uns</span>
+            <div className="flex space-x-2">
+              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
+              <button className="text-gray-600 hover:text-gray-800">↕️</button>
+            </div>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <span className="font-medium">Kontakt</span>
+            <div className="flex space-x-2">
+              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
+              <button className="text-gray-600 hover:text-gray-800">↕️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const LieferandoSection = () => {
+  const [deliveryInfo, setDeliveryInfo] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    loadDeliveryInfo();
+  }, []);
+
+  const loadDeliveryInfo = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/delivery/info`);
+      if (response.ok) {
+        const data = await response.json();
+        setDeliveryInfo(data);
+      } else {
+        setError('Fehler beim Laden der Lieferando-Informationen');
+      }
+    } catch (error) {
+      setError('Verbindungsfehler');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveDeliveryInfo = async () => {
+    try {
+      setSaving(true);
+      setError('');
+      
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/delivery/info`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(deliveryInfo)
+      });
+
+      if (response.ok) {
+        setSuccess('Lieferando-Informationen erfolgreich gespeichert!');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Fehler beim Speichern');
+      }
+    } catch (error) {
+      setError('Verbindungsfehler beim Speichern');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-32">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">🚚 Lieferando</h1>
+        <p className="text-gray-600">Lieferservice-Einstellungen und Verfügbarkeit verwalten</p>
+      </div>
+
+      {success && (
+        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+          {success}
+        </div>
+      )}
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          {error}
+        </div>
+      )}
+
+      {deliveryInfo && (
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Lieferservice-Einstellungen</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Lieferzeit (Min.)</label>
+              <input
+                type="number"
+                value={deliveryInfo.delivery_time_min || 30}
+                onChange={(e) => setDeliveryInfo({...deliveryInfo, delivery_time_min: parseInt(e.target.value)})}
+                className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Lieferzeit (Max.)</label>
+              <input
+                type="number"
+                value={deliveryInfo.delivery_time_max || 45}
+                onChange={(e) => setDeliveryInfo({...deliveryInfo, delivery_time_max: parseInt(e.target.value)})}
+                className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Mindestbestellwert (€)</label>
+              <input
+                type="number"
+                step="0.50"
+                value={deliveryInfo.minimum_order_value || 15.00}
+                onChange={(e) => setDeliveryInfo({...deliveryInfo, minimum_order_value: parseFloat(e.target.value)})}
+                className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Liefergebühr (€)</label>
+              <input
+                type="number"
+                step="0.50"
+                value={deliveryInfo.delivery_fee || 2.50}
+                onChange={(e) => setDeliveryInfo({...deliveryInfo, delivery_fee: parseFloat(e.target.value)})}
+                className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
+              />
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <h4 className="text-md font-semibold text-gray-800 mb-4">Verfügbare Standorte</h4>
+            <div className="space-y-4">
+              {deliveryInfo.available_locations && Object.entries(deliveryInfo.available_locations).map(([key, location]) => (
+                <div key={key} className="p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h5 className="font-medium text-gray-900">{location.name}</h5>
+                      <p className="text-sm text-gray-600">{location.address}</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm text-gray-600">Verfügbar:</span>
+                      <input
+                        type="checkbox"
+                        checked={location.available}
+                        onChange={(e) => {
+                          const newLocations = {...deliveryInfo.available_locations};
+                          newLocations[key].available = e.target.checked;
+                          setDeliveryInfo({...deliveryInfo, available_locations: newLocations});
+                        }}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex justify-end mt-6">
+            <button
+              onClick={saveDeliveryInfo}
+              disabled={saving}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            >
+              {saving ? 'Speichern...' : 'Einstellungen speichern'}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const DeveloperInfoSection = () => {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">🔧 Entwickler-Info</h1>
+        <p className="text-gray-600">Technische Informationen und Entwickler-Tools</p>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">System-Informationen</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="font-medium text-gray-800 mb-3">Frontend</h4>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>• React 19.0.0</li>
+              <li>• React Router Dom 7.5.1</li>
+              <li>• Tailwind CSS 3.4.17</li>
+              <li>• Axios 1.8.4</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-gray-800 mb-3">Backend</h4>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>• FastAPI 0.110.1</li>
+              <li>• Python 3.11</li>
+              <li>• MySQL (MariaDB)</li>
+              <li>• JWT Authentication</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">API-Endpunkte</h3>
+        <div className="space-y-4">
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h4 className="font-medium text-gray-800 mb-2">Authentication</h4>
+            <code className="text-sm text-gray-600">POST /api/auth/login</code><br/>
+            <code className="text-sm text-gray-600">GET /api/auth/me</code>
+          </div>
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h4 className="font-medium text-gray-800 mb-2">Content Management</h4>
+            <code className="text-sm text-gray-600">GET/PUT /api/cms/homepage</code><br/>
+            <code className="text-sm text-gray-600">GET/PUT /api/cms/locations</code><br/>
+            <code className="text-sm text-gray-600">GET/PUT /api/cms/about</code>
+          </div>
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h4 className="font-medium text-gray-800 mb-2">Delivery</h4>
+            <code className="text-sm text-gray-600">GET /api/delivery/info</code><br/>
+            <code className="text-sm text-gray-600">PUT /api/admin/delivery/info</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Startseite Summary Component - Simplified
 const StartseiteSummary = () => {
   return (
