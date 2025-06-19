@@ -1437,8 +1437,8 @@ async def get_locations_content():
             "page_description": content.get("page_description", "Besuchen Sie uns an einem unserer beiden Standorte"),
             "locations_data": locations_array,  # For backend compatibility
             "locations": locations_array,       # For frontend compatibility
-            "info_sections": locations_data.get('info_sections', []) if isinstance(locations_data, dict) else [],
-            "general_info": locations_data.get('general_info', {}) if isinstance(locations_data, dict) else {},
+            "info_sections": [],
+            "general_info": {},
             "updated_at": content.get("updated_at"),
             "updated_by": content.get("updated_by")
         }
