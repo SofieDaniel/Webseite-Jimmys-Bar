@@ -165,18 +165,12 @@ const Speisekarte = () => {
             ))}
           </div>
 
-          {/* Right Side - Hover Details */}
+          {/* Right Side - Hover Details (No Images) */}
           <div className="w-96 sticky top-24 h-fit">
             {hoveredItem ? (
-              <div className="bg-dark-brown border border-warm-beige/30 rounded-xl p-6 shadow-2xl">
-                {/* Image */}
-                <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
-                  <img 
-                    src={hoveredItem.image || 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'}
-                    alt={hoveredItem.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              <div className="bg-gradient-to-br from-medium-brown to-dark-brown border-2 border-warm-beige/40 rounded-xl p-6 shadow-2xl">
+                {/* Header with decorative elements */}
+                <div className="border-b border-warm-beige/30 pb-4 mb-4">
                 
                 {/* Details */}
                 <div className="space-y-3">
