@@ -5,6 +5,129 @@ const Speisekarte = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('Alle Kategorien');
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  // Load menu items from backend
+  useEffect(() => {
+    const loadMenuItems = async () => {
+      try {
+        const response = await fetch(`/api/menu/items`);
+        if (response.ok) {
+          const data = await response.json();
+          setMenuItems(data);
+        }
+      } catch (error) {
+        console.error('Error loading menu items:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadMenuItems();
+  }, []);
+
+  // Modal für Gericht-Details
+  const ItemDetailModal = ({ item, onClose }) => {
+    if (!item) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div className="bg-dark-brown border border-warm-beige rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          {/* Header */}
+          <div className="p-6 border-b border-warm-beige/30">
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-2xl font-serif text-warm-beige mb-2">{item.name}</h2>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-bold text-warm-beige">{item.price}</span>
+                  <span className="text-sm bg-warm-beige/20 text-warm-beige px-3 py-1 rounded-full">
+                    {item.category}
+                  </span>
+                </div>
+              </div>
+              <button 
+                onClick={onClose}
+                className="text-warm-beige hover:text-white text-2xl"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          
+          {/* Content */}
+          <div className="p-6 space-y-6">
+            {/* Beschreibung */}
+            <div>
+              <h3 className="text-warm-beige font-semibold mb-2">Beschreibung</h3>
+              <p className="text-light-beige leading-relaxed">
+                {item.detailed_description || item.description}
+              </p>
+            </div>
+            
+            {/* Herkunft */}
+            {item.origin && (
+              <div>
+                <h3 className="text-warm-beige font-semibold mb-2">Herkunft</h3>
+                <p className="text-light-beige">{item.origin}</p>
+              </div>
+            )}
+            
+            {/* Zubereitung */}
+            {item.preparation_method && (
+              <div>
+                <h3 className="text-warm-beige font-semibold mb-2">Zubereitung</h3>
+                <p className="text-light-beige">{item.preparation_method}</p>
+              </div>
+            )}
+            
+            {/* Zutaten */}
+            {item.ingredients && (
+              <div>
+                <h3 className="text-warm-beige font-semibold mb-2">Hauptzutaten</h3>
+                <p className="text-light-beige">{item.ingredients}</p>
+              </div>
+            )}
+            
+            {/* Allergene */}
+            {item.allergens && (
+              <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4">
+                <h3 className="text-red-300 font-semibold mb-2 flex items-center">
+                  ⚠️ Allergene & Unverträglichkeiten
+                </h3>
+                <p className="text-red-200">{item.allergens}</p>
+              </div>
+            )}
+            
+            {/* Zusatzstoffe */}
+            {item.additives && item.additives !== "Keine Zusatzstoffe" && (
+              <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4">
+                <h3 className="text-yellow-300 font-semibold mb-2">Zusatzstoffe</h3>
+                <p className="text-yellow-200">{item.additives}</p>
+              </div>
+            )}
+            
+            {/* Eigenschaften */}
+            <div className="flex gap-2 flex-wrap">
+              {item.vegan && (
+                <span className="bg-green-600/20 text-green-300 px-3 py-1 rounded-full text-sm border border-green-500/30">
+                  🌱 Vegan
+                </span>
+              )}
+              {item.vegetarian && !item.vegan && (
+                <span className="bg-green-600/20 text-green-300 px-3 py-1 rounded-full text-sm border border-green-500/30">
+                  🥬 Vegetarisch
+                </span>
+              )}
+              {item.glutenfree && (
+                <span className="bg-blue-600/20 text-blue-300 px-3 py-1 rounded-full text-sm border border-blue-500/30">
+                  🌾 Glutenfrei
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   // Load menu items from backend
   useEffect(() => {
