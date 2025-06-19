@@ -37,16 +37,27 @@ const Speisekarte = () => {
     'Inicio': 'Inicio',
     'Salat': 'Salat', 
     'Kleiner Salat': 'Kleiner Salat',
-    'Tapas Warme': 'Tapas Warme',
     'Tapa Paella': 'Tapa Paella',
     'Tapas Vegetar': 'Tapas Vegetar',
+    'Tapas de Pollo': 'Tapas de Pollo',
     'Tapas de Carne': 'Tapas de Carne',
+    'Tapas de Pescado': 'Tapas de Pescado',
     'Kroketten': 'Kroketten',
     'Pasta': 'Pasta',
     'Pizza': 'Pizza',
     'Snacks': 'Snacks',
     'Dessert': 'Dessert',
-    'Helados': 'Helados'
+    'Helados': 'Helados',
+    'Heißgetränke': 'Heißgetränke',
+    'Tee': 'Tee',
+    'Softdrinks': 'Softdrinks',
+    'Limonaden': 'Limonaden',
+    'Säfte': 'Säfte',
+    'Aperitifs': 'Aperitifs',
+    'Bier': 'Bier',
+    'Weine': 'Weine',
+    'Cocktails': 'Cocktails',
+    'Spirituosen': 'Spirituosen'
   };
 
   const allCategories = ['Alle Kategorien', ...Object.keys(categoryMapping)];
