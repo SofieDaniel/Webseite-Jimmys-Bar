@@ -3251,7 +3251,28 @@ def run_requested_tests():
     
     return all_passed
 
+def run_spanish_dishes_test():
+    """Run only the Spanish dishes test"""
+    print("\n🔍 Testing Spanish Dishes in Menu")
+    print("=" * 80)
+    
+    # Run authentication first to get token
+    auth_success, token = test_auth_login()
+    
+    # Run the Spanish dishes test
+    success = test_spanish_dishes()
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    print(f"{'✅ PASSED' if success else '❌ FAILED'} - Spanish dishes test")
+    
+    # Overall result
+    print("\n🏁 Overall Result:", "✅ TEST PASSED" if success else "❌ TEST FAILED")
+    
+    return success
+
 if __name__ == "__main__":
-    # Run the requested tests
-    success = run_requested_tests()
+    # Run the Spanish dishes test
+    success = run_spanish_dishes_test()
     sys.exit(0 if success else 1)
