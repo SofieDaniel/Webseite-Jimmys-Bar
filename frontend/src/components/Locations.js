@@ -30,6 +30,13 @@ const Standorte = () => {
     }
   };
 
+  // Google Maps navigation function
+  const openGoogleMaps = (address) => {
+    const encodedAddress = encodeURIComponent(address);
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
+    window.open(googleMapsUrl, '_blank');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-dark-brown flex items-center justify-center">
@@ -145,12 +152,12 @@ const Standorte = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-8 flex space-x-4">
-                <button className="bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+              <div className="mt-8">
+                <button 
+                  onClick={() => openGoogleMaps(`${locationsData.neustadt?.address_line1 || 'Am Strande 21'}, ${locationsData.neustadt?.address_line2 || '23730 Neustadt in Holstein'}`)}
+                  className="bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors w-full"
+                >
                   Route planen
-                </button>
-                <button className="border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
-                  Reservieren
                 </button>
               </div>
             </div>
@@ -215,49 +222,61 @@ const Standorte = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-8 flex space-x-4">
-                <button className="bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+              <div className="mt-8">
+                <button 
+                  onClick={() => openGoogleMaps(`${locationsData.grossenbrode?.address_line1 || 'Südstrand 54'}, ${locationsData.grossenbrode?.address_line2 || '23755 Großenbrode'}`)}
+                  className="bg-warm-beige hover:bg-light-beige text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors w-full"
+                >
                   Route planen
-                </button>
-                <button className="border border-warm-beige text-warm-beige hover:bg-warm-beige hover:text-dark-brown px-6 py-3 rounded-lg font-medium transition-colors flex-1">
-                  Reservieren
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Additional Information Section */}
+        {/* Enhanced "Gut zu wissen" Section with Images */}
         <div className="mt-16 bg-dark-brown rounded-xl border border-warm-brown p-8">
           <h3 className="text-3xl font-serif text-warm-beige mb-8 text-center tracking-wide">
-            {locationsData.info_section?.title || 'Gut zu wissen'}
+            Gut zu wissen
           </h3>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-dark-brown">🚗</span>
+              <div className="w-20 h-20 mx-auto mb-4 rounded-xl overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80"
+                  alt="Ostsee-Ambiente"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <h4 className="text-xl font-serif text-warm-beige mb-2">{locationsData.info_section?.anreise_title || 'Anreise'}</h4>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">Ostsee-Ambiente</h4>
               <p className="text-light-beige font-light text-sm">
-                {locationsData.info_section?.anreise_text || 'Beide Standorte sind gut mit dem Auto erreichbar und bieten ausreichend Parkplätze.'}
+                Erleben Sie authentische Tapas-Kultur direkt an der deutschen Ostseeküste mit herrlichem Meerblick.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-dark-brown">📱</span>
+              <div className="w-20 h-20 mx-auto mb-4 rounded-xl overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80"
+                  alt="Frische Zutaten"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <h4 className="text-xl font-serif text-warm-beige mb-2">{locationsData.info_section?.reservierung_title || 'Reservierung'}</h4>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">Frische Zutaten</h4>
               <p className="text-light-beige font-light text-sm">
-                {locationsData.info_section?.reservierung_text || 'Wir empfehlen eine Reservierung, besonders an Wochenenden und in der Sommersaison.'}
+                Täglich frische Zutaten aus der Region kombiniert mit authentischen spanischen Spezialitäten.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-dark-brown">🎉</span>
+              <div className="w-20 h-20 mx-auto mb-4 rounded-xl overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80"
+                  alt="Gemütliche Atmosphäre"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <h4 className="text-xl font-serif text-warm-beige mb-2">{locationsData.info_section?.events_title || 'Events'}</h4>
+              <h4 className="text-xl font-serif text-warm-beige mb-2">Entspannte Atmosphäre</h4>
               <p className="text-light-beige font-light text-sm">
-                {locationsData.info_section?.events_text || 'Beide Restaurants bieten Platz für private Feiern und Firmenevents.'}
+                Genießen Sie mediterrane Gelassenheit in familiärer Atmosphäre - perfekt für entspannte Abende.
               </p>
             </div>
           </div>
