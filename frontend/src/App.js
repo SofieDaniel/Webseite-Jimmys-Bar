@@ -969,7 +969,6 @@ const AdminPanel = () => {
           {activeSection === 'newsletter' && <NewsletterSection />}
           {activeSection === 'users' && <UsersAdminSection />}
           {activeSection === 'legal' && <LegalEditor />}
-          {activeSection === 'page-editor' && <PageEditorSection />}
           {activeSection === 'navigation' && <NavigationSection />}
           {activeSection === 'lieferando' && <LieferandoSection />}
           {activeSection === 'developer-info' && <DeveloperInfoSection />}
