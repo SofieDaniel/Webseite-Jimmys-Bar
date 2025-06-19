@@ -114,50 +114,75 @@ const Speisekarte = () => {
             {Object.entries(groupedItems).map(([category, items]) => (
               <div key={category} className="mb-8">
                 {selectedCategory === 'Alle Kategorien' && (
-                  <h2 className="text-2xl font-serif text-warm-beige mb-4 pb-2 border-b border-warm-beige/30">
-                    {category}
-                  </h2>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="flex-1 h-px bg-gradient-to-r from-transparent via-warm-beige/50 to-transparent"></div>
+                    <h2 className="text-2xl font-serif text-warm-beige px-4 bg-dark-brown">
+                      {category}
+                    </h2>
+                    <div className="flex-1 h-px bg-gradient-to-r from-transparent via-warm-beige/50 to-transparent"></div>
+                  </div>
                 )}
                 
-                <div className="space-y-1">
-                  {items.map((item) => (
+                <div className="space-y-2">
+                  {items.map((item, index) => (
                     <div
                       key={item.id}
-                      className={`p-4 rounded-lg cursor-pointer transition-all duration-200 ${
+                      className={`group relative overflow-hidden rounded-lg transition-all duration-300 ${
                         hoveredItem?.id === item.id 
-                          ? 'bg-warm-beige/10 border border-warm-beige/30' 
-                          : 'hover:bg-warm-beige/5'
-                      }`}
+                          ? 'bg-gradient-to-r from-warm-beige/15 via-orange-500/10 to-warm-beige/15 border-l-4 border-warm-beige shadow-lg transform scale-[1.02]' 
+                          : index % 2 === 0 
+                            ? 'bg-gradient-to-r from-medium-brown/30 to-dark-brown/30 hover:from-warm-beige/10 hover:to-orange-500/10 border-l-4 border-transparent hover:border-warm-beige/50'
+                            : 'bg-gradient-to-r from-dark-brown/30 to-medium-brown/30 hover:from-orange-500/10 hover:to-warm-beige/10 border-l-4 border-transparent hover:border-orange-500/50'
+                      } cursor-pointer`}
                       onMouseEnter={() => setHoveredItem(item)}
                       onMouseLeave={() => setHoveredItem(null)}
                     >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-lg font-medium text-warm-beige">
-                              {item.name}
-                            </h3>
-                            <div className="flex gap-1">
-                              {getAllergyIcons(item).map((icon, index) => (
-                                <span key={index} className="text-sm">{icon}</span>
-                              ))}
+                      <div className="p-5">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1 pr-4">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-lg font-medium text-warm-beige group-hover:text-white transition-colors">
+                                {item.name}
+                              </h3>
+                              <div className="flex gap-1">
+                                {getAllergyIcons(item).map((icon, index) => (
+                                  <span key={index} className="text-sm bg-warm-beige/20 px-1 rounded">{icon}</span>
+                                ))}
+                              </div>
+                            </div>
+                            <p className="text-light-beige text-sm leading-relaxed group-hover:text-gray-200 transition-colors">
+                              {item.description.length > 85 
+                                ? `${item.description.substring(0, 85)}...` 
+                                : item.description}
+                            </p>
+                            <div className="flex items-center gap-2 mt-2">
+                              <span className={`text-xs px-2 py-1 rounded-full ${
+                                index % 3 === 0 ? 'bg-orange-500/20 text-orange-300'
+                                : index % 3 === 1 ? 'bg-warm-beige/20 text-warm-beige'
+                                : 'bg-yellow-500/20 text-yellow-300'
+                              }`}>
+                                {item.category}
+                              </span>
                             </div>
                           </div>
-                          <p className="text-light-beige text-sm leading-relaxed">
-                            {item.description.length > 80 
-                              ? `${item.description.substring(0, 80)}...` 
-                              : item.description}
-                          </p>
-                          <div className="text-xs text-warm-beige/70 mt-1">
-                            {item.category}
+                          <div className="text-right">
+                            <div className={`px-3 py-2 rounded-lg ${
+                              hoveredItem?.id === item.id 
+                                ? 'bg-warm-beige text-dark-brown shadow-lg'
+                                : 'bg-dark-brown/50 border border-warm-beige/30'
+                            } transition-all duration-300`}>
+                              <span className="text-lg font-bold text-warm-beige">
+                                {item.price}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                        <div className="ml-4 text-right">
-                          <span className="text-xl font-semibold text-warm-beige">
-                            {item.price}
-                          </span>
-                        </div>
                       </div>
+                      
+                      {/* Hover indicator */}
+                      <div className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r from-warm-beige to-orange-500 transition-all duration-300 ${
+                        hoveredItem?.id === item.id ? 'w-full' : 'w-0'
+                      }`}></div>
                     </div>
                   ))}
                 </div>
