@@ -529,6 +529,7 @@ test_plan:
     - "Fix Standorte Page"
     - "Verify Speisekarte Page"
     - "Verify Über uns Page"
+    - "Fix Navigation Section Text Readability"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
