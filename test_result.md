@@ -501,15 +501,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix JSON datetime serialization in backup functions"
-    - "Implement missing backup endpoints - /admin/backup/list"
-    - "Implement backup download endpoint - /admin/backup/download/{backup_id}"
-    - "Implement backup deletion endpoint - /admin/backup/{backup_id}"
-    - "Add psutil dependency for system info"
+    - "Fix Enhanced Delivery Section"
+    - "Fix Standorte Page"
+    - "Verify Speisekarte Page"
+    - "Verify Über uns Page"
   stuck_tasks:
-    - "Fix JSON datetime serialization in backup functions"
-    - "Implement missing backup endpoints - /admin/backup/list"
-    - "Add psutil dependency for system info"
+    - "Fix Enhanced Delivery Section"
+    - "Fix Standorte Page"
   test_all: false
   test_priority: "high_first"
 
