@@ -1425,7 +1425,10 @@ def run_all_tests():
     # Test 11: Delivery Info
     results["delivery_info"] = test_delivery_info()
     
-    # Test 12: CMS Endpoints
+    # Test 12: Spanish Dishes
+    results["spanish_dishes"] = test_spanish_dishes()
+    
+    # Test 13: CMS Endpoints
     results["cms_locations_get"] = test_cms_locations_get()
     results["cms_about_get"] = test_cms_about_get()
     
