@@ -21,7 +21,7 @@ const Bewertungen = () => {
 
   const loadPageData = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/bewertungen-page`);
+      const response = await fetch(`/api/cms/bewertungen-page`);
       if (response.ok) {
         const data = await response.json();
         setPageData(data);
@@ -34,7 +34,7 @@ const Bewertungen = () => {
   const loadReviews = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews?approved_only=true`);
+      const response = await fetch(`/api/reviews?approved_only=true`);
       if (response.ok) {
         const data = await response.json();
         setReviews(data);
@@ -58,7 +58,7 @@ const Bewertungen = () => {
         comment: feedback.comment
       };
 
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews`, {
+      const response = await fetch(`/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
