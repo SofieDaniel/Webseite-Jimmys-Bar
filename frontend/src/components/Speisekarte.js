@@ -187,10 +187,40 @@ const Speisekarte = () => {
                               </div>
                             </div>
                             <p className="text-light-beige text-sm leading-relaxed group-hover:text-gray-200 transition-colors">
-                              {item.description.length > 100 
-                                ? `${item.description.substring(0, 100)}...` 
-                                : item.description}
+                              {item.detailed_description && item.detailed_description.length > 0 
+                                ? (item.detailed_description.length > 120 
+                                   ? `${item.detailed_description.substring(0, 120)}...` 
+                                   : item.detailed_description)
+                                : (item.description.length > 100 
+                                   ? `${item.description.substring(0, 100)}...` 
+                                   : item.description)}
                             </p>
+                            
+                            {/* Zusätzliche Informationen */}
+                            {(item.origin || item.allergens || item.additives) && (
+                              <div className="mt-3 space-y-1 text-xs">
+                                {item.origin && (
+                                  <div className="text-orange-300">
+                                    <span className="font-semibold">Herkunft:</span> {item.origin}
+                                  </div>
+                                )}
+                                {item.allergens && (
+                                  <div className="text-red-300">
+                                    <span className="font-semibold">Allergene:</span> {item.allergens}
+                                  </div>
+                                )}
+                                {item.additives && item.additives !== "Keine Zusatzstoffe" && (
+                                  <div className="text-yellow-300">
+                                    <span className="font-semibold">Zusatzstoffe:</span> {item.additives}
+                                  </div>
+                                )}
+                                {item.ingredients && (
+                                  <div className="text-green-300">
+                                    <span className="font-semibold">Zutaten:</span> {item.ingredients.length > 60 ? `${item.ingredients.substring(0, 60)}...` : item.ingredients}
+                                  </div>
+                                )}
+                              </div>
+                            )}
                             <div className="flex items-center gap-2 mt-2">
                               <span className={`text-xs px-3 py-1 rounded-full font-medium ${
                                 index % 3 === 0 ? 'bg-orange-500/20 text-orange-300'
