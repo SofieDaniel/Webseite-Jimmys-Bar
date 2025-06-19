@@ -1421,11 +1421,14 @@ async def get_locations_content():
         locations_data = content.get('locations_data')
         if locations_data and isinstance(locations_data, str):
             locations_data = json.loads(locations_data)
+        elif locations_data and isinstance(locations_data, list):
+            # Already parsed as list
+            locations_data = locations_data
         elif not locations_data:
-            locations_data = {}
+            locations_data = []
         
-        # Extract locations array for backward compatibility
-        locations_array = locations_data.get('locations', []) if isinstance(locations_data, dict) else []
+        # Ensure we have a list for locations
+        locations_array = locations_data if isinstance(locations_data, list) else []
         
         # Structure response for both old and new frontend compatibility
         response = {
