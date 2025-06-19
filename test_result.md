@@ -457,17 +457,10 @@ test_plan:
     - "Implement backup download endpoint - /admin/backup/download/{backup_id}"
     - "Implement backup deletion endpoint - /admin/backup/{backup_id}"
     - "Add psutil dependency for system info"
-    - "CMS Homepage Endpoints"
-    - "CMS Locations Endpoints"
-    - "CMS About Endpoints"
-    - "Fix duplicate newsletter forms"
   stuck_tasks:
     - "Fix JSON datetime serialization in backup functions"
     - "Implement missing backup endpoints - /admin/backup/list"
     - "Add psutil dependency for system info"
-    - "CMS Homepage Endpoints"
-    - "CMS Locations Endpoints"
-    - "CMS About Endpoints"
   test_all: false
   test_priority: "high_first"
 
