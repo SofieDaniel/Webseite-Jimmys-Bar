@@ -447,7 +447,7 @@ backend:
 frontend:
   - task: "Fix Enhanced Delivery Section"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/components/EnhancedDeliverySection.js"
     stuck_count: 1
     priority: "high"
@@ -456,10 +456,13 @@ frontend:
       - working: false
         agent: "testing"
         comment: "The Enhanced Delivery Section is not working due to a 500 error from the backend API endpoint /api/delivery/info. The error in the backend logs shows that the 'delivery_info' table doesn't exist in the MySQL database. This needs to be fixed by creating the missing table in the database."
+      - working: true
+        agent: "testing"
+        comment: "The Enhanced Delivery Section is now working correctly. The delivery_info table has been created in the MySQL database and the API endpoint /api/delivery/info is returning the correct data. The section displays delivery time (30-45 minutes), minimum order value (15.00€), and delivery fee (2.50€) as expected."
 
   - task: "Fix Standorte Page"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/components/Locations.js"
     stuck_count: 1
     priority: "high"
@@ -468,6 +471,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "The Standorte page is not working due to a 500 error from the backend API endpoint /api/cms/standorte-enhanced. This endpoint needs to be fixed in the backend to properly return location data."
+      - working: true
+        agent: "testing"
+        comment: "The Standorte page is now working correctly. The standorte_enhanced table has been created in the MySQL database and the API endpoint /api/cms/standorte-enhanced is returning the correct data. The page displays information for both locations (Neustadt and Großenbrode) including addresses, opening hours, contact information, and features."
 
   - task: "Verify Speisekarte Page"
     implemented: true
@@ -480,6 +486,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The backend API endpoint /api/menu/items is working correctly and returns menu items. The page should be displaying menu items correctly, but the user reported it as 'leer' (empty). This might be due to frontend rendering issues or other problems."
+      - working: true
+        agent: "testing"
+        comment: "The Speisekarte page is working correctly. The page displays multiple menu items including 'Gambas al Ajillo', 'Patatas Bravas', and 'Patatas Bravas Especiales'. The category filters are working and the menu items are properly displayed with their names, descriptions, and prices."
 
   - task: "Verify Über uns Page"
     implemented: true
@@ -492,6 +501,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The backend API endpoint /api/cms/about is working correctly and returns about content. The page should be displaying about content correctly, but the user reported it as 'ohne funktion' (no function). This might be due to frontend rendering issues or other problems."
+      - working: true
+        agent: "testing"
+        comment: "The Über uns page is working correctly. The page displays the story section with the title 'Unsere Leidenschaft', a team section with multiple team members, and a values section with multiple values. All content is properly rendered and displayed."
 
 metadata:
   created_by: "testing_agent"
