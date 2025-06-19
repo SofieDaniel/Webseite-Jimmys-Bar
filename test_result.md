@@ -356,6 +356,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the menu items endpoint is working correctly after MySQL migration. Successfully retrieved 3 menu items including 'Gambas al Ajillo', 'Patatas Bravas', and 'Patatas Bravas Especiales'. All menu items contain the required fields (id, name, description, price, category)."
+      - working: true
+        agent: "testing"
+        comment: "Verified that all 10 traditional Spanish dishes have been successfully added to the menu with comprehensive detailed information. The dishes include: Paella Valenciana, Paella de Mariscos, Gazpacho Andaluz, Salmorejo Cordobés, Jamón Ibérico de Bellota, Arroz con Pollo, Pulpo a la Gallega, Migas Extremeñas, Fabada Asturiana, and Caldereta de Langosta. Each dish has detailed German descriptions, complete ingredient lists, specific Spanish regions of origin, traditional preparation methods, detailed allergy information, and properly formatted prices in euros. The total menu items count is 122, which includes all the required Spanish dishes."
 
   - task: "Review Management - POST /api/reviews"
     implemented: true
