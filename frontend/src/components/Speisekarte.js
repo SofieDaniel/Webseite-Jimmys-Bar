@@ -81,21 +81,22 @@ const Speisekarte = () => {
               width: 100vw !important;
               height: 100vh !important;
               background: rgba(0, 0, 0, 0.8) !important;
-              display: flex !important;
-              align-items: flex-start !important;
-              justify-content: center !important;
               z-index: 999999 !important;
-              padding: 20px !important;
-              padding-top: 25vh !important;
+              overflow-y: auto !important;
             }
             .modal-content {
+              position: absolute !important;
+              left: 50% !important;
+              top: 50% !important;
+              transform: translate(-50%, -50%) !important;
               background: white !important;
               border-radius: 8px !important;
               max-width: 600px !important;
-              width: 100% !important;
-              max-height: 90vh !important;
+              width: 90% !important;
+              max-height: 80vh !important;
               overflow-y: auto !important;
               box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+              margin: 5vh auto !important;
             }
           `}
         </style>
@@ -105,7 +106,10 @@ const Speisekarte = () => {
             <div style={{
               padding: '24px',
               borderBottom: '1px solid #fed7aa',
-              background: 'linear-gradient(to right, #fef3c7, #fde68a)'
+              background: 'linear-gradient(to right, #fef3c7, #fde68a)',
+              position: 'sticky',
+              top: '0',
+              zIndex: '10'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
