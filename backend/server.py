@@ -117,10 +117,16 @@ class MenuItem(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     description: str
+    detailed_description: Optional[str] = None
     price: str
     category: str
     image: Optional[str] = None  # Base64 encoded
     details: Optional[str] = None
+    origin: Optional[str] = None
+    allergens: Optional[str] = None
+    additives: Optional[str] = None
+    preparation_method: Optional[str] = None
+    ingredients: Optional[str] = None
     vegan: bool = False
     vegetarian: bool = False
     glutenfree: bool = False
@@ -132,10 +138,16 @@ class MenuItem(BaseModel):
 class MenuItemCreate(BaseModel):
     name: str
     description: str
+    detailed_description: Optional[str] = None
     price: str
     category: str
     image: Optional[str] = None
     details: Optional[str] = None
+    origin: Optional[str] = None
+    allergens: Optional[str] = None
+    additives: Optional[str] = None
+    preparation_method: Optional[str] = None
+    ingredients: Optional[str] = None
     vegan: bool = False
     vegetarian: bool = False
     glutenfree: bool = False
@@ -144,10 +156,16 @@ class MenuItemCreate(BaseModel):
 class MenuItemUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
+    detailed_description: Optional[str] = None
     price: Optional[str] = None
     category: Optional[str] = None
     image: Optional[str] = None
     details: Optional[str] = None
+    origin: Optional[str] = None
+    allergens: Optional[str] = None
+    additives: Optional[str] = None
+    preparation_method: Optional[str] = None
+    ingredients: Optional[str] = None
     vegan: Optional[bool] = None
     vegetarian: Optional[bool] = None
     glutenfree: Optional[bool] = None
