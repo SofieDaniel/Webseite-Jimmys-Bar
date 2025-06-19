@@ -450,7 +450,7 @@ const Speisekarte = () => {
 
                   {/* Allergene & Zusatzstoffe */}
                   {(hoveredItem.allergens || hoveredItem.additives) && (
-                    <div className="bg-red-900/20 rounded-lg p-4 mb-4 border border-red-500/30">
+                    <div className="bg-red-900/20 rounded-lg p-4 border border-red-500/30">
                       <h4 className="text-sm font-semibold text-red-300 mb-2 flex items-center gap-2">
                         <span className="w-2 h-2 bg-red-400 rounded-full"></span>
                         Allergene & Zusatzstoffe
@@ -475,34 +475,6 @@ const Speisekarte = () => {
                       )}
                     </div>
                   )}
-                  
-                  {/* Diät-Eigenschaften */}
-                  <div className="bg-warm-beige/5 rounded-lg p-4 border border-warm-beige/20">
-                    <h4 className="text-sm font-semibold text-warm-beige mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                      Diät-Eigenschaften
-                    </h4>
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className={`text-center p-3 rounded-lg transition-all ${hoveredItem.vegan ? 'bg-green-500/20 border-2 border-green-500/30' : 'bg-gray-500/10 border border-gray-500/20'}`}>
-                        <div className="text-xl mb-1">🌱</div>
-                        <div className={`text-xs font-medium ${hoveredItem.vegan ? 'text-green-300' : 'text-gray-400'}`}>
-                          Vegan
-                        </div>
-                      </div>
-                      <div className={`text-center p-3 rounded-lg transition-all ${hoveredItem.vegetarian ? 'bg-green-500/20 border-2 border-green-500/30' : 'bg-gray-500/10 border border-gray-500/20'}`}>
-                        <div className="text-xl mb-1">🌿</div>
-                        <div className={`text-xs font-medium ${hoveredItem.vegetarian ? 'text-green-300' : 'text-gray-400'}`}>
-                          Vegetarisch
-                        </div>
-                      </div>
-                      <div className={`text-center p-3 rounded-lg transition-all ${hoveredItem.glutenfree ? 'bg-green-500/20 border-2 border-green-500/30' : 'bg-gray-500/10 border border-gray-500/20'}`}>
-                        <div className="text-xl mb-1">🌾</div>
-                        <div className={`text-xs font-medium ${hoveredItem.glutenfree ? 'text-green-300' : 'text-gray-400'}`}>
-                          Glutenfrei
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             ) : (
