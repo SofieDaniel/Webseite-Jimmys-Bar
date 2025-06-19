@@ -474,10 +474,11 @@ async def create_menu_item(item_data: MenuItemCreate, current_user: User = Depen
     try:
         cursor = await conn.cursor()
         await cursor.execute("""
-            INSERT INTO menu_items (id, name, description, price, category, image, details,
+            INSERT INTO menu_items (id, name, description, detailed_description, price, category, image, details,
+                                   origin, allergens, additives, preparation_method, ingredients,
                                    vegan, vegetarian, glutenfree, order_index, is_active, 
                                    created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (item.id, item.name, item.description, item.price, item.category, item.image,
               item.details, item.vegan, item.vegetarian, item.glutenfree, item.order_index,
               item.is_active, item.created_at, item.updated_at))
