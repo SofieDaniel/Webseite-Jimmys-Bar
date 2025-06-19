@@ -365,7 +365,7 @@ const Speisekarte = () => {
           </div>
 
           {/* Right Side - Hover Details (Detaillierte Beschreibungen, kein Preis) */}
-          <div className="w-96 sticky top-24 h-fit">
+          <div className="w-96 sticky top-24 h-fit max-h-[calc(100vh-120px)] overflow-y-auto">
             {hoveredItem ? (
               <div className="bg-gradient-to-br from-medium-brown to-dark-brown border-2 border-warm-beige/40 rounded-xl p-6 shadow-2xl">
                 {/* Header */}
@@ -374,9 +374,12 @@ const Speisekarte = () => {
                     {hoveredItem.name}
                   </h3>
                   
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-xs font-medium">
                       {hoveredItem.category}
+                    </span>
+                    <span className="bg-warm-beige/20 text-warm-beige px-3 py-1 rounded-full text-xs font-medium">
+                      {hoveredItem.price}
                     </span>
                     <div className="flex gap-1">
                       {getAllergyIcons(hoveredItem).map((icon, index) => (
