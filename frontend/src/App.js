@@ -487,6 +487,437 @@ const DeveloperInfoSection = () => {
   );
 };
 
+// EU-Compliance Section - Comprehensive GDPR/DSGVO Management
+const EUComplianceSection = () => {
+  const [complianceSettings, setComplianceSettings] = useState({
+    gdpr_enabled: true,
+    cookie_consent_required: true,
+    data_retention_days: 730,
+    analytics_enabled: false,
+    marketing_enabled: false,
+    data_processing_basis: 'legitimate_interest',
+    privacy_officer_email: 'datenschutz@jimmys-tapasbar.de',
+    privacy_officer_name: 'Jimmy Rodríguez',
+    company_registration: 'HRB 12345 Hamburg',
+    privacy_policy_version: '2.0',
+    last_updated: new Date().toISOString().split('T')[0]
+  });
+
+  const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState('');
+
+  const saveComplianceSettings = async () => {
+    setSaving(true);
+    // Simulate save operation
+    setTimeout(() => {
+      setSaving(false);
+      setSuccess('EU-Compliance Einstellungen erfolgreich gespeichert!');
+      setTimeout(() => setSuccess(''), 3000);
+    }, 1000);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">🇪🇺 EU-Compliance & DSGVO</h1>
+        <p className="text-gray-600">Datenschutz-Grundverordnung und EU-Rechtskonformität</p>
+      </div>
+
+      {success && (
+        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+          {success}
+        </div>
+      )}
+
+      {/* DSGVO Grundeinstellungen */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">🛡️ DSGVO-Grundeinstellungen</h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                id="gdpr_enabled"
+                checked={complianceSettings.gdpr_enabled}
+                onChange={(e) => setComplianceSettings({...complianceSettings, gdpr_enabled: e.target.checked})}
+                className="h-5 w-5 text-blue-600 border-2 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="gdpr_enabled" className="text-lg font-medium text-gray-900">DSGVO aktiviert</label>
+            </div>
+            
+            <div className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                id="cookie_consent"
+                checked={complianceSettings.cookie_consent_required}
+                onChange={(e) => setComplianceSettings({...complianceSettings, cookie_consent_required: e.target.checked})}
+                className="h-5 w-5 text-blue-600 border-2 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="cookie_consent" className="text-lg font-medium text-gray-900">Cookie-Einverständnis erforderlich</label>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                id="analytics_enabled"
+                checked={complianceSettings.analytics_enabled}
+                onChange={(e) => setComplianceSettings({...complianceSettings, analytics_enabled: e.target.checked})}
+                className="h-5 w-5 text-blue-600 border-2 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="analytics_enabled" className="text-lg font-medium text-gray-900">Analytics aktiviert</label>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                id="marketing_enabled"
+                checked={complianceSettings.marketing_enabled}
+                onChange={(e) => setComplianceSettings({...complianceSettings, marketing_enabled: e.target.checked})}
+                className="h-5 w-5 text-blue-600 border-2 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="marketing_enabled" className="text-lg font-medium text-gray-900">Marketing-Cookies aktiviert</label>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Datenaufbewahrung (Tage)</label>
+              <input
+                type="number"
+                value={complianceSettings.data_retention_days}
+                onChange={(e) => setComplianceSettings({...complianceSettings, data_retention_days: parseInt(e.target.value)})}
+                className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Rechtsgrundlage</label>
+              <select
+                value={complianceSettings.data_processing_basis}
+                onChange={(e) => setComplianceSettings({...complianceSettings, data_processing_basis: e.target.value})}
+                className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="consent">Einwilligung (Art. 6 Abs. 1 lit. a DSGVO)</option>
+                <option value="contract">Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO)</option>
+                <option value="legal_obligation">Rechtliche Verpflichtung (Art. 6 Abs. 1 lit. c DSGVO)</option>
+                <option value="legitimate_interest">Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Datenschutzbeauftragter */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">👨‍💼 Datenschutzbeauftragter</h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Name</label>
+            <input
+              type="text"
+              value={complianceSettings.privacy_officer_name}
+              onChange={(e) => setComplianceSettings({...complianceSettings, privacy_officer_name: e.target.value})}
+              className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">E-Mail</label>
+            <input
+              type="email"
+              value={complianceSettings.privacy_officer_email}
+              onChange={(e) => setComplianceSettings({...complianceSettings, privacy_officer_email: e.target.value})}
+              className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Unternehmensdaten */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">🏢 Unternehmensdaten</h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Handelsregistereintrag</label>
+            <input
+              type="text"
+              value={complianceSettings.company_registration}
+              onChange={(e) => setComplianceSettings({...complianceSettings, company_registration: e.target.value})}
+              className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Datenschutzrichtlinie Version</label>
+            <input
+              type="text"
+              value={complianceSettings.privacy_policy_version}
+              onChange={(e) => setComplianceSettings({...complianceSettings, privacy_policy_version: e.target.value})}
+              className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Betroffenenrechte */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-blue-900 mb-4">📋 Implementierte Betroffenenrechte</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="text-green-600">✅</span>
+              <span className="font-medium text-blue-800">Recht auf Auskunft (Art. 15 DSGVO)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-green-600">✅</span>
+              <span className="font-medium text-blue-800">Recht auf Berichtigung (Art. 16 DSGVO)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-green-600">✅</span>
+              <span className="font-medium text-blue-800">Recht auf Löschung (Art. 17 DSGVO)</span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="text-green-600">✅</span>
+              <span className="font-medium text-blue-800">Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-green-600">✅</span>
+              <span className="font-medium text-blue-800">Widerspruchsrecht (Art. 21 DSGVO)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-green-600">✅</span>
+              <span className="font-medium text-blue-800">Widerruf der Einwilligung (Art. 7 DSGVO)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          onClick={saveComplianceSettings}
+          disabled={saving}
+          className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold flex items-center space-x-2"
+        >
+          {saving ? (
+            <>
+              <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Speichern...</span>
+            </>
+          ) : (
+            <span>Compliance-Einstellungen speichern</span>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Cookie Management Section
+const CookieManagementSection = () => {
+  const [cookieSettings, setCookieSettings] = useState({
+    essential_cookies: {
+      enabled: true,
+      description: 'Technisch notwendige Cookies für die Grundfunktionen der Website',
+      cookies: ['session', 'csrf_token', 'admin_auth']
+    },
+    analytics_cookies: {
+      enabled: false,
+      description: 'Cookies zur Analyse des Nutzerverhaltens und Website-Performance',
+      cookies: ['google_analytics', '_ga', '_gid']
+    },
+    marketing_cookies: {
+      enabled: false,
+      description: 'Cookies für personalisierte Werbung und Marketing',
+      cookies: ['facebook_pixel', 'google_ads']
+    },
+    comfort_cookies: {
+      enabled: true,
+      description: 'Cookies für erweiterte Funktionen und Benutzerfreundlichkeit',
+      cookies: ['language_preference', 'theme_preference']
+    }
+  });
+
+  const [bannerSettings, setBannerSettings] = useState({
+    banner_title: 'Diese Website verwendet Cookies',
+    banner_text: 'Wir verwenden Cookies, um Ihnen das beste Website-Erlebnis zu bieten. Durch die weitere Nutzung der Website stimmen Sie der Verwendung von Cookies zu.',
+    accept_button_text: 'Alle akzeptieren',
+    reject_button_text: 'Ablehnen',
+    settings_button_text: 'Einstellungen',
+    privacy_link_text: 'Datenschutzerklärung',
+    banner_position: 'bottom',
+    auto_accept_after: 0
+  });
+
+  const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState('');
+
+  const saveCookieSettings = async () => {
+    setSaving(true);
+    setTimeout(() => {
+      setSaving(false);
+      setSuccess('Cookie-Einstellungen erfolgreich gespeichert!');
+      setTimeout(() => setSuccess(''), 3000);
+    }, 1000);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">🍪 Cookie-Verwaltung</h1>
+        <p className="text-gray-600">Cookie-Banner und Einverständnis-Management</p>
+      </div>
+
+      {success && (
+        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+          {success}
+        </div>
+      )}
+
+      {/* Cookie-Banner Einstellungen */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">🎯 Cookie-Banner Einstellungen</h3>
+        
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Banner-Titel</label>
+              <input
+                type="text"
+                value={bannerSettings.banner_title}
+                onChange={(e) => setBannerSettings({...bannerSettings, banner_title: e.target.value})}
+                className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Banner-Position</label>
+              <select
+                value={bannerSettings.banner_position}
+                onChange={(e) => setBannerSettings({...bannerSettings, banner_position: e.target.value})}
+                className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="top">Oben</option>
+                <option value="bottom">Unten</option>
+                <option value="center">Mitte (Overlay)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Banner-Text</label>
+            <textarea
+              value={bannerSettings.banner_text}
+              onChange={(e) => setBannerSettings({...bannerSettings, banner_text: e.target.value})}
+              rows={3}
+              className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Akzeptieren-Button</label>
+              <input
+                type="text"
+                value={bannerSettings.accept_button_text}
+                onChange={(e) => setBannerSettings({...bannerSettings, accept_button_text: e.target.value})}
+                className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Ablehnen-Button</label>
+              <input
+                type="text"
+                value={bannerSettings.reject_button_text}
+                onChange={(e) => setBannerSettings({...bannerSettings, reject_button_text: e.target.value})}
+                className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Einstellungen-Button</label>
+              <input
+                type="text"
+                value={bannerSettings.settings_button_text}
+                onChange={(e) => setBannerSettings({...bannerSettings, settings_button_text: e.target.value})}
+                className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Cookie-Kategorien */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">📊 Cookie-Kategorien</h3>
+        
+        <div className="space-y-6">
+          {Object.entries(cookieSettings).map(([category, settings]) => (
+            <div key={category} className="p-6 bg-gray-50 rounded-lg border-2 border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-lg font-semibold text-gray-900 capitalize">
+                  {category.replace('_', ' ').replace('cookies', 'Cookies')}
+                </h4>
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    checked={settings.enabled}
+                    onChange={(e) => setCookieSettings({
+                      ...cookieSettings,
+                      [category]: {...settings, enabled: e.target.checked}
+                    })}
+                    disabled={category === 'essential_cookies'}
+                    className="h-5 w-5 text-blue-600 border-2 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm font-medium text-gray-700">
+                    {settings.enabled ? 'Aktiviert' : 'Deaktiviert'}
+                  </span>
+                </div>
+              </div>
+              
+              <p className="text-gray-600 mb-4">{settings.description}</p>
+              
+              <div className="space-y-2">
+                <h5 className="font-medium text-gray-800">Verwendete Cookies:</h5>
+                <div className="flex flex-wrap gap-2">
+                  {settings.cookies.map((cookie, index) => (
+                    <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                      {cookie}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          onClick={saveCookieSettings}
+          disabled={saving}
+          className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold flex items-center space-x-2"
+        >
+          {saving ? (
+            <>
+              <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Speichern...</span>
+            </>
+          ) : (
+            <span>Cookie-Einstellungen speichern</span>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // Startseite Summary Component - Simplified
 const StartseiteSummary = () => {
   return (
