@@ -69,10 +69,10 @@ const Speisekarte = () => {
     if (!item) return null;
     
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-        <div className="bg-white border-2 border-warm-beige rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4" style={{top: 0, left: 0, right: 0, bottom: 0}}>
+        <div className="bg-white border-2 border-warm-beige rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
           {/* Header */}
-          <div className="p-6 border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50">
+          <div className="p-6 border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 sticky top-0 z-10">
             <div className="flex justify-between items-start">
               <div>
                 <h2 className="text-2xl font-serif text-gray-800 mb-2">{item.name}</h2>
