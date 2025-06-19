@@ -871,6 +871,18 @@ const AdminPanel = () => {
               📋 Impressum & Datenschutz
             </button>
             <button
+              onClick={() => setActiveSection('eu-compliance')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'eu-compliance' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              🇪🇺 EU-Compliance & DSGVO
+            </button>
+            <button
+              onClick={() => setActiveSection('cookie-management')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'cookie-management' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              🍪 Cookie-Verwaltung
+            </button>
+            <button
               onClick={() => setActiveSection('navigation')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'navigation' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
