@@ -178,11 +178,6 @@ const Speisekarte = () => {
         </div>
       </div>
     );
-              <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4">
-                <h3 className="text-yellow-300 font-semibold mb-2">Zusatzstoffe</h3>
-                <p className="text-yellow-200">{item.additives}</p>
-              </div>
-            )}
             
             {/* Eigenschaften */}
             <div className="flex gap-2 flex-wrap">
