@@ -111,16 +111,16 @@ const Speisekarte = () => {
       </div>
 
       {/* Category Filter Buttons */}
-      <div className="container mx-auto px-4 mb-8">
+      <div className="container mx-auto px-4 mb-8 bg-gradient-to-r from-slate-800 to-slate-700 py-6 rounded-xl mx-4">
         <div className="flex flex-wrap justify-center gap-3 max-w-6xl mx-auto">
           {allCategories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full border transition-all ${
+              className={`px-6 py-3 rounded-full border-2 transition-all duration-300 transform hover:scale-105 ${
                 selectedCategory === category
-                  ? 'bg-warm-beige text-dark-brown border-warm-beige'
-                  : 'bg-transparent text-warm-beige border-warm-beige hover:bg-warm-beige hover:text-dark-brown'
+                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-500 shadow-lg'
+                  : 'bg-white/10 text-gray-200 border-gray-300 hover:bg-gradient-to-r hover:from-orange-400 hover:to-red-400 hover:text-white hover:border-orange-400'
               }`}
             >
               {category}
