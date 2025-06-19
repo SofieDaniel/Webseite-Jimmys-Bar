@@ -60,7 +60,7 @@ class ErrorBoundary extends React.Component {
                   <div className="font-semibold mb-2">Error:</div>
                   <div className="mb-3">{this.state.error && this.state.error.toString()}</div>
                   <div className="font-semibold mb-2">Component Stack:</div>
-                  <div>{this.state.errorInfo.componentStack}</div>
+                  <div>{this.state.errorInfo && this.state.errorInfo.componentStack}</div>
                 </div>
               </details>
             )}
