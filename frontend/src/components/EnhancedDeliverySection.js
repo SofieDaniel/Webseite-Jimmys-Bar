@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 const EnhancedDeliverySection = () => {
   const [deliveryInfo, setDeliveryInfo] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState('neustadt');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,12 +39,8 @@ const EnhancedDeliverySection = () => {
     return null;
   }
 
-  const handleLocationSelect = (location) => {
-    setSelectedLocation(location);
-  };
-
   const handleOrderClick = () => {
-    // Open Lieferando in new tab (you can customize this URL)
+    // Open Lieferando in new tab
     window.open('https://www.lieferando.de/restaurants-neustadt-in-holstein', '_blank');
   };
 
@@ -107,14 +102,16 @@ const EnhancedDeliverySection = () => {
             </div>
           </div>
 
-          {/* Delivery Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {/* Delivery Info Cards with Images instead of Icons */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Delivery Time */}
             <div className="bg-gradient-to-br from-warm-beige/10 to-warm-beige/5 rounded-xl p-6 text-center border border-warm-beige/20">
-              <div className="w-16 h-16 bg-warm-beige/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-warm-beige" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1606744824163-985d376605aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&q=80"
+                  alt="Lieferzeit"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h4 className="text-lg font-semibold text-warm-beige mb-2">Lieferzeit</h4>
               <p className="text-light-beige text-sm">
@@ -124,10 +121,12 @@ const EnhancedDeliverySection = () => {
 
             {/* Minimum Order */}
             <div className="bg-gradient-to-br from-warm-beige/10 to-warm-beige/5 rounded-xl p-6 text-center border border-warm-beige/20">
-              <div className="w-16 h-16 bg-warm-beige/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-warm-beige" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1554749204-293d9d7fae8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&q=80"
+                  alt="Mindestbestellwert"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h4 className="text-lg font-semibold text-warm-beige mb-2">Mindestbestellwert</h4>
               <p className="text-light-beige text-sm">
@@ -137,59 +136,17 @@ const EnhancedDeliverySection = () => {
 
             {/* Delivery Fee */}
             <div className="bg-gradient-to-br from-warm-beige/10 to-warm-beige/5 rounded-xl p-6 text-center border border-warm-beige/20">
-              <div className="w-16 h-16 bg-warm-beige/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-warm-beige" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&q=80"
+                  alt="Liefergebühr"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h4 className="text-lg font-semibold text-warm-beige mb-2">Liefergebühr</h4>
               <p className="text-light-beige text-sm">
                 {deliveryInfo.delivery_fee.toFixed(2)}€
               </p>
-            </div>
-          </div>
-
-          {/* Location Selection */}
-          <div className="bg-gradient-to-r from-warm-beige/5 to-light-beige/5 rounded-xl p-8">
-            <h3 className="text-2xl font-serif text-warm-beige text-center mb-6">
-              Oder direkt für Ihren Standort bestellen:
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {Object.entries(deliveryInfo.available_locations || {}).map(([key, location]) => (
-                <button
-                  key={key}
-                  onClick={() => handleLocationSelect(key)}
-                  className={`p-6 rounded-xl border-2 transition-all text-left ${
-                    selectedLocation === key
-                      ? 'border-warm-beige bg-warm-beige/10'
-                      : 'border-warm-beige/30 hover:border-warm-beige/60 bg-transparent'
-                  }`}
-                >
-                  <div className="flex items-center mb-3">
-                    <div className="w-3 h-3 rounded-full bg-red-500 mr-3"></div>
-                    <h4 className="text-lg font-semibold text-warm-beige">{location.name}</h4>
-                  </div>
-                  {location.address && (
-                    <p className="text-light-beige text-sm mb-3">{location.address}</p>
-                  )}
-                  <div className="flex items-center text-green-400 text-sm">
-                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Verfügbar
-                  </div>
-                </button>
-              ))}
-            </div>
-            
-            <div className="text-center mt-8">
-              <button
-                onClick={handleOrderClick}
-                className="bg-warm-beige hover:bg-light-beige text-dark-brown font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105"
-              >
-                Jetzt bestellen für {deliveryInfo.available_locations[selectedLocation]?.name || 'Standort'}
-              </button>
             </div>
           </div>
         </div>
