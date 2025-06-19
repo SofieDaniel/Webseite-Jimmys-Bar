@@ -1,5 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
+// Custom styles for scrollbar
+const customScrollbarStyle = `
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(139, 69, 19, 0.3);
+    border-radius: 3px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 228, 196, 0.5);
+    border-radius: 3px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 228, 196, 0.7);
+  }
+`;
+
 const Speisekarte = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
