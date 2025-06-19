@@ -228,6 +228,8 @@ const Speisekarte = () => {
 
   return (
     <div className="min-h-screen bg-dark-brown">
+      {/* Add custom scrollbar styles */}
+      <style>{customScrollbarStyle}</style>
       {/* Schönerer Header Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-dark-brown via-medium-brown to-dark-brown">
         <div className="absolute inset-0 bg-black bg-opacity-30"></div>
