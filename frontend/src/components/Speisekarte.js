@@ -70,27 +70,30 @@ const Speisekarte = () => {
     
     return (
       <div 
-        className="fixed bg-black bg-opacity-75 z-50 p-4"
+        className="fixed bg-black bg-opacity-75 z-50"
         style={{
           position: 'fixed',
           top: '0',
           left: '0',
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          width: '100%',
+          height: '100%',
           zIndex: 9999
         }}
+        onClick={onClose}
       >
         <div 
-          className="bg-white border-2 border-warm-beige rounded-lg shadow-2xl relative"
+          className="bg-white border-2 border-warm-beige rounded-lg shadow-2xl"
           style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             maxWidth: '32rem',
-            width: '100%',
+            width: '90%',
             maxHeight: '90vh',
             overflowY: 'auto'
           }}
+          onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           <div className="p-6 border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 sticky top-0 z-10">
