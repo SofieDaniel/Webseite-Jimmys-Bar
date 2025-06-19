@@ -70,7 +70,15 @@ const Home = () => {
     ]
   };
 
-  const specialties = homepageContent?.specialties || {
+  const specialties = homepageContent?.specialties_data ? {
+    title: "Unsere Spezialitäten",
+    cards: homepageContent.specialties_data.specialties.map(item => ({
+      title: item.name,
+      description: item.description,
+      image_url: item.image,
+      price: item.price
+    })) || []
+  } : {
     title: "Unsere Spezialitäten",
     cards: [
       {
