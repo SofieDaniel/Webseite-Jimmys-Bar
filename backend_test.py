@@ -1119,6 +1119,162 @@ def test_unauthorized_access():
         
     return all_passed
 
+def test_spanish_dishes():
+    """Test GET /api/menu/items endpoint for specific Spanish dishes"""
+    print("\n🧪 Testing GET /api/menu/items endpoint for Spanish dishes...")
+    
+    # List of Spanish dishes to check for
+    spanish_dishes = [
+        "Paella Valenciana",
+        "Paella de Mariscos",
+        "Gazpacho Andaluz",
+        "Salmorejo Cordobés",
+        "Jamón Ibérico de Bellota",
+        "Arroz con Pollo",
+        "Pulpo a la Gallega",
+        "Migas Extremeñas",
+        "Fabada Asturiana",
+        "Caldereta de Langosta"
+    ]
+    
+    # Required detailed fields for each dish
+    required_detail_fields = [
+        "detailed_description",
+        "ingredients",
+        "origin",
+        "preparation_method",
+        "allergens",
+        "price"
+    ]
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/menu/items")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved menu items")
+        else:
+            print(f"❌ Failed to retrieve menu items. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} menu items")
+            
+            # Check if the total number of menu items is around 128 (118 original + 10 new dishes)
+            if len(data) >= 125:  # Allow for some flexibility
+                print(f"✅ Total menu items count ({len(data)}) is close to the expected 128 items")
+            else:
+                print(f"❌ Total menu items count ({len(data)}) is less than expected (around 128)")
+                
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # Create a dictionary to track which Spanish dishes were found
+        found_dishes = {dish: False for dish in spanish_dishes}
+        dish_details = {}
+        
+        # Check for each Spanish dish in the menu items
+        for item in data:
+            if item["name"] in spanish_dishes:
+                found_dishes[item["name"]] = True
+                dish_details[item["name"]] = item
+        
+        # Print which dishes were found and which were not
+        print("\n📊 Spanish Dishes Check:")
+        all_dishes_found = True
+        for dish, found in found_dishes.items():
+            if found:
+                print(f"  ✅ {dish} - Found")
+            else:
+                print(f"  ❌ {dish} - Not found")
+                all_dishes_found = False
+        
+        if all_dishes_found:
+            print("✅ All required Spanish dishes were found in the menu")
+        else:
+            print("❌ Some required Spanish dishes were not found in the menu")
+            return False
+        
+        # Check detailed information for each found dish
+        print("\n📊 Detailed Information Check:")
+        all_details_complete = True
+        
+        for dish_name, dish_data in dish_details.items():
+            print(f"\n  Checking details for: {dish_name}")
+            
+            # Check if all required detail fields are present
+            missing_fields = [field for field in required_detail_fields if field not in dish_data or not dish_data[field]]
+            
+            if not missing_fields:
+                print(f"  ✅ All required detail fields are present")
+            else:
+                print(f"  ❌ Missing required detail fields: {missing_fields}")
+                all_details_complete = False
+                continue
+            
+            # Check if detailed_description is in German and comprehensive
+            if len(dish_data["detailed_description"]) > 50:  # Assuming a comprehensive description is at least 50 chars
+                print(f"  ✅ Detailed description is comprehensive ({len(dish_data['detailed_description'])} chars)")
+            else:
+                print(f"  ❌ Detailed description is too short ({len(dish_data['detailed_description'])} chars)")
+                all_details_complete = False
+            
+            # Check if ingredients list is complete
+            if len(dish_data["ingredients"]) > 20:  # Assuming a complete ingredient list is at least 20 chars
+                print(f"  ✅ Ingredients list is complete ({len(dish_data['ingredients'])} chars)")
+            else:
+                print(f"  ❌ Ingredients list is too short ({len(dish_data['ingredients'])} chars)")
+                all_details_complete = False
+            
+            # Check if origin specifies a Spanish region
+            if dish_data["origin"] and len(dish_data["origin"]) > 5:
+                print(f"  ✅ Origin is specified: {dish_data['origin']}")
+            else:
+                print(f"  ❌ Origin is not properly specified: {dish_data['origin']}")
+                all_details_complete = False
+            
+            # Check if preparation_method is detailed
+            if len(dish_data["preparation_method"]) > 50:  # Assuming a detailed method is at least 50 chars
+                print(f"  ✅ Preparation method is detailed ({len(dish_data['preparation_method'])} chars)")
+            else:
+                print(f"  ❌ Preparation method is too brief ({len(dish_data['preparation_method'])} chars)")
+                all_details_complete = False
+            
+            # Check if allergens information is detailed
+            if dish_data["allergens"] and len(dish_data["allergens"]) > 5:
+                print(f"  ✅ Allergens information is provided: {dish_data['allergens']}")
+            else:
+                print(f"  ❌ Allergens information is missing or too brief: {dish_data['allergens']}")
+                all_details_complete = False
+            
+            # Check if price is properly formatted in euros
+            if "€" in dish_data["price"]:
+                print(f"  ✅ Price is properly formatted in euros: {dish_data['price']}")
+            else:
+                print(f"  ❌ Price is not properly formatted in euros: {dish_data['price']}")
+                all_details_complete = False
+        
+        if all_details_complete:
+            print("\n✅ All Spanish dishes have comprehensive detailed information")
+        else:
+            print("\n❌ Some Spanish dishes are missing comprehensive detailed information")
+            return False
+            
+        return all_dishes_found and all_details_complete
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to menu/items endpoint: {e}")
+        return False
+
 def test_delivery_info():
     """Test GET /api/delivery/info endpoint"""
     print("\n🧪 Testing GET /api/delivery/info endpoint...")
