@@ -69,139 +69,304 @@ const Speisekarte = () => {
     if (!item) return null;
     
     return (
-      <div 
-        className="fixed bg-black bg-opacity-75 z-50"
-        style={{
-          position: 'fixed',
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '100%',
-          zIndex: 9999
-        }}
-        onClick={onClose}
-      >
-        <div 
-          className="bg-white border-2 border-warm-beige rounded-lg shadow-2xl"
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            maxWidth: '32rem',
-            width: '90%',
-            maxHeight: '90vh',
-            overflowY: 'auto'
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="p-6 border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 sticky top-0 z-10">
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-2xl font-serif text-gray-800 mb-2">{item.name}</h2>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-bold text-orange-600">{item.price}</span>
-                  <span className="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full border border-orange-300">
-                    {item.category}
-                  </span>
+      <>
+        <style>
+          {`
+            .modal-overlay {
+              position: fixed !important;
+              top: 0 !important;
+              left: 0 !important;
+              right: 0 !important;
+              bottom: 0 !important;
+              width: 100vw !important;
+              height: 100vh !important;
+              background: rgba(0, 0, 0, 0.8) !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              z-index: 999999 !important;
+              padding: 20px !important;
+            }
+            .modal-content {
+              background: white !important;
+              border-radius: 8px !important;
+              max-width: 600px !important;
+              width: 100% !important;
+              max-height: 90vh !important;
+              overflow-y: auto !important;
+              box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+            }
+          `}
+        </style>
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div style={{
+              padding: '24px',
+              borderBottom: '1px solid #fed7aa',
+              background: 'linear-gradient(to right, #fef3c7, #fde68a)'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <h2 style={{
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    color: '#374151',
+                    marginBottom: '8px',
+                    fontFamily: 'serif'
+                  }}>
+                    {item.name}
+                  </h2>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: '#ea580c'
+                    }}>
+                      {item.price}
+                    </span>
+                    <span style={{
+                      fontSize: '12px',
+                      background: '#fed7aa',
+                      color: '#c2410c',
+                      padding: '4px 12px',
+                      borderRadius: '20px',
+                      border: '1px solid #fdba74'
+                    }}>
+                      {item.category}
+                    </span>
+                  </div>
                 </div>
+                <button 
+                  onClick={onClose}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '24px',
+                    color: '#6b7280',
+                    cursor: 'pointer',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  onMouseOver={(e) => e.target.style.background = '#f3f4f6'}
+                  onMouseOut={(e) => e.target.style.background = 'none'}
+                >
+                  ×
+                </button>
               </div>
-              <button 
-                onClick={onClose}
-                className="text-gray-600 hover:text-gray-800 text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-                style={{ fontSize: '24px', lineHeight: '1' }}
-              >
-                ×
-              </button>
             </div>
-          </div>
-          
-          {/* Content */}
-          <div className="p-6 space-y-6 bg-white">
-            {/* Beschreibung */}
-            <div>
-              <h3 className="text-gray-800 font-semibold mb-2 text-lg flex items-center gap-2">
-                <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
-                Beschreibung
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                {item.detailed_description || item.description}
-              </p>
-            </div>
             
-            {/* Zutaten */}
-            {item.ingredients && (
-              <div>
-                <h3 className="text-gray-800 font-semibold mb-2 text-lg flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                  Hauptzutaten
+            {/* Content */}
+            <div style={{ padding: '24px', background: 'white' }}>
+              {/* Beschreibung */}
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{
+                  color: '#374151',
+                  fontWeight: '600',
+                  marginBottom: '8px',
+                  fontSize: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}>
+                  <span style={{
+                    width: '8px',
+                    height: '8px',
+                    background: '#f97316',
+                    borderRadius: '50%'
+                  }}></span>
+                  Beschreibung
                 </h3>
-                <p className="text-gray-700 leading-relaxed">{item.ingredients}</p>
+                <p style={{
+                  color: '#4b5563',
+                  lineHeight: '1.6'
+                }}>
+                  {item.detailed_description || item.description}
+                </p>
               </div>
-            )}
-            
-            {/* Herkunft */}
-            {item.origin && (
-              <div>
-                <h3 className="text-gray-800 font-semibold mb-2 text-lg flex items-center gap-2">
-                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                  Herkunft
-                </h3>
-                <p className="text-gray-700">{item.origin}</p>
-              </div>
-            )}
-            
-            {/* Zubereitung */}
-            {item.preparation_method && (
-              <div>
-                <h3 className="text-gray-800 font-semibold mb-2 text-lg flex items-center gap-2">
-                  <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                  Zubereitung
-                </h3>
-                <p className="text-gray-700">{item.preparation_method}</p>
-              </div>
-            )}
-            
-            {/* Allergene */}
-            {item.allergens && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <h3 className="text-red-700 font-semibold mb-2 flex items-center">
-                  ⚠️ Allergene & Unverträglichkeiten
-                </h3>
-                <p className="text-red-600">{item.allergens}</p>
-              </div>
-            )}
-            
-            {/* Zusatzstoffe */}
-            {item.additives && item.additives !== "Keine Zusatzstoffe" && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <h3 className="text-yellow-700 font-semibold mb-2">Zusatzstoffe</h3>
-                <p className="text-yellow-600">{item.additives}</p>
-              </div>
-            )}
-            
-            {/* Eigenschaften */}
-            <div className="flex gap-2 flex-wrap">
-              {item.vegan && (
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm border border-green-300">
-                  🌱 Vegan
-                </span>
+              
+              {/* Zutaten */}
+              {item.ingredients && (
+                <div style={{ marginBottom: '24px' }}>
+                  <h3 style={{
+                    color: '#374151',
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    fontSize: '18px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <span style={{
+                      width: '8px',
+                      height: '8px',
+                      background: '#10b981',
+                      borderRadius: '50%'
+                    }}></span>
+                    Hauptzutaten
+                  </h3>
+                  <p style={{
+                    color: '#4b5563',
+                    lineHeight: '1.6'
+                  }}>
+                    {item.ingredients}
+                  </p>
+                </div>
               )}
-              {item.vegetarian && !item.vegan && (
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm border border-green-300">
-                  🥬 Vegetarisch
-                </span>
+              
+              {/* Herkunft */}
+              {item.origin && (
+                <div style={{ marginBottom: '24px' }}>
+                  <h3 style={{
+                    color: '#374151',
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    fontSize: '18px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <span style={{
+                      width: '8px',
+                      height: '8px',
+                      background: '#3b82f6',
+                      borderRadius: '50%'
+                    }}></span>
+                    Herkunft
+                  </h3>
+                  <p style={{
+                    color: '#4b5563'
+                  }}>
+                    {item.origin}
+                  </p>
+                </div>
               )}
-              {item.glutenfree && (
-                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm border border-blue-300">
-                  🌾 Glutenfrei
-                </span>
+              
+              {/* Zubereitung */}
+              {item.preparation_method && (
+                <div style={{ marginBottom: '24px' }}>
+                  <h3 style={{
+                    color: '#374151',
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    fontSize: '18px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <span style={{
+                      width: '8px',
+                      height: '8px',
+                      background: '#8b5cf6',
+                      borderRadius: '50%'
+                    }}></span>
+                    Zubereitung
+                  </h3>
+                  <p style={{
+                    color: '#4b5563'
+                  }}>
+                    {item.preparation_method}
+                  </p>
+                </div>
               )}
+              
+              {/* Allergene */}
+              {item.allergens && (
+                <div style={{
+                  background: '#fef2f2',
+                  border: '1px solid #fecaca',
+                  borderRadius: '8px',
+                  padding: '16px',
+                  marginBottom: '24px'
+                }}>
+                  <h3 style={{
+                    color: '#b91c1c',
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}>
+                    ⚠️ Allergene & Unverträglichkeiten
+                  </h3>
+                  <p style={{
+                    color: '#dc2626'
+                  }}>
+                    {item.allergens}
+                  </p>
+                </div>
+              )}
+              
+              {/* Zusatzstoffe */}
+              {item.additives && item.additives !== "Keine Zusatzstoffe" && (
+                <div style={{
+                  background: '#fffbeb',
+                  border: '1px solid #fed7aa',
+                  borderRadius: '8px',
+                  padding: '16px',
+                  marginBottom: '24px'
+                }}>
+                  <h3 style={{
+                    color: '#b45309',
+                    fontWeight: '600',
+                    marginBottom: '8px'
+                  }}>
+                    Zusatzstoffe
+                  </h3>
+                  <p style={{
+                    color: '#d97706'
+                  }}>
+                    {item.additives}
+                  </p>
+                </div>
+              )}
+              
+              {/* Eigenschaften */}
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {item.vegan && (
+                  <span style={{
+                    background: '#dcfce7',
+                    color: '#166534',
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    fontSize: '12px',
+                    border: '1px solid #bbf7d0'
+                  }}>
+                    🌱 Vegan
+                  </span>
+                )}
+                {item.vegetarian && !item.vegan && (
+                  <span style={{
+                    background: '#dcfce7',
+                    color: '#166534',
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    fontSize: '12px',
+                    border: '1px solid #bbf7d0'
+                  }}>
+                    🥬 Vegetarisch
+                  </span>
+                )}
+                {item.glutenfree && (
+                  <span style={{
+                    background: '#dbeafe',
+                    color: '#1e40af',
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    fontSize: '12px',
+                    border: '1px solid #93c5fd'
+                  }}>
+                    🌾 Glutenfrei
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   };
 
