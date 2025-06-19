@@ -178,48 +178,7 @@ const Speisekarte = () => {
         </div>
       </div>
     );
-            
-            {/* Eigenschaften */}
-            <div className="flex gap-2 flex-wrap">
-              {item.vegan && (
-                <span className="bg-green-600/20 text-green-300 px-3 py-1 rounded-full text-sm border border-green-500/30">
-                  🌱 Vegan
-                </span>
-              )}
-              {item.vegetarian && !item.vegan && (
-                <span className="bg-green-600/20 text-green-300 px-3 py-1 rounded-full text-sm border border-green-500/30">
-                  🥬 Vegetarisch
-                </span>
-              )}
-              {item.glutenfree && (
-                <span className="bg-blue-600/20 text-blue-300 px-3 py-1 rounded-full text-sm border border-blue-500/30">
-                  🌾 Glutenfrei
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
   };
-
-  // Load menu items from backend
-  useEffect(() => {
-    const loadMenuItems = async () => {
-      try {
-        const response = await fetch(`/api/menu/items`);
-        if (response.ok) {
-          const data = await response.json();
-          setMenuItems(data);
-        }
-      } catch (error) {
-        console.error('Error loading menu items:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadMenuItems();
-  }, []);
 
   if (loading) {
     return (
