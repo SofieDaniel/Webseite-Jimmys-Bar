@@ -618,6 +618,120 @@ async def update_maintenance_mode(
     finally:
         mysql_pool.release(conn)
 
+# Delivery Information Endpoints (new for v7)
+@api_router.get("/delivery/info")
+async def get_delivery_info():
+    """Get delivery information for Lieferando section"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM delivery_info WHERE is_active = TRUE LIMIT 1")
+        delivery_info = await cursor.fetchone()
+        
+        if not delivery_info:
+            # Create default delivery info
+            default_info = {
+                "id": str(uuid.uuid4()),
+                "delivery_time_min": 30,
+                "delivery_time_max": 45,
+                "minimum_order_value": 15.00,
+                "delivery_fee": 2.50,
+                "available_locations": {
+                    "neustadt": {
+                        "name": "Neustadt",
+                        "available": True,
+                        "address": "Am Strande 21, 23730 Neustadt in Holstein"
+                    },
+                    "grossenbrode": {
+                        "name": "Großenbrode", 
+                        "available": True,
+                        "address": "Südstrand 54, 23755 Großenbrode"
+                    }
+                },
+                "is_active": True,
+                "updated_by": "system"
+            }
+            
+            await cursor.execute("""
+                INSERT INTO delivery_info (id, delivery_time_min, delivery_time_max, 
+                                         minimum_order_value, delivery_fee, available_locations,
+                                         is_active, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                default_info["id"], default_info["delivery_time_min"], 
+                default_info["delivery_time_max"], default_info["minimum_order_value"],
+                default_info["delivery_fee"], json.dumps(default_info["available_locations"]),
+                default_info["is_active"], default_info["updated_by"]
+            ))
+            
+            return default_info
+        
+        # Parse JSON data
+        available_locations = json.loads(delivery_info['available_locations']) if delivery_info.get('available_locations') else {}
+        
+        return {
+            "id": delivery_info["id"],
+            "delivery_time_min": delivery_info["delivery_time_min"],
+            "delivery_time_max": delivery_info["delivery_time_max"],
+            "minimum_order_value": float(delivery_info["minimum_order_value"]),
+            "delivery_fee": float(delivery_info["delivery_fee"]),
+            "available_locations": available_locations,
+            "is_active": delivery_info["is_active"],
+            "updated_at": delivery_info["updated_at"]
+        }
+        
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/admin/delivery/info")
+async def update_delivery_info(delivery_data: Dict, current_user: User = Depends(get_editor_user)):
+    """Update delivery information (admin only)"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM delivery_info WHERE is_active = TRUE")
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO delivery_info (id, delivery_time_min, delivery_time_max,
+                                         minimum_order_value, delivery_fee, available_locations,
+                                         is_active, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()),
+                delivery_data.get('delivery_time_min', 30),
+                delivery_data.get('delivery_time_max', 45),
+                delivery_data.get('minimum_order_value', 15.00),
+                delivery_data.get('delivery_fee', 2.50),
+                json.dumps(delivery_data.get('available_locations', {})),
+                True, current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE delivery_info SET delivery_time_min = %s, delivery_time_max = %s,
+                                       minimum_order_value = %s, delivery_fee = %s,
+                                       available_locations = %s, updated_by = %s,
+                                       updated_at = %s
+                WHERE is_active = TRUE
+            """, (
+                delivery_data.get('delivery_time_min', 30),
+                delivery_data.get('delivery_time_max', 45),
+                delivery_data.get('minimum_order_value', 15.00),
+                delivery_data.get('delivery_fee', 2.50),
+                json.dumps(delivery_data.get('available_locations', {})),
+                current_user.username,
+                datetime.utcnow()
+            ))
+        
+        return {"message": "Delivery information updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
 # Enhanced CMS Endpoints für die drei neuen Seiten
 
 @api_router.get("/cms/standorte-enhanced")
