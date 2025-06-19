@@ -1119,6 +1119,66 @@ def test_unauthorized_access():
         
     return all_passed
 
+def test_delivery_info():
+    """Test GET /api/delivery/info endpoint"""
+    print("\n🧪 Testing GET /api/delivery/info endpoint...")
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/delivery/info")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved delivery information")
+        else:
+            print(f"❌ Failed to retrieve delivery information. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains expected fields
+        required_fields = ["delivery_time_min", "delivery_time_max", "minimum_order_value", "delivery_fee"]
+        missing_fields = [field for field in required_fields if field not in data]
+        
+        if not missing_fields:
+            print("✅ Response contains all required fields")
+        else:
+            print(f"❌ Response is missing required fields: {missing_fields}")
+            return False
+        
+        # Check if delivery time is 30-45 minutes
+        if data["delivery_time_min"] == 30 and data["delivery_time_max"] == 45:
+            print("✅ Delivery time is correctly set to 30-45 minutes")
+        else:
+            print(f"❌ Delivery time is not 30-45 minutes. Got: {data['delivery_time_min']}-{data['delivery_time_max']} minutes")
+            return False
+        
+        # Check if minimum order value is 15€
+        if data["minimum_order_value"] == 15.0:
+            print("✅ Minimum order value is correctly set to 15€")
+        else:
+            print(f"❌ Minimum order value is not 15€. Got: {data['minimum_order_value']}€")
+            return False
+        
+        # Check if delivery fee is 2.50€
+        if data["delivery_fee"] == 2.5:
+            print("✅ Delivery fee is correctly set to 2.50€")
+        else:
+            print(f"❌ Delivery fee is not 2.50€. Got: {data['delivery_fee']}€")
+            return False
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to delivery/info endpoint: {e}")
+        return False
+
 def run_all_tests():
     """Run all tests and return overall result"""
     print("\n🔍 Starting Jimmy's Tapas Bar CMS Backend API Tests")
@@ -1205,6 +1265,13 @@ def run_all_tests():
     results["create_status"], status_id = test_create_status_check()
     results["get_status"] = test_get_status_checks()
     results["cors"] = test_cors_configuration()
+    
+    # Test 11: Delivery Info
+    results["delivery_info"] = test_delivery_info()
+    
+    # Test 12: CMS Endpoints
+    results["cms_locations_get"] = test_cms_locations_get()
+    results["cms_about_get"] = test_cms_about_get()
     
     # Print summary
     print("\n📋 Test Summary")
