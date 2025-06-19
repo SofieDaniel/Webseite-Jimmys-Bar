@@ -14,7 +14,7 @@ const Standorte = () => {
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/standorte-enhanced`);
+      const response = await fetch(`/api/cms/standorte-enhanced`);
       if (response.ok) {
         const data = await response.json();
         console.log('Loaded enhanced locations data:', data);
