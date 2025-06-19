@@ -109,28 +109,28 @@ const UeberUns = () => {
             </div>
           </div>
 
-          {/* Team Section */}
+          {/* Team Section - Kleiner und eleganter */}
           {pageData.team_members && pageData.team_members.length > 0 && (
             <div className="mb-16">
-              <h3 className="text-4xl font-serif text-warm-beige mb-12 text-center tracking-wide">
+              <h3 className="text-3xl font-serif text-warm-beige mb-8 text-center tracking-wide">
                 {pageData.team_title || 'Unser Team'}
               </h3>
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 {pageData.team_members.map((member, index) => (
-                  <div key={index} className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-xl border border-warm-brown overflow-hidden shadow-lg">
+                  <div key={index} className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-lg border border-warm-brown overflow-hidden shadow-md">
                     <img 
                       src={member.image_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"} 
                       alt={member.name} 
-                      className="w-full h-64 object-cover"
+                      className="w-full h-32 object-cover"
                     />
-                    <div className="p-8 text-center">
-                      <h4 className="text-2xl font-serif text-warm-beige mb-2 tracking-wide">
+                    <div className="p-4 text-center">
+                      <h4 className="text-lg font-serif text-warm-beige mb-1 tracking-wide">
                         {member.name}
                       </h4>
-                      <p className="text-orange-400 mb-4 font-medium">
+                      <p className="text-orange-400 mb-2 font-medium text-sm">
                         {member.position}
                       </p>
-                      <p className="text-light-beige font-light leading-relaxed">
+                      <p className="text-light-beige font-light leading-relaxed text-xs">
                         {member.description}
                       </p>
                     </div>
