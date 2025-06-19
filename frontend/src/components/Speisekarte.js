@@ -74,33 +74,32 @@ const Speisekarte = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Beautiful Header Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-orange-500 via-red-500 to-yellow-500">
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+    <div className="min-h-screen bg-dark-brown">
+      {/* Schönerer Header Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-dark-brown via-medium-brown to-dark-brown">
+        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-400/20 via-transparent to-yellow-400/20"></div>
-          <div className="absolute -top-10 -left-10 w-40 h-40 bg-yellow-400/30 rounded-full blur-xl"></div>
-          <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-orange-400/30 rounded-full blur-xl"></div>
-          <div className="absolute top-1/2 left-1/4 w-32 h-32 bg-red-400/20 rounded-full blur-xl"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-warm-beige/10 via-transparent to-orange-500/10"></div>
+          <div className="absolute -top-10 -left-10 w-40 h-40 bg-warm-beige/20 rounded-full blur-xl"></div>
+          <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-orange-500/20 rounded-full blur-xl"></div>
         </div>
         <div className="relative z-10 pt-24 pb-16">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-4xl mx-auto">
-              <h1 className="text-6xl md:text-7xl font-serif text-white mb-6 tracking-wide drop-shadow-lg">
+              <h1 className="text-6xl md:text-7xl font-serif text-warm-beige mb-6 tracking-wide drop-shadow-lg">
                 Speisekarte
               </h1>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                <p className="text-xl md:text-2xl text-white font-light leading-relaxed">
-                  Authentische spanische Küche - Entdecken Sie unsere Gerichte
+              <div className="bg-dark-brown/40 backdrop-blur-sm rounded-xl p-6 border border-warm-beige/30">
+                <p className="text-xl md:text-2xl text-light-beige font-light leading-relaxed">
+                  Authentische spanische Küche - Detaillierte Allergie-Informationen
                 </p>
-                <div className="flex justify-center items-center gap-4 mt-4 text-white/90">
+                <div className="flex justify-center items-center gap-6 mt-4 text-light-beige">
                   <span className="flex items-center gap-2 text-sm">
-                    <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                    Detaillierte Allergie-Informationen
+                    <span className="w-2 h-2 bg-warm-beige rounded-full"></span>
+                    Zutaten & Herkunft
                   </span>
                   <span className="flex items-center gap-2 text-sm">
-                    <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                    <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
                     Hover für Details
                   </span>
                 </div>
