@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the complete MySQL-based backend for Jimmy's Tapas Bar CMS system. This is a CRITICAL test after a complete migration from MongoDB to MySQL."
+user_problem_statement: "Jimmy's v7 - Erweiterte Lieferando-Sektion implementieren und kritische Backend-Fehler beheben. Ziel: Detaillierte Lieferinformationen mit Bildern statt Icons, Standortauswahl entfernen, und alle kaputten API-Endpoints reparieren."
 
 backend:
   - task: "Fix JSON datetime serialization in backup functions"
