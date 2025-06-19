@@ -444,6 +444,55 @@ backend:
         agent: "testing"
         comment: "Confirmed that the users endpoint is working correctly after MySQL migration. Successfully retrieved 2 users with authenticated admin request. The response contains all required user fields including role and active status."
 
+frontend:
+  - task: "Fix Enhanced Delivery Section"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/EnhancedDeliverySection.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "The Enhanced Delivery Section is not working due to a 500 error from the backend API endpoint /api/delivery/info. The error in the backend logs shows that the 'delivery_info' table doesn't exist in the MySQL database. This needs to be fixed by creating the missing table in the database."
+
+  - task: "Fix Standorte Page"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/Locations.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "The Standorte page is not working due to a 500 error from the backend API endpoint /api/cms/standorte-enhanced. This endpoint needs to be fixed in the backend to properly return location data."
+
+  - task: "Verify Speisekarte Page"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/Speisekarte.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "The backend API endpoint /api/menu/items is working correctly and returns menu items. The page should be displaying menu items correctly, but the user reported it as 'leer' (empty). This might be due to frontend rendering issues or other problems."
+
+  - task: "Verify Über uns Page"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/UeberUns.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "The backend API endpoint /api/cms/about is working correctly and returns about content. The page should be displaying about content correctly, but the user reported it as 'ohne funktion' (no function). This might be due to frontend rendering issues or other problems."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
