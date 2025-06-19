@@ -386,22 +386,90 @@ const Speisekarte = () => {
                   </div>
                 </div>
                 
-                {/* Detaillierte Beschreibung mit Zutaten */}
+                {/* Detaillierte Beschreibung */}
                 <div className="bg-dark-brown/50 rounded-lg p-4 mb-4 border border-warm-beige/20">
                   <h4 className="text-sm font-semibold text-warm-beige mb-2 flex items-center gap-2">
                     <span className="w-2 h-2 bg-warm-beige rounded-full"></span>
-                    Beschreibung & Zutaten
+                    Detaillierte Beschreibung
                   </h4>
                   <p className="text-light-beige leading-relaxed text-sm">
-                    {hoveredItem.description}
+                    {hoveredItem.detailed_description || hoveredItem.description}
                   </p>
                 </div>
+
+                {/* Zutaten */}
+                {hoveredItem.ingredients && (
+                  <div className="bg-orange-900/20 rounded-lg p-4 mb-4 border border-orange-500/30">
+                    <h4 className="text-sm font-semibold text-orange-300 mb-2 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                      Zutaten
+                    </h4>
+                    <p className="text-orange-100 text-sm leading-relaxed">
+                      {hoveredItem.ingredients}
+                    </p>
+                  </div>
+                )}
+
+                {/* Herkunft & Zubereitung */}
+                <div className="grid grid-cols-1 gap-3 mb-4">
+                  {hoveredItem.origin && (
+                    <div className="bg-blue-900/20 rounded-lg p-3 border border-blue-500/30">
+                      <h4 className="text-xs font-semibold text-blue-300 mb-1 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
+                        Herkunft
+                      </h4>
+                      <p className="text-blue-100 text-xs">
+                        {hoveredItem.origin}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {hoveredItem.preparation_method && (
+                    <div className="bg-purple-900/20 rounded-lg p-3 border border-purple-500/30">
+                      <h4 className="text-xs font-semibold text-purple-300 mb-1 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
+                        Zubereitung
+                      </h4>
+                      <p className="text-purple-100 text-xs">
+                        {hoveredItem.preparation_method}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Allergene & Zusatzstoffe */}
+                {(hoveredItem.allergens || hoveredItem.additives) && (
+                  <div className="bg-red-900/20 rounded-lg p-4 mb-4 border border-red-500/30">
+                    <h4 className="text-sm font-semibold text-red-300 mb-2 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-red-400 rounded-full"></span>
+                      Allergene & Zusatzstoffe
+                    </h4>
+                    
+                    {hoveredItem.allergens && (
+                      <div className="mb-2">
+                        <p className="text-xs font-medium text-red-200 mb-1">⚠️ Allergene:</p>
+                        <p className="text-red-100 text-xs">
+                          {hoveredItem.allergens}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {hoveredItem.additives && hoveredItem.additives !== "Keine Zusatzstoffe" && (
+                      <div>
+                        <p className="text-xs font-medium text-yellow-200 mb-1">🧪 Zusatzstoffe:</p>
+                        <p className="text-yellow-100 text-xs">
+                          {hoveredItem.additives}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
                 
-                {/* Allergie-Informationen */}
+                {/* Diät-Eigenschaften */}
                 <div className="bg-warm-beige/5 rounded-lg p-4 border border-warm-beige/20">
                   <h4 className="text-sm font-semibold text-warm-beige mb-3 flex items-center gap-2">
                     <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                    Allergie-Informationen
+                    Diät-Eigenschaften
                   </h4>
                   <div className="grid grid-cols-3 gap-3">
                     <div className={`text-center p-3 rounded-lg transition-all ${hoveredItem.vegan ? 'bg-green-500/20 border-2 border-green-500/30' : 'bg-gray-500/10 border border-gray-500/20'}`}>
