@@ -385,11 +385,11 @@ const Speisekarte = () => {
           </div>
 
           {/* Right Side - Hover Details (Detaillierte Beschreibungen, kein Preis) */}
-          <div className="w-96 sticky top-24 max-h-[calc(100vh-120px)]">
+          <div className="w-96 sticky top-24 h-fit">
             {hoveredItem ? (
-              <div className="bg-gradient-to-br from-medium-brown to-dark-brown border-2 border-warm-beige/40 rounded-xl shadow-2xl max-h-full flex flex-col">
-                {/* Header - Fixed */}
-                <div className="border-b border-warm-beige/30 p-6 pb-4 flex-shrink-0">
+              <div className="bg-gradient-to-br from-medium-brown to-dark-brown border-2 border-warm-beige/40 rounded-xl p-6 shadow-2xl">
+                {/* Header */}
+                <div className="border-b border-warm-beige/30 pb-4 mb-4">
                   <h3 className="text-xl font-serif text-warm-beige mb-2">
                     {hoveredItem.name}
                   </h3>
@@ -409,27 +409,27 @@ const Speisekarte = () => {
                   </div>
                 </div>
 
-                {/* Content - Scrollable */}
-                <div className="p-6 pt-4 overflow-y-auto flex-1 custom-scrollbar">
+                {/* Content */}
+                <div className="space-y-4">
                   {/* Detaillierte Beschreibung */}
-                  <div className="bg-dark-brown/50 rounded-lg p-4 mb-4 border border-warm-beige/20">
+                  <div className="bg-dark-brown/50 rounded-lg p-4 border border-warm-beige/20">
                     <h4 className="text-sm font-semibold text-warm-beige mb-2 flex items-center gap-2">
                       <span className="w-2 h-2 bg-warm-beige rounded-full"></span>
                       Detaillierte Beschreibung
                     </h4>
-                    <p className="text-light-beige leading-relaxed text-sm">
+                    <p className="text-light-beige leading-relaxed text-sm line-clamp-4">
                       {hoveredItem.detailed_description || hoveredItem.description}
                     </p>
                   </div>
 
                   {/* Zutaten */}
                   {hoveredItem.ingredients && (
-                    <div className="bg-orange-900/20 rounded-lg p-4 mb-4 border border-orange-500/30">
+                    <div className="bg-orange-900/20 rounded-lg p-4 border border-orange-500/30">
                       <h4 className="text-sm font-semibold text-orange-300 mb-2 flex items-center gap-2">
                         <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
                         Zutaten
                       </h4>
-                      <p className="text-orange-100 text-sm leading-relaxed">
+                      <p className="text-orange-100 text-sm leading-relaxed line-clamp-3">
                         {hoveredItem.ingredients}
                       </p>
                     </div>
@@ -446,7 +446,7 @@ const Speisekarte = () => {
                       {hoveredItem.allergens && (
                         <div className="mb-2">
                           <p className="text-xs font-medium text-red-200 mb-1">⚠️ Allergene:</p>
-                          <p className="text-red-100 text-xs">
+                          <p className="text-red-100 text-xs line-clamp-2">
                             {hoveredItem.allergens}
                           </p>
                         </div>
@@ -455,13 +455,20 @@ const Speisekarte = () => {
                       {hoveredItem.additives && hoveredItem.additives !== "Keine Zusatzstoffe" && (
                         <div>
                           <p className="text-xs font-medium text-yellow-200 mb-1">🧪 Zusatzstoffe:</p>
-                          <p className="text-yellow-100 text-xs">
+                          <p className="text-yellow-100 text-xs line-clamp-2">
                             {hoveredItem.additives}
                           </p>
                         </div>
                       )}
                     </div>
                   )}
+
+                  {/* Hinweis für vollständige Details */}
+                  <div className="text-center pt-2 border-t border-warm-beige/20">
+                    <p className="text-warm-beige/60 text-xs">
+                      Klicken Sie auf das Gericht für vollständige Details
+                    </p>
+                  </div>
                 </div>
               </div>
             ) : (
