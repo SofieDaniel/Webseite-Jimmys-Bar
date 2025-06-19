@@ -424,7 +424,8 @@ const AdminPanel = () => {
             <p className="text-sm text-gray-600">Admin Panel</p>
             <p className="text-xs text-blue-600 mt-1">Willkommen, {user?.username}</p>
           </div>
-          <nav className="mt-6">
+          <nav className="mt-6 overflow-y-auto" style={{maxHeight: 'calc(100vh - 120px)'}}>
+            {/* Core Content Management */}
             <button
               onClick={() => setActiveSection('dashboard')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'dashboard' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
@@ -435,7 +436,7 @@ const AdminPanel = () => {
               onClick={() => setActiveSection('homepage')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'homepage' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
-              ✏️ Homepage bearbeiten
+              🏠 Homepage bearbeiten
             </button>
             <button
               onClick={() => setActiveSection('locations')}
@@ -455,6 +456,8 @@ const AdminPanel = () => {
             >
               🍽️ Speisekarte
             </button>
+            
+            {/* Interaction Management */}
             <button
               onClick={() => setActiveSection('reviews')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'reviews' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
@@ -473,17 +476,49 @@ const AdminPanel = () => {
             >
               📮 Newsletter
             </button>
+            
+            {/* User Management */}
             <button
               onClick={() => setActiveSection('users')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'users' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
               👥 Benutzer-Verwaltung
             </button>
+            
+            {/* Legal & Content Tools */}
             <button
               onClick={() => setActiveSection('legal')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'legal' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
               📋 Impressum & Datenschutz
+            </button>
+            <button
+              onClick={() => setActiveSection('page-editor')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'page-editor' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              📝 Seiten-Editor
+            </button>
+            <button
+              onClick={() => setActiveSection('navigation')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'navigation' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              🧭 Navigation
+            </button>
+            
+            {/* Delivery Management */}
+            <button
+              onClick={() => setActiveSection('lieferando')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'lieferando' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              🚚 Lieferando
+            </button>
+            
+            {/* Developer & System Tools */}
+            <button
+              onClick={() => setActiveSection('developer-info')}
+              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'developer-info' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+            >
+              🔧 Entwickler-Info
             </button>
             <button
               onClick={() => setActiveSection('system')}
@@ -497,6 +532,8 @@ const AdminPanel = () => {
             >
               🔧 Wartungsmodus
             </button>
+            
+            {/* Quick Actions */}
             <div className="border-t mt-6 pt-6">
               <a
                 href="/"
