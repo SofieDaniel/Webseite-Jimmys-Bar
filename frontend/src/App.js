@@ -144,6 +144,34 @@ const PageEditorSection = () => {
 };
 
 const NavigationSection = () => {
+  const [navItems, setNavItems] = useState([
+    { id: 'home', name: 'Startseite', url: '/', active: true },
+    { id: 'locations', name: 'Standorte', url: '/standorte', active: true },
+    { id: 'menu', name: 'Speisekarte', url: '/speisekarte', active: true },
+    { id: 'reviews', name: 'Bewertungen', url: '/bewertungen', active: true },
+    { id: 'about', name: 'Über uns', url: '/ueber-uns', active: true },
+    { id: 'contact', name: 'Kontakt', url: '/kontakt', active: true }
+  ]);
+
+  const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState('');
+
+  const updateNavItem = (id, field, value) => {
+    setNavItems(navItems.map(item => 
+      item.id === id ? { ...item, [field]: value } : item
+    ));
+  };
+
+  const saveNavigation = async () => {
+    setSaving(true);
+    // Simulate save operation
+    setTimeout(() => {
+      setSaving(false);
+      setSuccess('Navigation erfolgreich gespeichert!');
+      setTimeout(() => setSuccess(''), 3000);
+    }, 1000);
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -151,52 +179,114 @@ const NavigationSection = () => {
         <p className="text-gray-600">Website-Navigation und Menü-Struktur verwalten</p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Hauptnavigation</h3>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span className="font-medium">Startseite</span>
-            <div className="flex space-x-2">
-              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
-              <button className="text-gray-600 hover:text-gray-800">↕️</button>
-            </div>
-          </div>
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span className="font-medium">Standorte</span>
-            <div className="flex space-x-2">
-              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
-              <button className="text-gray-600 hover:text-gray-800">↕️</button>
-            </div>
-          </div>
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span className="font-medium">Speisekarte</span>
-            <div className="flex space-x-2">
-              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
-              <button className="text-gray-600 hover:text-gray-800">↕️</button>
-            </div>
-          </div>
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span className="font-medium">Bewertungen</span>
-            <div className="flex space-x-2">
-              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
-              <button className="text-gray-600 hover:text-gray-800">↕️</button>
-            </div>
-          </div>
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span className="font-medium">Über uns</span>
-            <div className="flex space-x-2">
-              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
-              <button className="text-gray-600 hover:text-gray-800">↕️</button>
-            </div>
-          </div>
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <span className="font-medium">Kontakt</span>
-            <div className="flex space-x-2">
-              <button className="text-blue-600 hover:text-blue-800">Bearbeiten</button>
-              <button className="text-gray-600 hover:text-gray-800">↕️</button>
-            </div>
-          </div>
+      {success && (
+        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+          {success}
         </div>
+      )}
+
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">Hauptnavigation</h3>
+        
+        <div className="space-y-4">
+          {navItems.map((item, index) => (
+            <div key={item.id} className="flex items-center justify-between p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
+              <div className="flex items-center space-x-6 flex-1">
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl font-bold text-gray-800">{index + 1}</span>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={item.active}
+                      onChange={(e) => updateNavItem(item.id, 'active', e.target.checked)}
+                      className="h-5 w-5 text-blue-600 border-2 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <span className="text-sm font-medium text-gray-700">Aktiv</span>
+                  </div>
+                </div>
+                
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-900 mb-2">Menü-Text</label>
+                    <input
+                      type="text"
+                      value={item.name}
+                      onChange={(e) => updateNavItem(item.id, 'name', e.target.value)}
+                      className="w-full p-3 text-lg font-medium text-gray-900 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-900 mb-2">URL</label>
+                    <input
+                      type="text"
+                      value={item.url}
+                      onChange={(e) => updateNavItem(item.id, 'url', e.target.value)}
+                      className="w-full p-3 text-lg font-medium text-gray-700 border-2 border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3 ml-6">
+                <button 
+                  className="p-3 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                  title="Nach oben verschieben"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" />
+                  </svg>
+                </button>
+                <button 
+                  className="p-3 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                  title="Nach unten verschieben"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <button 
+                  className="p-3 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg font-semibold transition-colors"
+                >
+                  Bearbeiten
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+          <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 font-semibold">
+            + Neuen Menüpunkt hinzufügen
+          </button>
+          
+          <button
+            onClick={saveNavigation}
+            disabled={saving}
+            className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold flex items-center space-x-2"
+          >
+            {saving ? (
+              <>
+                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Speichern...</span>
+              </>
+            ) : (
+              <span>Navigation speichern</span>
+            )}
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h4 className="text-lg font-semibold text-blue-900 mb-3">💡 Navigation-Tipps</h4>
+        <ul className="space-y-2 text-blue-800">
+          <li>• <strong>Reihenfolge ändern:</strong> Verwende die Pfeiltasten zum Verschieben der Menüpunkte</li>
+          <li>• <strong>Aktivierung:</strong> Deaktivierte Menüpunkte werden nicht in der Navigation angezeigt</li>
+          <li>• <strong>URLs:</strong> Beginnen immer mit "/" für interne Links</li>
+          <li>• <strong>Änderungen:</strong> Werden sofort nach dem Speichern auf der Website sichtbar</li>
+        </ul>
       </div>
     </div>
   );
