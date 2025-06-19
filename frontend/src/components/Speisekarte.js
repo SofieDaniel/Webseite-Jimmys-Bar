@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// Custom styles for scrollbar
+// Custom styles for scrollbar and text truncation
 const customScrollbarStyle = `
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
@@ -15,6 +15,27 @@ const customScrollbarStyle = `
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 228, 196, 0.7);
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 `;
 
