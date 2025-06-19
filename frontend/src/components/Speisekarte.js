@@ -57,6 +57,7 @@ const Speisekarte = () => {
     'Bier': 'Bier',
     'Weine': 'Weine',
     'Cocktails': 'Cocktails',
+    'Spanische Getränke': 'Spanische Getränke',
     'Spirituosen': 'Spirituosen'
   };
 
