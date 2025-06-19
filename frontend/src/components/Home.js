@@ -44,7 +44,11 @@ const Home = () => {
     locations_button_text: "Unsere Standorte"
   };
 
-  const features = homepageContent?.features || {
+  const features = homepageContent?.features_data ? {
+    title: "Mediterrane Tradition",
+    subtitle: "Erleben Sie authentische mediterrane Gastfreundschaft an der deutschen Ostseeküste",
+    cards: homepageContent.features_data.features || []
+  } : {
     title: "Mediterrane Tradition",
     subtitle: "Erleben Sie authentische mediterrane Gastfreundschaft an der deutschen Ostseeküste",
     cards: [
