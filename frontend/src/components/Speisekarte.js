@@ -10,7 +10,7 @@ const Speisekarte = () => {
   useEffect(() => {
     const loadMenuItems = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/menu/items`);
+        const response = await fetch(`/api/menu/items`);
         if (response.ok) {
           const data = await response.json();
           setMenuItems(data);
