@@ -479,8 +479,9 @@ async def create_menu_item(item_data: MenuItemCreate, current_user: User = Depen
                                    vegan, vegetarian, glutenfree, order_index, is_active, 
                                    created_at, updated_at)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (item.id, item.name, item.description, item.price, item.category, item.image,
-              item.details, item.vegan, item.vegetarian, item.glutenfree, item.order_index,
+        """, (item.id, item.name, item.description, item.detailed_description, item.price, item.category, item.image,
+              item.details, item.origin, item.allergens, item.additives, item.preparation_method, item.ingredients,
+              item.vegan, item.vegetarian, item.glutenfree, item.order_index,
               item.is_active, item.created_at, item.updated_at))
         
         return item
