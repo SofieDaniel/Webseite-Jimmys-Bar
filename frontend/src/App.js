@@ -110,39 +110,6 @@ const CookieBanner = () => {
 };
 
 // New Admin Sections
-const PageEditorSection = () => {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">📝 Seiten-Editor</h1>
-        <p className="text-gray-600">Erweiterte Seiten-Bearbeitung und Content-Management</p>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Verfügbare Editor-Tools</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h4 className="font-medium text-blue-900 mb-2">Rich Text Editor</h4>
-            <p className="text-sm text-blue-700">Erweiterte Textbearbeitung mit Formatierungsoptionen</p>
-          </div>
-          <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-            <h4 className="font-medium text-green-900 mb-2">Media Manager</h4>
-            <p className="text-sm text-green-700">Bilder und Videos verwalten und optimieren</p>
-          </div>
-          <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-            <h4 className="font-medium text-purple-900 mb-2">Template Editor</h4>
-            <p className="text-sm text-purple-700">Seiten-Templates bearbeiten und anpassen</p>
-          </div>
-          <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
-            <h4 className="font-medium text-orange-900 mb-2">SEO Tools</h4>
-            <p className="text-sm text-orange-700">Meta-Tags und SEO-Einstellungen verwalten</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const NavigationSection = () => {
   const [navItems, setNavItems] = useState([
     { id: 'home', name: 'Startseite', url: '/', active: true },
