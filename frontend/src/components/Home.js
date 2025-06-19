@@ -210,49 +210,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Lieferando Section */}
-      <section className="py-16 bg-gradient-to-r from-dark-brown to-medium-brown">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-serif text-warm-beige mb-8 tracking-wide">
-              {delivery.title}
-            </h2>
-            <p className="text-xl text-light-beige font-light mb-12 leading-relaxed">
-              {delivery.description}<br/>
-              {delivery.description_2}
-            </p>
-            <div className="bg-dark-brown rounded-lg p-8 border border-warm-brown shadow-lg">
-              <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-                <div className="text-center">
-                  <div className="w-24 h-24 bg-cover bg-center rounded-lg mx-auto mb-4 border-2 border-warm-beige" 
-                       style={{backgroundImage: `url('${delivery.delivery_feature_image}')`}}>
-                  </div>
-                  <h3 className="text-xl font-serif text-warm-beige mb-2">{delivery.delivery_feature_title}</h3>
-                  <p className="text-light-beige text-sm">{delivery.delivery_feature_description}</p>
-                </div>
-                <div className="text-center">
-                  <a 
-                    href={delivery.button_url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 tracking-wide shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    {delivery.button_text}
-                  </a>
-                  <p className="text-light-beige text-sm mt-2">{delivery.availability_text}</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-24 h-24 bg-cover bg-center rounded-lg mx-auto mb-4 border-2 border-warm-beige" 
-                       style={{backgroundImage: `url('${delivery.authentic_feature_image}')`}}>
-                  </div>
-                  <h3 className="text-xl font-serif text-warm-beige mb-2">{delivery.authentic_feature_title}</h3>
-                  <p className="text-light-beige text-sm">{delivery.authentic_feature_description}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Enhanced Lieferando Section */}
+      <EnhancedDeliverySection />
     </div>
   );
 };
