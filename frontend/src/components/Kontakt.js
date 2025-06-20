@@ -245,46 +245,76 @@ const Kontakt = () => {
                 <p className="text-sm">{pageData.additional_info}</p>
               </div>
             )}
-                </p>
-                <p className="flex items-center">
-                  <span className="text-warm-beige mr-3">✉️</span>
-                  kuehlungsborn@jimmys-tapasbar.de
-                </p>
-                <div className="mt-4">
-                  <p className="font-medium text-warm-beige mb-2">Öffnungszeiten:</p>
-                  <p className="text-sm">Mo-Do: 16:00 - 23:00</p>
-                  <p className="text-sm">Fr: 16:00 - 24:00</p>
-                  <p className="text-sm">Sa: 12:00 - 24:00</p>
-                  <p className="text-sm">So: 12:00 - 23:00</p>
+                  </p>
+                  <p className="flex items-center">
+                    <span className="text-warm-beige mr-3">✉️</span>
+                    {locationsData.neustadt.email}
+                  </p>
+                  
+                  {/* Opening Hours */}
+                  {locationsData.neustadt.opening_hours && (
+                    <div className="mt-4">
+                      <h4 className="text-warm-beige font-medium mb-2">
+                        {pageData.opening_hours_title || 'Öffnungszeiten'}:
+                      </h4>
+                      <div className="text-sm space-y-1">
+                        {Object.entries(locationsData.neustadt.opening_hours).map(([day, hours]) => (
+                          <div key={day} className="flex justify-between">
+                            <span>{day}:</span>
+                            <span>{hours}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Location 2 */}
-            <div className="bg-medium-brown rounded-lg border border-warm-brown p-6 mb-6">
-              <h3 className="text-xl font-serif text-warm-beige mb-4">Jimmy's Tapas Bar Warnemünde</h3>
-              <div className="space-y-3 text-light-beige">
-                <p className="flex items-center">
-                  <span className="text-warm-beige mr-3">📍</span>
-                  Am Strom 2, 18119 Warnemünde
-                </p>
-                <p className="flex items-center">
-                  <span className="text-warm-beige mr-3">📞</span>
-                  +49 381 987654
-                </p>
-                <p className="flex items-center">
-                  <span className="text-warm-beige mr-3">✉️</span>
-                  warnemuende@jimmys-tapasbar.de
-                </p>
-                <div className="mt-4">
-                  <p className="font-medium text-warm-beige mb-2">Öffnungszeiten:</p>
-                  <p className="text-sm">Mo-Do: 17:00 - 23:00</p>
-                  <p className="text-sm">Fr: 17:00 - 24:00</p>
-                  <p className="text-sm">Sa: 12:00 - 24:00</p>
-                  <p className="text-sm">So: 12:00 - 23:00</p>
+            {locationsData && locationsData.grossenbrode && (
+              <div className="bg-medium-brown rounded-lg border border-warm-brown p-6 mb-6">
+                <h3 className="text-xl font-serif text-warm-beige mb-4">{locationsData.grossenbrode.name}</h3>
+                <div className="space-y-3 text-light-beige">
+                  <p className="flex items-center">
+                    <span className="text-warm-beige mr-3">📍</span>
+                    {locationsData.grossenbrode.address}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="text-warm-beige mr-3">📞</span>
+                    {locationsData.grossenbrode.phone}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="text-warm-beige mr-3">✉️</span>
+                    {locationsData.grossenbrode.email}
+                  </p>
+                  
+                  {/* Opening Hours */}
+                  {locationsData.grossenbrode.opening_hours && (
+                    <div className="mt-4">
+                      <h4 className="text-warm-beige font-medium mb-2">
+                        {pageData.opening_hours_title || 'Öffnungszeiten'}:
+                      </h4>
+                      <div className="text-sm space-y-1">
+                        {Object.entries(locationsData.grossenbrode.opening_hours).map(([day, hours]) => (
+                          <div key={day} className="flex justify-between">
+                            <span>{day}:</span>
+                            <span>{hours}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* Additional Information */}
+            {pageData.additional_info && (
+              <div className="text-light-beige bg-dark-brown p-4 rounded-lg border border-warm-brown">
+                <p className="text-sm">{pageData.additional_info}</p>
+              </div>
+            )}
 
             {/* Newsletter Signup */}
             <div className="bg-dark-brown rounded-lg border border-warm-brown p-6">
