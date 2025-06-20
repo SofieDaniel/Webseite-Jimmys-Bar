@@ -3,7 +3,7 @@ import requests
 import json
 
 # Authentication token
-TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MDM4MzI5MH0.VGSWirJVku3uqZQUQiG_krNxYu2rwWdSIr3pcAuAIFM"
+TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MDQxODU4MH0.GB1M49rI8Ar6R_RGAOyWAW4hJg-EShpbzousFmUYPxA"
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
     "Content-Type": "application/json"
