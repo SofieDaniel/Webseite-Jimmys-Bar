@@ -534,6 +534,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "The CMS login functionality is not working due to a backend issue. The backend service is failing to start properly due to a MySQL connection error. The error logs show: 'Can't connect to MySQL server on localhost'. The backend is configured to connect to MySQL at localhost:3306 with user 'jimmy_user', but the MySQL service is not running or not accessible. The frontend code for the login functionality is correctly implemented in App.js (lines 1318-1366), but it cannot connect to the backend authentication endpoints. This issue needs to be fixed by ensuring the MySQL service is properly configured and running."
+      - working: false
+        agent: "testing"
+        comment: "The CMS login functionality is still not working. The website loads correctly, but there are backend issues preventing proper functionality. The backend logs show multiple database-related errors, including problems with the delivery_info table. These database issues need to be resolved before the CMS login can work properly."
 
 metadata:
   created_by: "testing_agent"
