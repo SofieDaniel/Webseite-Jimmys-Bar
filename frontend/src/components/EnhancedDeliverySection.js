@@ -7,7 +7,7 @@ const EnhancedDeliverySection = () => {
   useEffect(() => {
     const fetchDeliveryInfo = async () => {
       try {
-        const response = await fetch(`/api/delivery/info`);
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/delivery/info`);
         if (response.ok) {
           const data = await response.json();
           setDeliveryInfo(data);
