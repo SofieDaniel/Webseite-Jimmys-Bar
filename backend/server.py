@@ -2887,6 +2887,125 @@ app.add_middleware(
 )
 
 # Add explicit OPTIONS route handler for CORS preflight requests
+# Newsletter functionality
+@api_router.post("/newsletter/subscribe")
+async def subscribe_newsletter(subscriber_data: dict):
+    """Subscribe to newsletter"""
+    try:
+        email = subscriber_data.get("email")
+        if not email:
+            raise HTTPException(status_code=400, detail="E-Mail-Adresse ist erforderlich")
+        
+        # Validate email format
+        import re
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_pattern, email):
+            raise HTTPException(status_code=400, detail="Ungültige E-Mail-Adresse")
+        
+        async with mysql_pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                # Check if email already exists
+                await cursor.execute("SELECT id FROM newsletter_subscribers WHERE email = %s", (email,))
+                existing = await cursor.fetchone()
+                
+                if existing:
+                    # Update subscription status if already exists
+                    await cursor.execute(
+                        "UPDATE newsletter_subscribers SET subscribed = TRUE, updated_at = NOW() WHERE email = %s",
+                        (email,)
+                    )
+                    await connection.commit()
+                    return {"message": "Newsletter-Anmeldung aktualisiert!"}
+                else:
+                    # Create new subscriber
+                    import uuid
+                    subscriber_id = str(uuid.uuid4())
+                    await cursor.execute(
+                        """INSERT INTO newsletter_subscribers 
+                           (id, email, subscribed, created_at, updated_at) 
+                           VALUES (%s, %s, TRUE, NOW(), NOW())""",
+                        (subscriber_id, email)
+                    )
+                    await connection.commit()
+                    return {"message": "Erfolgreich für Newsletter angemeldet!"}
+                    
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Newsletter subscription error: {e}")
+        raise HTTPException(status_code=500, detail="Fehler bei der Newsletter-Anmeldung")
+
+@api_router.post("/newsletter/unsubscribe")
+async def unsubscribe_newsletter(email_data: dict):
+    """Unsubscribe from newsletter"""
+    try:
+        email = email_data.get("email")
+        if not email:
+            raise HTTPException(status_code=400, detail="E-Mail-Adresse ist erforderlich")
+        
+        async with mysql_pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                await cursor.execute(
+                    "UPDATE newsletter_subscribers SET subscribed = FALSE, updated_at = NOW() WHERE email = %s",
+                    (email,)
+                )
+                await connection.commit()
+                return {"message": "Newsletter-Abmeldung erfolgreich!"}
+                
+    except Exception as e:
+        print(f"Newsletter unsubscribe error: {e}")
+        raise HTTPException(status_code=500, detail="Fehler bei der Newsletter-Abmeldung")
+
+@api_router.get("/admin/newsletter/subscribers")
+async def get_newsletter_subscribers(current_user: User = Depends(get_admin_user)):
+    """Get all newsletter subscribers (admin only)"""
+    try:
+        async with mysql_pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                await cursor.execute(
+                    """SELECT id, email, subscribed, created_at, updated_at 
+                       FROM newsletter_subscribers 
+                       WHERE subscribed = TRUE 
+                       ORDER BY created_at DESC"""
+                )
+                subscribers = await cursor.fetchall()
+                
+                result = []
+                for subscriber in subscribers:
+                    result.append({
+                        "id": subscriber[0],
+                        "email": subscriber[1],
+                        "subscribed": subscriber[2],
+                        "created_at": subscriber[3].isoformat() if subscriber[3] else None,
+                        "updated_at": subscriber[4].isoformat() if subscriber[4] else None
+                    })
+                
+                return result
+                
+    except Exception as e:
+        print(f"Get newsletter subscribers error: {e}")
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Newsletter-Abonnenten")
+
+@api_router.delete("/admin/newsletter/subscribers/{subscriber_id}")
+async def delete_newsletter_subscriber(subscriber_id: str, current_user: User = Depends(get_admin_user)):
+    """Delete newsletter subscriber (admin only)"""
+    try:
+        async with mysql_pool.acquire() as connection:
+            async with connection.cursor() as cursor:
+                await cursor.execute("DELETE FROM newsletter_subscribers WHERE id = %s", (subscriber_id,))
+                await connection.commit()
+                
+                if cursor.rowcount == 0:
+                    raise HTTPException(status_code=404, detail="Newsletter-Abonnent nicht gefunden")
+                
+                return {"message": "Newsletter-Abonnent gelöscht"}
+                
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Delete newsletter subscriber error: {e}")
+        raise HTTPException(status_code=500, detail="Fehler beim Löschen des Newsletter-Abonnenten")
+
 @api_router.options("/{path:path}")
 async def options_route(path: str):
     return {"detail": "OK"}
