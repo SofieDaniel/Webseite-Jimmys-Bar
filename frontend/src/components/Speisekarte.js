@@ -707,13 +707,7 @@ const Speisekarte = () => {
         </div>
       </div>
       
-      {/* Detail Modal */}
-      {selectedItem && (
-        <ItemDetailModal 
-          item={selectedItem} 
-          onClose={() => setSelectedItem(null)} 
-        />
-      )}
+
     </div>
   );
 };
