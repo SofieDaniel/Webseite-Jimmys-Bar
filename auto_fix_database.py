@@ -188,6 +188,15 @@ async def check_and_fix_database():
         connection.close()
         
         print("🎉 ALLE DATENBANKEN ERFOLGREICH ÜBERPRÜFT UND REPARIERT!")
+        
+        # Zusätzliche CMS-Inhalte erstellen
+        await cursor.execute("SELECT COUNT(*) FROM homepage_content")
+        homepage_count = (await cursor.fetchone())[0]
+        if homepage_count == 0:
+            print("🏠 Erstelle Homepage CMS-Daten...")
+            subprocess.run(['python3', '/app/setup_complete_cms.py'], check=False)
+        
+        print("🎉 KOMPLETTE SYSTEM-ÜBERPRÜFUNG ABGESCHLOSSEN!")
         print("=" * 60)
         return True
         
