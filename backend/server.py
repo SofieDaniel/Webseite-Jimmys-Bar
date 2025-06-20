@@ -1508,7 +1508,7 @@ async def update_locations_content(content_data: Dict, current_user: User = Depe
         mysql_pool.release(conn)
 
 @api_router.get("/cms/about")
-async def get_about_content():
+async def get_about_page_content():
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor(aiomysql.DictCursor)
@@ -1551,7 +1551,7 @@ während Sie den Blick auf die Ostsee genießen können."""
             
             content_id = str(uuid.uuid4())
             await cursor.execute("""
-                INSERT INTO about_content (id, page_title, hero_title, hero_description, story_title,
+                INSERT INTO about_page_content (id, page_title, hero_title, hero_description, story_title,
                                          story_content, story_image, team_title, team_members,
                                          values_title, values_data, updated_at)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -1621,7 +1621,7 @@ während Sie den Blick auf die Ostsee genießen können."""
         mysql_pool.release(conn)
 
 @api_router.put("/cms/about")
-async def update_about_content(content_data: Dict, current_user: User = Depends(get_editor_user)):
+async def update_about_page_content(content_data: Dict, current_user: User = Depends(get_editor_user)):
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor()
@@ -1636,7 +1636,7 @@ async def update_about_content(content_data: Dict, current_user: User = Depends(
         if result[0] == 0:
             # Insert new record
             await cursor.execute("""
-                INSERT INTO about_content (id, page_title, hero_title, hero_description, story_title,
+                INSERT INTO about_page_content (id, page_title, hero_title, hero_description, story_title,
                                          story_content, story_image, team_title, team_members,
                                          values_title, values_data, updated_at, updated_by)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -1657,7 +1657,7 @@ async def update_about_content(content_data: Dict, current_user: User = Depends(
         else:
             # Update existing record
             await cursor.execute("""
-                UPDATE about_content SET page_title = %s, hero_title = %s, hero_description = %s,
+                UPDATE about_page_content SET page_title = %s, hero_title = %s, hero_description = %s,
                                        story_title = %s, story_content = %s, story_image = %s,
                                        team_title = %s, team_members = %s, values_title = %s,
                                        values_data = %s, updated_at = %s, updated_by = %s
