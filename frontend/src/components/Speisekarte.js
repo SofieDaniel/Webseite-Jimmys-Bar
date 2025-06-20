@@ -64,7 +64,7 @@ const Speisekarte = () => {
   }, []);
 
   // Modal für Gericht-Details
-  const ItemDetailModal = ({ item, onClose }) => {
+  // Load menu items from backend
     if (!item) return null;
     
     return (
