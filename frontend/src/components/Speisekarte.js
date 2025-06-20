@@ -44,7 +44,6 @@ const Speisekarte = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('Alle Kategorien');
   const [hoveredItem, setHoveredItem] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
 
   // Load menu items from backend
   useEffect(() => {
