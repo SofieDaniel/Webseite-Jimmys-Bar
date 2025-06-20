@@ -1630,7 +1630,7 @@ async def update_about_content(content_data: Dict, current_user: User = Depends(
         values_json = json.dumps(content_data.get('values_data', []))
         
         # Check if record exists
-        await cursor.execute("SELECT COUNT(*) as count FROM about_content")
+        await cursor.execute("SELECT COUNT(*) as count FROM about_page_content")
         result = await cursor.fetchone()
         
         if result[0] == 0:
