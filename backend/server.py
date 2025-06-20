@@ -1496,7 +1496,7 @@ während Sie den Blick auf die Ostsee genießen können."""
             
             content_id = str(uuid.uuid4())
             await cursor.execute("""
-                INSERT INTO about_page_content (id, page_title, hero_title, hero_description, story_title,
+                INSERT INTO about_content (id, page_title, hero_title, hero_description, story_title,
                                          story_content, story_image, team_title, team_members,
                                          values_title, values_data, updated_at)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
