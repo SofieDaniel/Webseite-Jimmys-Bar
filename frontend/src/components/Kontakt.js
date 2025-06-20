@@ -138,43 +138,6 @@ const Kontakt = () => {
     );
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
-        <div className="text-warm-beige text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-warm-beige mx-auto mb-4"></div>
-          <p className="text-xl">Lade Kontakt-Seite...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
-        <div className="text-red-400 text-center max-w-md mx-auto">
-          <p className="text-xl mb-4">{error}</p>
-          <button
-            onClick={loadPageData}
-            className="bg-warm-beige text-dark-brown px-6 py-3 rounded-lg hover:bg-light-beige transition-colors"
-          >
-            Erneut versuchen
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!pageData) {
-    return (
-      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
-        <div className="text-warm-beige text-center">
-          <p className="text-xl">Keine Daten verfügbar</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-dark-brown">
       {/* Header Section */}
