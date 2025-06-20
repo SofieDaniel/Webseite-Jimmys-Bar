@@ -148,7 +148,7 @@ const UeberUns = () => {
                         {member.name}
                       </h4>
                       <p className="text-orange-400 mb-2 font-medium text-sm">
-                        {member.position}
+                        {member.role}
                       </p>
                       <p className="text-light-beige font-light leading-relaxed text-xs">
                         {member.description}
