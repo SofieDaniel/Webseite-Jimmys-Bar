@@ -1602,7 +1602,7 @@ async def update_about_content(content_data: Dict, current_user: User = Depends(
         else:
             # Update existing record
             await cursor.execute("""
-                UPDATE about_page_content SET page_title = %s, hero_title = %s, hero_description = %s,
+                UPDATE about_content SET page_title = %s, hero_title = %s, hero_description = %s,
                                        story_title = %s, story_content = %s, story_image = %s,
                                        team_title = %s, team_members = %s, values_title = %s,
                                        values_data = %s, updated_at = %s, updated_by = %s
