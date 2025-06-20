@@ -666,13 +666,6 @@ const Speisekarte = () => {
                       )}
                     </div>
                   )}
-
-                  {/* Hinweis für vollständige Details */}
-                  <div className="text-center pt-2 border-t border-warm-beige/20">
-                    <p className="text-warm-beige/60 text-xs">
-                      Klicken Sie auf das Gericht für vollständige Details
-                    </p>
-                  </div>
                 </div>
               </div>
             ) : (
