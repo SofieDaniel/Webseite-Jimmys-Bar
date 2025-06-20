@@ -545,7 +545,9 @@ test_plan:
     - "Verify Speisekarte Page"
     - "Verify Über uns Page"
     - "Fix Navigation Section Text Readability"
-  stuck_tasks: []
+    - "Fix CMS Login Functionality"
+  stuck_tasks:
+    - "Fix CMS Login Functionality"
   test_all: false
   test_priority: "high_first"
 
