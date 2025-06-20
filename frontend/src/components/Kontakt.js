@@ -245,95 +245,6 @@ const Kontakt = () => {
                 <p className="text-sm">{pageData.additional_info}</p>
               </div>
             )}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">✉️</span>
-                    {locationsData.neustadt.email}
-                  </p>
-                  
-                  {/* Opening Hours */}
-                  {locationsData.neustadt.opening_hours && (
-                    <div className="mt-4">
-                      <h4 className="text-warm-beige font-medium mb-2">
-                        {pageData.opening_hours_title || 'Öffnungszeiten'}:
-                      </h4>
-                      <div className="text-sm space-y-1">
-                        {Object.entries(locationsData.neustadt.opening_hours).map(([day, hours]) => (
-                          <div key={day} className="flex justify-between">
-                            <span>{day}:</span>
-                            <span>{hours}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Location 2 */}
-            {locationsData && locationsData.grossenbrode && (
-              <div className="bg-medium-brown rounded-lg border border-warm-brown p-6 mb-6">
-                <h3 className="text-xl font-serif text-warm-beige mb-4">{locationsData.grossenbrode.name}</h3>
-                <div className="space-y-3 text-light-beige">
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">📍</span>
-                    {locationsData.grossenbrode.address}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">📞</span>
-                    {locationsData.grossenbrode.phone}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">✉️</span>
-                    {locationsData.grossenbrode.email}
-                  </p>
-                  
-                  {/* Opening Hours */}
-                  {locationsData.grossenbrode.opening_hours && (
-                    <div className="mt-4">
-                      <h4 className="text-warm-beige font-medium mb-2">
-                        {pageData.opening_hours_title || 'Öffnungszeiten'}:
-                      </h4>
-                      <div className="text-sm space-y-1">
-                        {Object.entries(locationsData.grossenbrode.opening_hours).map(([day, hours]) => (
-                          <div key={day} className="flex justify-between">
-                            <span>{day}:</span>
-                            <span>{hours}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Additional Information */}
-            {pageData.additional_info && (
-              <div className="text-light-beige bg-dark-brown p-4 rounded-lg border border-warm-brown">
-                <p className="text-sm">{pageData.additional_info}</p>
-              </div>
-            )}
-
-            {/* Newsletter Signup */}
-            <div className="bg-dark-brown rounded-lg border border-warm-brown p-6">
-              <h3 className="text-xl font-serif text-warm-beige mb-4">Newsletter abonnieren</h3>
-              <p className="text-light-beige mb-4">Bleiben Sie über neue Gerichte und Events informiert</p>
-              <form className="flex gap-3">
-                <input
-                  type="email"
-                  placeholder="Ihre E-Mail-Adresse"
-                  className="flex-1 px-4 py-2 bg-medium-brown border border-warm-brown rounded text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
-                />
-                <button
-                  type="submit"
-                  className="bg-warm-beige text-dark-brown px-6 py-2 rounded font-medium hover:bg-light-beige transition-colors"
-                >
-                  Anmelden
-                </button>
-              </form>
-            </div>
           </div>
 
           {/* Contact Form */}
@@ -367,7 +278,8 @@ const Kontakt = () => {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-4 py-3 bg-medium-brown border border-warm-brown rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
+                    className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige"
+                    placeholder="Ihr Name"
                   />
                 </div>
                 <div>
@@ -377,40 +289,44 @@ const Kontakt = () => {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="w-full px-4 py-3 bg-medium-brown border border-warm-brown rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
+                    className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige"
+                    placeholder="ihre@email.de"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-warm-beige font-medium mb-2">Telefon</label>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="w-full px-4 py-3 bg-medium-brown border border-warm-brown rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-warm-beige font-medium mb-2">Betreff *</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.subject}
-                  onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                  className="w-full px-4 py-3 bg-medium-brown border border-warm-brown rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
-                />
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-warm-beige font-medium mb-2">Telefon</label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige"
+                    placeholder="Ihre Telefonnummer"
+                  />
+                </div>
+                <div>
+                  <label className="block text-warm-beige font-medium mb-2">Betreff *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.subject}
+                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                    className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige"
+                    placeholder="Betreff Ihrer Nachricht"
+                  />
+                </div>
               </div>
 
               <div>
                 <label className="block text-warm-beige font-medium mb-2">Nachricht *</label>
                 <textarea
                   required
-                  rows={5}
+                  rows={6}
                   value={formData.message}
                   onChange={(e) => setFormData({...formData, message: e.target.value})}
-                  className="w-full px-4 py-3 bg-medium-brown border border-warm-brown rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent"
+                  className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige resize-none"
                   placeholder="Ihre Nachricht an uns..."
                 />
               </div>
@@ -418,7 +334,7 @@ const Kontakt = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-warm-beige text-dark-brown py-3 rounded-lg font-medium hover:bg-light-beige transition-colors disabled:opacity-50"
+                className="w-full bg-warm-beige text-dark-brown py-3 px-6 rounded-lg font-medium hover:bg-light-beige disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {submitting ? 'Wird gesendet...' : 'Nachricht senden'}
               </button>
