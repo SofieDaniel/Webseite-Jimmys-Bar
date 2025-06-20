@@ -58,7 +58,7 @@ const Bewertungen = () => {
         comment: feedback.comment
       };
 
-      const response = await fetch(`/api/reviews`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
