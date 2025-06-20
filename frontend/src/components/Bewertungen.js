@@ -34,7 +34,7 @@ const Bewertungen = () => {
   const loadReviews = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/reviews?approved_only=true`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reviews?approved_only=true`);
       if (response.ok) {
         const data = await response.json();
         setReviews(data);
