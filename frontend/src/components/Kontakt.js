@@ -338,7 +338,15 @@ const Kontakt = () => {
 
           {/* Contact Form */}
           <div>
-            <h2 className="text-3xl font-serif text-warm-beige mb-8">Schreiben Sie uns</h2>
+            <h2 className="text-3xl font-serif text-warm-beige mb-8">
+              {pageData.contact_form_title || 'Schreiben Sie uns'}
+            </h2>
+            
+            {pageData.contact_form_subtitle && (
+              <p className="text-light-beige mb-6">
+                {pageData.contact_form_subtitle}
+              </p>
+            )}
             
             {message && (
               <div className={`mb-6 p-4 rounded-lg ${
