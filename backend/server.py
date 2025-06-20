@@ -925,6 +925,91 @@ async def update_bewertungen_page(content_data: Dict, current_user: User = Depen
     finally:
         mysql_pool.release(conn)
 
+@api_router.get("/cms/kontakt-page")
+async def get_kontakt_page():
+    """Get contact page configuration data"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor(aiomysql.DictCursor)
+        await cursor.execute("SELECT * FROM kontakt_page LIMIT 1")
+        content = await cursor.fetchone()
+        
+        if not content:
+            # Return default structure if no data found
+            return {
+                "id": "default",
+                "page_title": "Kontakt",
+                "page_subtitle": "Nehmen Sie Kontakt mit uns auf",
+                "header_background": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
+                "contact_form_title": "Schreiben Sie uns",
+                "contact_form_subtitle": "Wir freuen uns auf Ihre Nachricht",
+                "locations_section_title": "Unsere Standorte",
+                "opening_hours_title": "Öffnungszeiten",
+                "additional_info": "Telefonische Reservierungen werden bevorzugt behandelt.",
+                "updated_at": None
+            }
+        
+        return {
+            "id": content["id"],
+            "page_title": content["page_title"],
+            "page_subtitle": content["page_subtitle"],
+            "header_background": content["header_background"],
+            "contact_form_title": content["contact_form_title"],
+            "contact_form_subtitle": content["contact_form_subtitle"],
+            "locations_section_title": content["locations_section_title"],
+            "opening_hours_title": content["opening_hours_title"],
+            "additional_info": content["additional_info"],
+            "updated_at": content["updated_at"]
+        }
+        
+    finally:
+        mysql_pool.release(conn)
+
+@api_router.put("/cms/kontakt-page")
+async def update_kontakt_page(content_data: Dict, current_user: User = Depends(get_editor_user)):
+    """Update contact page configuration data"""
+    conn = await get_mysql_connection()
+    try:
+        cursor = await conn.cursor()
+        
+        # Check if record exists
+        await cursor.execute("SELECT COUNT(*) as count FROM kontakt_page")
+        result = await cursor.fetchone()
+        
+        if result[0] == 0:
+            # Insert new record
+            await cursor.execute("""
+                INSERT INTO kontakt_page (id, page_title, page_subtitle, header_background,
+                                         contact_form_title, contact_form_subtitle,
+                                         locations_section_title, opening_hours_title,
+                                         additional_info, updated_at, updated_by)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                str(uuid.uuid4()), content_data.get('page_title'), content_data.get('page_subtitle'),
+                content_data.get('header_background'), content_data.get('contact_form_title'),
+                content_data.get('contact_form_subtitle'), content_data.get('locations_section_title'),
+                content_data.get('opening_hours_title'), content_data.get('additional_info'),
+                datetime.utcnow(), current_user.username
+            ))
+        else:
+            # Update existing record
+            await cursor.execute("""
+                UPDATE kontakt_page SET page_title = %s, page_subtitle = %s, header_background = %s,
+                                       contact_form_title = %s, contact_form_subtitle = %s,
+                                       locations_section_title = %s, opening_hours_title = %s,
+                                       additional_info = %s, updated_at = %s, updated_by = %s
+            """, (
+                content_data.get('page_title'), content_data.get('page_subtitle'),
+                content_data.get('header_background'), content_data.get('contact_form_title'),
+                content_data.get('contact_form_subtitle'), content_data.get('locations_section_title'),
+                content_data.get('opening_hours_title'), content_data.get('additional_info'),
+                datetime.utcnow(), current_user.username
+            ))
+        
+        return {"message": "Contact page content updated successfully"}
+    finally:
+        mysql_pool.release(conn)
+
 @api_router.get("/cms/ueber-uns-enhanced")
 async def get_ueber_uns_enhanced():
     """Get enhanced about page data according to exact code specification"""
