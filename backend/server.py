@@ -693,7 +693,7 @@ async def get_delivery_info():
             "id": delivery_info["id"],
             "delivery_time_min": delivery_info["delivery_time_min"],
             "delivery_time_max": delivery_info["delivery_time_max"],
-            "minimum_order_value": float(delivery_info["minimum_order_value"]),
+            "minimum_order_value": float(delivery_info["min_order_amount"]),
             "delivery_fee": float(delivery_info["delivery_fee"]),
             "available_locations": available_locations,
             "is_active": delivery_info["is_active"],
