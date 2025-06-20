@@ -465,6 +465,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "The Enhanced Delivery Section is not working again. The backend logs show an error: 'Unknown column 'is_active' in 'WHERE'' when trying to query the delivery_info table. The SQL query in the backend needs to be fixed to match the actual table structure."
+      - working: false
+        agent: "testing"
+        comment: "Confirmed that the Enhanced Delivery Section is still not working. The console logs show a 500 error when trying to fetch data from the /api/delivery/info endpoint. This is preventing the delivery information from being displayed on the homepage."
 
   - task: "Fix Standorte Page"
     implemented: true
@@ -480,6 +483,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The Standorte page is now working correctly. The standorte_enhanced table has been created in the MySQL database and the API endpoint /api/cms/standorte-enhanced is returning the correct data. The page displays information for both locations (Neustadt and Großenbrode) including addresses, opening hours, contact information, and features."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the Standorte page is working correctly. The page successfully loads and displays information for both locations (Neustadt and Großenbrode). Each location shows the correct address, opening hours, contact information, and features. The API endpoint /api/cms/standorte-enhanced is returning the proper data and the page renders it correctly."
 
   - task: "Verify Speisekarte Page"
     implemented: true
@@ -510,6 +516,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The Über uns page is working correctly. The page displays the story section with the title 'Unsere Leidenschaft', a team section with multiple team members, and a values section with multiple values. All content is properly rendered and displayed."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the Über uns page is working correctly. The page successfully loads and displays the story section with the title 'Unsere Geschichte' and content about the founding of Jimmy's Tapas Bar. The API endpoint /api/cms/about is returning data correctly. However, the team section and values section are not displayed, likely because the API response doesn't include team members or values data. The page is functional but could be enhanced with more content."
         
   - task: "Fix Navigation Section Text Readability"
     implemented: true
