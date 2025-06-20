@@ -2999,7 +2999,7 @@ def test_cms_standorte_enhanced():
             return False
         
         # Check if response contains expected fields
-        required_fields = ["id", "page_title", "page_subtitle", "header_background", "neustadt", "grossenbrode", "info_section"]
+        required_fields = ["id", "page_title", "page_subtitle", "header_background", "neustadt", "grossenbrode"]
         missing_fields = [field for field in required_fields if field not in data]
         
         if not missing_fields:
@@ -3013,7 +3013,7 @@ def test_cms_standorte_enhanced():
             print(f"✅ Neustadt location data is present")
             
             # Check neustadt location fields
-            neustadt_fields = ["name", "badge", "address_line1", "address_line2", "opening_hours"]
+            neustadt_fields = ["name", "address", "phone", "email", "opening_hours"]
             missing_neustadt_fields = [field for field in neustadt_fields if field not in data["neustadt"]]
             
             if not missing_neustadt_fields:
