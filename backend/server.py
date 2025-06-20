@@ -1566,7 +1566,7 @@ während Sie den Blick auf die Ostsee genießen können."""
         mysql_pool.release(conn)
 
 @api_router.put("/cms/about")
-async def update_about_page_content(content_data: Dict, current_user: User = Depends(get_editor_user)):
+async def update_about_content(content_data: Dict, current_user: User = Depends(get_editor_user)):
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor()
