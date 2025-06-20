@@ -84,7 +84,17 @@ const Speisekarte = () => {
     'Kroketten': 'Kroketten',
     'Pasta': 'Pasta',
     'Pizza': 'Pizza',
-    'Dessert': 'Dessert'
+    'Dessert': 'Dessert',
+    'Heißgetränke': 'Heißgetränke',
+    'Tee': 'Tee',
+    'Softdrinks': 'Softdrinks',
+    'Säfte': 'Säfte',
+    'Aperitifs': 'Aperitifs',
+    'Bier': 'Bier',
+    'Weine': 'Weine',
+    'Cocktails': 'Cocktails',
+    'Spanische Getränke': 'Spanische Getränke',
+    'Spirituosen': 'Spirituosen'
   };
 
   const allCategories = ['Alle Kategorien', ...Object.keys(categoryMapping)];
