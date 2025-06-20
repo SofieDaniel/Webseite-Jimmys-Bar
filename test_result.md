@@ -450,9 +450,9 @@ backend:
 frontend:
   - task: "Fix Enhanced Delivery Section"
     implemented: true
-    working: true
+    working: false
     file: "/app/frontend/src/components/EnhancedDeliverySection.js"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: false
     status_history:
@@ -462,6 +462,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The Enhanced Delivery Section is now working correctly. The delivery_info table has been created in the MySQL database and the API endpoint /api/delivery/info is returning the correct data. The section displays delivery time (30-45 minutes), minimum order value (15.00€), and delivery fee (2.50€) as expected."
+      - working: false
+        agent: "testing"
+        comment: "The Enhanced Delivery Section is not working again. The backend logs show an error: 'Unknown column 'is_active' in 'WHERE'' when trying to query the delivery_info table. The SQL query in the backend needs to be fixed to match the actual table structure."
 
   - task: "Fix Standorte Page"
     implemented: true
