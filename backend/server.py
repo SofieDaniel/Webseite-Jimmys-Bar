@@ -756,89 +756,34 @@ async def update_delivery_info(delivery_data: Dict, current_user: User = Depends
 
 @api_router.get("/cms/standorte-enhanced")
 async def get_standorte_enhanced():
-    """Get enhanced locations page data according to exact code specification"""
+    """Get enhanced locations page data"""
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM standorte_enhanced LIMIT 1")
+        await cursor.execute("SELECT * FROM standorte_enhanced WHERE name = 'main_locations' LIMIT 1")
         content = await cursor.fetchone()
         
         if not content:
-            # Create default enhanced content exactly as per code specification
-            default_content = {
-                "id": str(uuid.uuid4()),
-                "page_title": "Unsere Standorte",
-                "page_subtitle": "Besuchen Sie uns an der malerischen Ostseeküste",
-                "header_background": "https://images.pexels.com/photos/26626726/pexels-photo-26626726.jpeg",
-                "neustadt": {
-                    "name": "Jimmy's Tapas Bar Neustadt",
-                    "badge": "Hauptstandort",
-                    "image": "https://images.unsplash.com/photo-1665758564776-f2aa6b41327e",
-                    "address_line1": "Am Strande 21",
-                    "address_line2": "23730 Neustadt in Holstein",
-                    "opening_hours": "Mo-So: 12:00–22:00 Uhr",
-                    "season_note": "(Sommersaison)",
-                    "winter_note": "Winterbetrieb unregelmäßig",
-                    "phone": "+49 (0) 4561 123456",
-                    "email": "neustadt@jimmys-tapasbar.de",
-                    "features_line1": "Direkt am Strand • Terrasse mit Meerblick",
-                    "features_line2": "Parkplätze vorhanden • Familienfreundlich"
-                },
-                "grossenbrode": {
-                    "name": "Jimmy's Tapas Bar Großenbrode",
-                    "badge": "Zweigstelle",
-                    "image": "https://images.unsplash.com/photo-1665758564796-5162ff406254",
-                    "address_line1": "Südstrand 54",
-                    "address_line2": "23755 Großenbrode",
-                    "opening_hours": "Mo-So: 12:00–22:00 Uhr",
-                    "season_note": "(Sommersaison)",
-                    "winter_note": "Winterbetrieb unregelmäßig",
-                    "phone": "+49 (0) 4561 789012",
-                    "email": "grossenbrode@jimmys-tapasbar.de",
-                    "features_line1": "Strandnähe • Gemütliche Atmosphäre",
-                    "features_line2": "Kostenlose Parkplätze • Hundefreundlich"
-                },
-                "info_section": {
-                    "title": "Gut zu wissen",
-                    "anreise_title": "Anreise",
-                    "anreise_text": "Beide Standorte sind gut mit dem Auto erreichbar und bieten ausreichend Parkplätze.",
-                    "reservierung_title": "Reservierung",
-                    "reservierung_text": "Wir empfehlen eine Reservierung, besonders an Wochenenden und in der Sommersaison.",
-                    "events_title": "Events",
-                    "events_text": "Beide Restaurants bieten Platz für private Feiern und Firmenevents."
-                },
-                "updated_at": datetime.utcnow()
+            # Return basic structure if no data found
+            return {
+                "id": "default",
+                "data": {
+                    "page_title": "Unsere Standorte",
+                    "page_subtitle": "Besuchen Sie uns an der malerischen Ostseeküste",
+                    "page_description": "Erleben Sie authentische spanische Küche in unserem Restaurant direkt am Strand",
+                    "locations": []
+                }
             }
-            
-            # Insert default content
-            await cursor.execute("""
-                INSERT INTO standorte_enhanced (id, page_title, page_subtitle, header_background,
-                                               neustadt_data, grossenbrode_data, info_section_data, 
-                                               updated_at, updated_by)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, (
-                default_content["id"], default_content["page_title"], default_content["page_subtitle"],
-                default_content["header_background"], json.dumps(default_content["neustadt"]),
-                json.dumps(default_content["grossenbrode"]), json.dumps(default_content["info_section"]),
-                default_content["updated_at"], "system"
-            ))
-            
-            return default_content
-            
-        # Parse JSON fields
-        neustadt_data = json.loads(content['neustadt_data']) if content.get('neustadt_data') else {}
-        grossenbrode_data = json.loads(content['grossenbrode_data']) if content.get('grossenbrode_data') else {}
-        info_section_data = json.loads(content['info_section_data']) if content.get('info_section_data') else {}
+        
+        # Parse data field as JSON
+        data = json.loads(content['data']) if content.get('data') else {}
         
         return {
             "id": content["id"],
-            "page_title": content["page_title"],
-            "page_subtitle": content["page_subtitle"],
-            "header_background": content["header_background"],
-            "neustadt": neustadt_data,
-            "grossenbrode": grossenbrode_data,
-            "info_section": info_section_data,
-            "updated_at": content["updated_at"]
+            "name": content["name"],
+            "data": data,
+            "created_at": content.get("created_at"),
+            "updated_at": content.get("updated_at")
         }
         
     finally:
