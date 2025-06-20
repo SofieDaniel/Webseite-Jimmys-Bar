@@ -450,7 +450,7 @@ backend:
 frontend:
   - task: "Fix Enhanced Delivery Section"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/components/EnhancedDeliverySection.js"
     stuck_count: 2
     priority: "high"
@@ -468,6 +468,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "Confirmed that the Enhanced Delivery Section is still not working. The console logs show a 500 error when trying to fetch data from the /api/delivery/info endpoint. This is preventing the delivery information from being displayed on the homepage."
+      - working: true
+        agent: "testing"
+        comment: "The Enhanced Delivery Section is now working correctly. Testing shows that the delivery information is properly displayed on the homepage, including delivery time, minimum order value, and delivery fee. The API endpoint /api/delivery/info is now returning the correct data."
 
   - task: "Fix Standorte Page"
     implemented: true
