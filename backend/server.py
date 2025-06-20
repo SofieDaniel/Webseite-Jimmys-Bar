@@ -1512,7 +1512,7 @@ async def get_about_content():
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM about_content LIMIT 1")
+        await cursor.execute("SELECT * FROM about_page_content LIMIT 1")
         content = await cursor.fetchone()
         
         if not content:
