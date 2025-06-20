@@ -563,7 +563,7 @@ async def get_contact_messages(current_user: User = Depends(get_editor_user)):
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM contact_messages ORDER BY date DESC")
+        await cursor.execute("SELECT * FROM contact_messages ORDER BY created_at DESC")
         messages = await cursor.fetchall()
         return [ContactMessage(**message) for message in messages]
     finally:
