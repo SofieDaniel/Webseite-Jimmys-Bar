@@ -516,10 +516,9 @@ const Speisekarte = () => {
                           : index % 2 === 0 
                             ? 'bg-gradient-to-r from-medium-brown/30 to-dark-brown/30 hover:from-warm-beige/10 hover:to-orange-500/10 border-l-4 border-transparent hover:border-warm-beige/50'
                             : 'bg-gradient-to-r from-dark-brown/30 to-medium-brown/30 hover:from-orange-500/10 hover:to-warm-beige/10 border-l-4 border-transparent hover:border-orange-500/50'
-                      } cursor-pointer border border-warm-beige/20`}
+                      } border border-warm-beige/20`}
                       onMouseEnter={() => setHoveredItem(item)}
                       onMouseLeave={() => setHoveredItem(null)}
-                      onClick={() => setSelectedItem(item)}
                     >
                       <div className="p-5">
                         <div className="flex justify-between items-start">
