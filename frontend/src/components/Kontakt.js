@@ -101,16 +101,59 @@ const Kontakt = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
+        <div className="text-warm-beige text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-warm-beige mx-auto mb-4"></div>
+          <p className="text-xl">Lade Kontakt-Seite...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
+        <div className="text-red-400 text-center max-w-md mx-auto">
+          <p className="text-xl mb-4">{error}</p>
+          <button
+            onClick={loadPageData}
+            className="bg-warm-beige text-dark-brown px-6 py-3 rounded-lg hover:bg-light-beige transition-colors"
+          >
+            Erneut versuchen
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!pageData) {
+    return (
+      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
+        <div className="text-warm-beige text-center">
+          <p className="text-xl">Keine Daten verfügbar</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-dark-brown">
       {/* Header Section */}
-      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('https://images.unsplash.com/photo-1578662996442-48f60103fc96')`}}>
+      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('${pageData.header_background || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96'}')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative z-10 pt-24 pb-16">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide drop-shadow-text">
-              Kontakt
+              {pageData.page_title || 'Kontakt'}
             </h1>
+            <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
+              {pageData.page_subtitle || 'Nehmen Sie Kontakt mit uns auf'}
+            </p>
+          </div>
+        </div>
+      </div>
             <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
               Wir freuen uns auf Ihre Nachricht
             </p>
