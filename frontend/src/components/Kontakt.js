@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Kontakt = () => {
+  const [pageData, setPageData] = useState(null);
+  const [locationsData, setLocationsData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -10,6 +14,65 @@ const Kontakt = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    loadPageData();
+    loadLocationsData();
+  }, []);
+
+  const loadPageData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/kontakt-page`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Loaded kontakt page data:', data);
+        setPageData(data);
+      } else {
+        throw new Error('Failed to load contact page data');
+      }
+    } catch (error) {
+      console.error('Error loading contact page:', error);
+      setError('Fehler beim Laden der Seite. Bitte versuchen Sie es später erneut.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadLocationsData = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/standorte-enhanced`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Loaded locations data for contact:', data);
+        
+        // Parse JSON strings if needed
+        if (typeof data.neustadt === 'string') {
+          try {
+            data.neustadt = JSON.parse(data.neustadt);
+          } catch (e) {
+            console.warn('Failed to parse neustadt JSON:', e);
+            data.neustadt = {};
+          }
+        }
+        
+        if (typeof data.grossenbrode === 'string') {
+          try {
+            data.grossenbrode = JSON.parse(data.grossenbrode);
+          } catch (e) {
+            console.warn('Failed to parse grossenbrode JSON:', e);
+            data.grossenbrode = {};
+          }
+        }
+        
+        setLocationsData(data);
+      }
+    } catch (error) {
+      console.error('Error loading locations data:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
