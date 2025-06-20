@@ -767,22 +767,25 @@ async def get_standorte_enhanced():
             # Return basic structure if no data found
             return {
                 "id": "default",
-                "data": {
-                    "page_title": "Unsere Standorte",
-                    "page_subtitle": "Besuchen Sie uns an der malerischen Ostseeküste",
-                    "page_description": "Erleben Sie authentische spanische Küche in unserem Restaurant direkt am Strand",
-                    "locations": []
-                }
+                "page_title": "Unsere Standorte",
+                "page_subtitle": "Besuchen Sie uns an der malerischen Ostseeküste",
+                "header_background": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
+                "locations": []
             }
         
-        # Parse data field as JSON
-        data = json.loads(content['data']) if content.get('data') else {}
+        # Parse JSON data
+        neustadt_data = json.loads(content['neustadt_data']) if content.get('neustadt_data') else {}
+        grossenbrode_data = json.loads(content['grossenbrode_data']) if content.get('grossenbrode_data') else {}
+        info_section_data = json.loads(content['info_section_data']) if content.get('info_section_data') else {}
         
         return {
             "id": content["id"],
-            "name": content["name"],
-            "data": data,
-            "created_at": content.get("created_at"),
+            "page_title": content["page_title"],
+            "page_subtitle": content["page_subtitle"], 
+            "header_background": content["header_background"],
+            "neustadt": neustadt_data,
+            "grossenbrode": grossenbrode_data,
+            "info_section": info_section_data,
             "updated_at": content.get("updated_at")
         }
         
