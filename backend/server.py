@@ -574,7 +574,7 @@ async def mark_message_read(message_id: str, current_user: User = Depends(get_ed
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor()
-        result = await cursor.execute("UPDATE contact_messages SET is_read = TRUE WHERE id = %s", (message_id,))
+        result = await cursor.execute("UPDATE contact_messages SET read_status = TRUE WHERE id = %s", (message_id,))
         if cursor.rowcount == 0:
             raise HTTPException(status_code=404, detail="Message not found")
         return {"message": "Message marked as read"}
