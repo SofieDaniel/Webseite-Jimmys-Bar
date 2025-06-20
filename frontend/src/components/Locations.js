@@ -18,6 +18,35 @@ const Standorte = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Loaded enhanced locations data:', data);
+        
+        // Parse JSON strings if needed
+        if (typeof data.neustadt === 'string') {
+          try {
+            data.neustadt = JSON.parse(data.neustadt);
+          } catch (e) {
+            console.warn('Failed to parse neustadt JSON:', e);
+            data.neustadt = {};
+          }
+        }
+        
+        if (typeof data.grossenbrode === 'string') {
+          try {
+            data.grossenbrode = JSON.parse(data.grossenbrode);
+          } catch (e) {
+            console.warn('Failed to parse grossenbrode JSON:', e);
+            data.grossenbrode = {};
+          }
+        }
+        
+        if (typeof data.info_section === 'string') {
+          try {
+            data.info_section = JSON.parse(data.info_section);
+          } catch (e) {
+            console.warn('Failed to parse info_section JSON:', e);
+            data.info_section = { sections: [] };
+          }
+        }
+        
         setLocationsData(data);
       } else {
         throw new Error('Failed to load locations data');
