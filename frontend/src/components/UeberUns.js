@@ -18,6 +18,26 @@ const UeberUns = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Loaded about data:', data);
+        
+        // Parse JSON strings if needed
+        if (typeof data.team_members === 'string') {
+          try {
+            data.team_members = JSON.parse(data.team_members);
+          } catch (e) {
+            console.warn('Failed to parse team_members JSON:', e);
+            data.team_members = [];
+          }
+        }
+        
+        if (typeof data.values_data === 'string') {
+          try {
+            data.values_data = JSON.parse(data.values_data);
+          } catch (e) {
+            console.warn('Failed to parse values_data JSON:', e);
+            data.values_data = [];
+          }
+        }
+        
         setPageData(data);
       } else {
         throw new Error('Failed to load about page data');
