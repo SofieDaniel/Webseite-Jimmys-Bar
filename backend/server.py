@@ -760,7 +760,7 @@ async def get_standorte_enhanced():
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM standorte_enhanced WHERE name = 'main_locations' LIMIT 1")
+        await cursor.execute("SELECT * FROM standorte_enhanced LIMIT 1")
         content = await cursor.fetchone()
         
         if not content:
