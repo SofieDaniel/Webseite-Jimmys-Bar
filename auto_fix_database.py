@@ -196,6 +196,32 @@ async def check_and_fix_database():
             print("🏠 Erstelle Homepage CMS-Daten...")
             subprocess.run(['python3', '/app/setup_complete_cms.py'], check=False)
         
+        # Frontend API-Fix überprüfen
+        print("🔗 Überprüfe Frontend API-Konfiguration...")
+        frontend_check = subprocess.run(['grep', '-r', '`/api/', '/app/frontend/src/', '--include=*.js'], 
+                                      capture_output=True, text=True)
+        if frontend_check.returncode == 0:
+            print("⚠️  WARNUNG: Frontend verwendet noch lokale API-Calls!")
+            print("   Führe automatische Reparatur durch...")
+            
+            # Automatische Reparatur aller API-Calls
+            api_files = [
+                '/app/frontend/src/components/EnhancedDeliverySection.js',
+                '/app/frontend/src/components/Kontakt.js', 
+                '/app/frontend/src/components/Locations.js',
+                '/app/frontend/src/components/Speisekarte.js',
+                '/app/frontend/src/components/UeberUns.js',
+                '/app/frontend/src/components/Home.js',
+                '/app/frontend/src/components/Bewertungen.js'
+            ]
+            
+            for file_path in api_files:
+                if os.path.exists(file_path):
+                    subprocess.run(['sed', '-i', 's|`/api/|`${process.env.REACT_APP_BACKEND_URL}/api/|g', file_path], 
+                                 check=False)
+            
+            print("✅ Frontend API-Calls automatisch repariert")
+        
         print("🎉 KOMPLETTE SYSTEM-ÜBERPRÜFUNG ABGESCHLOSSEN!")
         print("=" * 60)
         return True
