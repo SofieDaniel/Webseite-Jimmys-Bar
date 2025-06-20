@@ -3274,7 +3274,50 @@ def run_spanish_dishes_test():
     
     return success
 
+def run_priority_tests():
+    """Run only the priority tests specified in the review request"""
+    print("\n🔍 Starting Jimmy's Tapas Bar Priority Backend API Tests")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # Test 1: Delivery API
+    results["delivery_info"] = test_delivery_info()
+    
+    # Test 2: Standorte Enhanced API
+    results["standorte_enhanced"] = test_cms_standorte_enhanced()
+    
+    # Test 3: About API
+    results["about"] = test_cms_about_get()
+    
+    # Test 4: Menu Items API
+    results["menu_items"] = test_get_menu_items()
+    
+    # Test 5: CMS Login
+    auth_success, token = test_auth_login()
+    results["auth_login"] = auth_success
+    
+    if auth_success:
+        results["auth_me"] = test_auth_me()
+    else:
+        results["auth_me"] = False
+        print("❌ Skipping auth/me test due to failed login")
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    for test_name, result in results.items():
+        status = "✅ PASSED" if result else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
 if __name__ == "__main__":
-    # Run the Spanish dishes test
-    success = run_spanish_dishes_test()
+    # Run the priority tests
+    success = run_priority_tests()
     sys.exit(0 if success else 1)
