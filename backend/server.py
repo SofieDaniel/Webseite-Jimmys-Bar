@@ -1453,7 +1453,7 @@ async def update_locations_content(content_data: Dict, current_user: User = Depe
         mysql_pool.release(conn)
 
 @api_router.get("/cms/about")
-async def get_about_page_content():
+async def get_about_content():
     conn = await get_mysql_connection()
     try:
         cursor = await conn.cursor(aiomysql.DictCursor)
