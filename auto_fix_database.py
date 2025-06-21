@@ -171,9 +171,9 @@ async def check_and_fix_database():
             ]
             
             values = [
-                {"title": "Authentizität", "description": "Beste Zutaten aus Spanien", "icon": "🇪🇸"},
-                {"title": "Qualität", "description": "Frisch zubereitet mit Liebe", "icon": "⭐"},
-                {"title": "Gastfreundschaft", "description": "Spanische Herzlichkeit", "icon": "❤️"}
+                {"title": "Authentizität", "description": "Beste Zutaten aus Spanien", "icon": "🇪🇸", "image": "https://images.unsplash.com/photo-1498654896293-37aacf113fd9"},
+                {"title": "Qualität", "description": "Frisch zubereitet mit Liebe", "icon": "⭐", "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0"},
+                {"title": "Gastfreundschaft", "description": "Spanische Herzlichkeit", "icon": "❤️", "image": "https://images.unsplash.com/photo-1600891964092-4316c288032e"}
             ]
             
             await cursor.execute("""
