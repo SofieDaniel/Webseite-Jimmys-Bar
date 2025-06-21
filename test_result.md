@@ -471,6 +471,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The Enhanced Delivery Section is now working correctly. Testing shows that the delivery information is properly displayed on the homepage, including delivery time, minimum order value, and delivery fee. The API endpoint /api/delivery/info is now returning the correct data."
+      - working: true
+        agent: "testing"
+        comment: "Verified the fix for the JavaScript error in EnhancedDeliverySection.js. The issue was that the backend was sending minimum_order_value and delivery_fee as strings, but the frontend was trying to call .toFixed() directly on these strings. The fix adds parseFloat() to convert the strings to numbers before calling .toFixed(), preventing the 'TypeError: item.price.toFixed is not a function' error. API testing confirms the delivery info endpoint is working correctly and returning the expected data (delivery time: 30-45 min, minimum order: 15.00€, delivery fee: 2.50€)."
 
   - task: "Fix Standorte Page"
     implemented: true
