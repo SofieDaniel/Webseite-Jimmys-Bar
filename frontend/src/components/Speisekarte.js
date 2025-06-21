@@ -224,7 +224,7 @@ const Speisekarte = () => {
                               </div>
                               <div className="text-right ml-4">
                                 <span className="text-2xl font-bold text-warm-beige">
-                                  {item.price.toFixed(2).replace('.', ',')} €
+                                  {parseFloat(item.price).toFixed(2).replace('.', ',')} €
                                 </span>
                               </div>
                             </div>
