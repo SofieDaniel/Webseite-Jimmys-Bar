@@ -1241,148 +1241,102 @@ async def get_homepage_content():
         content = await cursor.fetchone()
         
         if not content:
-            # Create default content
-            default_content = HomepageContent()
-            default_features = {
-                "title": "Mediterrane Tradition",
-                "subtitle": "Erleben Sie authentische mediterrane Gastfreundschaft an der deutschen Ostseeküste",
-                "cards": [
-                    {
-                        "title": "Authentische Tapas",
-                        "description": "Traditionelle mediterrane Gerichte, mit Liebe zubereitet und perfekt zum Teilen",
-                        "image_url": "https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg"
-                    },
-                    {
-                        "title": "Frische Paella",
-                        "description": "Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn",
-                        "image_url": "https://images.unsplash.com/photo-1694685367640-05d6624e57f1"
-                    },
-                    {
-                        "title": "Strandnähe",
-                        "description": "Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden",
-                        "image_url": "https://images.pexels.com/photos/32508247/pexels-photo-32508247.jpeg"
-                    }
-                ]
+            # Create default content without icons
+            features_data = [
+                {
+                    "title": "Authentische Tapas",
+                    "description": "Traditionelle spanische Gerichte, mit Liebe zubereitet und perfekt zum Teilen",
+                    "image": "https://images.unsplash.com/photo-1544025162-d76694265947"
+                },
+                {
+                    "title": "Frische Meeresfrüchte",
+                    "description": "Täglich frisch aus der Ostsee und dem Mittelmeer",
+                    "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b"
+                },
+                {
+                    "title": "Strandlage",
+                    "description": "Genießen Sie Ihr Essen mit direktem Blick auf die Ostsee",
+                    "image": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f"
+                }
+            ]
+            
+            specialties_data = [
+                {
+                    "title": "Paella Valenciana",
+                    "description": "Original spanische Paella mit Safran, Huhn und Gemüse",
+                    "price": "18,90€",
+                    "image": "https://images.unsplash.com/photo-1534080564583-6be75777b70a"
+                },
+                {
+                    "title": "Gambas al Ajillo", 
+                    "description": "Knoblauchgarnelen in Olivenöl mit frischen Kräutern",
+                    "price": "12,90€",
+                    "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b"
+                },
+                {
+                    "title": "Pulpo a la Gallega",
+                    "description": "Galicischer Oktopus mit Paprika und Olivenöl",
+                    "price": "14,90€",
+                    "image": "https://images.unsplash.com/photo-1544025162-d76694265947"
+                }
+            ]
+            
+            delivery_data = {
+                "title": "Lieferservice",
+                "subtitle": "Spanische Köstlichkeiten direkt zu Ihnen",
+                "delivery_time": "30-45 Min",
+                "minimum_order": "15,00€",
+                "delivery_fee": "2,50€",
+                "areas": ["Neustadt in Holstein", "Großenbrode", "Umgebung"],
+                "image": "https://images.unsplash.com/photo-1586816001966-79b736744398"
             }
             
-            default_specialties = {
-                "title": "Unsere Spezialitäten",
-                "cards": [
-                    {
-                        "title": "Patatas Bravas",
-                        "description": "Klassische mediterrane Kartoffeln",
-                        "image_url": "https://images.unsplash.com/photo-1565599837634-134bc3aadce8",
-                        "category_link": "tapas-vegetarian"
-                    },
-                    {
-                        "title": "Paella Valenciana",
-                        "description": "Traditionelle mediterrane Paella",
-                        "image_url": "https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg",
-                        "category_link": "tapa-paella"
-                    },
-                    {
-                        "title": "Gambas al Ajillo",
-                        "description": "Knoblauchgarnelen in Olivenöl",
-                        "image_url": "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b",
-                        "category_link": "tapas-de-pescado"
-                    }
-                ]
-            }
-            
-            default_delivery = {
-                "title": "Jetzt auch bequem nach Hause bestellen",
-                "description": "Genießen Sie unsere authentischen mediterranen Spezialitäten gemütlich zu Hause.",
-                "description_2": "Bestellen Sie direkt über Lieferando und lassen Sie sich verwöhnen.",
-                "delivery_feature_title": "Schnelle Lieferung",
-                "delivery_feature_description": "Frisch und warm zu Ihnen",
-                "delivery_feature_image": "https://images.pexels.com/photos/6969962/pexels-photo-6969962.jpeg",
-                "button_text": "Jetzt bei Lieferando bestellen",
-                "button_url": "https://www.lieferando.de",
-                "availability_text": "Verfügbar für beide Standorte",
-                "authentic_feature_title": "Authentisch Mediterran",
-                "authentic_feature_description": "Direkt vom Küchenchef",
-                "authentic_feature_image": "https://images.pexels.com/photos/31748679/pexels-photo-31748679.jpeg"
-            }
-            
+            homepage_id = str(uuid.uuid4())
             await cursor.execute("""
-                INSERT INTO homepage_content (id, hero_title, hero_subtitle, hero_description, 
-                                             hero_location, hero_background_image, hero_menu_button_text,
-                                             hero_locations_button_text, features_data, specialties_data,
-                                             delivery_data, updated_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO homepage_content (
+                    id, hero_title, hero_subtitle, hero_image,
+                    features_data, specialties_data, delivery_data,
+                    updated_at, updated_by
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (
-                default_content.id, default_content.hero_title, default_content.hero_subtitle,
-                default_content.hero_description, default_content.hero_location,
-                "https://images.unsplash.com/photo-1656423521731-9665583f100c",
-                default_content.hero_menu_button_text, default_content.hero_locations_button_text,
-                json.dumps(default_features), json.dumps(default_specialties),
-                json.dumps(default_delivery), default_content.updated_at
+                homepage_id,
+                "JIMMY'S TAPAS BAR",
+                "Authentische spanische Küche an der Ostsee",
+                "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
+                json.dumps(features_data),
+                json.dumps(specialties_data),
+                json.dumps(delivery_data),
+                datetime.utcnow(),
+                "system"
             ))
             
-            content = {
-                "id": default_content.id,
-                "hero_title": default_content.hero_title,
-                "hero_subtitle": default_content.hero_subtitle,
-                "hero_description": default_content.hero_description,
-                "hero_location": default_content.hero_location,
-                "hero_background_image": "https://images.unsplash.com/photo-1656423521731-9665583f100c",
-                "hero_menu_button_text": default_content.hero_menu_button_text,
-                "hero_locations_button_text": default_content.hero_locations_button_text,
-                "features_data": default_features,
-                "specialties_data": default_specialties,
-                "delivery_data": default_delivery,
-                "updated_at": default_content.updated_at
-            }
-        else:
-            # Parse JSON fields and structure data for frontend compatibility
-            features_data = content.get('features_data')
-            if features_data and isinstance(features_data, str):
-                features_data = json.loads(features_data)
-            elif not features_data:
-                features_data = {}
-                
-            specialties_data = content.get('specialties_data')
-            if specialties_data and isinstance(specialties_data, str):
-                specialties_data = json.loads(specialties_data)
-            elif not specialties_data:
-                specialties_data = {}
-                
-            delivery_data = content.get('delivery_data')
-            if delivery_data and isinstance(delivery_data, str):
-                delivery_data = json.loads(delivery_data)
-            elif not delivery_data:
-                delivery_data = {}
-            
-            # Structure data in frontend-expected format
-            content = {
-                "id": content.get("id"),
-                "hero_title": content.get("hero_title"),
-                "hero_subtitle": content.get("hero_subtitle"),
-                "hero_description": content.get("hero_description"),
-                "hero_location": content.get("hero_location"),
-                "hero_background_image": content.get("hero_background_image"),
-                "hero_menu_button_text": content.get("hero_menu_button_text"),
-                "hero_locations_button_text": content.get("hero_locations_button_text"),
+            return {
+                "id": homepage_id,
+                "hero_title": "JIMMY'S TAPAS BAR",
+                "hero_subtitle": "Authentische spanische Küche an der Ostsee",
+                "hero_image": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
                 "features_data": features_data,
                 "specialties_data": specialties_data,
                 "delivery_data": delivery_data,
-                "updated_at": content.get("updated_at"),
-                # Add expected top-level keys for frontend compatibility
-                "hero": {
-                    "title": content.get("hero_title"),
-                    "subtitle": content.get("hero_subtitle"),
-                    "description": content.get("hero_description"),
-                    "location": content.get("hero_location"),
-                    "background_image": content.get("hero_background_image"),
-                    "menu_button_text": content.get("hero_menu_button_text"),
-                    "locations_button_text": content.get("hero_locations_button_text")
-                },
-                "features": features_data,
-                "specialties": specialties_data,
-                "delivery": delivery_data
+                "updated_at": datetime.utcnow()
             }
         
-        return content
+        # Parse JSON fields
+        features_data = json.loads(content['features_data']) if content.get('features_data') else []
+        specialties_data = json.loads(content['specialties_data']) if content.get('specialties_data') else []
+        delivery_data = json.loads(content['delivery_data']) if content.get('delivery_data') else {}
+        
+        return {
+            "id": content["id"],
+            "hero_title": content["hero_title"],
+            "hero_subtitle": content["hero_subtitle"],
+            "hero_image": content["hero_image"],
+            "features_data": features_data,
+            "specialties_data": specialties_data,
+            "delivery_data": delivery_data,
+            "updated_at": content["updated_at"]
+        }
+        
     finally:
         mysql_pool.release(conn)
 
