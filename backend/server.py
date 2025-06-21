@@ -1281,16 +1281,10 @@ async def get_homepage_content():
                         "category_link": "tapa-paella"
                     },
                     {
-                        "title": "Tapas Variación",
-                        "description": "Auswahl mediterraner Köstlichkeiten",
-                        "image_url": "https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg",
-                        "category_link": "inicio"
-                    },
-                    {
                         "title": "Gambas al Ajillo",
-                        "description": "Garnelen in Knoblauchöl",
-                        "image_url": "https://images.unsplash.com/photo-1619860705243-dbef552e7118",
-                        "category_link": "tapas-pescado"
+                        "description": "Knoblauchgarnelen in Olivenöl",
+                        "image_url": "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b",
+                        "category_link": "tapas-de-pescado"
                     }
                 ]
             }
