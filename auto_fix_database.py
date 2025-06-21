@@ -105,11 +105,27 @@ async def check_and_fix_database():
                 "features": ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre"]
             }
             
+            # Info section data
             info_data = {
                 "sections": [
-                    {"title": "Anreise", "icon": "🚗", "description": "Gut erreichbar mit kostenlosen Parkplätzen"},
-                    {"title": "Reservierung", "icon": "📞", "description": "Reservierung empfohlen"},
-                    {"title": "Events", "icon": "🎉", "description": "Event-Packages verfügbar"}
+                    {
+                        "title": "Anreise", 
+                        "icon": "🚗", 
+                        "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000",
+                        "description": "Beide Standorte sind gut mit dem Auto erreichbar. Kostenlose Parkplätze sind vorhanden."
+                    },
+                    {
+                        "title": "Reservierung", 
+                        "icon": "📞", 
+                        "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d",
+                        "description": "Wir empfehlen eine Reservierung, besonders in der Hauptsaison."
+                    },
+                    {
+                        "title": "Events", 
+                        "icon": "🎉", 
+                        "image": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d",
+                        "description": "Feiern Sie bei uns! Wir bieten Event-Packages für besondere Anlässe."
+                    }
                 ]
             }
             
