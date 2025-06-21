@@ -140,7 +140,7 @@ const Home = () => {
             {features.map((card, index) => (
               <div key={index} className="bg-dark-brown rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 border border-warm-brown shadow-lg">
                 <img 
-                  src={card.image_url} 
+                  src={card.image} 
                   alt={card.title} 
                   className="w-full h-48 object-cover"
                 />
