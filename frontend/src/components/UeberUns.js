@@ -19,23 +19,32 @@ const UeberUns = () => {
         const data = await response.json();
         console.log('Loaded about data:', data);
         
-        // Parse JSON strings if needed
-        if (typeof data.team_members === 'string') {
+        // Data is already parsed from backend - no need to parse again
+        // But ensure we have the right structure
+        if (data.team_members && Array.isArray(data.team_members)) {
+          // Already an array, good
+        } else if (typeof data.team_members === 'string') {
           try {
             data.team_members = JSON.parse(data.team_members);
           } catch (e) {
             console.warn('Failed to parse team_members JSON:', e);
             data.team_members = [];
           }
+        } else {
+          data.team_members = [];
         }
         
-        if (typeof data.values_data === 'string') {
+        if (data.values_data && Array.isArray(data.values_data)) {
+          // Already an array, good
+        } else if (typeof data.values_data === 'string') {
           try {
             data.values_data = JSON.parse(data.values_data);
           } catch (e) {
             console.warn('Failed to parse values_data JSON:', e);
             data.values_data = [];
           }
+        } else {
+          data.values_data = [];
         }
         
         setPageData(data);
@@ -44,7 +53,7 @@ const UeberUns = () => {
       }
     } catch (error) {
       console.error('Error loading about page:', error);
-      setError('Fehler beim Laden der Seite. Bitte versuchen Sie es später erneut.');
+      setError('Fehler beim Laden der Über uns-Seite. Bitte versuchen Sie es später erneut.');
     } finally {
       setLoading(false);
     }
@@ -55,7 +64,7 @@ const UeberUns = () => {
       <div className="min-h-screen bg-dark-brown flex items-center justify-center">
         <div className="text-warm-beige text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-warm-beige mx-auto mb-4"></div>
-          <p className="text-xl">Lade Seite...</p>
+          <p className="text-xl">Lade Über uns-Seite...</p>
         </div>
       </div>
     );
@@ -82,6 +91,12 @@ const UeberUns = () => {
       <div className="min-h-screen bg-dark-brown flex items-center justify-center">
         <div className="text-warm-beige text-center">
           <p className="text-xl">Keine Daten verfügbar</p>
+          <button
+            onClick={loadPageData}
+            className="mt-4 bg-warm-beige text-dark-brown px-6 py-3 rounded-lg hover:bg-light-beige transition-colors"
+          >
+            Neu laden
+          </button>
         </div>
       </div>
     );
@@ -89,100 +104,98 @@ const UeberUns = () => {
 
   return (
     <div className="min-h-screen bg-dark-brown">
-      {/* Header Section */}
+      {/* Hero Section */}
       <div className="relative bg-cover bg-center" style={{backgroundImage: `url('${pageData.story_image || 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f'}')`}}>
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative z-10 pt-24 pb-16">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide drop-shadow-text">
-              {pageData.page_title || 'Über uns'}
+              {pageData.hero_title || 'Über uns'}
             </h1>
             <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
-              {pageData.hero_description || 'Die Geschichte hinter Jimmy\'s Tapas Bar'}
+              {pageData.hero_description || 'Erfahren Sie mehr über unsere Geschichte'}
             </p>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-6xl mx-auto">
-          {/* Story Section */}
-          <div className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-xl border border-warm-brown p-12 mb-16 shadow-2xl">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <img 
-                  src={pageData.story_image || "https://images.unsplash.com/photo-1571197119738-26123cb0d22f"} 
-                  alt="Jimmy's Tapas Bar Story" 
-                  className="w-full rounded-xl shadow-lg"
-                />
-              </div>
-              <div>
-                <h2 className="text-4xl font-serif text-warm-beige mb-6 tracking-wide">
-                  {pageData.story_title || 'Unsere Geschichte'}
-                </h2>
-                <div className="text-light-beige space-y-6 leading-relaxed font-light text-lg">
-                  <p>
-                    {pageData.story_content || 'Seit der Gründung steht Jimmy\'s Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.'}
-                  </p>
-                </div>
-              </div>
+        {/* Story Section */}
+        <div className="max-w-4xl mx-auto mb-20">
+          <h2 className="text-4xl font-serif text-warm-beige text-center mb-12">
+            {pageData.story_title || 'Unsere Geschichte'}
+          </h2>
+          <div className="bg-medium-brown rounded-xl p-8 border border-warm-brown">
+            <div className="prose prose-lg max-w-none">
+              <p className="text-light-beige leading-relaxed text-lg font-light">
+                {pageData.story_content}
+              </p>
             </div>
           </div>
-
-          {/* Team Section - Kleiner und eleganter */}
-          {pageData.team_members && pageData.team_members.length > 0 && (
-            <div className="mb-16">
-              <h3 className="text-3xl font-serif text-warm-beige mb-8 text-center tracking-wide">
-                {pageData.team_title || 'Unser Team'}
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                {pageData.team_members.map((member, index) => (
-                  <div key={index} className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-lg border border-warm-brown overflow-hidden shadow-md">
-                    <img 
-                      src={member.image_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"} 
-                      alt={member.name} 
-                      className="w-full h-32 object-cover"
-                    />
-                    <div className="p-4 text-center">
-                      <h4 className="text-lg font-serif text-warm-beige mb-1 tracking-wide">
-                        {member.name}
-                      </h4>
-                      <p className="text-orange-400 mb-2 font-medium text-sm">
-                        {member.role}
-                      </p>
-                      <p className="text-light-beige font-light leading-relaxed text-xs">
-                        {member.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Values Section - Kompakter */}
-          {pageData.values_data && pageData.values_data.length > 0 && (
-            <div>
-              <h3 className="text-3xl font-serif text-warm-beige mb-8 text-center tracking-wide">
-                {pageData.values_title || 'Unsere Werte'}
-              </h3>
-              <div className="grid md:grid-cols-5 gap-4 max-w-5xl mx-auto">
-                {pageData.values_data.slice(0, 5).map((value, index) => (
-                  <div key={index} className="bg-gradient-to-br from-medium-brown to-dark-brown rounded-lg border border-warm-brown p-4 text-center shadow-md">
-                    <div className="w-12 h-12 bg-warm-beige rounded-full flex items-center justify-center mx-auto mb-3">
-                      <span className="text-lg text-dark-brown">
-                        {index === 0 ? '🍽️' : index === 1 ? '🌿' : index === 2 ? '❤️' : index === 3 ? '⭐' : '🏆'}
-                      </span>
-                    </div>
-                    <h4 className="text-sm font-serif text-warm-beige mb-2 tracking-wide leading-tight">
-                      {value}
-                    </h4>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* Team Section */}
+        {pageData.team_members && pageData.team_members.length > 0 && (
+          <div className="mb-20">
+            <h2 className="text-4xl font-serif text-warm-beige text-center mb-12">
+              {pageData.team_title || 'Unser Team'}
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {pageData.team_members.map((member, index) => (
+                <div key={index} className="bg-medium-brown rounded-xl overflow-hidden border border-warm-brown shadow-lg">
+                  <div className="h-80 overflow-hidden">
+                    <img 
+                      src={member.image || `https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face`} 
+                      alt={member.name}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-2xl font-serif text-warm-beige mb-2">
+                      {member.name}
+                    </h3>
+                    <p className="text-orange-400 mb-3 font-medium">
+                      {member.role}
+                    </p>
+                    <p className="text-light-beige font-light leading-relaxed">
+                      {member.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Values Section */}
+        {pageData.values_data && pageData.values_data.length > 0 && (
+          <div>
+            <h2 className="text-4xl font-serif text-warm-beige text-center mb-12">
+              {pageData.values_title || 'Unsere Werte'}
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {pageData.values_data.map((value, index) => (
+                <div key={index} className="bg-medium-brown rounded-xl overflow-hidden border border-warm-brown shadow-lg">
+                  {/* Value Image/Icon Header */}
+                  <div className="h-48 bg-gradient-to-br from-warm-beige to-light-beige flex items-center justify-center">
+                    <div className="text-6xl">
+                      {value.icon}
+                    </div>
+                  </div>
+                  {/* Content */}
+                  <div className="p-6 text-center">
+                    <h3 className="text-xl font-serif text-warm-beige mb-4">
+                      {value.title}
+                    </h3>
+                    <p className="text-light-beige font-light leading-relaxed">
+                      {value.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
