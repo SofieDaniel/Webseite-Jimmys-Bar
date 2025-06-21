@@ -56,7 +56,7 @@ async def setup_standorte_enhanced():
                 "Samstag": "12:00 - 24:00 (Mai - September)",
                 "Sonntag": "12:00 - 23:00 (Mai - September)"
             },
-            "features": ["Direkte Strandlage", "Große Terrasse", "Live-Musik", "Familienfreundlich"]
+            "features": ["Direkte Strandlage", "Große Terrasse", "Familienfreundlich", "Parkplatz kostenlos"]
         }
         
         # Großenbrode data
