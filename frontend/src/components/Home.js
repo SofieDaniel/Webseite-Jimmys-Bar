@@ -67,32 +67,25 @@ const Home = () => {
   ];
 
   // Specialties from API or default Jimmy's menu
-  const specialties = homepageContent?.specialties_data?.specialties ? 
-    homepageContent.specialties_data.specialties.map(item => ({
-      title: item.name,
-      description: item.description,
-      image_url: item.image,
-      price: item.price
-    })) : [
+  const specialties = homepageContent?.specialties_data ? 
+    homepageContent.specialties_data : [
     {
-      title: "Patatas Bravas",
-      description: "Klassische mediterrane Kartoffeln",
-      image_url: "https://images.unsplash.com/photo-1565599837634-134bc3aadce8"
-    },
-    {
-      title: "Paella Valenciana", 
-      description: "Traditionelle mediterrane Paella",
-      image_url: "https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg"
-    },
-    {
-      title: "Tapas Variación",
-      description: "Auswahl mediterraner Köstlichkeiten", 
-      image_url: "https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg"
+      title: "Paella Valenciana",
+      description: "Original spanische Paella mit Safran, Huhn und Gemüse",
+      image: "https://images.unsplash.com/photo-1534080564583-6be75777b70a",
+      price: "18,90€"
     },
     {
       title: "Gambas al Ajillo",
-      description: "Garnelen in Knoblauchöl",
-      image_url: "https://images.unsplash.com/photo-1619860705243-dbef552e7118"
+      description: "Knoblauchgarnelen in Olivenöl mit frischen Kräutern", 
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b",
+      price: "12,90€"
+    },
+    {
+      title: "Pulpo a la Gallega",
+      description: "Galicischer Oktopus mit Paprika und Olivenöl",
+      image: "https://images.unsplash.com/photo-1544025162-d76694265947",
+      price: "14,90€"
     }
   ];
   
