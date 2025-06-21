@@ -176,10 +176,17 @@ const UeberUns = () => {
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {pageData.values_data.map((value, index) => (
                 <div key={index} className="bg-medium-brown rounded-xl overflow-hidden border border-warm-brown shadow-lg">
-                  {/* Value Image/Icon Header */}
-                  <div className="h-48 bg-gradient-to-br from-warm-beige to-light-beige flex items-center justify-center">
-                    <div className="text-6xl">
-                      {value.icon}
+                  {/* Value Image Header */}
+                  <div className="h-48 overflow-hidden relative">
+                    <img 
+                      src={value.image || `https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=400&h=200&fit=crop`} 
+                      alt={value.title}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                      <div className="text-5xl">
+                        {value.icon}
+                      </div>
                     </div>
                   </div>
                   {/* Content */}
