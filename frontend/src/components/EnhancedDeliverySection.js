@@ -145,7 +145,7 @@ const EnhancedDeliverySection = () => {
               </div>
               <h4 className="text-lg font-semibold text-warm-beige mb-2">Liefergebühr</h4>
               <p className="text-light-beige text-sm">
-                {deliveryInfo.delivery_fee.toFixed(2)}€
+                {parseFloat(deliveryInfo.delivery_fee).toFixed(2)}€
               </p>
             </div>
           </div>
