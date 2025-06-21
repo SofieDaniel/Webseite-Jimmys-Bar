@@ -238,6 +238,68 @@ async def check_and_fix_database():
             
             print("✅ Frontend API-Calls automatisch repariert")
         
+        # Aktualisiere Standorte-Daten mit Bildern
+        await cursor.execute("SELECT COUNT(*) FROM standorte_enhanced")
+        standorte_count = (await cursor.fetchone())[0]
+        if standorte_count > 0:
+            print("🖼️  Aktualisiere Standorte-Daten mit Bildern...")
+            await cursor.execute("DELETE FROM standorte_enhanced")
+            
+            # Neustadt data with images
+            neustadt_data = {
+                "name": "Jimmy's Tapas Bar Neustadt",
+                "address": "Strandstraße 12, 23730 Neustadt in Holstein",
+                "phone": "+49 4561 123456",
+                "email": "neustadt@jimmys-tapasbar.de",
+                "description": "Unser Hauptstandort direkt am Strand",
+                "image_url": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
+                "opening_hours": {
+                    "Montag": "16:00 - 23:00", "Dienstag": "16:00 - 23:00",
+                    "Mittwoch": "16:00 - 23:00", "Donnerstag": "16:00 - 23:00",
+                    "Freitag": "16:00 - 24:00", "Samstag": "12:00 - 24:00",
+                    "Sonntag": "12:00 - 23:00"
+                },
+                "features": ["Direkte Strandlage", "Große Terrasse", "Live-Musik", "Familienfreundlich"]
+            }
+            
+            # Großenbrode data with images
+            grossenbrode_data = {
+                "name": "Jimmy's Tapas Bar Großenbrode",
+                "address": "Strandpromenade 8, 23775 Großenbrode",
+                "phone": "+49 4367 987654",
+                "email": "grossenbrode@jimmys-tapasbar.de",
+                "description": "Gemütlich direkt an der Ostsee",
+                "image_url": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d",
+                "opening_hours": {
+                    "Montag": "17:00 - 23:00", "Dienstag": "17:00 - 23:00",
+                    "Mittwoch": "17:00 - 23:00", "Donnerstag": "17:00 - 23:00",
+                    "Freitag": "17:00 - 24:00", "Samstag": "12:00 - 24:00",
+                    "Sonntag": "12:00 - 23:00"
+                },
+                "features": ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"]
+            }
+            
+            # Insert updated standorte data
+            standorte_id = str(uuid.uuid4())
+            await cursor.execute("""
+                INSERT INTO standorte_enhanced (
+                    id, page_title, page_subtitle, header_background,
+                    neustadt_data, grossenbrode_data, info_section_data,
+                    updated_at, updated_by
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                standorte_id,
+                "Unsere Standorte",
+                "Besuchen Sie uns an der malerischen Ostseeküste",
+                "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
+                json.dumps(neustadt_data),
+                json.dumps(grossenbrode_data),
+                json.dumps(info_data),
+                datetime.now(),
+                "system"
+            ))
+            print("✅ Standorte-Daten mit Bildern aktualisiert")
+        
         print("🎉 KOMPLETTE SYSTEM-ÜBERPRÜFUNG ABGESCHLOSSEN!")
         print("=" * 60)
         return True
