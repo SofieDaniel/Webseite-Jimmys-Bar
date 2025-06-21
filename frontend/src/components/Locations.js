@@ -149,8 +149,12 @@ const Locations = () => {
               <div className="space-y-6 text-light-beige">
                 {/* Address */}
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl text-dark-brown">📍</span>
+                  <div className="w-16 h-16 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9" 
+                      alt="Adresse"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div>
                     <h3 className="font-semibold text-warm-beige mb-1">Adresse</h3>
@@ -160,8 +164,12 @@ const Locations = () => {
 
                 {/* Contact */}
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl text-dark-brown">📞</span>
+                  <div className="w-16 h-16 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d" 
+                      alt="Kontakt"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div>
                     <h3 className="font-semibold text-warm-beige mb-1">Kontakt</h3>
@@ -173,8 +181,12 @@ const Locations = () => {
                 {/* Opening Hours */}
                 {locationsData.neustadt.opening_hours && (
                   <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
-                      <span className="text-xl text-dark-brown">🕐</span>
+                    <div className="w-16 h-16 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      <img 
+                        src="https://images.unsplash.com/photo-1501139083538-0139583c060f" 
+                        alt="Öffnungszeiten"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div>
                       <h3 className="font-semibold text-warm-beige mb-2">Öffnungszeiten</h3>
@@ -193,8 +205,12 @@ const Locations = () => {
                 {/* Features */}
                 {locationsData.neustadt.features && locationsData.neustadt.features.length > 0 && (
                   <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0">
-                      <span className="text-xl text-dark-brown">✨</span>
+                    <div className="w-16 h-16 bg-warm-beige rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      <img 
+                        src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0" 
+                        alt="Besonderheiten"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div>
                       <h3 className="font-semibold text-warm-beige mb-2">Besonderheiten</h3>
