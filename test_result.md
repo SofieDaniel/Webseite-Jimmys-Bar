@@ -492,6 +492,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the Standorte page is working correctly. The API endpoint /api/cms/standorte-enhanced is returning the correct data structure. There are some rendering issues with objects being passed directly as React children, but these are caught by the ErrorBoundary component and don't prevent the page from functioning. The page loads successfully and displays location data."
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive testing of the Standorte page confirms it's working perfectly. The page successfully loads with no errors and displays all required information for both locations: Neustadt (Strandstraße 12, 23730 Neustadt in Holstein, +49 4561 123456, neustadt@jimmys-tapasbar.de) and Großenbrode (Strandpromenade 8, 23775 Großenbrode, +49 4367 987654, grossenbrode@jimmys-tapasbar.de). All features are correctly displayed for both locations (Neustadt: Direkte Strandlage, Große Terrasse, Live-Musik, Familienfreundlich; Großenbrode: Panorama-Meerblick, Ruhige Lage, Romantische Atmosphäre, Sonnenuntergänge). Opening hours are properly displayed for all days of the week. The info section shows all three cards (Anreise, Reservierung, Events) with their respective icons and descriptions. The 'Route planen' buttons are functional and would correctly open Google Maps with the location address. No console errors were detected during testing."
 
   - task: "Verify Speisekarte Page"
     implemented: true
