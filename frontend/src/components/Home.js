@@ -47,22 +47,22 @@ const Home = () => {
   };
 
   // Features from API or default Jimmy's content
-  const features = homepageContent?.features_data?.features ? 
-    homepageContent.features_data.features : [
+  const features = homepageContent?.features_data ? 
+    homepageContent.features_data : [
     {
       title: "Authentische Tapas",
-      description: "Traditionelle mediterrane Gerichte, mit Liebe zubereitet und perfekt zum Teilen",
-      image_url: "https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg"
+      description: "Traditionelle spanische Gerichte, mit Liebe zubereitet und perfekt zum Teilen",
+      image: "https://images.unsplash.com/photo-1544025162-d76694265947"
     },
     {
-      title: "Frische Paella",
-      description: "Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn",
-      image_url: "https://images.unsplash.com/photo-1694685367640-05d6624e57f1"
+      title: "Frische Meeresfrüchte", 
+      description: "Täglich frisch aus der Ostsee und dem Mittelmeer",
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b"
     },
     {
-      title: "Strandnähe",
-      description: "Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden",
-      image_url: "https://images.pexels.com/photos/32508247/pexels-photo-32508247.jpeg"
+      title: "Strandlage",
+      description: "Genießen Sie Ihr Essen mit direktem Blick auf die Ostsee",
+      image: "https://images.unsplash.com/photo-1571197119738-26123cb0d22f"
     }
   ];
 
