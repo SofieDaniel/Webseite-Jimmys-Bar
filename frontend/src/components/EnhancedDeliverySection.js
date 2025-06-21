@@ -130,7 +130,7 @@ const EnhancedDeliverySection = () => {
               </div>
               <h4 className="text-lg font-semibold text-warm-beige mb-2">Mindestbestellwert</h4>
               <p className="text-light-beige text-sm">
-                {deliveryInfo.minimum_order_value.toFixed(2)}€
+                {parseFloat(deliveryInfo.minimum_order_value).toFixed(2)}€
               </p>
             </div>
 
