@@ -83,22 +83,22 @@ async def setup_standorte_enhanced():
         info_section_data = {
             "sections": [
                 {
-                    "title": "Anreise", 
+                    "title": "Anreise & Parken", 
                     "icon": "🚗", 
                     "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000",
-                    "description": "Beide Standorte sind gut mit dem Auto erreichbar. Kostenlose Parkplätze sind vorhanden."
+                    "description": "Beide Standorte sind gut mit dem Auto erreichbar. Kostenlose Parkplätze direkt am Restaurant verfügbar."
                 },
                 {
-                    "title": "Reservierung", 
-                    "icon": "📞", 
-                    "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d",
-                    "description": "Wir empfehlen eine Reservierung, besonders in der Hauptsaison."
+                    "title": "Öffnungszeiten", 
+                    "icon": "🕰️", 
+                    "image": "https://images.unsplash.com/photo-1501139083538-0139583c060f",
+                    "description": "Täglich geöffnet von Mai bis September. In der Nebensaison reduzierte Öffnungszeiten."
                 },
                 {
-                    "title": "Events", 
-                    "icon": "🎉", 
-                    "image": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d",
-                    "description": "Feiern Sie bei uns! Wir bieten Event-Packages für besondere Anlässe."
+                    "title": "Familienfreundlich", 
+                    "icon": "👨‍👩‍👧‍👦", 
+                    "image": "https://images.unsplash.com/photo-1511895426328-dc8714191300",
+                    "description": "Kinderstühle, Spielecke und spezielle Kinderportionen verfügbar. Familien sind herzlich willkommen!"
                 }
             ]
         }
