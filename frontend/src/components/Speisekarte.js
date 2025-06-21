@@ -185,97 +185,64 @@ const Speisekarte = () => {
         <div className="flex gap-8 max-w-7xl mx-auto">
           {/* Left Side - Menu Items List */}
           <div className="flex-1">
-            {Object.entries(groupedItems).map(([category, items]) => (
-              <div key={category} className="mb-8">
-                {selectedCategory === 'Alle Kategorien' && (
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="flex-1 h-px bg-gradient-to-r from-transparent via-warm-beige/50 to-transparent"></div>
-                    <h2 className="text-2xl font-serif text-warm-beige px-4 bg-dark-brown">
-                      {category}
-                    </h2>
-                    <div className="flex-1 h-px bg-gradient-to-r from-transparent via-warm-beige/50 to-transparent"></div>
-                  </div>
-                )}
-                
-                <div className="space-y-3">
-                  {items.map((item, index) => (
-                    <div
-                      key={item.id}
-                      className={`group relative overflow-hidden rounded-xl transition-all duration-300 ${
-                        hoveredItem?.id === item.id 
-                          ? 'bg-gradient-to-r from-warm-beige/15 via-orange-500/10 to-warm-beige/15 border-l-4 border-warm-beige shadow-lg transform scale-[1.02]' 
-                          : index % 2 === 0 
-                            ? 'bg-gradient-to-r from-medium-brown/30 to-dark-brown/30 hover:from-warm-beige/10 hover:to-orange-500/10 border-l-4 border-transparent hover:border-warm-beige/50'
-                            : 'bg-gradient-to-r from-dark-brown/30 to-medium-brown/30 hover:from-orange-500/10 hover:to-warm-beige/10 border-l-4 border-transparent hover:border-orange-500/50'
-                      } border border-warm-beige/20`}
-                      onMouseEnter={() => setHoveredItem(item)}
-                      onMouseLeave={() => setHoveredItem(null)}
-                    >
-                      <div className="p-5">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1 pr-4">
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-lg font-medium text-warm-beige group-hover:text-white transition-colors">
-                                {item.name}
-                              </h3>
-                              <div className="flex gap-1">
-                                {getAllergyIcons(item).map((icon, index) => (
-                                  <span key={index} className="text-sm bg-warm-beige/20 px-1 rounded">{icon}</span>
-                                ))}
+                {Object.entries(groupedItems).map(([category, items]) => (
+                  <div key={category} className="mb-12">
+                    <div className="sticky top-20 z-20 bg-dark-brown/95 backdrop-blur-sm py-4 mb-8 border-b border-warm-beige/30">
+                      <h3 className="text-3xl font-serif text-warm-beige text-center tracking-wide">
+                        {categoryMapping[category] || category}
+                      </h3>
+                    </div>
+                    <div className="grid gap-6">
+                      {items.map((item) => (
+                        <div key={item.id} className="bg-medium-brown rounded-xl border border-warm-brown overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                          <div className="p-6">
+                            <div className="flex justify-between items-start mb-4">
+                              <div className="flex-1">
+                                <h4 className="text-xl font-serif text-warm-beige mb-2 flex items-center gap-2">
+                                  {item.name}
+                                  <div className="flex gap-1">
+                                    {getAllergyIcons(item).map((icon, idx) => (
+                                      <span key={idx} className="text-sm">{icon}</span>
+                                    ))}
+                                  </div>
+                                </h4>
+                                {/* Gericht Beschreibung */}
+                                {item.description && (
+                                  <p className="text-light-beige font-light text-sm leading-relaxed mb-3">
+                                    {item.description}
+                                  </p>
+                                )}
+                                {/* Allergen Information */}
+                                {item.allergens && item.allergens !== '-' && (
+                                  <div className="bg-dark-brown/50 rounded-lg p-3 mb-3">
+                                    <p className="text-orange-400 text-xs font-medium mb-1">Allergene:</p>
+                                    <p className="text-light-beige text-xs leading-relaxed">
+                                      {item.allergens}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="text-right ml-4">
+                                <span className="text-2xl font-bold text-warm-beige">
+                                  {item.price.toFixed(2).replace('.', ',')} €
+                                </span>
                               </div>
                             </div>
-                            <p className="text-light-beige text-sm leading-relaxed group-hover:text-gray-200 transition-colors">
-                              {item.description.length > 100 
-                                ? `${item.description.substring(0, 100)}...` 
-                                : item.description}
-                            </p>
                             
-                            {/* Kleine Vorschau der Details */}
-                            <div className="mt-3 space-y-1 text-xs">
-                              {item.origin && (
-                                <div className="text-orange-300 truncate">
-                                  <span className="font-semibold">🌍</span> {item.origin}
-                                </div>
-                              )}
-                              {item.allergens && (
-                                <div className="text-red-300 truncate">
-                                  <span className="font-semibold">⚠️</span> {item.allergens.length > 30 ? `${item.allergens.substring(0, 30)}...` : item.allergens}
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 mt-2">
-                              <span className={`text-xs px-3 py-1 rounded-full font-medium ${
-                                index % 3 === 0 ? 'bg-orange-500/20 text-orange-300'
-                                : index % 3 === 1 ? 'bg-warm-beige/20 text-warm-beige'
-                                : 'bg-yellow-500/20 text-yellow-300'
-                              }`}>
-                                {item.category}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className={`px-4 py-2 rounded-lg ${
-                              hoveredItem?.id === item.id 
-                                ? 'bg-warm-beige text-dark-brown shadow-lg'
-                                : 'bg-dark-brown/50 border border-warm-beige/30'
-                            } transition-all duration-300`}>
-                              <span className={`text-lg font-bold ${hoveredItem?.id === item.id ? 'text-dark-brown' : 'text-warm-beige'}`}>
-                                {item.price}
-                              </span>
-                            </div>
+                            {/* Verfügbarkeit */}
+                            {!item.is_available && (
+                              <div className="text-center py-2">
+                                <span className="text-red-400 text-sm font-medium">
+                                  Derzeit nicht verfügbar
+                                </span>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </div>
-                      
-                      {/* Hover indicator */}
-                      <div className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r from-warm-beige to-orange-500 transition-all duration-300 ${
-                        hoveredItem?.id === item.id ? 'w-full' : 'w-0'
-                      }`}></div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+                  </div>
+                ))}
           </div>
 
           {/* Right Side - Hover Details (Detaillierte Beschreibungen, kein Preis) */}
