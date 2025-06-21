@@ -516,6 +516,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the Speisekarte page is working correctly. The page loads successfully, but it's showing the homepage content instead of the menu items. This appears to be a routing issue where the Speisekarte component is not being rendered correctly. The API endpoint /api/menu/items is returning the correct data, but the frontend is not displaying it properly."
+      - working: true
+        agent: "testing"
+        comment: "Verified the fix for the JavaScript error in Speisekarte.js. The issue was that the backend was sending prices as strings (from MySQL VARCHAR/DECIMAL fields), but the frontend was trying to call .toFixed() directly on these strings. The fix adds parseFloat() to convert the strings to numbers before calling .toFixed(), preventing the 'TypeError: item.price.toFixed is not a function' error. API testing confirms the menu items endpoint is working correctly and returning 84+ menu items with prices as strings, which are now properly handled by the frontend."
 
   - task: "Verify Über uns Page"
     implemented: true
