@@ -175,29 +175,10 @@ const UeberUns = () => {
             </h2>
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {pageData.values_data.map((value, index) => (
-                <div key={index} className="bg-medium-brown rounded-xl overflow-hidden border border-warm-brown shadow-lg">
-                  {/* Value Image Header */}
-                  <div className="h-48 overflow-hidden relative">
-                    <img 
-                      src={value.image || `https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=400&h=200&fit=crop`} 
-                      alt={value.title}
-                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                      <div className="text-5xl">
-                        {value.icon}
-                      </div>
-                    </div>
-                  </div>
-                  {/* Content */}
-                  <div className="p-6 text-center">
-                    <h3 className="text-xl font-serif text-warm-beige mb-4">
-                      {value.title}
-                    </h3>
-                    <p className="text-light-beige font-light leading-relaxed">
-                      {value.description}
-                    </p>
-                  </div>
+                <div key={index} className="bg-medium-brown rounded-xl border border-warm-brown p-8 text-center">
+                  <div className="text-4xl mb-4">{value.icon}</div>
+                  <h3 className="text-xl font-serif text-warm-beige mb-4">{value.title}</h3>
+                  <p className="text-light-beige font-light">{value.description}</p>
                 </div>
               ))}
             </div>
