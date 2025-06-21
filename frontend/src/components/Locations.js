@@ -340,10 +340,21 @@ const Locations = () => {
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {locationsData.info_section.sections.map((section, index) => (
-                <div key={index} className="bg-medium-brown rounded-xl p-8 border border-warm-brown text-center">
-                  <div className="text-4xl mb-4">{section.icon}</div>
-                  <h3 className="text-xl font-serif text-warm-beige mb-4">{section.title}</h3>
-                  <p className="text-light-beige font-light">{section.description}</p>
+                <div key={index} className="bg-medium-brown rounded-xl overflow-hidden border border-warm-brown shadow-lg">
+                  {/* Image Header */}
+                  <div className="h-48 overflow-hidden">
+                    <img 
+                      src={section.image || `https://images.unsplash.com/photo-${1449824913935 + index}`} 
+                      alt={section.title}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  {/* Content */}
+                  <div className="p-6 text-center">
+                    <div className="text-3xl mb-3">{section.icon}</div>
+                    <h3 className="text-xl font-serif text-warm-beige mb-4">{section.title}</h3>
+                    <p className="text-light-beige font-light leading-relaxed">{section.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
