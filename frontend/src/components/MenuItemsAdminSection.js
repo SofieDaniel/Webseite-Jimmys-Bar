@@ -235,25 +235,25 @@ const MenuItemForm = ({ item, categories, onSave, onCancel }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div>
-              <label className="block text-warm-beige text-sm font-medium mb-2">Name*</label>
+              <label className="block text-gray-900 text-sm font-medium mb-2">Name*</label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
             {/* Price */}
             <div>
-              <label className="block text-warm-beige text-sm font-medium mb-2">Preis*</label>
+              <label className="block text-gray-900 text-sm font-medium mb-2">Preis*</label>
               <input
                 type="text"
                 required
                 value={formData.price}
                 onChange={(e) => setFormData({...formData, price: e.target.value})}
-                className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
