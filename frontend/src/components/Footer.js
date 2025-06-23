@@ -30,7 +30,7 @@ const Footer = () => {
   return (
     <footer className="bg-dark-brown border-t-2 border-warm-brown">
       <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {/* Restaurant Info */}
           <div>
             <h3 className="text-xl font-serif text-warm-beige mb-6 tracking-wide">Jimmy's Tapas Bar</h3>
@@ -63,17 +63,6 @@ const Footer = () => {
               <Link to="/google-bewertungen" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">Bewertungen</Link>
               <Link to="/kontakt" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">Kontakt</Link>
             </nav>
-          </div>
-
-          {/* Social Media / Follow Us */}
-          <div>
-            <h3 className="text-xl font-serif text-warm-beige mb-6 tracking-wide">{footerTexts.follow_us_title}</h3>
-            <p className="text-light-beige text-sm mb-4">Folgen Sie uns für aktuelle Neuigkeiten</p>
-            <div className="space-y-3">
-              <a href="#" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">📘 Facebook</a>
-              <a href="#" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">📷 Instagram</a>
-              <a href="https://www.google.com/search?q=Jimmys+Tapas+Bar+-+Neustadt+in+Holstein" target="_blank" rel="noopener noreferrer" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">🌟 Google Bewertungen</a>
-            </div>
           </div>
         </div>
 
