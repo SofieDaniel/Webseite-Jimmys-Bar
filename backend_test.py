@@ -3462,3 +3462,84 @@ def test_newsletter_subscribe():
     except requests.exceptions.RequestException as e:
         print(f"❌ Error connecting to newsletter/subscribe endpoint: {e}")
         return False
+
+def run_critical_api_tests():
+    """Run tests for all critical APIs mentioned in the review request"""
+    print("\n🔍 Starting Jimmy's Tapas Bar Critical API Tests")
+    print("=" * 80)
+    
+    # Track test results
+    results = {}
+    
+    # Test 1: Authentication
+    auth_success, token = test_auth_login()
+    results["auth_login"] = auth_success
+    
+    if auth_success:
+        results["auth_me"] = test_auth_me()
+    else:
+        results["auth_me"] = False
+        print("❌ Skipping auth/me test due to failed login")
+    
+    # Test 2: Review System
+    review_success, review_id = test_create_review()
+    results["create_review"] = review_success
+    
+    results["get_reviews"] = test_get_reviews_with_approved_param()
+    
+    if auth_success:
+        results["get_pending_reviews"] = test_get_pending_reviews()
+    else:
+        results["get_pending_reviews"] = False
+        print("❌ Skipping pending reviews test due to failed login")
+    
+    # Test 3: CMS Standorte
+    results["cms_standorte_enhanced"] = test_cms_standorte_enhanced()
+    
+    # Test 4: CMS Über uns
+    results["cms_ueber_uns_enhanced"] = test_cms_ueber_uns_enhanced()
+    
+    # Test 5: CMS Navigation/Footer/Buttons
+    results["cms_website_texts_navigation"] = test_cms_website_texts_get("navigation")
+    results["cms_website_texts_footer"] = test_cms_website_texts_get("footer")
+    results["cms_website_texts_buttons"] = test_cms_website_texts_get("buttons")
+    
+    # Test 6: Newsletter
+    if auth_success:
+        results["newsletter_subscribers"] = test_newsletter_subscribers()
+    else:
+        results["newsletter_subscribers"] = False
+        print("❌ Skipping newsletter subscribers test due to failed login")
+    
+    results["newsletter_subscribe"] = test_newsletter_subscribe()
+    
+    # Test 7: Menu Items
+    results["menu_items"] = test_get_menu_items()
+    
+    # Test 8: Contact
+    contact_success, contact_id = test_create_contact_message()
+    results["create_contact"] = contact_success
+    
+    if auth_success:
+        results["get_contact_messages"] = test_get_contact_messages()
+    else:
+        results["get_contact_messages"] = False
+        print("❌ Skipping contact messages test due to failed login")
+    
+    # Print summary
+    print("\n📋 Test Summary")
+    print("=" * 80)
+    for test_name, result in results.items():
+        status = "✅ PASSED" if result else "❌ FAILED"
+        print(f"{status} - {test_name}")
+    
+    # Overall result
+    all_passed = all(results.values())
+    print("\n🏁 Overall Result:", "✅ ALL TESTS PASSED" if all_passed else "❌ SOME TESTS FAILED")
+    
+    return all_passed
+
+if __name__ == "__main__":
+    # Run the critical API tests
+    success = run_critical_api_tests()
+    sys.exit(0 if success else 1)
