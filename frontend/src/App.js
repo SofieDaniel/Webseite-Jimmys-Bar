@@ -1733,8 +1733,6 @@ const AdminPanel = () => {
           {activeSection === 'eu-compliance' && <EUComplianceSection />}
           {activeSection === 'cookie-management' && <CookieManagementSection />}
           {activeSection === 'developer-info' && <DeveloperInfoSection />}
-          {activeSection === 'system' && <SystemBackupSection />}
-          {activeSection === 'maintenance' && <MaintenanceSection />}
         </div>
       </div>
     </div>
