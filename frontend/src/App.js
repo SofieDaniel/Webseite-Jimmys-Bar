@@ -1357,6 +1357,10 @@ const StartseiteSummary = () => {
           </div>
         </div>
       </div>
+
+      {/* System Status */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">📊 System-Status</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex items-center p-4 bg-green-50 rounded-lg">
             <div className="flex items-center">
