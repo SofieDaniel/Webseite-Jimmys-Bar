@@ -254,134 +254,93 @@ const Speisekarte = () => {
                 ))}
           </div>
 
-          {/* Right Side - Hover Details (Detaillierte Beschreibungen, kein Preis) */}
+          {/* Right Side - Hover Details (Kompakt mit Scroll) */}
           <div className="w-96 sticky top-24 h-fit">
             {hoveredItem ? (
-              <div className="bg-gradient-to-br from-medium-brown/95 to-dark-brown/95 border-2 border-warm-beige/40 rounded-xl p-6 shadow-2xl backdrop-blur-sm">
-                {/* Header */}
-                <div className="border-b border-warm-beige/30 pb-4 mb-4">
-                  <h3 className="text-2xl font-serif text-warm-beige mb-3 font-bold">
+              <div className="bg-gradient-to-br from-medium-brown/95 to-dark-brown/95 border-2 border-warm-beige/40 rounded-xl shadow-2xl backdrop-blur-sm max-h-[80vh] overflow-y-auto">
+                {/* Header - Fixed */}
+                <div className="border-b border-warm-beige/30 p-4 bg-dark-brown/80 sticky top-0">
+                  <h3 className="text-xl font-serif text-warm-beige mb-2 font-bold">
                     {hoveredItem.name}
                   </h3>
                   
                   <div className="flex items-center gap-2 flex-wrap mb-2">
-                    <span className="bg-warm-beige/20 text-warm-beige px-3 py-1 rounded-full text-xs font-medium border border-warm-beige/30">
+                    <span className="bg-warm-beige/20 text-warm-beige px-2 py-1 rounded-full text-xs font-medium">
                       {hoveredItem.category}
                     </span>
-                    <span className="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-xs font-medium border border-orange-500/30">
+                    <span className="bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full text-xs font-medium">
                       {hoveredItem.price} €
                     </span>
                     <div className="flex gap-1">
                       {getAllergyIcons(hoveredItem).map((icon, index) => (
-                        <span key={index} className="text-lg bg-warm-beige/15 px-2 py-1 rounded border border-warm-beige/20">{icon}</span>
+                        <span key={index} className="text-sm bg-warm-beige/15 px-1 py-0.5 rounded">{icon}</span>
                       ))}
                     </div>
                   </div>
-
-                  {/* Kurze Beschreibung */}
-                  {hoveredItem.description && (
-                    <p className="text-light-beige/90 text-sm italic">
-                      {hoveredItem.description}
-                    </p>
-                  )}
                 </div>
 
-                {/* Content */}
-                <div className="space-y-4">
-                  {/* Detaillierte Beschreibung */}
-                  <div className="bg-dark-brown/60 rounded-lg p-4 border border-warm-beige/20">
-                    <h4 className="text-sm font-semibold text-warm-beige mb-3 flex items-center gap-2">
-                      <span className="w-3 h-3 bg-warm-beige rounded-full"></span>
-                      Detaillierte Beschreibung
-                    </h4>
-                    <p className="text-light-beige leading-relaxed text-sm">
-                      {hoveredItem.detailed_description || hoveredItem.description || 'Authentisches spanisches Gericht, zubereitet nach traditionellem Rezept mit frischen, hochwertigen Zutaten und viel Liebe.'}
-                    </p>
-                  </div>
-
-                  {/* Herkunft */}
-                  {hoveredItem.origin && (
-                    <div className="bg-dark-brown/60 rounded-lg p-4 border border-warm-beige/20">
-                      <h4 className="text-sm font-semibold text-warm-beige mb-3 flex items-center gap-2">
-                        <span className="w-3 h-3 bg-orange-400 rounded-full"></span>
-                        Herkunft & Tradition
-                      </h4>
-                      <p className="text-light-beige text-sm leading-relaxed flex items-center gap-2">
-                        <span className="text-lg">🌍</span>
-                        {hoveredItem.origin}
+                {/* Scrollable Content */}
+                <div className="p-4 space-y-3">
+                  {/* Kompakte Beschreibung */}
+                  {hoveredItem.detailed_description && (
+                    <div className="bg-dark-brown/60 rounded-lg p-3">
+                      <p className="text-light-beige leading-relaxed text-sm">
+                        {hoveredItem.detailed_description}
                       </p>
                     </div>
                   )}
 
+                  {/* Kompakte Infos in 2 Spalten */}
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {/* Herkunft */}
+                    {hoveredItem.origin && (
+                      <div className="bg-dark-brown/40 rounded p-2">
+                        <p className="text-orange-400 font-medium mb-1">Herkunft</p>
+                        <p className="text-light-beige">{hoveredItem.origin}</p>
+                      </div>
+                    )}
+                    
+                    {/* Zubereitung */}
+                    {hoveredItem.preparation_method && (
+                      <div className="bg-dark-brown/40 rounded p-2">
+                        <p className="text-orange-400 font-medium mb-1">Zubereitung</p>
+                        <p className="text-light-beige">{hoveredItem.preparation_method}</p>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Zutaten */}
                   {hoveredItem.ingredients && (
-                    <div className="bg-dark-brown/60 rounded-lg p-4 border border-warm-beige/20">
-                      <h4 className="text-sm font-semibold text-warm-beige mb-3 flex items-center gap-2">
-                        <span className="w-3 h-3 bg-green-400 rounded-full"></span>
-                        Zutaten
-                      </h4>
-                      <p className="text-light-beige text-sm leading-relaxed">
+                    <div className="bg-dark-brown/40 rounded p-2">
+                      <p className="text-orange-400 font-medium text-xs mb-1">Zutaten</p>
+                      <p className="text-light-beige text-xs leading-relaxed">
                         {hoveredItem.ingredients}
                       </p>
                     </div>
                   )}
 
-                  {/* Allergene & Zusatzstoffe */}
-                  {(hoveredItem.allergens || hoveredItem.additives) && (
-                    <div className="bg-dark-brown/60 rounded-lg p-4 border border-red-400/30">
-                      <h4 className="text-sm font-semibold text-red-300 mb-3 flex items-center gap-2">
-                        <span className="w-3 h-3 bg-red-400 rounded-full"></span>
-                        Allergene & Zusatzstoffe
-                      </h4>
-                      
-                      {hoveredItem.allergens && hoveredItem.allergens.trim() !== '' && (
-                        <div className="mb-3">
-                          <p className="text-xs font-medium text-red-200 mb-2 flex items-center gap-1">
-                            ⚠️ Allergene:
-                          </p>
-                          <p className="text-light-beige text-xs leading-relaxed bg-red-900/20 p-2 rounded">
-                            {hoveredItem.allergens}
-                          </p>
-                        </div>
-                      )}
-                      
-                      {hoveredItem.additives && hoveredItem.additives !== "Keine Zusatzstoffe" && hoveredItem.additives.trim() !== '' && (
-                        <div>
-                          <p className="text-xs font-medium text-yellow-200 mb-2 flex items-center gap-1">
-                            🧪 Zusatzstoffe:
-                          </p>
-                          <p className="text-light-beige text-xs leading-relaxed bg-yellow-900/20 p-2 rounded">
-                            {hoveredItem.additives}
-                          </p>
-                        </div>
-                      )}
+                  {/* Allergene */}
+                  {hoveredItem.allergens && hoveredItem.allergens.trim() !== '' && hoveredItem.allergens !== 'Keine' && (
+                    <div className="bg-red-900/30 rounded p-2 border border-red-500/30">
+                      <p className="text-red-400 font-medium text-xs mb-1">⚠️ Allergene</p>
+                      <p className="text-light-beige text-xs">
+                        {hoveredItem.allergens}
+                      </p>
                     </div>
                   )}
 
-                  {/* Ernährungshinweise */}
+                  {/* Dietary Tags */}
                   {(hoveredItem.vegan || hoveredItem.vegetarian || hoveredItem.glutenfree) && (
-                    <div className="bg-dark-brown/60 rounded-lg p-4 border border-warm-beige/20">
-                      <h4 className="text-sm font-semibold text-warm-beige mb-3 flex items-center gap-2">
-                        <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-                        Ernährungshinweise
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {hoveredItem.vegan && (
-                          <span className="bg-green-600/30 text-green-200 px-3 py-1 rounded-full text-xs border border-green-500/50 flex items-center gap-1">
-                            🌱 Vegan
-                          </span>
-                        )}
-                        {hoveredItem.vegetarian && !hoveredItem.vegan && (
-                          <span className="bg-green-600/30 text-green-200 px-3 py-1 rounded-full text-xs border border-green-500/50 flex items-center gap-1">
-                            🌿 Vegetarisch
-                          </span>
-                        )}
-                        {hoveredItem.glutenfree && (
-                          <span className="bg-orange-600/30 text-orange-200 px-3 py-1 rounded-full text-xs border border-orange-500/50 flex items-center gap-1">
-                            🌾 Glutenfrei
-                          </span>
-                        )}
-                      </div>
+                    <div className="flex gap-1 flex-wrap">
+                      {hoveredItem.vegan && (
+                        <span className="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs border border-green-600/30">🌱 Vegan</span>
+                      )}
+                      {hoveredItem.vegetarian && !hoveredItem.vegan && (
+                        <span className="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs border border-green-600/30">🌿 Vegetarisch</span>
+                      )}
+                      {hoveredItem.glutenfree && (
+                        <span className="bg-blue-600/20 text-blue-400 px-2 py-1 rounded text-xs border border-blue-600/30">🌾 Glutenfrei</span>
+                      )}
                     </div>
                   )}
                 </div>
