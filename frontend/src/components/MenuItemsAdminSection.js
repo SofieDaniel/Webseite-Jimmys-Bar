@@ -195,7 +195,6 @@ const MenuItemsAdminSection = () => {
           }}
         />
       )}
-      </div>
     </div>
   );
 };
