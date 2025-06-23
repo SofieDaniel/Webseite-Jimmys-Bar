@@ -313,19 +313,6 @@ const Speisekarte = () => {
                     </div>
                   )}
 
-                  {/* Zubereitung */}
-                  {hoveredItem.preparation_method && (
-                    <div className="bg-dark-brown/60 rounded-lg p-4 border border-warm-beige/20">
-                      <h4 className="text-sm font-semibold text-warm-beige mb-3 flex items-center gap-2">
-                        <span className="w-3 h-3 bg-blue-400 rounded-full"></span>
-                        Zubereitung
-                      </h4>
-                      <p className="text-light-beige text-sm leading-relaxed">
-                        {hoveredItem.preparation_method}
-                      </p>
-                    </div>
-                  )}
-
                   {/* Allergene & Zusatzstoffe */}
                   {(hoveredItem.allergens || hoveredItem.additives) && (
                     <div className="bg-dark-brown/60 rounded-lg p-4 border border-red-400/30">
