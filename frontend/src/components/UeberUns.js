@@ -163,9 +163,6 @@ const UeberUns = () => {
       </div>
     </div>
   );
-
-    </div>
-  );
 };
 
 export default UeberUns;
