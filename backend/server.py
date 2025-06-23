@@ -246,9 +246,41 @@ async def update_standorte_enhanced(content_data: dict, current_user: User = Dep
 async def update_ueber_uns_enhanced(content_data: dict, current_user: User = Depends(get_current_user)):
     return {"message": "Über uns content updated successfully", "data": content_data}
 
-@api_router.put("/cms/kontakt-page")
-async def update_kontakt_page(content_data: dict, current_user: User = Depends(get_current_user)):
-    return {"message": "Kontakt content updated successfully", "data": content_data}
+@api_router.get("/cms/website-texts/{section}")
+async def get_website_texts(section: str):
+    """Get website texts for a specific section (navigation, footer, buttons)"""
+    if section == "navigation":
+        return {
+            "home": "Startseite",
+            "locations": "Standorte",
+            "menu": "Speisekarte",
+            "reviews": "Bewertungen",
+            "about": "Über uns",
+            "contact": "Kontakt",
+            "privacy": "Datenschutz",
+            "imprint": "Impressum"
+        }
+    elif section == "footer":
+        return {
+            "opening_hours_title": "Öffnungszeiten",
+            "contact_title": "Kontakt",
+            "follow_us_title": "Folgen Sie uns",
+            "copyright": "© 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten."
+        }
+    elif section == "buttons":
+        return {
+            "menu_button": "Speisekarte ansehen",
+            "locations_button": "Standorte entdecken",
+            "contact_button": "Kontakt aufnehmen",
+            "reserve_button": "Tisch reservieren",
+            "order_button": "Online bestellen"
+        }
+    else:
+        raise HTTPException(status_code=404, detail=f"Section '{section}' not found")
+
+@api_router.put("/cms/website-texts/{section}")
+async def update_website_texts(section: str, content_data: dict, current_user: User = Depends(get_current_user)):
+    return {"message": f"Website texts for {section} updated successfully", "data": content_data}
 
 # Menu Items CRUD für CMS
 @api_router.put("/menu/items/{item_id}")
