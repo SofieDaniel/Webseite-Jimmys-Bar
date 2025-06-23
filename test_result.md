@@ -531,6 +531,12 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully tested GET /api/cms/ueber-uns-enhanced endpoint. Returns enhanced about page content with page title, subtitle, header background, Jimmy's data, values section, and team section. All required fields are present and properly formatted. Jimmy's data includes name (Jimmy Rodríguez), image, story paragraphs, and quote. Values section includes title (Unsere Werte) and three values (Qualität, Gastfreundschaft, Lebensfreude) with titles, descriptions, and images. Team section includes title and team members with names, positions, descriptions, and images."
+      - working: false
+        agent: "testing"
+        comment: "The endpoint was returning a 405 Method Not Allowed error because it was not implemented in the backend. Implemented the GET /api/cms/ueber-uns-enhanced endpoint with default content for Jimmy's data, values section, and team section."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested the newly implemented GET /api/cms/ueber-uns-enhanced endpoint. The endpoint now returns the expected data structure with all required fields. Also implemented the PUT /api/cms/ueber-uns-enhanced endpoint for updating the content."
 
   - task: "CMS Kontakt Page Endpoint"
     implemented: true
