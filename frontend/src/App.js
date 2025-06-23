@@ -1858,8 +1858,8 @@ const Header = () => {
             <Link to="/speisekarte" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/speisekarte') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
             }`}>{navigationTexts.menu}</Link>
-            <Link to="/bewertungen" className={`transition-colors font-light tracking-wide text-sm ${
-              isActivePage('/bewertungen') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
+            <Link to="/google-bewertungen" className={`transition-colors font-light tracking-wide text-sm ${
+              isActivePage('/google-bewertungen') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
             }`}>{navigationTexts.reviews}</Link>
             <Link to="/ueber-uns" className={`transition-colors font-light tracking-wide text-sm ${
               isActivePage('/ueber-uns') ? 'text-warm-beige border-b-2 border-warm-beige pb-1' : 'text-stone-100 hover:text-stone-300'
