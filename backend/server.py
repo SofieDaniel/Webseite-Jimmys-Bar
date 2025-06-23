@@ -372,6 +372,50 @@ async def get_standorte_enhanced():
         }
     }
 
+@api_router.get("/cms/locations")
+async def get_locations():
+    """Alias für standorte-enhanced für CMS Kompatibilität"""
+    return {
+        "page_title": "Unsere Standorte",
+        "page_description": "Besuchen Sie uns an der malerischen Ostseeküste",
+        "locations": [
+            {
+                "id": "neustadt",
+                "name": "Neustadt in Holstein",
+                "address": "Strandstraße 12, 23730 Neustadt in Holstein",
+                "phone": "+49 4561 123456",
+                "email": "neustadt@jimmys-tapasbar.de",
+                "opening_hours": {
+                    "Montag": "17:00 - 23:00", "Dienstag": "17:00 - 23:00", "Mittwoch": "17:00 - 23:00",
+                    "Donnerstag": "17:00 - 23:00", "Freitag": "17:00 - 00:00", "Samstag": "17:00 - 00:00", "Sonntag": "17:00 - 23:00"
+                },
+                "description": "Direkt am Strand gelegen mit großer Terrasse",
+                "features": ["Direkte Strandlage", "Große Terrasse", "Familienfreundlich", "Parkplatz kostenlos"],
+                "image_url": "https://images.unsplash.com/photo-1506577005627-9a2b1f7b5d5d",
+                "maps_embed": ""
+            },
+            {
+                "id": "grossenbrode", 
+                "name": "Großenbrode",
+                "address": "Strandpromenade 8, 23775 Großenbrode",
+                "phone": "+49 4367 987654",
+                "email": "grossenbrode@jimmys-tapasbar.de",
+                "opening_hours": {
+                    "Montag": "17:00 - 22:00", "Dienstag": "17:00 - 22:00", "Mittwoch": "17:00 - 22:00",
+                    "Donnerstag": "17:00 - 22:00", "Freitag": "17:00 - 23:00", "Samstag": "17:00 - 23:00", "Sonntag": "17:00 - 22:00"
+                },
+                "description": "Ruhige Lage mit Panorama-Meerblick",
+                "features": ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"],
+                "image_url": "https://images.unsplash.com/photo-1559925393-8be0ec4767c8",
+                "maps_embed": ""
+            }
+        ]
+    }
+
+@api_router.put("/cms/locations")
+async def update_locations(content_data: dict, current_user: User = Depends(get_current_user)):
+    return {"message": "Standorte content updated successfully", "data": content_data}
+
 @api_router.get("/cms/kontakt-page")
 async def get_kontakt_page():
     return {
