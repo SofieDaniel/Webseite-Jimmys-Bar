@@ -29,6 +29,7 @@ import GoogleReviews from './components/GoogleReviews';
 import Kontakt from './components/Kontakt';
 import Impressum from './components/Impressum';
 import Datenschutz from './components/Datenschutz';
+import Datenschutz from './components/Datenschutz';
 import Footer from './components/Footer';
 
 // Language Context - Only German
