@@ -762,7 +762,7 @@ frontend:
     implemented: true
     working: false
     file: "/app/frontend/src/App.js"
-    stuck_count: 2
+    stuck_count: 3
     priority: "high"
     needs_retesting: false
     status_history:
@@ -778,6 +778,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "Found an issue with the CMS login functionality. The authentication API endpoints (/api/auth/login and /api/auth/me) are working correctly and returning valid responses with JWT tokens. However, after successful authentication, the frontend is not automatically redirecting to the dashboard. The token is correctly stored in localStorage, but users have to manually navigate to /admin/dashboard after login. Several API endpoints used by the dashboard are returning 404 errors, including /api/admin/newsletter/subscribers, /api/users, and /api/admin/contact. This suggests there are still some backend API endpoints that are not properly implemented or have incorrect routes."
+      - working: false
+        agent: "testing"
+        comment: "Attempted to test the CMS login functionality but encountered routing issues. The application is not properly handling the /admin route or the #admin hash. When navigating to /admin or /#admin, the application shows the homepage instead of the login form or dashboard. The issue appears to be in the routing logic in App.js. The isAdmin check in lines 1943-1946 is not correctly detecting the admin path, or the AdminPanel component is not being rendered properly. Additionally, the missing backend endpoints (/api/admin/newsletter/subscribers, /api/users, /api/admin/contact) have been implemented in the backend, but the frontend is still not able to access them due to the routing issues."
 
 metadata:
   created_by: "testing_agent"
