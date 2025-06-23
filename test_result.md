@@ -772,8 +772,17 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix review submission database schema mismatch"
     - "CMS Navigation/Footer/Buttons functionality"
+    - "CMS Standorte Enhanced Endpoint"
+    - "CMS Ueber Uns Enhanced Endpoint"
+    - "Review Management - GET /api/reviews"
+    - "Review Management - GET /api/admin/reviews/pending"
+    - "Authentication - POST /api/auth/login"
+    - "Authentication - GET /api/auth/me"
+    - "Menu Management - GET /api/menu/items"
+    - "Contact Messages - GET /api/admin/contact"
+    - "Newsletter - GET /api/admin/newsletter/subscribers"
+    - "Newsletter - POST /api/newsletter/subscribe"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
