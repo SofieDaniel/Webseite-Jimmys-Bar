@@ -42,8 +42,8 @@ const Locations = () => {
       phone: "015782226373",
       email: "info@jimmys-tapasbar.de",
       opening_hours: {
-        "Montag": "16:00 - 23:00", "Dienstag": "16:00 - 23:00", "Mittwoch": "16:00 - 23:00",
-        "Donnerstag": "16:00 - 23:00", "Freitag": "16:00 - 24:00", "Samstag": "12:00 - 24:00", "Sonntag": "12:00 - 23:00"
+        "Montag": "12:00 - 22:00", "Dienstag": "12:00 - 22:00", "Mittwoch": "12:00 - 22:00",
+        "Donnerstag": "12:00 - 22:00", "Freitag": "12:00 - 22:00", "Samstag": "12:00 - 22:00", "Sonntag": "12:00 - 22:00"
       },
       features: ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"]
     }
