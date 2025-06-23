@@ -531,7 +531,7 @@ backend:
 
   - task: "User Management - GET /api/users"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -546,6 +546,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Could not test the users endpoint because authentication is failing. This endpoint needs to be retested after the authentication issue is fixed."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/users endpoint with authenticated request. The endpoint returns a list of users with all required fields including username, email, role, and active status. The response is a valid JSON array containing the admin user."
 
   - task: "CMS Standorte Enhanced Endpoint"
     implemented: true
