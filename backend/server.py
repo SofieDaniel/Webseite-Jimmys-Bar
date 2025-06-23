@@ -668,62 +668,65 @@ async def upload_image(
     return {"image_url": data_url, "filename": file.filename}
 
 # Content Management API routes
-@api_router.get("/cms/homepage", response_model=HomepageContent)
+@api_router.get("/cms/homepage")
 async def get_homepage_content():
     content = await db.homepage_content.find_one()
     if not content:
-        # Create default content
-        default_content = HomepageContent()
-        default_content.features.cards = [
-            FeatureCard(
-                title="Authentische Tapas",
-                description="Traditionelle mediterrane Gerichte, mit Liebe zubereitet und perfekt zum Teilen",
-                image_url="https://images.pexels.com/photos/19671352/pexels-photo-19671352.jpeg"
-            ),
-            FeatureCard(
-                title="Frische Paella",
-                description="Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn",
-                image_url="https://images.unsplash.com/photo-1694685367640-05d6624e57f1"
-            ),
-            FeatureCard(
-                title="Strandnähe",
-                description="Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden",
-                image_url="https://images.pexels.com/photos/32508247/pexels-photo-32508247.jpeg"
-            )
-        ]
-        default_content.specialties.cards = [
-            SpecialtyCard(
-                title="Patatas Bravas",
-                description="Klassische mediterrane Kartoffeln",
-                image_url="https://images.unsplash.com/photo-1565599837634-134bc3aadce8",
-                category_link="tapas-vegetarian"
-            ),
-            SpecialtyCard(
-                title="Paella Valenciana",
-                description="Traditionelle mediterrane Paella",
-                image_url="https://images.pexels.com/photos/7085661/pexels-photo-7085661.jpeg",
-                category_link="tapa-paella"
-            ),
-            SpecialtyCard(
-                title="Tapas Variación",
-                description="Auswahl mediterraner Köstlichkeiten",
-                image_url="https://images.pexels.com/photos/1813504/pexels-photo-1813504.jpeg",
-                category_link="inicio"
-            ),
-            SpecialtyCard(
-                title="Gambas al Ajillo",
-                description="Garnelen in Knoblauchöl",
-                image_url="https://images.unsplash.com/photo-1619860705243-dbef552e7118",
-                category_link="tapas-pescado"
-            )
-        ]
-        await db.homepage_content.insert_one(default_content.dict())
-        content = default_content.dict()
+        # Return default if no content exists
+        return {
+            "hero": {
+                "title": "JIMMY'S TAPAS BAR",
+                "subtitle": "an der Ostsee",
+                "description": "Genießen Sie authentische mediterrane Spezialitäten",
+                "background_image": "https://images.unsplash.com/photo-1656423521731-9665583f100c"
+            },
+            "features": {
+                "title": "Mediterrane Tradition",
+                "cards": []
+            },
+            "specialties": {
+                "title": "Unsere Spezialitäten", 
+                "cards": []
+            }
+        }
+    
+    # Remove MongoDB ObjectId
+    if '_id' in content:
+        del content['_id']
+    
+    # Parse JSON fields to create proper structure
+    response = {
+        "hero": {
+            "title": content.get('hero_title', "JIMMY'S TAPAS BAR"),
+            "subtitle": content.get('hero_subtitle', "an der Ostsee"),
+            "description": content.get('hero_description', "Genießen Sie authentische mediterrane Spezialitäten"),
+            "location": content.get('hero_location', ""),
+            "background_image": content.get('hero_background_image', "https://images.unsplash.com/photo-1656423521731-9665583f100c"),
+            "menu_button_text": content.get('hero_menu_button_text', "Zur Speisekarte"),
+            "locations_button_text": content.get('hero_locations_button_text', "Unsere Standorte"),
+            "image": content.get('hero_image', "")
+        }
+    }
+    
+    # Parse features_data
+    if 'features_data' in content and content['features_data']:
+        response['features'] = content['features_data']
     else:
-        # Remove MongoDB ObjectId before returning
-        if '_id' in content:
-            del content['_id']
-    return HomepageContent(**content)
+        response['features'] = {"title": "Mediterrane Tradition", "cards": []}
+    
+    # Parse specialties_data
+    if 'specialties_data' in content and content['specialties_data']:
+        response['specialties'] = content['specialties_data']
+    else:
+        response['specialties'] = {"title": "Unsere Spezialitäten", "cards": []}
+    
+    # Parse delivery_data
+    if 'delivery_data' in content and content['delivery_data']:
+        response['delivery'] = content['delivery_data']
+    else:
+        response['delivery'] = {"title": "Lieferservice"}
+    
+    return response
 
 @api_router.put("/cms/homepage")
 async def update_homepage_content(content_data: HomepageContent, current_user: User = Depends(get_editor_user)):
