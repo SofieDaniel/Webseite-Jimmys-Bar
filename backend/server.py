@@ -1984,6 +1984,376 @@ async def get_system_info(current_user: User = Depends(get_admin_user)):
             "environment": "Production"
         }
 
+@api_router.get("/cms/standorte-enhanced")
+async def get_standorte_enhanced():
+    """Get enhanced standorte content with additional fields"""
+    try:
+        # First check if we have existing data
+        content = await db.standorte_enhanced.find_one()
+        
+        if not content:
+            # Create default content
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Unsere Standorte",
+                "page_subtitle": "Besuchen Sie uns an einem unserer beiden Standorte",
+                "header_background": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5",
+                "neustadt": {
+                    "name": "Jimmy's Tapas Bar Neustadt",
+                    "address": "Strandstraße 12, 23730 Neustadt in Holstein",
+                    "phone": "+49 4561 123456",
+                    "email": "neustadt@jimmys-tapasbar.de",
+                    "opening_hours": {
+                        "Montag": "16:00 - 23:00",
+                        "Dienstag": "16:00 - 23:00", 
+                        "Mittwoch": "16:00 - 23:00",
+                        "Donnerstag": "16:00 - 23:00",
+                        "Freitag": "16:00 - 24:00",
+                        "Samstag": "12:00 - 24:00",
+                        "Sonntag": "12:00 - 23:00"
+                    },
+                    "features": [
+                        "Direkte Strandlage",
+                        "Große Terrasse",
+                        "Live-Musik",
+                        "Familienfreundlich"
+                    ],
+                    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+                },
+                "grossenbrode": {
+                    "name": "Jimmy's Tapas Bar Großenbrode",
+                    "address": "Strandpromenade 8, 23775 Großenbrode",
+                    "phone": "+49 4367 987654",
+                    "email": "grossenbrode@jimmys-tapasbar.de",
+                    "opening_hours": {
+                        "Montag": "17:00 - 23:00",
+                        "Dienstag": "17:00 - 23:00",
+                        "Mittwoch": "17:00 - 23:00", 
+                        "Donnerstag": "17:00 - 23:00",
+                        "Freitag": "17:00 - 24:00",
+                        "Samstag": "12:00 - 24:00",
+                        "Sonntag": "12:00 - 23:00"
+                    },
+                    "features": [
+                        "Panorama-Meerblick",
+                        "Ruhige Lage",
+                        "Romantische Atmosphäre",
+                        "Sonnenuntergänge"
+                    ],
+                    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4"
+                },
+                "info_section": {
+                    "title": "Informationen",
+                    "cards": [
+                        {
+                            "title": "Anreise",
+                            "description": "Beide Standorte sind gut mit dem Auto und öffentlichen Verkehrsmitteln erreichbar.",
+                            "image": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000"
+                        },
+                        {
+                            "title": "Reservierung",
+                            "description": "Reservieren Sie telefonisch oder über unser Kontaktformular.",
+                            "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d"
+                        },
+                        {
+                            "title": "Events",
+                            "description": "Regelmäßige Live-Musik und spanische Themenabende.",
+                            "image": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d"
+                        }
+                    ]
+                },
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.standorte_enhanced.insert_one(default_content)
+            content = default_content
+        
+        # Remove MongoDB ObjectId
+        if '_id' in content:
+            del content['_id']
+            
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving standorte-enhanced content: {str(e)}")
+
+@api_router.put("/cms/standorte-enhanced")
+async def update_standorte_enhanced(content_data: dict, current_user: User = Depends(get_editor_user)):
+    """Update enhanced standorte content"""
+    try:
+        # Add update metadata
+        content_data["updated_at"] = datetime.utcnow()
+        content_data["updated_by"] = current_user.username
+        
+        # Update in database
+        await db.standorte_enhanced.update_one(
+            {"id": content_data["id"]},
+            {"$set": content_data},
+            upsert=True
+        )
+        
+        return content_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating standorte-enhanced content: {str(e)}")
+
+@api_router.get("/cms/ueber-uns-enhanced")
+async def get_ueber_uns_enhanced():
+    """Get enhanced ueber-uns content with additional fields"""
+    try:
+        # First check if we have existing data
+        content = await db.ueber_uns_enhanced.find_one()
+        
+        if not content:
+            # Create default content
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Über uns",
+                "page_subtitle": "Lernen Sie Jimmy's Tapas Bar kennen",
+                "header_background": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5",
+                "jimmy": {
+                    "name": "Jimmy Rodríguez",
+                    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+                    "story_paragraph1": "Seit der Gründung im Jahr 2015 steht Jimmy's Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.",
+                    "story_paragraph2": "Unsere Leidenschaft gilt den traditionellen Rezepten und frischen Zutaten, die wir täglich mit Liebe zubereiten.",
+                    "quote": "Gutes Essen bringt Menschen zusammen und schafft unvergessliche Momente."
+                },
+                "values_section": {
+                    "title": "Unsere Werte",
+                    "values": [
+                        {
+                            "title": "Qualität",
+                            "description": "Wir verwenden nur die besten Zutaten für unsere Gerichte.",
+                            "image": "https://images.unsplash.com/photo-1556740758-90de374c12ad"
+                        },
+                        {
+                            "title": "Gastfreundschaft",
+                            "description": "Bei uns sollen Sie sich wie zu Hause fühlen.",
+                            "image": "https://images.unsplash.com/photo-1559925393-8be0ec4767c8"
+                        },
+                        {
+                            "title": "Lebensfreude",
+                            "description": "Wir feiern das Leben mit gutem Essen und Geselligkeit.",
+                            "image": "https://images.unsplash.com/photo-1545151312-4bf67a6af6d6"
+                        }
+                    ]
+                },
+                "team_section": {
+                    "title": "Unser Team",
+                    "team_members": [
+                        {
+                            "name": "Jimmy Rodríguez",
+                            "position": "Küchenchef & Inhaber",
+                            "description": "Jimmy bringt über 20 Jahre Erfahrung in der mediterranen Küche mit.",
+                            "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
+                        },
+                        {
+                            "name": "Maria González",
+                            "position": "Sous Chef",
+                            "description": "Spezialistin für authentische Tapas und Paellas.",
+                            "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80"
+                        }
+                    ]
+                },
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.ueber_uns_enhanced.insert_one(default_content)
+            content = default_content
+        
+        # Remove MongoDB ObjectId
+        if '_id' in content:
+            del content['_id']
+            
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving ueber-uns-enhanced content: {str(e)}")
+
+@api_router.put("/cms/ueber-uns-enhanced")
+async def update_ueber_uns_enhanced(content_data: dict, current_user: User = Depends(get_editor_user)):
+    """Update enhanced ueber-uns content"""
+    try:
+        # Add update metadata
+        content_data["updated_at"] = datetime.utcnow()
+        content_data["updated_by"] = current_user.username
+        
+        # Update in database
+        await db.ueber_uns_enhanced.update_one(
+            {"id": content_data["id"]},
+            {"$set": content_data},
+            upsert=True
+        )
+        
+        return content_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating ueber-uns-enhanced content: {str(e)}")
+
+@api_router.get("/cms/kontakt-page")
+async def get_kontakt_page():
+    """Get kontakt page content"""
+    try:
+        # First check if we have existing data
+        content = await db.kontakt_page.find_one()
+        
+        if not content:
+            # Create default content
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Kontakt",
+                "page_subtitle": "Wir freuen uns auf Ihre Nachricht",
+                "header_background": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5",
+                "contact_form": {
+                    "title": "Schreiben Sie uns",
+                    "subtitle": "Wir antworten innerhalb von 24 Stunden"
+                },
+                "locations_section": {
+                    "title": "Unsere Standorte"
+                },
+                "opening_hours": {
+                    "title": "Öffnungszeiten"
+                },
+                "additional_info": "Reservierungen nehmen wir gerne telefonisch oder über das Kontaktformular entgegen.",
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.kontakt_page.insert_one(default_content)
+            content = default_content
+        
+        # Remove MongoDB ObjectId
+        if '_id' in content:
+            del content['_id']
+            
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving kontakt page content: {str(e)}")
+
+@api_router.put("/cms/kontakt-page")
+async def update_kontakt_page(content_data: dict, current_user: User = Depends(get_editor_user)):
+    """Update kontakt page content"""
+    try:
+        # Add update metadata
+        content_data["updated_at"] = datetime.utcnow()
+        content_data["updated_by"] = current_user.username
+        
+        # Update in database
+        await db.kontakt_page.update_one(
+            {"id": content_data["id"]},
+            {"$set": content_data},
+            upsert=True
+        )
+        
+        return content_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating kontakt page content: {str(e)}")
+
+@api_router.get("/cms/bewertungen-page")
+async def get_bewertungen_page():
+    """Get bewertungen page content"""
+    try:
+        # First check if we have existing data
+        content = await db.bewertungen_page.find_one()
+        
+        if not content:
+            # Create default content
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Bewertungen & Feedback",
+                "page_subtitle": "Was unsere Gäste über uns sagen",
+                "header_background": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5",
+                "reviews_section": {
+                    "title": "Kundenbewertungen"
+                },
+                "feedback_section": {
+                    "title": "Ihr Feedback",
+                    "note": "Wir freuen uns über Ihre Meinung zu unserem Restaurant."
+                },
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.bewertungen_page.insert_one(default_content)
+            content = default_content
+        
+        # Remove MongoDB ObjectId
+        if '_id' in content:
+            del content['_id']
+            
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving bewertungen page content: {str(e)}")
+
+@api_router.put("/cms/bewertungen-page")
+async def update_bewertungen_page(content_data: dict, current_user: User = Depends(get_editor_user)):
+    """Update bewertungen page content"""
+    try:
+        # Add update metadata
+        content_data["updated_at"] = datetime.utcnow()
+        content_data["updated_by"] = current_user.username
+        
+        # Update in database
+        await db.bewertungen_page.update_one(
+            {"id": content_data["id"]},
+            {"$set": content_data},
+            upsert=True
+        )
+        
+        return content_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating bewertungen page content: {str(e)}")
+
+@api_router.get("/delivery/info")
+async def get_delivery_info():
+    """Get delivery information"""
+    try:
+        # First check if we have existing data
+        info = await db.delivery_info.find_one({"is_active": True})
+        
+        if not info:
+            # Create default delivery info
+            default_info = {
+                "id": str(uuid.uuid4()),
+                "delivery_time_min": 30,
+                "delivery_time_max": 45,
+                "minimum_order_value": 15.0,
+                "delivery_fee": 2.5,
+                "free_delivery_threshold": 50.0,
+                "delivery_areas": ["Neustadt", "Großenbrode", "Umgebung"],
+                "is_active": True,
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.delivery_info.insert_one(default_info)
+            info = default_info
+        
+        # Remove MongoDB ObjectId
+        if '_id' in info:
+            del info['_id']
+            
+        return info
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving delivery information: {str(e)}")
+
+@api_router.put("/admin/delivery/info")
+async def update_delivery_info(info_data: dict, current_user: User = Depends(get_editor_user)):
+    """Update delivery information"""
+    try:
+        # Add update metadata
+        info_data["updated_at"] = datetime.utcnow()
+        info_data["updated_by"] = current_user.username
+        
+        # Update in database
+        await db.delivery_info.update_one(
+            {"id": info_data["id"]},
+            {"$set": info_data},
+            upsert=True
+        )
+        
+        return info_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating delivery information: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
