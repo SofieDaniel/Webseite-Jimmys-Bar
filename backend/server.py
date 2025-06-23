@@ -721,3 +721,81 @@ async def update_cookie_settings(settings: dict, current_user: User = Depends(ge
     # In production, save to database
     return {"message": "Cookie settings updated successfully", "data": settings}
 
+
+@api_router.get("/users")
+async def get_users(current_user: User = Depends(get_current_user)):
+    """Get all users for admin management"""
+    try:
+        conn = get_mysql_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, username, email, role, created_at, last_login FROM users")
+        users = cursor.fetchall()
+        conn.close()
+        return users
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
+@api_router.post("/users")
+async def create_user(user_data: dict, current_user: User = Depends(get_current_user)):
+    """Create a new user"""
+    try:
+        conn = get_mysql_connection()
+        cursor = conn.cursor()
+        
+        # Hash the password
+        hashed_password = get_password_hash(user_data["password"])
+        
+        cursor.execute("""
+            INSERT INTO users (id, username, email, password_hash, role) 
+            VALUES (%s, %s, %s, %s, %s)
+        """, (
+            str(uuid.uuid4()),
+            user_data["username"],
+            user_data["email"], 
+            hashed_password,
+            user_data["role"]
+        ))
+        conn.commit()
+        conn.close()
+        return {"message": "User created successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating user: {str(e)}")
+
+@api_router.put("/users/{user_id}")
+async def update_user(user_id: str, user_data: dict, current_user: User = Depends(get_current_user)):
+    """Update a user"""
+    try:
+        conn = get_mysql_connection()
+        cursor = conn.cursor()
+        
+        if "password" in user_data and user_data["password"]:
+            hashed_password = get_password_hash(user_data["password"])
+            cursor.execute("""
+                UPDATE users SET username=%s, email=%s, password_hash=%s, role=%s 
+                WHERE id=%s
+            """, (user_data["username"], user_data["email"], hashed_password, user_data["role"], user_id))
+        else:
+            cursor.execute("""
+                UPDATE users SET username=%s, email=%s, role=%s 
+                WHERE id=%s
+            """, (user_data["username"], user_data["email"], user_data["role"], user_id))
+        
+        conn.commit()
+        conn.close()
+        return {"message": "User updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating user: {str(e)}")
+
+@api_router.delete("/users/{user_id}")
+async def delete_user(user_id: str, current_user: User = Depends(get_current_user)):
+    """Delete a user"""
+    try:
+        conn = get_mysql_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM users WHERE id=%s", (user_id,))
+        conn.commit()
+        conn.close()
+        return {"message": "User deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting user: {str(e)}")
+
