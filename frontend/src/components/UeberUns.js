@@ -19,35 +19,74 @@ const UeberUns = () => {
         const data = await response.json();
         console.log('Loaded about data:', data);
         
-        // Data is already parsed from backend - no need to parse again
-        // But ensure we have the right structure
-        if (data.team_members && Array.isArray(data.team_members)) {
-          // Already an array, good
-        } else if (typeof data.team_members === 'string') {
+        // Transform new API structure to component format
+        const transformedData = {
+          page_title: data.page_title || 'Über uns',
+          page_subtitle: data.page_subtitle || '',
+          header_background: data.header_background || '',
+          jimmy_data: data.jimmy_data || data.jimmy || {},
+          values_data: [],
+          team_members: []
+        };
+
+        // Parse jimmy_data if it's a string
+        if (typeof transformedData.jimmy_data === 'string') {
           try {
-            data.team_members = JSON.parse(data.team_members);
+            transformedData.jimmy_data = JSON.parse(transformedData.jimmy_data);
           } catch (e) {
-            console.warn('Failed to parse team_members JSON:', e);
-            data.team_members = [];
+            console.warn('Failed to parse jimmy_data:', e);
+            transformedData.jimmy_data = {};
           }
-        } else {
-          data.team_members = [];
+        }
+
+        // Transform values_section to values_data array
+        if (data.values_section_data || data.values_section) {
+          let valuesSection = data.values_section_data || data.values_section;
+          if (typeof valuesSection === 'string') {
+            try {
+              valuesSection = JSON.parse(valuesSection);
+            } catch (e) {
+              console.warn('Failed to parse values_section:', e);
+              valuesSection = {};
+            }
+          }
+          
+          if (valuesSection.values && Array.isArray(valuesSection.values)) {
+            transformedData.values_data = valuesSection.values;
+          } else if (valuesSection.qualitat) {
+            // Convert object format to array
+            transformedData.values_data = [
+              valuesSection.qualitat,
+              valuesSection.gastfreundschaft,
+              valuesSection.lebensfreude
+            ].filter(Boolean);
+          }
+        }
+
+        // Transform team_section to team_members array
+        if (data.team_section_data || data.team_section) {
+          let teamSection = data.team_section_data || data.team_section;
+          if (typeof teamSection === 'string') {
+            try {
+              teamSection = JSON.parse(teamSection);
+            } catch (e) {
+              console.warn('Failed to parse team_section:', e);
+              teamSection = {};
+            }
+          }
+          
+          if (teamSection.members && Array.isArray(teamSection.members)) {
+            transformedData.team_members = teamSection.members;
+          } else if (teamSection.carlos || teamSection.maria) {
+            // Convert object format to array
+            transformedData.team_members = [
+              teamSection.carlos,
+              teamSection.maria
+            ].filter(Boolean);
+          }
         }
         
-        if (data.values_data && Array.isArray(data.values_data)) {
-          // Already an array, good
-        } else if (typeof data.values_data === 'string') {
-          try {
-            data.values_data = JSON.parse(data.values_data);
-          } catch (e) {
-            console.warn('Failed to parse values_data JSON:', e);
-            data.values_data = [];
-          }
-        } else {
-          data.values_data = [];
-        }
-        
-        setPageData(data);
+        setPageData(transformedData);
       } else {
         throw new Error('Failed to load about page data');
       }
