@@ -282,7 +282,7 @@ backend:
 
   - task: "Authentication - GET /api/auth/me"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -297,6 +297,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Could not test the user profile endpoint because authentication is failing. This endpoint needs to be retested after the authentication issue is fixed."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/auth/me endpoint with authenticated request. The endpoint returns the user profile with all required fields (id, username, email, role, is_active, created_at, last_login). The user profile correctly shows the admin role and other user details."
 
   - task: "CMS Homepage Endpoints"
     implemented: true
