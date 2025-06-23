@@ -751,9 +751,9 @@ frontend:
 
   - task: "Fix CMS Login Functionality"
     implemented: true
-    working: true
+    working: false
     file: "/app/frontend/src/App.js"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: false
     status_history:
@@ -766,6 +766,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The CMS login functionality is now working correctly. Successfully logged in with username 'admin' and password 'jimmy2024'. The admin dashboard loads properly with all sections accessible including menu management, reviews section, and contact messages. No 'Verbindungsfehler' messages were found. The login API endpoint returns a 200 status code and provides a valid JWT token. The backend issues have been fixed, and the CMS interface is fully accessible."
+      - working: false
+        agent: "testing"
+        comment: "Found an issue with the CMS login functionality. The authentication API endpoints (/api/auth/login and /api/auth/me) are working correctly and returning valid responses with JWT tokens. However, after successful authentication, the frontend is not automatically redirecting to the dashboard. The token is correctly stored in localStorage, but users have to manually navigate to /admin/dashboard after login. Several API endpoints used by the dashboard are returning 404 errors, including /api/admin/newsletter/subscribers, /api/users, and /api/admin/contact. This suggests there are still some backend API endpoints that are not properly implemented or have incorrect routes."
 
 metadata:
   created_by: "testing_agent"
