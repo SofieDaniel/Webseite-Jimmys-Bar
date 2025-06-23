@@ -71,33 +71,47 @@ const Speisekarte = () => {
     );
   }
 
-  // Get unique categories with proper mapping
+  // Get unique categories with proper mapping and custom order
   const categoryMapping = {
-    'Inicio / Vorspeisen': 'Inicio / Vorspeisen',
-    'Salat': 'Salat', 
-    'Kleine Gerichte': 'Kleine Gerichte',
-    'Tapa Paella': 'Tapa Paella',
-    'Tapas Vegetarian': 'Tapas Vegetarian',
-    'Tapas de Pollo': 'Tapas de Pollo',
-    'Tapas de Carne': 'Tapas de Carne',
-    'Tapas de Pescado': 'Tapas de Pescado',
+    'Vorspeisen': 'Inicio / Vorspeisen',
+    'Salate': 'Salate', 
+    'Paella': 'Tapa Paella',
+    'Vegetarisch': 'Tapas Vegetarian',
+    'Hähnchen': 'Tapas de Pollo',
+    'Fleisch': 'Tapas de Carne',
+    'Fisch': 'Tapas de Pescado',
     'Kroketten': 'Kroketten',
     'Pasta': 'Pasta',
     'Pizza': 'Pizza',
-    'Dessert': 'Dessert',
-    'Heißgetränke': 'Heißgetränke',
-    'Tee': 'Tee',
-    'Softdrinks': 'Softdrinks',
-    'Säfte': 'Säfte',
-    'Aperitifs': 'Aperitifs',
-    'Bier': 'Bier',
-    'Weine': 'Weine',
+    'Snacks': 'Für den kleinen und großen Hunger',
+    'Dessert': 'Dessert & Eis',
+    // Getränke kommen zuletzt
+    'Heißgetränke': 'Heißgetränke & Tee',
+    'Softdrinks': 'Softdrinks, Wasser & Limonaden',
+    'Limonaden': 'Hausgemachte Limonaden',
+    'Säfte': 'Säfte/Nektar',
+    'Schorlen': 'Schorlen',
+    'Aperitifs': 'Aperitifs & Bier',
+    'Bier': 'Bier vom Fass & Flaschenbier',
+    'Weine': 'Weine & Spirituosen',
+    'Shots': 'Shots & Spirituosen',
+    'Gin': 'Gin Longdrinks',
+    'Whiskey': 'Whiskey',
+    'Brandy': 'Spanischer Brandy',
     'Cocktails': 'Cocktails',
-    'Spanische Getränke': 'Spanische Getränke',
-    'Spirituosen': 'Spirituosen'
+    'Sangria': 'Spanische Getränke'
   };
 
-  const allCategories = ['Alle Kategorien', ...Object.keys(categoryMapping)];
+  // Define the order of categories (food first, drinks last)
+  const categoryOrder = [
+    'Vorspeisen', 'Salate', 'Paella', 'Vegetarisch', 'Hähnchen', 'Fleisch', 'Fisch', 
+    'Kroketten', 'Pasta', 'Pizza', 'Snacks', 'Dessert',
+    // Getränke zuletzt
+    'Heißgetränke', 'Softdrinks', 'Limonaden', 'Säfte', 'Schorlen', 
+    'Aperitifs', 'Bier', 'Weine', 'Shots', 'Gin', 'Whiskey', 'Brandy', 'Cocktails', 'Sangria'
+  ];
+
+  const allCategories = ['Alle Kategorien', ...categoryOrder];
   const filteredItems = selectedCategory === 'Alle Kategorien' 
     ? menuItems 
     : menuItems.filter(item => item.category === selectedCategory);
