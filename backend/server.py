@@ -2219,6 +2219,66 @@ async def get_website_texts(section: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving website texts: {str(e)}")
 
+@api_router.get("/cms/kontakt-page")
+async def get_kontakt_page():
+    """Get contact page content"""
+    try:
+        content = await db.kontakt_page.find_one()
+        
+        if not content:
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Kontakt",
+                "page_subtitle": "Wir freuen uns auf Ihren Besuch",
+                "header_background": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5",
+                "contact_form_title": "Schreiben Sie uns",
+                "contact_form_subtitle": "Haben Sie Fragen oder möchten Sie einen Tisch reservieren?",
+                "locations_section_title": "Unsere Standorte",
+                "opening_hours_title": "Öffnungszeiten",
+                "additional_info": "Wir sind täglich für Sie da.",
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.kontakt_page.insert_one(default_content)
+            content = default_content
+        
+        if '_id' in content:
+            del content['_id']
+            
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving kontakt page: {str(e)}")
+
+@api_router.get("/cms/bewertungen-page")
+async def get_bewertungen_page():
+    """Get reviews page content"""
+    try:
+        content = await db.bewertungen_page.find_one()
+        
+        if not content:
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Bewertungen & Feedback",
+                "page_subtitle": "Was unsere Gäste über uns sagen",
+                "header_background": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5",
+                "reviews_section_title": "Kundenbewertungen",
+                "feedback_section_title": "Ihr Feedback",
+                "feedback_note": "Teilen Sie Ihre Erfahrungen mit uns und anderen Gästen.",
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.bewertungen_page.insert_one(default_content)
+            content = default_content
+        
+        if '_id' in content:
+            del content['_id']
+            
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving bewertungen page: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
