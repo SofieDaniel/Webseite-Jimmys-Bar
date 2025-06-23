@@ -6,14 +6,27 @@ from decimal import Decimal
 
 # MySQL Verbindung
 def get_mysql_connection():
-    return pymysql.connect(
-        host=os.environ.get('MYSQL_HOST', 'localhost'),
-        user=os.environ.get('MYSQL_USER', 'root'),
-        password=os.environ.get('MYSQL_PASSWORD', ''),
-        database=os.environ.get('MYSQL_DATABASE', 'jimmys_tapas_bar'),
-        charset='utf8mb4',
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    try:
+        # Try socket connection first (Linux default)
+        return pymysql.connect(
+            unix_socket='/run/mysqld/mysqld.sock',
+            user='root',
+            password='',
+            database='jimmys_tapas_bar',
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+    except:
+        # Fallback to TCP connection
+        return pymysql.connect(
+            host='localhost',
+            port=3306,
+            user='root',
+            password='',
+            database='jimmys_tapas_bar',
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
 
 def clear_existing_menu():
     """Löscht alle existierenden Menü-Artikel"""
