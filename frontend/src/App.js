@@ -1687,12 +1687,6 @@ const AdminPanel = () => {
             
             {/* Legal & Content Tools */}
             <button
-              onClick={() => setActiveSection('legal')}
-              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'legal' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
-            >
-              📋 Impressum & Datenschutz
-            </button>
-            <button
               onClick={() => setActiveSection('eu-compliance')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'eu-compliance' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
@@ -1703,14 +1697,6 @@ const AdminPanel = () => {
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'cookie-management' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
               🍪 Cookie-Verwaltung
-            </button>
-            
-            {/* Delivery Management */}
-            <button
-              onClick={() => setActiveSection('lieferando')}
-              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'lieferando' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
-            >
-              🚚 Lieferando
             </button>
             
             {/* Developer & System Tools */}
