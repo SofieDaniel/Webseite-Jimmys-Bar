@@ -162,36 +162,7 @@ const UeberUns = () => {
         </div>
       </div>
 
-      {/* Team Section - Exakt wie im Bild */}
-      <div className="bg-dark-brown py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-serif text-warm-beige text-center mb-12">
-            Unser Team
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {pageData.team_members.map((member, index) => (
-              <div key={index} className="bg-dark-brown">
-                <img 
-                  src={member.image} 
-                  alt={member.name}
-                  className="w-full h-64 object-cover rounded-lg mb-4"
-                />
-                <div className="text-center">
-                  <h3 className="text-xl font-serif text-warm-beige mb-2">
-                    {member.name}
-                  </h3>
-                  <h4 className="text-orange-400 mb-4 font-medium">
-                    {member.position}
-                  </h4>
-                  <p className="text-light-beige leading-relaxed text-sm">
-                    {member.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 };
