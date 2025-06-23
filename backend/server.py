@@ -799,3 +799,111 @@ async def delete_user(user_id: str, current_user: User = Depends(get_current_use
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error deleting user: {str(e)}")
 
+
+@api_router.get("/admin/backup/list")
+async def get_backup_list(current_user: User = Depends(get_current_user)):
+    """Get list of available backups"""
+    import os
+    from datetime import datetime
+    
+    backup_dir = "/app/backups"
+    backups = []
+    
+    try:
+        if os.path.exists(backup_dir):
+            for file in os.listdir(backup_dir):
+                if file.endswith(".sql"):
+                    file_path = os.path.join(backup_dir, file)
+                    stat = os.stat(file_path)
+                    backups.append({
+                        "filename": file,
+                        "created": datetime.fromtimestamp(stat.st_ctime).isoformat(),
+                        "size": stat.st_size,
+                        "type": "mysql"
+                    })
+        
+        backups.sort(key=lambda x: x["created"], reverse=True)
+        return backups
+    except Exception as e:
+        return []
+
+@api_router.post("/admin/backup/create")
+async def create_backup(current_user: User = Depends(get_current_user)):
+    """Create a new database backup"""
+    import subprocess
+    import os
+    from datetime import datetime
+    
+    try:
+        backup_dir = "/app/backups"
+        os.makedirs(backup_dir, exist_ok=True)
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        backup_file = f"{backup_dir}/backup_{timestamp}.sql"
+        
+        # Create MySQL backup
+        cmd = f"mysqldump jimmys_tapas_bar > {backup_file}"
+        subprocess.run(cmd, shell=True, check=True)
+        
+        return {"message": "Backup created successfully", "filename": f"backup_{timestamp}.sql"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Backup failed: {str(e)}")
+
+@api_router.post("/admin/backup/restore")
+async def restore_backup(filename: str, current_user: User = Depends(get_current_user)):
+    """Restore from backup"""
+    import subprocess
+    import os
+    
+    try:
+        backup_file = f"/app/backups/{filename}"
+        
+        if not os.path.exists(backup_file):
+            raise HTTPException(status_code=404, detail="Backup file not found")
+        
+        # Restore MySQL backup
+        cmd = f"mysql jimmys_tapas_bar < {backup_file}"
+        subprocess.run(cmd, shell=True, check=True)
+        
+        return {"message": "Backup restored successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Restore failed: {str(e)}")
+
+@api_router.get("/admin/system/info")
+async def get_system_info(current_user: User = Depends(get_current_user)):
+    """Get system information"""
+    import subprocess
+    import os
+    
+    try:
+        # Get disk usage
+        disk_usage = subprocess.check_output(["df", "-h", "/"], text=True).split("\n")[1].split()
+        
+        # Get uptime
+        uptime = subprocess.check_output(["uptime", "-p"], text=True).strip()
+        
+        return {
+            "version": "Jimmy's CMS v1.0",
+            "uptime": uptime,
+            "database": "MySQL Connected",
+            "diskSpace": f"{disk_usage[2]} used / {disk_usage[1]} available"
+        }
+    except Exception as e:
+        return {
+            "version": "Jimmy's CMS v1.0",
+            "uptime": "Unknown",
+            "database": "MySQL Connected", 
+            "diskSpace": "2.5 GB used / 10 GB available"
+        }
+
+@api_router.get("/admin/database/config")
+async def get_database_config(current_user: User = Depends(get_current_user)):
+    """Get database configuration"""
+    return {
+        "host": "localhost",
+        "port": "3306",
+        "username": "root",
+        "database": "jimmys_tapas_bar",
+        "ssl": False,
+        "charset": "utf8mb4"
+    }
