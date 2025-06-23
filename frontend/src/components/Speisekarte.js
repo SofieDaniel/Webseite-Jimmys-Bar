@@ -194,7 +194,12 @@ const Speisekarte = () => {
                     </div>
                     <div className="grid gap-6">
                       {items.map((item) => (
-                        <div key={item.id} className="bg-medium-brown rounded-xl border border-warm-brown overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                        <div 
+                          key={item.id} 
+                          className="bg-medium-brown rounded-xl border border-warm-brown overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-warm-beige hover:scale-[1.02]"
+                          onMouseEnter={() => setHoveredItem(item)}
+                          onMouseLeave={() => setHoveredItem(null)}
+                        >
                           <div className="p-6">
                             <div className="flex justify-between items-start mb-4">
                               <div className="flex-1">
