@@ -73,54 +73,48 @@ const Speisekarte = () => {
 
   // Get unique categories with proper mapping and custom order
   const categoryMapping = {
-    'Vorspeisen': 'Inicio / Vorspeisen',
+    'Inicio / Vorspeisen': 'Vorspeisen',
     'Salate': 'Salate', 
-    'Paella': 'Tapa Paella',
-    'Vegetarisch': 'Tapas Vegetarian',
-    'Hähnchen': 'Tapas de Pollo',
-    'Fleisch': 'Tapas de Carne',
-    'Fisch': 'Tapas de Pescado',
+    'Tapa Paella': 'Paella',
+    'Tapas Vegetarian': 'Vegetarisch',
+    'Tapas de Pollo': 'Hähnchen',
+    'Tapas de Carne': 'Fleisch',
+    'Tapas de Pescado': 'Fisch',
     'Kroketten': 'Kroketten',
     'Pasta': 'Pasta',
     'Pizza': 'Pizza',
-    'Snacks': 'Für den kleinen und großen Hunger',
-    'Dessert': 'Dessert & Eis',
-    // Getränke kommen zuletzt
-    'Heißgetränke': 'Heißgetränke & Tee',
-    'Softdrinks': 'Softdrinks, Wasser & Limonaden',
-    'Limonaden': 'Hausgemachte Limonaden',
-    'Säfte': 'Säfte/Nektar',
-    'Schorlen': 'Schorlen',
-    'Aperitifs': 'Aperitifs & Bier',
-    'Bier': 'Bier vom Fass & Flaschenbier',
-    'Weine': 'Weine & Spirituosen',
-    'Shots': 'Shots & Spirituosen',
-    'Gin': 'Gin Longdrinks',
-    'Whiskey': 'Whiskey',
-    'Brandy': 'Spanischer Brandy',
-    'Cocktails': 'Cocktails',
-    'Sangria': 'Spanische Getränke'
+    'Für den kleinen und großen Hunger': 'Snacks',
+    'Dessert & Eis': 'Dessert',
+    'Heißgetränke & Tee': 'Heißgetränke',
+    'Softdrinks': 'Softdrinks',
+    'Spanische Getränke': 'Sangria'
   };
 
-  // Define the order of categories (food first, drinks last)
+  // Define the order of categories (food first, drinks last) - using DB names
   const categoryOrder = [
-    'Vorspeisen', 'Salate', 'Paella', 'Vegetarisch', 'Hähnchen', 'Fleisch', 'Fisch', 
-    'Kroketten', 'Pasta', 'Pizza', 'Snacks', 'Dessert',
+    'Inicio / Vorspeisen', 'Salate', 'Tapa Paella', 'Tapas Vegetarian', 'Tapas de Pollo', 'Tapas de Carne', 'Tapas de Pescado', 
+    'Kroketten', 'Pasta', 'Pizza', 'Für den kleinen und großen Hunger', 'Dessert & Eis',
     // Getränke zuletzt
-    'Heißgetränke', 'Softdrinks', 'Limonaden', 'Säfte', 'Schorlen', 
-    'Aperitifs', 'Bier', 'Weine', 'Shots', 'Gin', 'Whiskey', 'Brandy', 'Cocktails', 'Sangria'
+    'Heißgetränke & Tee', 'Softdrinks', 'Spanische Getränke'
   ];
 
-  const allCategories = ['Alle Kategorien', ...categoryOrder];
+  // Get available categories from actual menu items
+  const availableCategories = [...new Set(menuItems.map(item => item.category))];
+  const availableCategoryOrder = categoryOrder.filter(cat => availableCategories.includes(cat));
+  
+  const allCategories = ['Alle Kategorien', ...availableCategoryOrder.map(cat => categoryMapping[cat] || cat)];
   const filteredItems = selectedCategory === 'Alle Kategorien' 
     ? menuItems 
-    : menuItems.filter(item => item.category === selectedCategory);
+    : menuItems.filter(item => (categoryMapping[item.category] || item.category) === selectedCategory);
 
   // Group items by category for display with custom order
-  const groupedItems = categoryOrder.reduce((acc, category) => {
-    const itemsInCategory = filteredItems.filter(item => item.category === category);
+  const groupedItems = availableCategoryOrder.reduce((acc, dbCategory) => {
+    const displayCategory = categoryMapping[dbCategory] || dbCategory;
+    const itemsInCategory = selectedCategory === 'Alle Kategorien' 
+      ? menuItems.filter(item => item.category === dbCategory)
+      : filteredItems.filter(item => item.category === dbCategory);
     if (itemsInCategory.length > 0) {
-      acc[category] = itemsInCategory;
+      acc[displayCategory] = itemsInCategory;
     }
     return acc;
   }, {});
