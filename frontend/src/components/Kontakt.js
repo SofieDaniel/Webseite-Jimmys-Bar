@@ -67,7 +67,7 @@ const Kontakt = () => {
         <div className="relative z-10 pt-24 pb-16">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-4xl mx-auto">
-              <h1 className="text-6xl md:text-7xl font-serif text-warm-beige mb-6 tracking-wide drop-shadow-lg">
+              <h1 className="text-6xl md:text-7xl font-serif text-white mb-6 tracking-wide drop-shadow-2xl" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5)'}}>
                 Kontakt
               </h1>
               <div className="bg-dark-brown/80 backdrop-blur-sm rounded-xl p-6 border border-warm-beige/30">
