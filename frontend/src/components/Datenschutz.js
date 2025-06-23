@@ -150,7 +150,7 @@ const Datenschutz = () => {
               </p>
               <p className="text-warm-beige mt-2">
                 <strong>E-Mail:</strong> datenschutz@jimmys-tapasbar.de<br/>
-                <strong>Telefon:</strong> +49 4561 123456
+                <strong>Telefon:</strong> 015735256793
               </p>
               <p className="text-light-beige mt-4 text-sm">
                 Stand dieser Datenschutzerklärung: Januar 2024
