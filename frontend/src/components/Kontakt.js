@@ -165,7 +165,7 @@ const Kontakt = () => {
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 bg-dark-brown/50 border border-warm-beige/30 rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-white border border-warm-beige/30 rounded-lg text-gray-900 focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300"
                   >
                     <option value="">Betreff wählen</option>
                     <option value="allgemeine-anfrage">Allgemeine Anfrage</option>
