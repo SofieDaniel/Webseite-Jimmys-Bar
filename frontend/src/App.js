@@ -741,17 +741,61 @@ const EUComplianceSection = () => {
     last_updated: new Date().toISOString().split('T')[0]
   });
 
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadComplianceSettings();
+  }, []);
+
+  const loadComplianceSettings = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/eu-compliance`);
+      if (response.ok) {
+        const data = await response.json();
+        setComplianceSettings(data);
+      } else {
+        setError('Fehler beim Laden der EU-Compliance Einstellungen');
+      }
+    } catch (error) {
+      console.error('Error loading compliance settings:', error);
+      setError('Verbindungsfehler beim Laden');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const saveComplianceSettings = async () => {
     setSaving(true);
-    // Simulate save operation
-    setTimeout(() => {
+    setSuccess('');
+    setError('');
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/eu-compliance`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(complianceSettings)
+      });
+
+      if (response.ok) {
+        setSuccess('EU-Compliance Einstellungen erfolgreich gespeichert!');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Fehler beim Speichern der Einstellungen');
+      }
+    } catch (error) {
+      console.error('Error saving compliance settings:', error);
+      setError('Verbindungsfehler beim Speichern');
+    } finally {
       setSaving(false);
-      setSuccess('EU-Compliance Einstellungen erfolgreich gespeichert!');
-      setTimeout(() => setSuccess(''), 3000);
-    }, 1000);
+    }
   };
 
   return (
