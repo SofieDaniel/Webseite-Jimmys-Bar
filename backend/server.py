@@ -378,7 +378,7 @@ async def update_standorte_enhanced(content_data: dict, current_user: User = Dep
 
 @api_router.get("/cms/locations")
 async def get_locations():
-    """Alias für standorte-enhanced für CMS Kompatibilität"""
+    """Get locations data - returns current live data structure"""
     return {
         "page_title": "Unsere Standorte",
         "page_description": "Besuchen Sie uns an der malerischen Ostseeküste",
@@ -386,12 +386,12 @@ async def get_locations():
             {
                 "id": "neustadt",
                 "name": "Neustadt in Holstein",
-                "address": "Strandstraße 12, 23730 Neustadt in Holstein",
-                "phone": "+49 4561 123456",
-                "email": "neustadt@jimmys-tapasbar.de",
+                "address": "Am Strande 21 Promenade, 23730 Neustadt in Holstein",
+                "phone": "015735256793",
+                "email": "info@jimmys-tapasbar.de",
                 "opening_hours": {
-                    "Montag": "17:00 - 23:00", "Dienstag": "17:00 - 23:00", "Mittwoch": "17:00 - 23:00",
-                    "Donnerstag": "17:00 - 23:00", "Freitag": "17:00 - 00:00", "Samstag": "17:00 - 00:00", "Sonntag": "17:00 - 23:00"
+                    "Montag": "12:00 - 22:00", "Dienstag": "12:00 - 22:00", "Mittwoch": "12:00 - 22:00",
+                    "Donnerstag": "12:00 - 22:00", "Freitag": "12:00 - 22:00", "Samstag": "12:00 - 22:00", "Sonntag": "12:00 - 22:00"
                 },
                 "description": "Direkt am Strand gelegen mit großer Terrasse",
                 "features": ["Direkte Strandlage", "Große Terrasse", "Familienfreundlich", "Parkplatz kostenlos"],
@@ -401,12 +401,12 @@ async def get_locations():
             {
                 "id": "grossenbrode", 
                 "name": "Großenbrode",
-                "address": "Strandpromenade 8, 23775 Großenbrode",
-                "phone": "+49 4367 987654",
-                "email": "grossenbrode@jimmys-tapasbar.de",
+                "address": "Südstrand 54 Promenade, 23755 Großenbrode",
+                "phone": "015782226373",
+                "email": "info@jimmys-tapasbar.de",
                 "opening_hours": {
-                    "Montag": "17:00 - 22:00", "Dienstag": "17:00 - 22:00", "Mittwoch": "17:00 - 22:00",
-                    "Donnerstag": "17:00 - 22:00", "Freitag": "17:00 - 23:00", "Samstag": "17:00 - 23:00", "Sonntag": "17:00 - 22:00"
+                    "Montag": "12:00 - 22:00", "Dienstag": "12:00 - 22:00", "Mittwoch": "12:00 - 22:00",
+                    "Donnerstag": "12:00 - 22:00", "Freitag": "12:00 - 22:00", "Samstag": "12:00 - 22:00", "Sonntag": "12:00 - 22:00"
                 },
                 "description": "Ruhige Lage mit Panorama-Meerblick",
                 "features": ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"],
