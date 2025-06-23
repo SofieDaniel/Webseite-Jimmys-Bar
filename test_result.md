@@ -712,17 +712,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Authentication - POST /api/auth/login"
-    - "Authentication - GET /api/auth/me"
-    - "CMS About Endpoints"
-    - "Review Management - GET /api/reviews"
-    - "Review Management - GET /api/admin/reviews/pending"
-    - "Contact Messages - GET /api/admin/contact"
-    - "User Management - GET /api/users"
-  stuck_tasks:
-    - "Authentication - POST /api/auth/login"
-    - "CMS About Endpoints"
-    - "Review Management - GET /api/reviews"
+    - "Fix review submission database schema mismatch"
+    - "CMS Navigation/Footer/Buttons functionality"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
