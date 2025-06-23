@@ -398,6 +398,71 @@ async def get_ueber_uns_enhanced():
         }
     }
 
+# Fehlende Admin-Endpunkte hinzufügen
+@api_router.get("/admin/newsletter/subscribers")
+async def get_newsletter_subscribers(current_user: User = Depends(get_current_user)):
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM newsletter_subscribers ORDER BY created_at DESC")
+        subscribers = cursor.fetchall()
+        return subscribers
+    except Exception as e:
+        # Falls Tabelle nicht existiert, leere Liste zurückgeben
+        return []
+    finally:
+        conn.close()
+
+@api_router.get("/users")
+async def get_users(current_user: User = Depends(get_current_user)):
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, username, email, role, is_active FROM users")
+        users = cursor.fetchall()
+        return [User(**user) for user in users]
+    finally:
+        conn.close()
+
+@api_router.get("/admin/contact")
+async def get_contact_messages(current_user: User = Depends(get_current_user)):
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM contact_messages ORDER BY date DESC")
+        messages = cursor.fetchall()
+        return messages
+    finally:
+        conn.close()
+
+@api_router.post("/newsletter/subscribe")
+async def newsletter_subscribe(email_data: dict):
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        # Versuche Tabelle zu erstellen falls sie nicht existiert
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+                id VARCHAR(36) PRIMARY KEY,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                is_active BOOLEAN DEFAULT TRUE
+            )
+        """)
+        
+        cursor.execute("""
+            INSERT INTO newsletter_subscribers (id, email)
+            VALUES (%s, %s)
+        """, (str(uuid.uuid4()), email_data.get("email")))
+        conn.commit()
+        return {"message": "Newsletter subscription successful"}
+    except Exception as e:
+        if "Duplicate entry" in str(e):
+            return {"message": "Email already subscribed"}
+        return {"message": "Subscription failed", "error": str(e)}
+    finally:
+        conn.close()
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
