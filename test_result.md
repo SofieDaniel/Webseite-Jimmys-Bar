@@ -789,7 +789,9 @@ test_plan:
     - "Contact Messages - GET /api/admin/contact"
     - "Newsletter - GET /api/admin/newsletter/subscribers"
     - "Newsletter - POST /api/newsletter/subscribe"
-  stuck_tasks: []
+    - "Fix CMS Login Functionality"
+  stuck_tasks: 
+    - "Fix CMS Login Functionality"
   test_all: false
   test_priority: "high_first"
 
