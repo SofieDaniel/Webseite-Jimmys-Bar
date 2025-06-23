@@ -108,7 +108,7 @@ const UeberUns = () => {
         </div>
       </div>
 
-      {/* Unsere Leidenschaft Section - Exakt wie im Bild */}
+      {/* Unsere Leidenschaft Section - Schöne Box-Gestaltung */}
       <div className="bg-dark-brown py-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-12">
@@ -120,26 +120,44 @@ const UeberUns = () => {
             </p>
           </div>
           
-          {/* Leidenschaft Text-Blöcke */}
-          <div className="text-light-beige space-y-4 text-base leading-relaxed">
-            <p>
-              {pageData.leidenschaft_data.intro}
-            </p>
-            <p>
-              {pageData.leidenschaft_data.text1}
-            </p>
-            <p>
-              {pageData.leidenschaft_data.text2}
-            </p>
-            <p>
-              {pageData.leidenschaft_data.text3}
-            </p>
-            <p>
-              {pageData.leidenschaft_data.text4}
-            </p>
-            <p>
-              {pageData.leidenschaft_data.text5}
-            </p>
+          {/* Schöne Box mit Hintergrund und Rahmen */}
+          <div className="bg-gradient-to-br from-medium-brown/80 to-dark-brown/90 rounded-2xl border-2 border-warm-beige/30 p-8 md:p-12 shadow-2xl backdrop-blur-sm">
+            <div className="text-light-beige space-y-6 text-base leading-relaxed">
+              <p className="text-lg font-medium text-warm-beige mb-6">
+                {pageData.leidenschaft_data.intro}
+              </p>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <p>{pageData.leidenschaft_data.text1}</p>
+                  <p>{pageData.leidenschaft_data.text2}</p>
+                  <p>{pageData.leidenschaft_data.text3}</p>
+                </div>
+                <div className="space-y-4">
+                  <p>{pageData.leidenschaft_data.text4}</p>
+                  <p>{pageData.leidenschaft_data.text5}</p>
+                  
+                  {/* Dekorative Elemente */}
+                  <div className="mt-8 flex items-center justify-center">
+                    <div className="flex items-center space-x-4 text-orange-400">
+                      <span className="text-2xl">🥘</span>
+                      <div className="w-12 h-0.5 bg-warm-beige"></div>
+                      <span className="text-2xl">🍷</span>
+                      <div className="w-12 h-0.5 bg-warm-beige"></div>
+                      <span className="text-2xl">🌊</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Call-to-Action */}
+              <div className="text-center mt-8 pt-6 border-t border-warm-beige/20">
+                <p className="text-warm-beige italic text-lg">
+                  "Essen ist nicht nur Nahrung - es ist Kultur, Tradition und Leidenschaft auf einem Teller."
+                </p>
+                <p className="text-orange-400 mt-2 font-medium">- Jimmy Rodríguez</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
