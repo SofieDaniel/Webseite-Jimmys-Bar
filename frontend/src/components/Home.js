@@ -38,12 +38,12 @@ const Home = () => {
     title: homepageContent.hero_title || "JIMMY'S TAPAS BAR",
     subtitle: homepageContent.hero_subtitle || "an der Ostsee",
     description: homepageContent.hero_description || "Genießen Sie authentische mediterrane Spezialitäten direkt an der malerischen Ostseeküste",
-    background_image: homepageContent.hero_background || "https://images.unsplash.com/photo-1656423521731-9665583f100c"
+    background_image: homepageContent.hero_background || "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
   } : {
     title: "JIMMY'S TAPAS BAR",
     subtitle: "an der Ostsee", 
     description: "Genießen Sie authentische mediterrane Spezialitäten direkt an der malerischen Ostseeküste",
-    background_image: "https://images.unsplash.com/photo-1656423521731-9665583f100c"
+    background_image: "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
   };
 
   // Features from API or default Jimmy's content
