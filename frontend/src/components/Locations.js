@@ -252,10 +252,7 @@ const Locations = () => {
 
                 {/* Action Buttons */}
                 <div className="flex gap-4">
-                  <button className="flex-1 bg-warm-beige text-dark-brown py-3 rounded-lg font-semibold hover:bg-orange-500 hover:text-white transition-all duration-300">
-                    Tisch reservieren
-                  </button>
-                  <button className="flex-1 bg-dark-brown/50 text-warm-beige py-3 rounded-lg font-semibold border border-warm-beige hover:bg-warm-beige hover:text-dark-brown transition-all duration-300">
+                  <button className="w-full bg-warm-beige text-dark-brown py-3 rounded-lg font-semibold hover:bg-orange-500 hover:text-white transition-all duration-300">
                     Route planen
                   </button>
                 </div>
