@@ -1746,10 +1746,8 @@ const AdminPanel = () => {
           {activeSection === 'menu' && <MenuItemsAdminSection />}
           {activeSection === 'contacts' && <ContactAdminSection />}
           {activeSection === 'users' && <UsersAdminSection />}
-          {activeSection === 'legal' && <LegalEditor />}
           {activeSection === 'eu-compliance' && <EUComplianceSection />}
           {activeSection === 'cookie-management' && <CookieManagementSection />}
-          {activeSection === 'lieferando' && <LieferandoSection />}
           {activeSection === 'developer-info' && <DeveloperInfoSection />}
           {activeSection === 'system' && <SystemBackupSection />}
           {activeSection === 'maintenance' && <MaintenanceSection />}
