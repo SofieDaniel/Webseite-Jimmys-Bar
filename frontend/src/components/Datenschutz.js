@@ -49,11 +49,11 @@ const Datenschutz = () => {
               <h3 className="text-xl font-serif text-warm-beige mb-4">1. Verantwortlicher</h3>
               <div className="bg-dark-brown/50 rounded-lg p-4">
                 <p className="text-light-beige">
-                  Jimmy's Tapas Bar<br/>
-                  Jimmy Rodríguez<br/>
-                  Strandstraße 1<br/>
-                  18225 Kühlungsborn<br/>
-                  Telefon: +49 38293 12345<br/>
+                  Jimmy's Tapas-Bar<br/>
+                  Ravinder Pal Singh<br/>
+                  Am Strande 21 Promenade<br/>
+                  23730 Neustadt in Holstein<br/>
+                  Telefon: +49 4561 123456<br/>
                   E-Mail: info@jimmys-tapasbar.de
                 </p>
               </div>
