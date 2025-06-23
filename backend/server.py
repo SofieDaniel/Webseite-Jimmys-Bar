@@ -682,3 +682,42 @@ async def startup_event():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
+@api_router.get("/cms/eu-compliance")
+async def get_eu_compliance():
+    """Get EU compliance settings"""
+    return {
+        "gdpr_enabled": True,
+        "cookie_consent_required": True,
+        "data_retention_period": 730,
+        "privacy_policy_version": "2.0",
+        "last_updated": "2024-12-19"
+    }
+
+@api_router.put("/cms/eu-compliance")
+async def update_eu_compliance(settings: dict, current_user: User = Depends(get_current_user)):
+    """Update EU compliance settings"""
+    # In production, save to database
+    return {"message": "EU compliance settings updated successfully", "data": settings}
+
+@api_router.get("/cms/cookie-settings")
+async def get_cookie_settings():
+    """Get cookie management settings"""
+    return {
+        "cookieSettings": {
+            "essential_cookies": {"enabled": True, "description": "Technisch notwendige Cookies"},
+            "analytics_cookies": {"enabled": False, "description": "Analyse-Cookies"},
+            "marketing_cookies": {"enabled": False, "description": "Marketing-Cookies"}
+        },
+        "bannerSettings": {
+            "banner_title": "Diese Website verwendet Cookies",
+            "banner_text": "Wir verwenden Cookies für beste Nutzererfahrung",
+            "accept_button_text": "Alle akzeptieren"
+        }
+    }
+
+@api_router.put("/cms/cookie-settings")
+async def update_cookie_settings(settings: dict, current_user: User = Depends(get_current_user)):
+    """Update cookie management settings"""
+    # In production, save to database
+    return {"message": "Cookie settings updated successfully", "data": settings}
+
