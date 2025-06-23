@@ -102,7 +102,32 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Jimmy's v7 - Erweiterte Lieferando-Sektion implementieren und kritische Backend-Fehler beheben. Ziel: Detaillierte Lieferinformationen mit Bildern statt Icons, Standortauswahl entfernen, und alle kaputten API-Endpoints reparieren."
+user_problem_statement: "Jimmy's v7 - Fix review submission error: Users can't submit reviews due to database schema mismatch. The backend code is trying to insert into an 'is_approved' column that doesn't exist, causing 'Unknown column 'is_approved' in 'INSERT INTO'' error. Also fix non-functional Navigation/Footer/Buttons CMS functionality."
+
+backend:
+  - task: "Fix review submission database schema mismatch"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Fixed GET /reviews endpoint to use 'is_approved' instead of 'approved' to match the database schema. The database schema shows the column is named 'is_approved' (line 29 in database_setup.sql), but the GET endpoint was incorrectly using 'approved'. This mismatch was causing inconsistencies between read and write operations."
+  
+  - task: "CMS Navigation/Footer/Buttons functionality"
+    implemented: false
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "User reported that Navigation/Footer/Buttons CMS functions are still not working. Need to investigate and fix these CMS endpoints."
 
 backend:
   - task: "Fix JSON datetime serialization in backup functions"
