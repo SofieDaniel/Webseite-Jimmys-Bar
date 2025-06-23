@@ -293,21 +293,6 @@ const AboutAdminSection = () => {
             />
           </div>
         </div>
-      </div>
-
-      {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-        <div className="flex items-start">
-          <span className="text-blue-500 text-xl mr-3">ℹ️</span>
-          <div>
-            <h3 className="text-blue-800 font-medium mb-1">Hinweis</h3>
-            <p className="text-blue-700 text-sm">
-              Das "Unser Team" Section wurde entfernt, wie gewünscht. Diese CMS-Oberfläche entspricht jetzt 
-              exakt der Live-Website-Struktur ohne Team-Mitglieder.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
