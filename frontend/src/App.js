@@ -337,8 +337,32 @@ const NavigationSection = () => {
     { id: 'contact', name: 'Kontakt', url: '/kontakt', active: true }
   ]);
 
+  const [footerData, setFooterData] = useState({
+    socialLinks: {
+      facebook: '',
+      instagram: '',
+      google: ''
+    },
+    businessHours: {
+      neustadt: 'Mo-So: 17:00-23:00 Uhr',
+      grossenbrode: 'Mo-So: 17:00-22:00 Uhr'
+    },
+    footerText: '© 2024 Jimmy\'s Tapas Bar. Alle Rechte vorbehalten.'
+  });
+
+  const [generalSettings, setGeneralSettings] = useState({
+    siteName: 'Jimmy\'s Tapas Bar',
+    tagline: 'Authentische spanische Küche an der Ostsee',
+    logo: '',
+    favicon: '',
+    googleAnalytics: '',
+    contactEmail: 'info@jimmys-tapasbar.de',
+    reservationPhone: '+49 4561 123456'
+  });
+
   const [saving, setSaving] = useState(false);
-  const [success, setSuccess] = useState('');
+  const [message, setMessage] = useState('');
+  const [activeTab, setActiveTab] = useState('navigation');
 
   const updateNavItem = (id, field, value) => {
     setNavItems(navItems.map(item => 
@@ -346,38 +370,300 @@ const NavigationSection = () => {
     ));
   };
 
-  const saveNavigation = async () => {
-    setSaving(true);
-    // Simulate save operation
-    setTimeout(() => {
-      setSaving(false);
-      setSuccess('Navigation erfolgreich gespeichert!');
-      setTimeout(() => setSuccess(''), 3000);
-    }, 1000);
+  const updateFooter = (section, field, value) => {
+    setFooterData(prev => ({
+      ...prev,
+      [section]: typeof prev[section] === 'object' 
+        ? { ...prev[section], [field]: value }
+        : value
+    }));
   };
 
-  return (
+  const updateGeneral = (field, value) => {
+    setGeneralSettings(prev => ({ ...prev, [field]: value }));
+  };
+
+  const saveSettings = async () => {
+    setSaving(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setMessage('Einstellungen erfolgreich gespeichert!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      setMessage('Fehler beim Speichern!');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const renderNavigation = () => (
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold text-gray-900 mb-6">🧭 Navigation verwalten</h3>
+      {navItems.map((item, index) => (
+        <div key={item.id} className="bg-gray-50 rounded-lg p-4 border">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input
+                type="text"
+                value={item.name}
+                onChange={(e) => updateNavItem(item.id, 'name', e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">URL</label>
+              <input
+                type="text"
+                value={item.url}
+                onChange={(e) => updateNavItem(item.id, 'url', e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            <div className="flex items-center">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={item.active}
+                  onChange={(e) => updateNavItem(item.id, 'active', e.target.checked)}
+                  className="mr-2 text-blue-600"
+                />
+                <span className="text-sm text-gray-700">Aktiv</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const renderFooter = () => (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">🧭 Navigation</h1>
-        <p className="text-gray-600">Website-Navigation und Menü-Struktur verwalten</p>
+      <h3 className="text-lg font-semibold text-gray-900">🦶 Footer verwalten</h3>
+      
+      <div className="bg-gray-50 rounded-lg p-4 border">
+        <h4 className="font-medium text-gray-900 mb-4">Social Media Links</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Facebook URL</label>
+            <input
+              type="url"
+              value={footerData.socialLinks.facebook}
+              onChange={(e) => updateFooter('socialLinks', 'facebook', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="https://facebook.com/jimmys-tapasbar"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
+            <input
+              type="url"
+              value={footerData.socialLinks.instagram}
+              onChange={(e) => updateFooter('socialLinks', 'instagram', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="https://instagram.com/jimmys-tapasbar"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Google URL</label>
+            <input
+              type="url"
+              value={footerData.socialLinks.google}
+              onChange={(e) => updateFooter('socialLinks', 'google', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="https://maps.google.com/jimmys-tapasbar"
+            />
+          </div>
+        </div>
       </div>
 
-      {success && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
-          {success}
+      <div className="bg-gray-50 rounded-lg p-4 border">
+        <h4 className="font-medium text-gray-900 mb-4">Öffnungszeiten</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Neustadt</label>
+            <input
+              type="text"
+              value={footerData.businessHours.neustadt}
+              onChange={(e) => updateFooter('businessHours', 'neustadt', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Großenbrode</label>
+            <input
+              type="text"
+              value={footerData.businessHours.grossenbrode}
+              onChange={(e) => updateFooter('businessHours', 'grossenbrode', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gray-50 rounded-lg p-4 border">
+        <h4 className="font-medium text-gray-900 mb-4">Footer-Text</h4>
+        <textarea
+          value={footerData.footerText}
+          onChange={(e) => updateFooter('footerText', '', e.target.value)}
+          rows={2}
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+    </div>
+  );
+
+  const renderButtons = () => (
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold text-gray-900">🔘 Button-Einstellungen</h3>
+      <div className="bg-gray-50 rounded-lg p-4 border">
+        <p className="text-gray-600">Button-Stile und Call-to-Action Texte können hier angepasst werden.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Primärer Button Farbe</label>
+            <input
+              type="color"
+              value="#f97316"
+              className="w-full h-10 border border-gray-300 rounded-lg"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Sekundärer Button Farbe</label>
+            <input
+              type="color"
+              value="#6b7280"
+              className="w-full h-10 border border-gray-300 rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderGeneral = () => (
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold text-gray-900">⚙️ Allgemeine Einstellungen</h3>
+      
+      <div className="bg-gray-50 rounded-lg p-4 border">
+        <h4 className="font-medium text-gray-900 mb-4">Website-Informationen</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Website-Name</label>
+            <input
+              type="text"
+              value={generalSettings.siteName}
+              onChange={(e) => updateGeneral('siteName', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Tagline</label>
+            <input
+              type="text"
+              value={generalSettings.tagline}
+              onChange={(e) => updateGeneral('tagline', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kontakt E-Mail</label>
+            <input
+              type="email"
+              value={generalSettings.contactEmail}
+              onChange={(e) => updateGeneral('contactEmail', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Reservierungs-Telefon</label>
+            <input
+              type="tel"
+              value={generalSettings.reservationPhone}
+              onChange={(e) => updateGeneral('reservationPhone', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gray-50 rounded-lg p-4 border">
+        <h4 className="font-medium text-gray-900 mb-4">SEO & Analytics</h4>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Google Analytics ID</label>
+          <input
+            type="text"
+            value={generalSettings.googleAnalytics}
+            onChange={(e) => updateGeneral('googleAnalytics', e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="GA-XXXXXXXXX-X"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">⚙️ Inhalte verwalten</h1>
+        <p className="text-gray-600">Bearbeiten Sie die Inhalte Ihrer Website</p>
+      </div>
+
+      {message && (
+        <div className={`mb-6 p-4 rounded-lg ${
+          message.includes('erfolgreich') 
+            ? 'bg-green-50 border border-green-200 text-green-700' 
+            : 'bg-red-50 border border-red-200 text-red-700'
+        }`}>
+          {message}
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Hauptnavigation</h3>
-        
-        <div className="space-y-4">
-          {navItems.map((item, index) => (
-            <div key={item.id} className="flex items-center justify-between p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
-              <div className="flex items-center space-x-6 flex-1">
-                <div className="flex items-center space-x-3">
-                  <span className="text-2xl font-bold text-gray-800">{index + 1}</span>
+      {/* Tabs */}
+      <div className="border-b border-gray-200 mb-6">
+        <nav className="flex space-x-8">
+          {[
+            { id: 'navigation', label: 'Navigation', icon: '🧭' },
+            { id: 'footer', label: 'Footer', icon: '🦶' },
+            { id: 'buttons', label: 'Buttons', icon: '🔘' },
+            { id: 'general', label: 'Allgemein', icon: '⚙️' }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === tab.id
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              {tab.icon} {tab.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Content */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        {activeTab === 'navigation' && renderNavigation()}
+        {activeTab === 'footer' && renderFooter()}
+        {activeTab === 'buttons' && renderButtons()}
+        {activeTab === 'general' && renderGeneral()}
+      </div>
+
+      {/* Save Button */}
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={saveSettings}
+          disabled={saving}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
+        >
+          {saving ? 'Speichern...' : 'Änderungen speichern'}
+        </button>
+      </div>
+    </div>
+  );
                   <div className="flex items-center space-x-2">
                     <input
                       type="checkbox"
