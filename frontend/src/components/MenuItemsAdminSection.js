@@ -275,12 +275,12 @@ const MenuItemForm = ({ item, categories, onSave, onCancel }) => {
 
             {/* Origin */}
             <div>
-              <label className="block text-warm-beige text-sm font-medium mb-2">Herkunft</label>
+              <label className="block text-gray-900 text-sm font-medium mb-2">Herkunft</label>
               <input
                 type="text"
                 value={formData.origin}
                 onChange={(e) => setFormData({...formData, origin: e.target.value})}
-                className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
