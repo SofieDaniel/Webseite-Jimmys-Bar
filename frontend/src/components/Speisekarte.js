@@ -253,30 +253,30 @@ const Speisekarte = () => {
           {/* Right Side - Hover Details (Detaillierte Beschreibungen, kein Preis) */}
           <div className="w-96 sticky top-24 h-fit">
             {hoveredItem ? (
-              <div className="bg-gradient-to-br from-amber-900/90 to-orange-900/90 border-2 border-amber-600/60 rounded-xl p-6 shadow-2xl backdrop-blur-sm">
+              <div className="bg-gradient-to-br from-medium-brown/95 to-dark-brown/95 border-2 border-warm-beige/40 rounded-xl p-6 shadow-2xl backdrop-blur-sm">
                 {/* Header */}
-                <div className="border-b border-amber-400/30 pb-4 mb-4">
-                  <h3 className="text-2xl font-serif text-amber-100 mb-3 font-bold">
+                <div className="border-b border-warm-beige/30 pb-4 mb-4">
+                  <h3 className="text-2xl font-serif text-warm-beige mb-3 font-bold">
                     {hoveredItem.name}
                   </h3>
                   
                   <div className="flex items-center gap-2 flex-wrap mb-2">
-                    <span className="bg-amber-600/30 text-amber-200 px-3 py-1 rounded-full text-xs font-medium border border-amber-500/50">
+                    <span className="bg-warm-beige/20 text-warm-beige px-3 py-1 rounded-full text-xs font-medium border border-warm-beige/30">
                       {hoveredItem.category}
                     </span>
-                    <span className="bg-orange-600/30 text-orange-200 px-3 py-1 rounded-full text-xs font-medium border border-orange-500/50">
+                    <span className="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-xs font-medium border border-orange-500/30">
                       {hoveredItem.price} €
                     </span>
                     <div className="flex gap-1">
                       {getAllergyIcons(hoveredItem).map((icon, index) => (
-                        <span key={index} className="text-lg bg-amber-200/20 px-2 py-1 rounded border border-amber-400/30">{icon}</span>
+                        <span key={index} className="text-lg bg-warm-beige/15 px-2 py-1 rounded border border-warm-beige/20">{icon}</span>
                       ))}
                     </div>
                   </div>
 
                   {/* Kurze Beschreibung */}
                   {hoveredItem.description && (
-                    <p className="text-amber-200/90 text-sm italic">
+                    <p className="text-light-beige/90 text-sm italic">
                       {hoveredItem.description}
                     </p>
                   )}
