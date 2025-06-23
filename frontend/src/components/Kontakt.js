@@ -117,7 +117,7 @@ const Kontakt = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 bg-dark-brown/50 border border-warm-beige/30 rounded-lg text-light-beige placeholder-gray-400 focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-white border border-warm-beige/30 rounded-lg text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300"
                     placeholder="Ihr vollständiger Name"
                   />
                 </div>
