@@ -804,8 +804,6 @@ test_plan:
   current_focus:
     - "Menu Management - Backend API Validation"
     - "CMS Menu Items CRUD Operations" 
-    - "MouseOver Functionality Testing"
-    - "Menu Items Display with detailed_description"
     - "Complete Menu Import Validation (125 items)"
   stuck_tasks: 
     - "Fix CMS Login Functionality"
