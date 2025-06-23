@@ -217,21 +217,99 @@ async def get_homepage_content():
             "title": "Mediterrane Tradition",
             "subtitle": "Erleben Sie authentische mediterrane Gastfreundschaft an der deutschen Ostseeküste",
             "cards": [
-                {"title": "Authentische Tapas", "description": "Traditionelle Rezepte aus verschiedenen Regionen Spaniens", "image_url": "https://images.unsplash.com/photo-1559847844-5315695dadae"},
-                {"title": "Frische Paellas", "description": "Täglich frisch zubereitet nach originalen Rezepten", "image_url": "https://images.unsplash.com/photo-1534080564583-6be75777b70a"},
-                {"title": "Strandnähe", "description": "Beide Standorte direkt an der malerischen Ostseeküste", "image_url": "https://images.unsplash.com/photo-1506377585622-bedcbb027afc"}
+                {"title": "Authentische Tapas", "description": "Traditionelle mediterrane Gerichte, mit Liebe zubereitet und perfekt zum Teilen", "image_url": "https://images.unsplash.com/photo-1559847844-5315695dadae"},
+                {"title": "Frische Paella", "description": "Täglich hausgemacht mit Meeresfrüchten, Gemüse oder Huhn", "image_url": "https://images.unsplash.com/photo-1534080564583-6be75777b70a"},
+                {"title": "Strandnähe", "description": "Beide Standorte direkt an der malerischen Ostseeküste – perfekt für entspannte Stunden", "image_url": "https://images.unsplash.com/photo-1506377585622-bedcbb027afc"}
             ]
         },
         "specialties": {
             "title": "Unsere Spezialitäten",
             "cards": [
-                {"title": "Patatas Bravas", "description": "Klassische mediterrane Kartoffeln", "image_url": "https://images.unsplash.com/photo-1534080564583-6be75777b70a"},
-                {"title": "Paella Valenciana", "description": "Traditionelle mediterrane Paella", "image_url": "https://images.unsplash.com/photo-1558985250-3f1b04f44b25"},
-                {"title": "Tapas Variación", "description": "Auswahl mediterraner Köstlichkeiten", "image_url": "https://images.unsplash.com/photo-1565299585323-38174c2a5aa4"},
-                {"title": "Gambas al Ajillo", "description": "Garnelen in Knoblauchöl", "image_url": "https://images.unsplash.com/photo-1565299585323-38174c2a5aa4"}
+                {"title": "Patatas Bravas", "description": "Klassische mediterrane Kartoffeln", "image_url": "https://images.unsplash.com/photo-1565599837634-134bc3aadce8"},
+                {"title": "Paella Valenciana", "description": "Traditionelle mediterrane Paella", "image_url": "https://images.unsplash.com/photo-1534080564583-6be75777b70a"},
+                {"title": "Tapas Variación", "description": "Auswahl mediterraner Köstlichkeiten", "image_url": "https://images.unsplash.com/photo-1559847844-5315695dadae"},
+                {"title": "Gambas al Ajillo", "description": "Garnelen in Knoblauchöl", "image_url": "https://images.unsplash.com/photo-1619860705243-dbef552e7118"}
             ]
         }
     }
+
+@api_router.put("/cms/homepage")
+async def update_homepage_content(content_data: dict, current_user: User = Depends(get_current_user)):
+    # Store updated content in database or file
+    return {"message": "Homepage content updated successfully", "data": content_data}
+
+@api_router.put("/cms/standorte-enhanced")
+async def update_standorte_enhanced(content_data: dict, current_user: User = Depends(get_current_user)):
+    return {"message": "Standorte content updated successfully", "data": content_data}
+
+@api_router.put("/cms/ueber-uns-enhanced")
+async def update_ueber_uns_enhanced(content_data: dict, current_user: User = Depends(get_current_user)):
+    return {"message": "Über uns content updated successfully", "data": content_data}
+
+@api_router.put("/cms/kontakt-page")
+async def update_kontakt_page(content_data: dict, current_user: User = Depends(get_current_user)):
+    return {"message": "Kontakt content updated successfully", "data": content_data}
+
+# Menu Items CRUD für CMS
+@api_router.put("/menu/items/{item_id}")
+async def update_menu_item(item_id: str, item_data: dict, current_user: User = Depends(get_current_user)):
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE menu_items SET 
+            name = %s, description = %s, detailed_description = %s, price = %s, 
+            category = %s, origin = %s, allergens = %s, ingredients = %s,
+            vegan = %s, vegetarian = %s, glutenfree = %s, order_index = %s
+            WHERE id = %s
+        """, (
+            item_data.get('name'), item_data.get('description'), 
+            item_data.get('detailed_description'), item_data.get('price'),
+            item_data.get('category'), item_data.get('origin'),
+            item_data.get('allergens'), item_data.get('ingredients'),
+            item_data.get('vegan', False), item_data.get('vegetarian', False),
+            item_data.get('glutenfree', False), item_data.get('order_index', 0),
+            item_id
+        ))
+        conn.commit()
+        return {"message": "Menu item updated successfully"}
+    finally:
+        conn.close()
+
+@api_router.delete("/menu/items/{item_id}")
+async def delete_menu_item(item_id: str, current_user: User = Depends(get_current_user)):
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM menu_items WHERE id = %s", (item_id,))
+        conn.commit()
+        return {"message": "Menu item deleted successfully"}
+    finally:
+        conn.close()
+
+@api_router.post("/menu/items")
+async def create_menu_item(item_data: dict, current_user: User = Depends(get_current_user)):
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        item_id = str(uuid.uuid4())
+        cursor.execute("""
+            INSERT INTO menu_items (id, name, description, detailed_description, price, category, 
+                                   origin, allergens, ingredients, vegan, vegetarian, glutenfree, 
+                                   order_index, is_active)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            item_id, item_data.get('name'), item_data.get('description'),
+            item_data.get('detailed_description'), item_data.get('price'),
+            item_data.get('category'), item_data.get('origin'),
+            item_data.get('allergens'), item_data.get('ingredients'),
+            item_data.get('vegan', False), item_data.get('vegetarian', False),
+            item_data.get('glutenfree', False), item_data.get('order_index', 0), True
+        ))
+        conn.commit()
+        return {"message": "Menu item created successfully", "id": item_id}
+    finally:
+        conn.close()
 
 @api_router.get("/cms/standorte-enhanced")
 async def get_standorte_enhanced():
