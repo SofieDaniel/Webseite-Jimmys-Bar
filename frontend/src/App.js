@@ -681,7 +681,7 @@ const DeveloperInfoSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
             <h4 className="font-bold text-blue-900 mb-2">🚀 Lead Entwickler</h4>
-            <p className="text-blue-800 font-medium">Daniel Böttcher</p>
+            <p className="text-blue-800 font-medium">Daniel Böttche</p>
             <p className="text-blue-600 text-sm mt-1">Full-Stack Development</p>
             <p className="text-blue-600 text-sm">React • FastAPI • MySQL</p>
           </div>
@@ -1345,7 +1345,7 @@ const StartseiteSummary = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
             <h4 className="font-bold text-blue-900 mb-2">🚀 Lead Entwickler</h4>
-            <p className="text-blue-800 font-medium">Daniel Böttcher</p>
+            <p className="text-blue-800 font-medium">Daniel Böttche</p>
             <p className="text-blue-600 text-sm mt-1">Full-Stack Development</p>
             <p className="text-blue-600 text-sm">React • FastAPI • MySQL</p>
           </div>
