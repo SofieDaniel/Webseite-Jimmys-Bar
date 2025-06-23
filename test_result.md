@@ -505,6 +505,30 @@ backend:
         agent: "testing"
         comment: "Successfully tested GET /api/admin/contact endpoint with authenticated request. The endpoint returns a list of contact messages with all required fields including read status. The response is a valid JSON array containing the contact messages."
 
+  - task: "Newsletter - GET /api/admin/newsletter/subscribers"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/admin/newsletter/subscribers endpoint with authenticated request. The endpoint returns a list of newsletter subscribers with all required fields including subscription status and properly formatted date fields. The response is a valid JSON array containing the subscribers."
+
+  - task: "Newsletter - POST /api/newsletter/subscribe"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested POST /api/newsletter/subscribe endpoint. The endpoint allows users to subscribe to the newsletter by providing their email address. The response contains a success message and the subscriber is added to the database. Verified that the subscriber appears in the admin subscribers list."
+
   - task: "User Management - GET /api/users"
     implemented: true
     working: false
