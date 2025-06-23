@@ -420,7 +420,7 @@ backend:
 
   - task: "Review Management - GET /api/reviews"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -432,6 +432,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "The GET /api/reviews endpoint is returning a 500 Internal Server Error. This suggests there's an issue with the endpoint implementation or database connection."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/reviews endpoint with both approved_only=true and approved_only=false parameters. The endpoint returns the expected data with proper formatting. With approved_only=true, it returns only approved reviews, and with approved_only=false, it returns all reviews. All reviews contain the required fields including properly formatted date field."
 
   - task: "Review Management - GET /api/admin/reviews/pending"
     implemented: true
