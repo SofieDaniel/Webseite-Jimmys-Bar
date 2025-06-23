@@ -796,19 +796,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "CMS Navigation/Footer/Buttons functionality"
-    - "CMS Standorte Enhanced Endpoint"
-    - "CMS Ueber Uns Enhanced Endpoint"
-    - "Review Management - GET /api/reviews"
-    - "Review Management - GET /api/admin/reviews/pending"
-    - "Authentication - POST /api/auth/login"
-    - "Authentication - GET /api/auth/me"
-    - "Menu Management - GET /api/menu/items"
-    - "Contact Messages - GET /api/admin/contact"
-    - "Newsletter - GET /api/admin/newsletter/subscribers"
-    - "Newsletter - POST /api/newsletter/subscribe"
-    - "Fix CMS Login Functionality"
-    - "Verify Speisekarte Page"
+    - "Menu Management - Backend API Validation"
+    - "CMS Menu Items CRUD Operations" 
+    - "MouseOver Functionality Testing"
+    - "Menu Items Display with detailed_description"
+    - "Complete Menu Import Validation (125 items)"
   stuck_tasks: 
     - "Fix CMS Login Functionality"
     - "Verify Speisekarte Page"
