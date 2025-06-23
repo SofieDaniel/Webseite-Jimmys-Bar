@@ -99,19 +99,20 @@ const MenuItemsAdminSection = () => {
   }
 
   return (
-    <div className="bg-medium-brown rounded-xl border border-warm-brown p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-serif text-warm-beige">Speisekarte verwalten</h2>
-        <button
-          onClick={() => {
-            setEditingItem(null);
-            setShowForm(true);
-          }}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors"
-        >
-          Neues Gericht hinzufügen
-        </button>
-      </div>
+    <div className="w-full h-full min-h-screen bg-gray-50 p-6">
+      <div className="max-w-full mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-serif text-gray-900">🍽️ Speisekarte verwalten</h2>
+          <button
+            onClick={() => {
+              setEditingItem(null);
+              setShowForm(true);
+            }}
+            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            Neues Gericht hinzufügen
+          </button>
+        </div>
 
       {/* Filters */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
