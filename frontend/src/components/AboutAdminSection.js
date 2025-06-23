@@ -156,7 +156,7 @@ const AboutAdminSection = () => {
               value={aboutData.jimmy.story1}
               onChange={(e) => updateJimmy('story1', e.target.value)}
               rows={3}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
             />
           </div>
           
