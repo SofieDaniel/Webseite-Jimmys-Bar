@@ -196,7 +196,7 @@ const Speisekarte = () => {
                   <div key={category} className="mb-12">
                     <div className="bg-dark-brown/95 backdrop-blur-sm py-4 mb-8 border-b border-warm-beige/30">
                       <h3 className="text-3xl font-serif text-warm-beige text-center tracking-wide">
-                        {categoryMapping[category] || category}
+                        {category}
                       </h3>
                     </div>
                     <div className="grid gap-6">
