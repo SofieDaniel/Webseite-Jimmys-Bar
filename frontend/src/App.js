@@ -1651,12 +1651,6 @@ const AdminPanel = () => {
               📊 Dashboard
             </button>
             <button
-              onClick={() => setActiveSection('homepage')}
-              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'homepage' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
-            >
-              🏠 Homepage bearbeiten
-            </button>
-            <button
               onClick={() => setActiveSection('locations')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'locations' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
@@ -1677,22 +1671,10 @@ const AdminPanel = () => {
             
             {/* Interaction Management */}
             <button
-              onClick={() => setActiveSection('reviews')}
-              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'reviews' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
-            >
-              ⭐ Bewertungen
-            </button>
-            <button
               onClick={() => setActiveSection('contacts')}
               className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'contacts' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
             >
               📧 Kontakt-Nachrichten
-            </button>
-            <button
-              onClick={() => setActiveSection('newsletter')}
-              className={`w-full text-left px-6 py-3 text-sm ${activeSection === 'newsletter' ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
-            >
-              📮 Newsletter
             </button>
             
             {/* User Management */}
