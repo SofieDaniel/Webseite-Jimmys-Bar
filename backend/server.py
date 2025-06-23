@@ -372,6 +372,10 @@ async def get_standorte_enhanced():
         }
     }
 
+@api_router.put("/cms/standorte-enhanced")
+async def update_standorte_enhanced(content_data: dict, current_user: User = Depends(get_current_user)):
+    return {"message": "Standorte content updated successfully", "data": content_data}
+
 @api_router.get("/cms/locations")
 async def get_locations():
     """Alias für standorte-enhanced für CMS Kompatibilität"""
