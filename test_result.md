@@ -486,7 +486,7 @@ backend:
 
   - task: "Contact Messages - GET /api/admin/contact"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -501,6 +501,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Could not test the contact messages endpoint because authentication is failing. This endpoint needs to be retested after the authentication issue is fixed."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/admin/contact endpoint with authenticated request. The endpoint returns a list of contact messages with all required fields including read status. The response is a valid JSON array containing the contact messages."
 
   - task: "User Management - GET /api/users"
     implemented: true
