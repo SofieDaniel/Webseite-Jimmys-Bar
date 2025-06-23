@@ -51,7 +51,7 @@ const Impressum = () => {
                   
                   <div className="bg-dark-brown/50 rounded-lg p-4">
                     <h3 className="text-lg font-semibold text-warm-beige mb-2">Telefon</h3>
-                    <p className="text-light-beige">+49 4561 123456</p>
+                    <p className="text-light-beige">015735256793</p>
                   </div>
                   
                   <div className="bg-dark-brown/50 rounded-lg p-4">
