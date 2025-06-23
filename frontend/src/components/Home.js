@@ -67,8 +67,8 @@ const Home = () => {
   ];
 
   // Specialties from API or default Jimmy's menu
-  const specialties = homepageContent?.specialties_data ? 
-    homepageContent.specialties_data : [
+  const specialties = homepageContent?.specialties?.cards ? 
+    homepageContent.specialties.cards : [
     {
       title: "Paella Valenciana",
       description: "Original spanische Paella mit Safran, Huhn und Gemüse",
@@ -86,6 +86,12 @@ const Home = () => {
       description: "Galicischer Oktopus mit Paprika und Olivenöl",
       image: "https://images.unsplash.com/photo-1544025162-d76694265947",
       price: "14,90€"
+    },
+    {
+      title: "Patatas Bravas",
+      description: "Würzige Kartoffeln mit traditioneller Bravas-Sauce",
+      image: "https://images.unsplash.com/photo-1565599837634-134bc3aadce8",
+      price: "8,90€"
     }
   ];
   
