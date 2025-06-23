@@ -89,17 +89,17 @@ const Impressum = () => {
               
               <div className="prose prose-invert max-w-none text-light-beige">
                 <h3 className="text-xl font-serif text-warm-beige mt-6 mb-3">Diensteanbieter</h3>
-                <p>Jimmy's Tapas Bar<br/>
-                Jimmy Rodríguez<br/>
-                Strandstraße 1<br/>
-                18225 Kühlungsborn</p>
+                <p>Jimmy's Tapas-Bar<br/>
+                Ravinder Pal Singh<br/>
+                Am Strande 21 Promenade<br/>
+                23730 Neustadt in Holstein</p>
 
                 <h3 className="text-xl font-serif text-warm-beige mt-6 mb-3">Kontaktmöglichkeiten</h3>
-                <p><strong>Telefon:</strong> +49 38293 12345<br/>
+                <p><strong>Telefon:</strong> +49 4561 123456<br/>
                 <strong>E-Mail-Adresse:</strong> info@jimmys-tapasbar.de</p>
 
                 <h3 className="text-xl font-serif text-warm-beige mt-6 mb-3">Verantwortlich für den Inhalt</h3>
-                <p>Jimmy Rodríguez (Anschrift wie oben)</p>
+                <p>Ravinder Pal Singh (Anschrift wie oben)</p>
 
                 <h3 className="text-xl font-serif text-warm-beige mt-6 mb-3">EU-Streitschlichtung</h3>
                 <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: 
