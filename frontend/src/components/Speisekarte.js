@@ -385,7 +385,7 @@ const Speisekarte = () => {
                   <strong>Bewegen Sie die Maus über ein Gericht</strong><br/>
                   um detaillierte Informationen zu sehen:<br/><br/>
                   🌍 <span className="text-warm-beige">Herkunft & Tradition</span><br/>
-                  🥘 <span className="text-warm-beige">Zutaten & Zubereitung</span><br/>
+                  🥘 <span className="text-warm-beige">Zutaten</span><br/>
                   ⚠️ <span className="text-warm-beige">Allergene & Zusatzstoffe</span><br/>
                   🌱 <span className="text-warm-beige">Ernährungshinweise</span>
                 </p>
