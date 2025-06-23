@@ -1590,7 +1590,7 @@ const AdminPanel = () => {
           {activeSection === 'homepage' && <ContentSection user={user} token={token} apiCall={apiCall} />}
           {activeSection === 'locations' && <LocationsAdminSection />}
           {activeSection === 'about' && <AboutAdminSection />}
-          {activeSection === 'menu' && <MenuSection user={user} token={token} apiCall={apiCall} />}
+          {activeSection === 'menu' && <MenuItemsAdminSection />}
           {activeSection === 'reviews' && <ReviewsAdminSection />}
           {activeSection === 'contacts' && <ContactAdminSection />}
           {activeSection === 'newsletter' && <NewsletterSection />}
