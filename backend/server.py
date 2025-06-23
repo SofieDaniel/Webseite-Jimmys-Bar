@@ -18,14 +18,27 @@ load_dotenv(ROOT_DIR / '.env')
 
 # SIMPLE MYSQL CONNECTION FOR WEBSPACE COMPATIBILITY
 def get_mysql_connection():
-    return pymysql.connect(
-        host=os.environ.get('MYSQL_HOST', 'localhost'),
-        user=os.environ.get('MYSQL_USER', 'root'),
-        password=os.environ.get('MYSQL_PASSWORD', ''),
-        database=os.environ.get('MYSQL_DATABASE', 'jimmys_tapas_bar'),
-        charset='utf8mb4',
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    try:
+        # Try socket connection first (Linux default)
+        return pymysql.connect(
+            unix_socket='/run/mysqld/mysqld.sock',
+            user=os.environ.get('MYSQL_USER', 'root'),
+            password=os.environ.get('MYSQL_PASSWORD', ''),
+            database=os.environ.get('MYSQL_DATABASE', 'jimmys_tapas_bar'),
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+    except:
+        # Fallback to TCP connection
+        return pymysql.connect(
+            host=os.environ.get('MYSQL_HOST', 'localhost'),
+            port=int(os.environ.get('MYSQL_PORT', 3306)),
+            user=os.environ.get('MYSQL_USER', 'root'),
+            password=os.environ.get('MYSQL_PASSWORD', ''),
+            database=os.environ.get('MYSQL_DATABASE', 'jimmys_tapas_bar'),
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
