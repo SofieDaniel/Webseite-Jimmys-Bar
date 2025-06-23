@@ -3317,7 +3317,148 @@ def run_priority_tests():
     
     return all_passed
 
-if __name__ == "__main__":
-    # Run the priority tests
-    success = run_priority_tests()
-    sys.exit(0 if success else 1)
+def test_newsletter_subscribers():
+    """Test GET /api/admin/newsletter/subscribers endpoint"""
+    print("\n🧪 Testing GET /api/admin/newsletter/subscribers endpoint...")
+    
+    if not AUTH_TOKEN:
+        print("❌ No auth token available. Login test must be run first.")
+        return False
+    
+    try:
+        # Set up headers with auth token
+        headers = {
+            "Authorization": f"Bearer {AUTH_TOKEN}"
+        }
+        
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/admin/newsletter/subscribers", headers=headers)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved newsletter subscribers")
+        else:
+            print(f"❌ Failed to retrieve newsletter subscribers. Status code: {response.status_code}")
+            if response.status_code == 401:
+                print("   Authentication failed: Invalid or expired token")
+            elif response.status_code == 403:
+                print("   Authorization failed: Insufficient permissions")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} subscribers")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # If there are subscribers, verify the structure of the first one
+        if data:
+            required_fields = ["id", "email", "subscribed", "subscribe_date"]
+            missing_fields = [field for field in required_fields if field not in data[0]]
+            
+            if not missing_fields:
+                print("✅ Subscriber objects contain all required fields")
+            else:
+                print(f"❌ Subscriber objects are missing required fields: {missing_fields}")
+                return False
+                
+            # Print some sample data
+            print(f"📊 Sample subscribers:")
+            for i, subscriber in enumerate(data[:3]):  # Show up to 3 samples
+                print(f"  {i+1}. {subscriber['email']} - Subscribed: {subscriber['subscribed']}")
+                
+            # Check date format for each subscriber
+            for subscriber in data:
+                try:
+                    datetime.fromisoformat(subscriber["subscribe_date"].replace('Z', '+00:00'))
+                except (ValueError, TypeError):
+                    print(f"❌ Subscriber {subscriber['id']} has invalid subscribe_date format: {subscriber['subscribe_date']}")
+                    return False
+            
+            print("✅ All subscriber dates are properly formatted")
+                
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to admin/newsletter/subscribers endpoint: {e}")
+        return False
+
+def test_newsletter_subscribe():
+    """Test POST /api/newsletter/subscribe endpoint"""
+    print("\n🧪 Testing POST /api/newsletter/subscribe endpoint...")
+    
+    try:
+        # Create a unique email with timestamp
+        timestamp = int(time.time())
+        email = f"test{timestamp}@example.com"
+        
+        # Create payload
+        payload = {
+            "email": email,
+            "name": "Test Subscriber"
+        }
+        
+        # Make POST request
+        response = requests.post(f"{API_BASE_URL}/newsletter/subscribe", json=payload)
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully subscribed to newsletter")
+        else:
+            print(f"❌ Failed to subscribe to newsletter. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON: {data}")
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response contains a success message
+        if "message" in data:
+            print(f"✅ Response contains message: {data['message']}")
+        else:
+            print("❌ Response does not contain a message field")
+            return False
+            
+        # Verify the subscription by checking the admin endpoint
+        if AUTH_TOKEN:
+            headers = {
+                "Authorization": f"Bearer {AUTH_TOKEN}"
+            }
+            
+            verify_response = requests.get(f"{API_BASE_URL}/admin/newsletter/subscribers", headers=headers)
+            if verify_response.status_code == 200:
+                subscribers = verify_response.json()
+                
+                # Look for our test email
+                found = False
+                for subscriber in subscribers:
+                    if subscriber["email"] == email:
+                        found = True
+                        print(f"✅ Verified that {email} was added to subscribers list")
+                        break
+                
+                if not found:
+                    print(f"❌ Could not verify that {email} was added to subscribers list")
+                    return False
+            else:
+                print(f"❌ Failed to verify subscription. Status code: {verify_response.status_code}")
+                # Don't return False here, as we already confirmed the subscribe endpoint worked
+        else:
+            print("⚠️ Could not verify subscription in admin endpoint due to missing auth token")
+            
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to newsletter/subscribe endpoint: {e}")
+        return False
