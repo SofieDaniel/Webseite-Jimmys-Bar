@@ -93,7 +93,7 @@ const MenuItemsAdminSection = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-warm-beige"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
       </div>
     );
   }
@@ -287,105 +287,94 @@ const MenuItemForm = ({ item, categories, onSave, onCancel }) => {
 
           {/* Description */}
           <div>
-            <label className="block text-warm-beige text-sm font-medium mb-2">Kurze Beschreibung</label>
+            <label className="block text-gray-900 text-sm font-medium mb-2">Kurze Beschreibung</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
               rows={2}
-              className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           {/* Detailed Description */}
           <div>
-            <label className="block text-warm-beige text-sm font-medium mb-2">Detaillierte Beschreibung</label>
+            <label className="block text-gray-900 text-sm font-medium mb-2">Detaillierte Beschreibung</label>
             <textarea
               value={formData.detailed_description}
               onChange={(e) => setFormData({...formData, detailed_description: e.target.value})}
               rows={3}
-              className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           {/* Ingredients */}
           <div>
-            <label className="block text-warm-beige text-sm font-medium mb-2">Zutaten</label>
+            <label className="block text-gray-900 text-sm font-medium mb-2">Zutaten</label>
             <textarea
               value={formData.ingredients}
               onChange={(e) => setFormData({...formData, ingredients: e.target.value})}
               rows={2}
-              className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
-            />
-          </div>
-
-          {/* Preparation Method */}
-          <div>
-            <label className="block text-warm-beige text-sm font-medium mb-2">Zubereitung</label>
-            <textarea
-              value={formData.preparation_method}
-              onChange={(e) => setFormData({...formData, preparation_method: e.target.value})}
-              rows={2}
-              className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           {/* Allergens */}
           <div>
-            <label className="block text-warm-beige text-sm font-medium mb-2">Allergene</label>
+            <label className="block text-gray-900 text-sm font-medium mb-2">Allergene</label>
             <input
               type="text"
               value={formData.allergens}
               onChange={(e) => setFormData({...formData, allergens: e.target.value})}
-              className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           {/* Additives */}
           <div>
-            <label className="block text-warm-beige text-sm font-medium mb-2">Zusatzstoffe</label>
+            <label className="block text-gray-900 text-sm font-medium mb-2">Zusatzstoffe</label>
             <input
               type="text"
               value={formData.additives}
               onChange={(e) => setFormData({...formData, additives: e.target.value})}
-              className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           {/* Checkboxes */}
           <div className="flex flex-wrap gap-4">
-            <label className="flex items-center text-light-beige">
+            <label className="flex items-center text-gray-900">
               <input
                 type="checkbox"
                 checked={formData.vegan}
                 onChange={(e) => setFormData({...formData, vegan: e.target.checked})}
-                className="mr-2"
+                className="mr-2 text-blue-600"
               />
               🌱 Vegan
             </label>
-            <label className="flex items-center text-light-beige">
+            <label className="flex items-center text-gray-900">
               <input
                 type="checkbox"
                 checked={formData.vegetarian}
                 onChange={(e) => setFormData({...formData, vegetarian: e.target.checked})}
-                className="mr-2"
+                className="mr-2 text-blue-600"
               />
               🌿 Vegetarisch
             </label>
-            <label className="flex items-center text-light-beige">
+            <label className="flex items-center text-gray-900">
               <input
                 type="checkbox"
                 checked={formData.glutenfree}
                 onChange={(e) => setFormData({...formData, glutenfree: e.target.checked})}
-                className="mr-2"
+                className="mr-2 text-blue-600"
               />
               🌾 Glutenfrei
             </label>
-            <label className="flex items-center text-light-beige">
+            <label className="flex items-center text-gray-900">
               <input
                 type="checkbox"
                 checked={formData.is_active}
                 onChange={(e) => setFormData({...formData, is_active: e.target.checked})}
-                className="mr-2"
+                className="mr-2 text-blue-600"
               />
               Aktiv
             </label>
@@ -394,12 +383,12 @@ const MenuItemForm = ({ item, categories, onSave, onCancel }) => {
           {/* Order Index */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-warm-beige text-sm font-medium mb-2">Reihenfolge</label>
+              <label className="block text-gray-900 text-sm font-medium mb-2">Reihenfolge</label>
               <input
                 type="number"
                 value={formData.order_index}
                 onChange={(e) => setFormData({...formData, order_index: parseInt(e.target.value) || 0})}
-                className="w-full bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
+                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
