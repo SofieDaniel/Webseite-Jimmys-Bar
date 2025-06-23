@@ -291,7 +291,7 @@ const Locations = () => {
                 </div>
                 
                 <p className="text-light-beige leading-relaxed">
-                  Unser Inhaber <strong className="text-warm-beige">Ravinder Pal Singh</strong> lädt Sie herzlich ein, 
+                  Wir laden Sie herzlich ein, 
                   die Vielfalt der spanischen Küche an der Ostsee zu entdecken. Erleben Sie authentische Tapas 
                   und mediterrane Spezialitäten in einzigartiger Strandatmosphäre.
                 </p>
