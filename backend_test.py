@@ -4,6 +4,7 @@ import json
 import time
 import sys
 from datetime import datetime
+from tabulate import tabulate
 
 # Get the backend URL from the frontend .env file
 import os
