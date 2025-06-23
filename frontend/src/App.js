@@ -1339,7 +1339,22 @@ const StartseiteSummary = () => {
 
       {/* System Information */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">📊 System-Status</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">👨‍💻 Entwickler-Team</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+            <h4 className="font-bold text-blue-900 mb-2">🚀 Lead Entwickler</h4>
+            <p className="text-blue-800 font-medium">Daniel Böttcher</p>
+            <p className="text-blue-600 text-sm mt-1">Full-Stack Development</p>
+            <p className="text-blue-600 text-sm">React • FastAPI • MySQL</p>
+          </div>
+          <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+            <h4 className="font-bold text-green-900 mb-2">🎨 UI/UX Design</h4>
+            <p className="text-green-800 font-medium">Responsive Design</p>
+            <p className="text-green-600 text-sm mt-1">Tailwind CSS • Mobile First</p>
+            <p className="text-green-600 text-sm">Benutzerfreundliche Oberflächen</p>
+          </div>
+        </div>
+      </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex items-center p-4 bg-green-50 rounded-lg">
             <div className="flex items-center">
