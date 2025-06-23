@@ -1754,19 +1754,15 @@ const AdminPanel = () => {
 
         {/* Main Content */}
         <div className="flex-1 p-8" style={{marginLeft: '256px'}}>
-          {activeSection === 'dashboard' && <DashboardSection setActiveSection={setActiveSection} />}
-          {activeSection === 'homepage' && <ContentSection user={user} token={token} apiCall={apiCall} />}
+          {activeSection === 'dashboard' && <DashboardSection />}
           {activeSection === 'locations' && <LocationsAdminSection />}
           {activeSection === 'about' && <AboutAdminSection />}
           {activeSection === 'menu' && <MenuItemsAdminSection />}
-          {activeSection === 'reviews' && <ReviewsAdminSection />}
           {activeSection === 'contacts' && <ContactAdminSection />}
-          {activeSection === 'newsletter' && <NewsletterSection />}
           {activeSection === 'users' && <UsersAdminSection />}
           {activeSection === 'legal' && <LegalEditor />}
           {activeSection === 'eu-compliance' && <EUComplianceSection />}
           {activeSection === 'cookie-management' && <CookieManagementSection />}
-          {activeSection === 'navigation' && <NavigationSection />}
           {activeSection === 'lieferando' && <LieferandoSection />}
           {activeSection === 'developer-info' && <DeveloperInfoSection />}
           {activeSection === 'system' && <SystemBackupSection />}
