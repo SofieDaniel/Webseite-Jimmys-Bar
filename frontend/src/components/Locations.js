@@ -21,35 +21,42 @@ const Locations = () => {
     loadLocationData();
   }, []);
 
-  // Fallback data wenn Backend nicht verfügbar
+  // Fallback data mit korrekten Adressen und Öffnungszeiten
   const defaultData = {
     page_title: "Unsere Standorte",
     page_subtitle: "Besuchen Sie uns an der malerischen Ostseeküste",
     neustadt: {
       name: "Neustadt in Holstein",
-      address: "Strandstraße 12, 23730 Neustadt in Holstein",
+      address: "Am Strande 21 Promenade, 23730 Neustadt in Holstein",
       phone: "+49 4561 123456",
       email: "neustadt@jimmys-tapasbar.de",
       opening_hours: {
-        "Montag": "17:00 - 23:00", "Dienstag": "17:00 - 23:00", "Mittwoch": "17:00 - 23:00",
-        "Donnerstag": "17:00 - 23:00", "Freitag": "17:00 - 00:00", "Samstag": "17:00 - 00:00", "Sonntag": "17:00 - 23:00"
+        "Montag": "12:00 - 22:00", "Dienstag": "12:00 - 22:00", "Mittwoch": "12:00 - 22:00",
+        "Donnerstag": "12:00 - 22:00", "Freitag": "12:00 - 22:00", "Samstag": "12:00 - 22:00", "Sonntag": "12:00 - 22:00"
       },
       features: ["Direkte Strandlage", "Große Terrasse", "Familienfreundlich", "Parkplatz kostenlos"]
     },
     grossenbrode: {
       name: "Großenbrode",
-      address: "Strandpromenade 8, 23775 Großenbrode",
+      address: "Südstrand 54 Promenade, 23755 Großenbrode",
       phone: "+49 4367 987654",
       email: "grossenbrode@jimmys-tapasbar.de",
       opening_hours: {
-        "Montag": "17:00 - 22:00", "Dienstag": "17:00 - 22:00", "Mittwoch": "17:00 - 22:00",
-        "Donnerstag": "17:00 - 22:00", "Freitag": "17:00 - 23:00", "Samstag": "17:00 - 23:00", "Sonntag": "17:00 - 22:00"
+        "Montag": "12:00 - 22:00", "Dienstag": "12:00 - 22:00", "Mittwoch": "12:00 - 22:00",
+        "Donnerstag": "12:00 - 22:00", "Freitag": "12:00 - 22:00", "Samstag": "12:00 - 22:00", "Sonntag": "12:00 - 22:00"
       },
       features: ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"]
     }
   };
 
   const data = locationData || defaultData;
+
+  // Google Maps Route planen
+  const planRoute = (address) => {
+    const encodedAddress = encodeURIComponent(address);
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
+    window.open(googleMapsUrl, '_blank');
+  };
 
   if (loading) {
     return (
@@ -67,7 +74,7 @@ const Locations = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1553778263-73a83bab9b0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80')"
+            backgroundImage: "url('https://images.unsplash.com/photo-1571197119738-26123cb0d22f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')"
           }}
         ></div>
         <div className="relative z-10 pt-24 pb-16">
@@ -167,9 +174,13 @@ const Locations = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Action Button - Nur Route planen */}
                 <div className="flex gap-4">
-                  <button className="w-full bg-warm-beige text-dark-brown py-3 rounded-lg font-semibold hover:bg-orange-500 hover:text-white transition-all duration-300">
+                  <button 
+                    onClick={() => planRoute(data.neustadt.address)}
+                    className="w-full bg-warm-beige text-dark-brown py-3 rounded-lg font-semibold hover:bg-orange-500 hover:text-white transition-all duration-300 flex items-center justify-center"
+                  >
+                    <span className="mr-2">🗺️</span>
                     Route planen
                   </button>
                 </div>
@@ -250,9 +261,13 @@ const Locations = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Action Button - Nur Route planen */}
                 <div className="flex gap-4">
-                  <button className="w-full bg-warm-beige text-dark-brown py-3 rounded-lg font-semibold hover:bg-orange-500 hover:text-white transition-all duration-300">
+                  <button 
+                    onClick={() => planRoute(data.grossenbrode.address)}
+                    className="w-full bg-warm-beige text-dark-brown py-3 rounded-lg font-semibold hover:bg-orange-500 hover:text-white transition-all duration-300 flex items-center justify-center"
+                  >
+                    <span className="mr-2">🗺️</span>
                     Route planen
                   </button>
                 </div>
@@ -260,14 +275,17 @@ const Locations = () => {
             </div>
           </div>
 
-          {/* Additional Info Section */}
+          {/* Inhaber-Info Section */}
           <div className="mt-16 text-center">
             <div className="bg-medium-brown/30 rounded-xl p-8 border border-warm-beige/20">
-              <h3 className="text-2xl font-serif text-warm-beige mb-4">Beide Standorte erleben</h3>
-              <p className="text-light-beige leading-relaxed max-w-3xl mx-auto">
-                Jeder unserer Standorte bietet ein einzigartiges Erlebnis. Neustadt in Holstein mit direkter Strandlage 
-                für aktive Familien, Großenbrode mit ruhiger Atmosphäre für romantische Abende. 
-                Lassen Sie sich von der authentischen spanischen Küche an der Ostsee verzaubern.
+              <h3 className="text-2xl font-serif text-warm-beige mb-4">Willkommen bei Jimmy's Tapas-Bar</h3>
+              <p className="text-light-beige leading-relaxed max-w-3xl mx-auto mb-4">
+                Unser Inhaber <strong className="text-warm-beige">Ravinder Pal Singh</strong> begrüßt Sie herzlich 
+                in unseren beiden Standorten an der Ostsee. Erleben Sie authentische spanische Küche mit Blick aufs Meer - 
+                täglich von 12:00 bis 22:00 Uhr geöffnet.
+              </p>
+              <p className="text-light-beige/80 text-sm">
+                Beide Standorte bieten ein einzigartiges Erlebnis direkt an der malerischen Ostseeküste.
               </p>
             </div>
           </div>
