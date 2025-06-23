@@ -162,6 +162,31 @@ async def login(user_credentials: UserLogin):
     finally:
         conn.close()
 
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        token = credentials.credentials
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=401, detail="Invalid token")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, username, email, role, is_active FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        if user is None:
+            raise HTTPException(status_code=401, detail="User not found")
+        return User(**user)
+    finally:
+        conn.close()
+
+@api_router.get("/auth/me", response_model=User)
+async def read_users_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
 @api_router.post("/contact")
 async def create_contact_message(message_data: dict):
     conn = get_mysql_connection()
