@@ -45,49 +45,8 @@ const UeberUns = () => {
     }
   };
 
-  // Exakte Daten wie in den Bildern gezeigt
-  const pageData = {
-    page_title: 'Über uns',
-    page_subtitle: 'Die Geschichte hinter Jimmy\'s Tapas Bar',
-    header_background: 'https://images.unsplash.com/photo-1571197119738-26123cb0d22f',
-    jimmy_data: {
-      name: 'Jimmy Rodríguez',
-      title: 'Inhaber & Küchenchef',
-      story1: 'Seit über 15 Jahren bringe ich die authentischen Aromen Spaniens an die deutsche Ostseeküste. Meine Leidenschaft für die spanische Küche begann in den kleinen Tapas-Bars von Sevilla, wo ich die Geheimnisse traditioneller Rezepte erlernte.',
-      story2: 'In Jimmy\'s Tapas Bar verwenden wir nur die besten Zutaten - von handverlesenem Olivenöl aus Andalusien bis hin zu frischen Meeresfrüchten aus der Ostsee. Jedes Gericht wird mit Liebe und Respekt vor der spanischen Tradition zubereitet.',
-      image: 'https://images.unsplash.com/photo-1544025162-d76694265947'
-    },
-    leidenschaft_data: {
-      title: 'Unsere Leidenschaft',
-      subtitle: 'Entdecken Sie die Leidenschaft hinter Jimmy\'s Tapas Bar',
-      intro: 'Seit der Gründung steht Jimmy\'s Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.',
-      text1: 'Unsere Leidenschaft gilt den traditionellen Rezepten und frischen Zutaten, die wir täglich mit Liebe zubereiten.',
-      text2: 'Von den ersten kleinen Tapas bis hin zu unseren berühmten Paellas - jedes Gericht erzählt eine Geschichte',
-      text3: 'von Tradition und Qualität.',
-      text4: 'An beiden Standorten erleben Sie die entspannte Atmosphäre des Mittelmeers,',
-      text5: 'während Sie den Blick auf die Ostsee genießen können.'
-    },
-    team_members: [
-      {
-        name: 'Maria Gonzalez',
-        position: 'Sous Chef',
-        description: 'Expertin für Meeresfrüchte und Paella, sorgt für die perfekte Zubereitung unserer Spezialitäten.',
-        image: 'https://images.unsplash.com/photo-1494790108755-2616c39ca7c0'
-      },
-      {
-        name: 'Carlos Mendez', 
-        position: 'Barkeeper',
-        description: 'Meister der spanischen Cocktails und Sangria, zaubert die perfekte Begleitung zu unseren Tapas.',
-        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e'
-      },
-      {
-        name: 'Isabella Schmidt',
-        position: 'Service Manager', 
-        description: 'Sorgt für perfekten Service und spanische Gastfreundschaft, damit sich jeder Gast willkommen fühlt.',
-        image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80'
-      }
-    ]
-  };
+  // Use loaded data or fallback
+  const pageData = aboutData || defaultData;
 
   if (loading) {
     return (
