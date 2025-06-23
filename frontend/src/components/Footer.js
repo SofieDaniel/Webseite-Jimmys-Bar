@@ -38,8 +38,8 @@ const Footer = () => {
               Authentische mediterrane Küche an der malerischen Ostseeküste
             </p>
             <div className="space-y-2">
-              <p className="text-light-beige text-sm">Kühlungsborn</p>
-              <p className="text-light-beige text-sm">Warnemünde</p>
+              <p className="text-light-beige text-sm">Neustadt in Holstein</p>
+              <p className="text-light-beige text-sm">Großenbrode</p>
             </div>
           </div>
 
