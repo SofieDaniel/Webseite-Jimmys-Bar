@@ -53,7 +53,7 @@ const Datenschutz = () => {
                   Ravinder Pal Singh<br/>
                   Am Strande 21 Promenade<br/>
                   23730 Neustadt in Holstein<br/>
-                  Telefon: +49 4561 123456<br/>
+                  Telefon: 015735256793<br/>
                   E-Mail: info@jimmys-tapasbar.de
                 </p>
               </div>
