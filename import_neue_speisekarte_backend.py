@@ -194,8 +194,8 @@ def import_complete_menu():
                 cursor.execute("""
                     INSERT INTO menu_items (
                         id, name, description, price, category, 
-                        allergens, origin, preparation_method, additives, is_approved
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        allergens, origin, preparation_method, additives
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (
                     str(uuid.uuid4()),
                     item["name"],
@@ -205,8 +205,7 @@ def import_complete_menu():
                     item.get("allergens", ""),
                     item.get("origin", ""),
                     "Frisch zubereitet",
-                    "",
-                    True
+                    ""
                 ))
                 imported_count += 1
                 
