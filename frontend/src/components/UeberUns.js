@@ -161,54 +161,8 @@ const UeberUns = () => {
           </div>
         </div>
       </div>
-      {/* Leidenschaft Section - Exakt wie im Bild */}
-      <div className="bg-warm-beige py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-serif text-dark-brown text-center mb-8">
-            Unsere Leidenschaft
-          </h2>
-          
-          {/* Box um den Content */}
-          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8 border border-warm-beige">
-            <div className="flex flex-col lg:flex-row items-center gap-8">
-              {/* Text Content */}
-              <div className="lg:w-2/3">
-                <div className="space-y-6 text-dark-brown">
-                  <p className="text-lg leading-relaxed">
-                    {pageData.values_section?.values?.[0]?.description || "Wir verwenden nur die besten Zutaten für unsere Gerichte."}
-                  </p>
-                  <p className="text-lg leading-relaxed">
-                    {pageData.values_section?.values?.[1]?.description || "Bei uns sollen Sie sich wie zu Hause fühlen."}
-                  </p>
-                  <p className="text-lg leading-relaxed">
-                    {pageData.values_section?.values?.[2]?.description || "Wir bleiben den traditionellen spanischen Rezepten treu."}
-                  </p>
-                </div>
-                
-                {/* Icons für Werte */}
-                <div className="flex justify-center space-x-8 mt-8">
-                  {pageData.values_section?.values?.map((value, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-3xl mb-2">{value.icon}</div>
-                      <h3 className="text-sm font-medium text-dark-brown">{value.title}</h3>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Bild placeholder für Leidenschaft */}
-              <div className="lg:w-1/3">
-                <img 
-                  src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136"
-                  alt="Unsere Leidenschaft"
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    </div>
+  );
 
     </div>
   );
