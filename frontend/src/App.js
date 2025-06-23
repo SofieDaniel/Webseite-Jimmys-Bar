@@ -18,6 +18,7 @@ import ReviewsAdminSection from './components/ReviewsAdminSection';
 import ContactAdminSection from './components/ContactAdminSection';
 import UsersAdminSection from './components/UsersAdminSection';
 import SystemBackupSection from './components/SystemBackupSection';
+import MenuItemsAdminSection from './components/MenuItemsAdminSection';
 
 // Import Page Components
 import Home from './components/Home';
