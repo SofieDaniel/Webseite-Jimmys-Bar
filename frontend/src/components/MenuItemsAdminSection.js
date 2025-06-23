@@ -146,18 +146,18 @@ const MenuItemsAdminSection = () => {
         </div>
         <div className="space-y-0 max-h-[70vh] overflow-y-auto">
         {filteredItems.map(item => (
-          <div key={item.id} className="bg-dark-brown rounded-lg p-4 border border-warm-brown">
+          <div key={item.id} className="border-b border-gray-200 p-4 hover:bg-gray-50 transition-colors">
             <div className="flex justify-between items-start">
               <div className="flex-1">
-                <h3 className="text-warm-beige font-semibold text-lg">{item.name}</h3>
-                <p className="text-light-beige text-sm mb-2">{item.description}</p>
-                <div className="flex items-center gap-4 text-xs text-light-beige/70">
+                <h3 className="text-gray-900 font-semibold text-lg">{item.name}</h3>
+                <p className="text-gray-700 text-sm mb-2">{item.description}</p>
+                <div className="flex items-center gap-4 text-xs text-gray-600">
                   <span>Kategorie: {item.category}</span>
                   <span>Preis: {item.price}€</span>
                   <div className="flex gap-1">
-                    {item.vegan && <span className="bg-green-600 px-2 py-1 rounded text-white">🌱</span>}
-                    {item.vegetarian && !item.vegan && <span className="bg-emerald-600 px-2 py-1 rounded text-white">🌿</span>}
-                    {item.glutenfree && <span className="bg-amber-600 px-2 py-1 rounded text-white">🌾</span>}
+                    {item.vegan && <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">🌱 Vegan</span>}
+                    {item.vegetarian && !item.vegan && <span className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded text-xs">🌿 Vegetarisch</span>}
+                    {item.glutenfree && <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded text-xs">🌾 Glutenfrei</span>}
                   </div>
                 </div>
               </div>
@@ -167,13 +167,13 @@ const MenuItemsAdminSection = () => {
                     setEditingItem(item);
                     setShowForm(true);
                   }}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors"
                 >
                   Bearbeiten
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors"
                 >
                   Löschen
                 </button>
