@@ -463,8 +463,36 @@ def test_get_menu_items():
                 
             # Print some sample data
             print(f"📊 Sample menu items:")
-            for i, item in enumerate(data[:3]):  # Show up to 3 samples
-                print(f"  {i+1}. {item['name']} - {item['price']} ({item['category']})")
+            
+            # Create a table with headers
+            table_data = []
+            for i, item in enumerate(data[:10]):  # Show up to 10 samples
+                table_data.append([
+                    i+1,
+                    item['id'][:8] + "...",  # Truncate ID for display
+                    item['name'],
+                    item['price'],
+                    item['category']
+                ])
+            
+            headers = ["#", "ID", "Name", "Price", "Category"]
+            print(tabulate(table_data, headers=headers, tablefmt="grid"))
+            
+            # Count items by category
+            categories = {}
+            for item in data:
+                cat = item['category']
+                if cat in categories:
+                    categories[cat] += 1
+                else:
+                    categories[cat] = 1
+            
+            print("\n📊 Menu items by category:")
+            cat_table = [[cat, count] for cat, count in categories.items()]
+            print(tabulate(cat_table, headers=["Category", "Count"], tablefmt="grid"))
+            
+            # Total count
+            print(f"\n✅ Total menu items: {len(data)}")
                 
         return True
     
