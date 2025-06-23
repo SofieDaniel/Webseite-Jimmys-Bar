@@ -1542,6 +1542,8 @@ const AdminPanel = () => {
           setUser(userData);
           setIsLoggedIn(true);
           setSuccess('Erfolgreich angemeldet!');
+          // Automatisch zum Dashboard weiterleiten
+          setActiveSection('dashboard');
         }
       } else {
         const errorData = await response.json();
