@@ -10,11 +10,8 @@ from tabulate import tabulate
 import os
 from dotenv import load_dotenv
 
-# Load the frontend .env file
-load_dotenv("/app/frontend/.env")
-BACKEND_URL = os.environ.get("REACT_APP_BACKEND_URL")
-if not BACKEND_URL:
-    BACKEND_URL = "http://localhost:8001"  # Default fallback
+# Use localhost for testing
+BACKEND_URL = "http://localhost:8001"
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 print(f"Using backend URL: {BACKEND_URL}")
