@@ -1,91 +1,73 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form
+from fastapi import FastAPI, APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
-import aiomysql
+import pymysql
 import os
-import logging
 from pathlib import Path
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 import uuid
 from datetime import datetime, timedelta
 import jwt
 from passlib.context import CryptContext
-import base64
 import json
-from enum import Enum
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MySQL connection pool
-mysql_pool = None
-
-async def init_mysql_pool():
-    global mysql_pool
-    mysql_pool = await aiomysql.create_pool(
-        host=os.environ['MYSQL_HOST'],
-        port=int(os.environ['MYSQL_PORT']),
-        user=os.environ['MYSQL_USER'],
-        password=os.environ['MYSQL_PASSWORD'],
-        db=os.environ['MYSQL_DATABASE'],
+# SIMPLE MYSQL CONNECTION FOR WEBSPACE COMPATIBILITY
+def get_mysql_connection():
+    return pymysql.connect(
+        host=os.environ.get('MYSQL_HOST', 'localhost'),
+        user=os.environ.get('MYSQL_USER', 'root'),
+        password=os.environ.get('MYSQL_PASSWORD', ''),
+        database=os.environ.get('MYSQL_DATABASE', 'jimmys_tapas_bar'),
         charset='utf8mb4',
-        autocommit=True,
-        maxsize=20
+        cursorclass=pymysql.cursors.DictCursor
     )
 
-async def get_mysql_connection():
-    if mysql_pool is None:
-        await init_mysql_pool()
-    return await mysql_pool.acquire()
-
-# Create the main app without a prefix
 app = FastAPI()
-
-# Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-security = HTTPBearer(auto_error=True)
-
-# JWT settings
-SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "your-secret-key-here")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
-
-# User Roles
-class UserRole(str, Enum):
-    ADMIN = "admin"
-    EDITOR = "editor"
-    VIEWER = "viewer"
-
-# Basic models
-class StatusCheck(BaseModel):
+# Models
+class MenuItem(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
-
-class StatusCheckCreate(BaseModel):
-    client_name: str
-
-# User Models
-class User(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    username: str
-    email: str
-    password_hash: str
-    role: UserRole = UserRole.VIEWER
+    name: str
+    description: str
+    detailed_description: Optional[str] = None
+    price: str
+    category: str
+    origin: Optional[str] = None
+    allergens: Optional[str] = None
+    additives: Optional[str] = None
+    preparation_method: Optional[str] = None
+    ingredients: Optional[str] = None
+    vegan: bool = False
+    vegetarian: bool = False
+    glutenfree: bool = False
+    order_index: int = 0
     is_active: bool = True
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    last_login: Optional[datetime] = None
 
-class UserCreate(BaseModel):
+class Review(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    customer_name: str
+    rating: int
+    comment: str
+    date: datetime = Field(default_factory=datetime.utcnow)
+    is_approved: bool = False
+
+class ReviewCreate(BaseModel):
+    customer_name: str
+    rating: int
+    comment: str
+
+class User(BaseModel):
+    id: str
     username: str
     email: str
-    password: str
-    role: UserRole = UserRole.VIEWER
+    role: str = "viewer"
+    is_active: bool = True
 
 class UserLogin(BaseModel):
     username: str
@@ -95,579 +77,296 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
-# Review Models
-class Review(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    customer_name: str
-    rating: int  # 1-5
-    comment: str
-    date: datetime = Field(default_factory=datetime.utcnow)
-    is_approved: bool = False
-    approved_by: Optional[str] = None
-    approved_at: Optional[datetime] = None
+# Auth setup
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+security = HTTPBearer(auto_error=True)
+SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "jimmy-secret-2024")
+ALGORITHM = "HS256"
 
-class ReviewCreate(BaseModel):
-    customer_name: str
-    rating: int
-    comment: str
-
-# Menu Models
-class MenuItem(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    name: str
-    description: str
-    price: str
-    category: str
-    image: Optional[str] = None  # Base64 encoded
-    details: Optional[str] = None
-    vegan: bool = False
-    vegetarian: bool = False
-    glutenfree: bool = False
-    order_index: int = 0
-    is_active: bool = True
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-
-class MenuItemCreate(BaseModel):
-    name: str
-    description: str
-    price: str
-    category: str
-    image: Optional[str] = None
-    details: Optional[str] = None
-    vegan: bool = False
-    vegetarian: bool = False
-    glutenfree: bool = False
-    order_index: int = 0
-
-class MenuItemUpdate(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[str] = None
-    category: Optional[str] = None
-    image: Optional[str] = None
-    details: Optional[str] = None
-    vegan: Optional[bool] = None
-    vegetarian: Optional[bool] = None
-    glutenfree: Optional[bool] = None
-    order_index: Optional[int] = None
-    is_active: Optional[bool] = None
-
-# Contact Models
-class ContactMessage(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    name: str
-    email: str
-    phone: Optional[str] = None
-    subject: str
-    message: str
-    date: datetime = Field(default_factory=datetime.utcnow)
-    is_read: bool = False
-    responded: bool = False
-
-class ContactMessageCreate(BaseModel):
-    name: str
-    email: str
-    phone: Optional[str] = None
-    subject: str
-    message: str
-
-# Maintenance Models
-class MaintenanceMode(BaseModel):
-    is_active: bool = False
-    message: str = "Die Website befindet sich derzeit im Wartungsmodus."
-    activated_by: Optional[str] = None
-    activated_at: Optional[datetime] = None
-
-# Auth Helper Functions
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
 def create_access_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + timedelta(minutes=60)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+# Routes
+@api_router.get("/menu/items", response_model=List[MenuItem])
+async def get_menu_items():
+    conn = get_mysql_connection()
     try:
-        token = credentials.credentials
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Invalid authentication credentials")
-    except Exception:
-        raise HTTPException(status_code=401, detail="Authentication required")
-    
-    # Get user from MySQL
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
-        user_data = await cursor.fetchone()
-        if not user_data:
-            raise HTTPException(status_code=401, detail="User not found")
-        return User(**user_data)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM menu_items WHERE is_active = TRUE ORDER BY order_index, category, name")
+        items = cursor.fetchall()
+        return [MenuItem(**item) for item in items]
     finally:
-        mysql_pool.release(conn)
+        conn.close()
 
-async def get_admin_user(current_user: User = Depends(get_current_user)):
-    if current_user.role != UserRole.ADMIN:
-        raise HTTPException(status_code=403, detail="Admin access required")
-    return current_user
-
-async def get_editor_user(current_user: User = Depends(get_current_user)):
-    if current_user.role not in [UserRole.ADMIN, UserRole.EDITOR]:
-        raise HTTPException(status_code=403, detail="Editor access required")
-    return current_user
-
-# Initialize default admin user
-async def create_default_admin():
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        
-        # Check if admin exists
-        await cursor.execute("SELECT COUNT(*) as count FROM users WHERE username = 'admin'")
-        result = await cursor.fetchone()
-        
-        if result['count'] == 0:
-            admin_user = User(
-                username="admin",
-                email="admin@jimmys-tapasbar.de",
-                password_hash=get_password_hash("jimmy2024"),
-                role=UserRole.ADMIN
-            )
-            
-            await cursor.execute("""
-                INSERT INTO users (id, username, email, password_hash, role, is_active, created_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """, (
-                admin_user.id, admin_user.username, admin_user.email, 
-                admin_user.password_hash, admin_user.role, admin_user.is_active, 
-                admin_user.created_at
-            ))
-            print("Default admin user created")
-    finally:
-        mysql_pool.release(conn)
-
-# API Routes
-@api_router.get("/")
-async def root():
-    return {"message": "Hello World from MySQL Backend"}
-
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_obj = StatusCheck(**input.dict())
-    
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor()
-        await cursor.execute("""
-            INSERT INTO status_checks (id, client_name, timestamp)
-            VALUES (%s, %s, %s)
-        """, (status_obj.id, status_obj.client_name, status_obj.timestamp))
-    finally:
-        mysql_pool.release(conn)
-    
-    return status_obj
-
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM status_checks ORDER BY timestamp DESC LIMIT 1000")
-        status_checks = await cursor.fetchall()
-        return [StatusCheck(**check) for check in status_checks]
-    finally:
-        mysql_pool.release(conn)
-
-# Authentication routes
-@api_router.post("/auth/login", response_model=Token)
-async def login(user_credentials: UserLogin):
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM users WHERE username = %s", (user_credentials.username,))
-        user = await cursor.fetchone()
-        
-        if not user or not verify_password(user_credentials.password, user["password_hash"]):
-            raise HTTPException(status_code=401, detail="Incorrect username or password")
-        
-        if not user["is_active"]:
-            raise HTTPException(status_code=401, detail="User account is disabled")
-        
-        # Update last login
-        await cursor.execute("""
-            UPDATE users SET last_login = %s WHERE username = %s
-        """, (datetime.utcnow(), user_credentials.username))
-        
-        access_token = create_access_token(data={"sub": user["username"]})
-        return {"access_token": access_token, "token_type": "bearer"}
-    finally:
-        mysql_pool.release(conn)
-
-@api_router.get("/auth/me", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_user)):
-    return current_user
-
-# User Management routes (Admin only)
-@api_router.post("/users", response_model=User)
-async def create_user(user_data: UserCreate, current_user: User = Depends(get_admin_user)):
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        
-        # Check if username already exists
-        await cursor.execute("SELECT COUNT(*) as count FROM users WHERE username = %s", (user_data.username,))
-        result = await cursor.fetchone()
-        if result['count'] > 0:
-            raise HTTPException(status_code=400, detail="Username already exists")
-        
-        user = User(
-            username=user_data.username,
-            email=user_data.email,
-            password_hash=get_password_hash(user_data.password),
-            role=user_data.role
-        )
-        
-        await cursor.execute("""
-            INSERT INTO users (id, username, email, password_hash, role, is_active, created_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (user.id, user.username, user.email, user.password_hash, user.role, user.is_active, user.created_at))
-        
-        return user
-    finally:
-        mysql_pool.release(conn)
-
-@api_router.get("/users", response_model=List[User])
-async def get_users(current_user: User = Depends(get_admin_user)):
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM users ORDER BY created_at DESC")
-        users = await cursor.fetchall()
-        return [User(**user) for user in users]
-    finally:
-        mysql_pool.release(conn)
-
-@api_router.delete("/users/{user_id}")
-async def delete_user(user_id: str, current_user: User = Depends(get_admin_user)):
-    if user_id == current_user.id:
-        raise HTTPException(status_code=400, detail="Cannot delete your own account")
-    
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor()
-        result = await cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
-        if cursor.rowcount == 0:
-            raise HTTPException(status_code=404, detail="User not found")
-        return {"message": "User deleted successfully"}
-    finally:
-        mysql_pool.release(conn)
-
-# Review Management routes
 @api_router.get("/reviews", response_model=List[Review])
 async def get_reviews(approved_only: bool = True):
-    conn = await get_mysql_connection()
+    conn = get_mysql_connection()
     try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
+        cursor = conn.cursor()
         if approved_only:
-            await cursor.execute("SELECT * FROM reviews WHERE is_approved = TRUE ORDER BY date DESC LIMIT 1000")
+            cursor.execute("SELECT * FROM reviews WHERE is_approved = TRUE ORDER BY date DESC LIMIT 1000")
         else:
-            await cursor.execute("SELECT * FROM reviews ORDER BY date DESC LIMIT 1000")
-        reviews = await cursor.fetchall()
+            cursor.execute("SELECT * FROM reviews ORDER BY date DESC LIMIT 1000")
+        reviews = cursor.fetchall()
         return [Review(**review) for review in reviews]
     finally:
-        mysql_pool.release(conn)
+        conn.close()
 
 @api_router.post("/reviews", response_model=Review)
 async def create_review(review_data: ReviewCreate):
+    review = Review(**review_data.dict())
+    conn = get_mysql_connection()
     try:
-        review = Review(**review_data.dict())
-        
-        conn = await get_mysql_connection()
-        try:
-            cursor = await conn.cursor()
-            await cursor.execute("""
-                INSERT INTO reviews (id, customer_name, rating, comment, date, is_approved)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            """, (review.id, review.customer_name, review.rating, review.comment, review.date, review.is_approved))
-            
-            return review
-        finally:
-            mysql_pool.release(conn)
-    except Exception as e:
-        print(f"Review creation error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Review creation failed: {str(e)}")
-
-@api_router.put("/reviews/{review_id}/approve")
-async def approve_review(review_id: str, current_user: User = Depends(get_editor_user)):
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor()
-        result = await cursor.execute("""
-            UPDATE reviews SET is_approved = TRUE, approved_by = %s, approved_at = %s 
-            WHERE id = %s
-        """, (current_user.username, datetime.utcnow(), review_id))
-        
-        if cursor.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Review not found")
-        return {"message": "Review approved successfully"}
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO reviews (id, customer_name, rating, comment, date, is_approved)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (review.id, review.customer_name, review.rating, review.comment, review.date, review.is_approved))
+        conn.commit()
+        return review
     finally:
-        mysql_pool.release(conn)
+        conn.close()
 
-@api_router.get("/admin/reviews/pending", response_model=List[Review])
-async def get_pending_reviews(current_user: User = Depends(get_editor_user)):
-    conn = await get_mysql_connection()
+@api_router.post("/auth/login", response_model=Token)
+async def login(user_credentials: UserLogin):
+    conn = get_mysql_connection()
     try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM reviews WHERE is_approved = FALSE ORDER BY date DESC")
-        reviews = await cursor.fetchall()
-        return [Review(**review) for review in reviews]
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = %s", (user_credentials.username,))
+        user = cursor.fetchone()
+        
+        if not user or not verify_password(user_credentials.password, user['password_hash']):
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+        access_token = create_access_token(data={"sub": user['username']})
+        return {"access_token": access_token, "token_type": "bearer"}
     finally:
-        mysql_pool.release(conn)
+        conn.close()
 
-# Menu Management routes
-@api_router.get("/menu/items", response_model=List[MenuItem])
-async def get_menu_items():
-    conn = await get_mysql_connection()
+@api_router.post("/contact")
+async def create_contact_message(message_data: dict):
+    conn = get_mysql_connection()
     try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM menu_items WHERE is_active = TRUE ORDER BY order_index ASC, name ASC")
-        items = await cursor.fetchall()
-        return [MenuItem(**item) for item in items]
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO contact_messages (id, name, email, phone, subject, message, date, is_read)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """, (str(uuid.uuid4()), message_data.get("name"), message_data.get("email"), 
+              message_data.get("phone"), message_data.get("subject"), message_data.get("message"), 
+              datetime.utcnow(), False))
+        conn.commit()
+        return {"message": "Contact message sent successfully"}
     finally:
-        mysql_pool.release(conn)
+        conn.close()
 
-@api_router.post("/menu/items", response_model=MenuItem)
-async def create_menu_item(item_data: MenuItemCreate, current_user: User = Depends(get_editor_user)):
-    item = MenuItem(**item_data.dict())
-    
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor()
-        await cursor.execute("""
-            INSERT INTO menu_items (id, name, description, price, category, image, details,
-                                   vegan, vegetarian, glutenfree, order_index, is_active, 
-                                   created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (item.id, item.name, item.description, item.price, item.category, item.image,
-              item.details, item.vegan, item.vegetarian, item.glutenfree, item.order_index,
-              item.is_active, item.created_at, item.updated_at))
-        
-        return item
-    finally:
-        mysql_pool.release(conn)
+# CMS Endpoints with static data for webspace compatibility
+@api_router.get("/cms/homepage")
+async def get_homepage_content():
+    return {
+        "hero": {
+            "title": "JIMMY'S TAPAS BAR",
+            "subtitle": "an der Ostsee",
+            "description": "Genießen Sie authentische mediterrane Spezialitäten",
+            "background_image": "https://images.unsplash.com/photo-1656423521731-9665583f100c"
+        },
+        "features": {
+            "title": "Mediterrane Tradition",
+            "subtitle": "Erleben Sie authentische mediterrane Gastfreundschaft an der deutschen Ostseeküste",
+            "cards": [
+                {"title": "Authentische Tapas", "description": "Traditionelle Rezepte aus verschiedenen Regionen Spaniens", "image_url": "https://images.unsplash.com/photo-1559847844-5315695dadae"},
+                {"title": "Frische Paellas", "description": "Täglich frisch zubereitet nach originalen Rezepten", "image_url": "https://images.unsplash.com/photo-1534080564583-6be75777b70a"},
+                {"title": "Strandnähe", "description": "Beide Standorte direkt an der malerischen Ostseeküste", "image_url": "https://images.unsplash.com/photo-1506377585622-bedcbb027afc"}
+            ]
+        },
+        "specialties": {
+            "title": "Unsere Spezialitäten",
+            "cards": [
+                {"title": "Patatas Bravas", "description": "Klassische mediterrane Kartoffeln", "image_url": "https://images.unsplash.com/photo-1534080564583-6be75777b70a"},
+                {"title": "Paella Valenciana", "description": "Traditionelle mediterrane Paella", "image_url": "https://images.unsplash.com/photo-1558985250-3f1b04f44b25"},
+                {"title": "Tapas Variación", "description": "Auswahl mediterraner Köstlichkeiten", "image_url": "https://images.unsplash.com/photo-1565299585323-38174c2a5aa4"},
+                {"title": "Gambas al Ajillo", "description": "Garnelen in Knoblauchöl", "image_url": "https://images.unsplash.com/photo-1565299585323-38174c2a5aa4"}
+            ]
+        }
+    }
 
-@api_router.put("/menu/items/{item_id}", response_model=MenuItem)
-async def update_menu_item(
-    item_id: str, 
-    item_data: MenuItemUpdate, 
-    current_user: User = Depends(get_editor_user)
-):
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        
-        # Get current item
-        await cursor.execute("SELECT * FROM menu_items WHERE id = %s", (item_id,))
-        current_item = await cursor.fetchone()
-        if not current_item:
-            raise HTTPException(status_code=404, detail="Menu item not found")
-        
-        # Build update query dynamically
-        update_fields = []
-        update_values = []
-        
-        for field, value in item_data.dict().items():
-            if value is not None:
-                update_fields.append(f"{field} = %s")
-                update_values.append(value)
-        
-        if update_fields:
-            update_fields.append("updated_at = %s")
-            update_values.append(datetime.utcnow())
-            update_values.append(item_id)
-            
-            query = f"UPDATE menu_items SET {', '.join(update_fields)} WHERE id = %s"
-            await cursor.execute(query, update_values)
-        
-        # Return updated item
-        await cursor.execute("SELECT * FROM menu_items WHERE id = %s", (item_id,))
-        updated_item = await cursor.fetchone()
-        return MenuItem(**updated_item)
-    finally:
-        mysql_pool.release(conn)
+@api_router.get("/cms/standorte-enhanced")
+async def get_standorte_enhanced():
+    return {
+        "page_title": "Unsere Standorte",
+        "page_subtitle": "Besuchen Sie uns an der malerischen Ostseeküste",
+        "neustadt": {
+            "name": "Neustadt in Holstein",
+            "address": "Strandstraße 12, 23730 Neustadt in Holstein",
+            "phone": "+49 4561 123456",
+            "email": "neustadt@jimmys-tapasbar.de",
+            "opening_hours": {
+                "Montag": "17:00 - 23:00", "Dienstag": "17:00 - 23:00", "Mittwoch": "17:00 - 23:00",
+                "Donnerstag": "17:00 - 23:00", "Freitag": "17:00 - 00:00", "Samstag": "17:00 - 00:00", "Sonntag": "17:00 - 23:00"
+            },
+            "features": ["Direkte Strandlage", "Große Terrasse", "Familienfreundlich", "Parkplatz kostenlos"]
+        },
+        "grossenbrode": {
+            "name": "Großenbrode",
+            "address": "Strandpromenade 8, 23775 Großenbrode",
+            "phone": "+49 4367 987654",
+            "email": "grossenbrode@jimmys-tapasbar.de",
+            "opening_hours": {
+                "Montag": "17:00 - 22:00", "Dienstag": "17:00 - 22:00", "Mittwoch": "17:00 - 22:00",
+                "Donnerstag": "17:00 - 22:00", "Freitag": "17:00 - 23:00", "Samstag": "17:00 - 23:00", "Sonntag": "17:00 - 22:00"
+            },
+            "features": ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"]
+        }
+    }
 
-@api_router.delete("/menu/items/{item_id}")
-async def delete_menu_item(item_id: str, current_user: User = Depends(get_editor_user)):
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor()
-        result = await cursor.execute("UPDATE menu_items SET is_active = FALSE WHERE id = %s", (item_id,))
-        if cursor.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Menu item not found")
-        return {"message": "Menu item deleted successfully"}
-    finally:
-        mysql_pool.release(conn)
+@api_router.get("/cms/kontakt-page")
+async def get_kontakt_page():
+    return {
+        "page_title": "Kontakt",
+        "page_subtitle": "Wir freuen uns auf Ihren Besuch",
+        "contact_form_title": "Schreiben Sie uns",
+        "contact_form_subtitle": "Haben Sie Fragen oder möchten Sie einen Tisch reservieren?",
+        "locations_section_title": "Unsere Standorte",
+        "opening_hours_title": "Öffnungszeiten",
+        "additional_info": "Wir sind täglich für Sie da."
+    }
 
-# Contact Messages routes
-@api_router.post("/contact", response_model=ContactMessage)
-async def create_contact_message(message_data: ContactMessageCreate):
-    message = ContactMessage(**message_data.dict())
-    
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor()
-        await cursor.execute("""
-            INSERT INTO contact_messages (id, name, email, phone, subject, message, date, is_read, responded)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (message.id, message.name, message.email, message.phone, message.subject, 
-              message.message, message.date, message.is_read, message.responded))
-        
-        return message
-    finally:
-        mysql_pool.release(conn)
+@api_router.get("/cms/ueber-uns-enhanced")
+async def get_ueber_uns_enhanced():
+    return {
+        "page_title": "Über uns",
+        "page_subtitle": "Lernen Sie Jimmy's Tapas Bar kennen",
+        "jimmy": {
+            "name": "Jimmy Rodríguez",
+            "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+            "story_paragraph1": "Seit der Gründung im Jahr 2015 steht Jimmy's Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.",
+            "story_paragraph2": "Unsere Leidenschaft gilt den traditionellen Rezepten und frischen Zutaten, die wir täglich mit Liebe zubereiten.",
+            "quote": "Gutes Essen bringt Menschen zusammen und schafft unvergessliche Momente."
+        }
+    }
 
-@api_router.get("/admin/contact", response_model=List[ContactMessage])
-async def get_contact_messages(current_user: User = Depends(get_editor_user)):
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM contact_messages ORDER BY date DESC")
-        messages = await cursor.fetchall()
-        return [ContactMessage(**message) for message in messages]
-    finally:
-        mysql_pool.release(conn)
-
-@api_router.put("/admin/contact/{message_id}/read")
-async def mark_message_read(message_id: str, current_user: User = Depends(get_editor_user)):
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor()
-        result = await cursor.execute("UPDATE contact_messages SET is_read = TRUE WHERE id = %s", (message_id,))
-        if cursor.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Message not found")
-        return {"message": "Message marked as read"}
-    finally:
-        mysql_pool.release(conn)
-
-# Maintenance Mode routes
-@api_router.get("/maintenance", response_model=MaintenanceMode)
-async def get_maintenance_status():
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor(aiomysql.DictCursor)
-        await cursor.execute("SELECT * FROM maintenance_mode LIMIT 1")
-        maintenance = await cursor.fetchone()
-        
-        if not maintenance:
-            # Create default maintenance mode
-            default_maintenance = MaintenanceMode()
-            await cursor.execute("""
-                INSERT INTO maintenance_mode (id, is_active, message)
-                VALUES (%s, %s, %s)
-            """, (str(uuid.uuid4()), default_maintenance.is_active, default_maintenance.message))
-            return default_maintenance
-        
-        return MaintenanceMode(**maintenance)
-    finally:
-        mysql_pool.release(conn)
-
-@api_router.put("/admin/maintenance", response_model=MaintenanceMode)
-async def update_maintenance_mode(
-    maintenance_data: MaintenanceMode, 
-    current_user: User = Depends(get_admin_user)
-):
-    maintenance_data.activated_by = current_user.username
-    maintenance_data.activated_at = datetime.utcnow()
-    
-    conn = await get_mysql_connection()
-    try:
-        cursor = await conn.cursor()
-        
-        # Check if maintenance record exists
-        await cursor.execute("SELECT COUNT(*) as count FROM maintenance_mode")
-        result = await cursor.fetchone()
-        
-        if result[0] == 0:
-            # Insert new record
-            await cursor.execute("""
-                INSERT INTO maintenance_mode (id, is_active, message, activated_by, activated_at)
-                VALUES (%s, %s, %s, %s, %s)
-            """, (str(uuid.uuid4()), maintenance_data.is_active, maintenance_data.message,
-                  maintenance_data.activated_by, maintenance_data.activated_at))
-        else:
-            # Update existing record
-            await cursor.execute("""
-                UPDATE maintenance_mode SET is_active = %s, message = %s, 
-                       activated_by = %s, activated_at = %s
-            """, (maintenance_data.is_active, maintenance_data.message,
-                  maintenance_data.activated_by, maintenance_data.activated_at))
-        
-        return maintenance_data
-    finally:
-        mysql_pool.release(conn)
-
-# Image upload route
-@api_router.post("/admin/upload-image")
-async def upload_image(
-    file: UploadFile = File(...),
-    current_user: User = Depends(get_editor_user)
-):
-    # Read file content and convert to base64
-    file_content = await file.read()
-    base64_content = base64.b64encode(file_content).decode('utf-8')
-    
-    # Create data URL
-    data_url = f"data:{file.content_type};base64,{base64_content}"
-    
-    return {"image_url": data_url, "filename": file.filename}
-
-# Helper function for byte formatting
-def format_bytes(bytes_count):
-    """Convert bytes to human readable format"""
-    for unit in ['B', 'KB', 'MB', 'GB']:
-        if bytes_count < 1024.0:
-            return f"{bytes_count:.1f} {unit}"
-        bytes_count /= 1024.0
-    return f"{bytes_count:.1f} TB"
-
-# Add CORS middleware
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Add explicit OPTIONS route handler for CORS preflight requests
-@api_router.options("/{path:path}")
-async def options_route(path: str):
-    return {"detail": "OK"}
-
-# Include the API router
 app.include_router(api_router)
 
-# Startup event
+# Initialize database with sample data
+def init_database():
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        
+        # Create tables
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS menu_items (
+                id VARCHAR(36) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                description TEXT,
+                detailed_description TEXT,
+                price VARCHAR(20) NOT NULL,
+                category VARCHAR(100) NOT NULL,
+                origin VARCHAR(255),
+                allergens TEXT,
+                additives TEXT,
+                preparation_method TEXT,
+                ingredients TEXT,
+                vegan BOOLEAN DEFAULT FALSE,
+                vegetarian BOOLEAN DEFAULT FALSE,
+                glutenfree BOOLEAN DEFAULT FALSE,
+                order_index INT DEFAULT 0,
+                is_active BOOLEAN DEFAULT TRUE
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS reviews (
+                id VARCHAR(36) PRIMARY KEY,
+                customer_name VARCHAR(255) NOT NULL,
+                rating INT NOT NULL,
+                comment TEXT NOT NULL,
+                date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                is_approved BOOLEAN DEFAULT FALSE
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id VARCHAR(36) PRIMARY KEY,
+                username VARCHAR(100) UNIQUE NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                password_hash VARCHAR(255) NOT NULL,
+                role ENUM('admin', 'editor', 'viewer') DEFAULT 'viewer',
+                is_active BOOLEAN DEFAULT TRUE
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS contact_messages (
+                id VARCHAR(36) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                phone VARCHAR(50),
+                subject VARCHAR(255),
+                message TEXT NOT NULL,
+                date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                is_read BOOLEAN DEFAULT FALSE
+            )
+        """)
+        
+        # Check if admin user exists
+        cursor.execute("SELECT COUNT(*) as count FROM users WHERE username = 'admin'")
+        result = cursor.fetchone()
+        
+        if result['count'] == 0:
+            admin_hash = pwd_context.hash("jimmy2024")
+            cursor.execute("""
+                INSERT INTO users (id, username, email, password_hash, role)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (str(uuid.uuid4()), "admin", "admin@jimmys-tapasbar.de", admin_hash, "admin"))
+        
+        # Check if menu items exist
+        cursor.execute("SELECT COUNT(*) as count FROM menu_items")
+        result = cursor.fetchone()
+        
+        if result['count'] == 0:
+            # Add sample menu items
+            menu_items = [
+                ("Gambas al Ajillo", "Klassische spanische Knoblauchgarnelen", "Frische Garnelen in bestem Olivenöl mit viel Knoblauch, Chili und Petersilie", "12,90", "Vorspeisen", "Andalusien", "Krustentiere", "", "In der Pfanne gebraten", "Garnelen, Olivenöl, Knoblauch, Chili, Petersilie", 0, 0, 1),
+                ("Patatas Bravas", "Würzig gebratene Kartoffeln mit Aioli", "Knusprig gebratene Kartoffelwürfel mit hausgemachter Aioli und scharfer Bravas-Sauce", "8,50", "Vorspeisen", "Madrid", "Eier", "", "Frittiert und gebacken", "Kartoffeln, Tomaten, Aioli, Paprika", 0, 1, 1),
+                ("Paella Valenciana", "Original Paella mit Huhn und grünen Bohnen", "Die klassische Paella aus Valencia mit echtem Safran, Huhn und grünen Bohnen", "24,90", "Paella", "Valencia", "", "", "In der Paellera über Feuer", "Bomba-Reis, Huhn, grüne Bohnen, Safran", 0, 0, 1),
+                ("Jamón Ibérico", "Hauchdünn geschnittener iberischer Schinken", "24 Monate gereifter Jamón Ibérico serviert mit Manchego-Käse", "16,90", "Vorspeisen", "Extremadura", "Milch", "", "24 Monate luftgetrocknet", "Iberischer Schinken, Manchego", 0, 0, 1),
+                ("Sangría de la Casa", "Hausgemachte Sangría mit Früchten", "Erfrischende Sangría mit Rotwein, Orangen und Äpfeln", "6,90", "Getränke", "Spanien", "Sulfite", "", "24h ziehen lassen", "Rotwein, Orangen, Äpfel, Brandy", 1, 1, 1)
+            ]
+            
+            for i, (name, desc, detailed, price, cat, origin, allergens, additives, prep, ingredients, vegan, vegetarian, gluten) in enumerate(menu_items):
+                cursor.execute("""
+                    INSERT INTO menu_items (id, name, description, detailed_description, price, category, origin, allergens, additives, preparation_method, ingredients, vegan, vegetarian, glutenfree, order_index, is_active)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (str(uuid.uuid4()), name, desc, detailed, price, cat, origin, allergens, additives, prep, ingredients, vegan, vegetarian, gluten, i+1, True))
+        
+        conn.commit()
+        print("✅ MySQL Database initialized successfully")
+        
+    except Exception as e:
+        print(f"❌ Database initialization failed: {e}")
+    finally:
+        conn.close()
+
 @app.on_event("startup")
 async def startup_event():
-    await init_mysql_pool()
-    await create_default_admin()
+    init_database()
 
-# Shutdown event
-@app.on_event("shutdown")
-async def shutdown_event():
-    global mysql_pool
-    if mysql_pool:
-        mysql_pool.close()
-        await mysql_pool.wait_closed()
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8001)
