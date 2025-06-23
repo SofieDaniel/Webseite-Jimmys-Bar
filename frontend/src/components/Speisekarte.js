@@ -73,29 +73,35 @@ const Speisekarte = () => {
 
   // Get unique categories with proper mapping and custom order
   const categoryMapping = {
-    'Inicio / Vorspeisen': 'Vorspeisen',
-    'Salate': 'Salate', 
-    'Tapa Paella': 'Paella',
-    'Tapas Vegetarian': 'Vegetarisch',
-    'Tapas de Pollo': 'Hähnchen',
-    'Tapas de Carne': 'Fleisch',
-    'Tapas de Pescado': 'Fisch',
-    'Kroketten': 'Kroketten',
-    'Pasta': 'Pasta',
-    'Pizza': 'Pizza',
-    'Für den kleinen und großen Hunger': 'Snacks',
-    'Dessert & Eis': 'Dessert',
-    'Heißgetränke & Tee': 'Heißgetränke',
-    'Softdrinks': 'Softdrinks',
-    'Spanische Getränke': 'Sangria'
+    'inicio': 'Vorspeisen',
+    'salat': 'Salate',
+    'kleiner salat': 'Kleine Salate', 
+    'tapa paella': 'Paella',
+    'tapas vegetarian': 'Vegetarisch',
+    'tapas de pollo': 'Hähnchen',
+    'tapas de carne': 'Fleisch',
+    'tapas de pescado': 'Fisch',
+    'kroketten': 'Kroketten',
+    'pasta': 'Pasta',
+    'pizza': 'Pizza',
+    'für den kleinen und großen hunger': 'Snacks',
+    'dessert': 'Dessert',
+    'heledos': 'Eis-Spezialitäten',
+    // Getränke
+    'cocktails alkoholfrei': 'Cocktails alkoholfrei',
+    'cocktails mit alkohol': 'Cocktails',
+    'heißgetränke': 'Heißgetränke',
+    'softgetränke': 'Softdrinks',
+    'spanische getränke': 'Sangria & Spanische Getränke'
   };
 
   // Define the order of categories (food first, drinks last) - using DB names
   const categoryOrder = [
-    'Inicio / Vorspeisen', 'Salate', 'Tapa Paella', 'Tapas Vegetarian', 'Tapas de Pollo', 'Tapas de Carne', 'Tapas de Pescado', 
-    'Kroketten', 'Pasta', 'Pizza', 'Für den kleinen und großen Hunger', 'Dessert & Eis',
+    // Speisen
+    'inicio', 'salat', 'kleiner salat', 'tapa paella', 'tapas vegetarian', 'tapas de pollo', 'tapas de carne', 'tapas de pescado', 
+    'kroketten', 'pasta', 'pizza', 'für den kleinen und großen hunger', 'dessert', 'heledos',
     // Getränke zuletzt
-    'Heißgetränke & Tee', 'Softdrinks', 'Spanische Getränke'
+    'heißgetränke', 'softgetränke', 'cocktails alkoholfrei', 'cocktails mit alkohol', 'spanische getränke'
   ];
 
   // Get available categories from actual menu items
