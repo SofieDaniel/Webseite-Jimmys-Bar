@@ -285,67 +285,112 @@ const Speisekarte = () => {
                 {/* Content */}
                 <div className="space-y-4">
                   {/* Detaillierte Beschreibung */}
-                  <div className="bg-dark-brown/50 rounded-lg p-4 border border-warm-beige/20">
-                    <h4 className="text-sm font-semibold text-warm-beige mb-2 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-warm-beige rounded-full"></span>
+                  <div className="bg-amber-950/60 rounded-lg p-4 border border-amber-600/30">
+                    <h4 className="text-sm font-semibold text-amber-300 mb-3 flex items-center gap-2">
+                      <span className="w-3 h-3 bg-amber-400 rounded-full"></span>
                       Detaillierte Beschreibung
                     </h4>
-                    <p className="text-light-beige leading-relaxed text-sm line-clamp-4">
-                      {hoveredItem.detailed_description || hoveredItem.description}
+                    <p className="text-amber-100 leading-relaxed text-sm">
+                      {hoveredItem.detailed_description || hoveredItem.description || 'Authentisches spanisches Gericht, zubereitet nach traditionellem Rezept mit frischen Zutaten.'}
                     </p>
                   </div>
 
+                  {/* Herkunft */}
+                  {hoveredItem.origin && (
+                    <div className="bg-blue-950/60 rounded-lg p-4 border border-blue-500/30">
+                      <h4 className="text-sm font-semibold text-blue-300 mb-3 flex items-center gap-2">
+                        <span className="w-3 h-3 bg-blue-400 rounded-full"></span>
+                        Herkunft & Tradition
+                      </h4>
+                      <p className="text-blue-100 text-sm leading-relaxed flex items-center gap-2">
+                        <span className="text-lg">🌍</span>
+                        {hoveredItem.origin}
+                      </p>
+                    </div>
+                  )}
+
                   {/* Zutaten */}
                   {hoveredItem.ingredients && (
-                    <div className="bg-orange-900/20 rounded-lg p-4 border border-orange-500/30">
-                      <h4 className="text-sm font-semibold text-orange-300 mb-2 flex items-center gap-2">
-                        <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                    <div className="bg-green-950/60 rounded-lg p-4 border border-green-500/30">
+                      <h4 className="text-sm font-semibold text-green-300 mb-3 flex items-center gap-2">
+                        <span className="w-3 h-3 bg-green-400 rounded-full"></span>
                         Zutaten
                       </h4>
-                      <p className="text-orange-100 text-sm leading-relaxed line-clamp-3">
+                      <p className="text-green-100 text-sm leading-relaxed">
                         {hoveredItem.ingredients}
                       </p>
                     </div>
                   )}
 
-                  {/* Herkunft */}
-                  {hoveredItem.origin && (
-                    <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
-                      <h4 className="text-sm font-semibold text-blue-300 mb-2 flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                        Herkunft
+                  {/* Zubereitung */}
+                  {hoveredItem.preparation_method && (
+                    <div className="bg-purple-950/60 rounded-lg p-4 border border-purple-500/30">
+                      <h4 className="text-sm font-semibold text-purple-300 mb-3 flex items-center gap-2">
+                        <span className="w-3 h-3 bg-purple-400 rounded-full"></span>
+                        Zubereitung
                       </h4>
-                      <p className="text-blue-100 text-sm leading-relaxed">
-                        {hoveredItem.origin}
+                      <p className="text-purple-100 text-sm leading-relaxed">
+                        {hoveredItem.preparation_method}
                       </p>
                     </div>
                   )}
 
                   {/* Allergene & Zusatzstoffe */}
                   {(hoveredItem.allergens || hoveredItem.additives) && (
-                    <div className="bg-red-900/20 rounded-lg p-4 border border-red-500/30">
-                      <h4 className="text-sm font-semibold text-red-300 mb-2 flex items-center gap-2">
-                        <span className="w-2 h-2 bg-red-400 rounded-full"></span>
+                    <div className="bg-red-950/60 rounded-lg p-4 border border-red-500/30">
+                      <h4 className="text-sm font-semibold text-red-300 mb-3 flex items-center gap-2">
+                        <span className="w-3 h-3 bg-red-400 rounded-full"></span>
                         Allergene & Zusatzstoffe
                       </h4>
                       
-                      {hoveredItem.allergens && (
-                        <div className="mb-2">
-                          <p className="text-xs font-medium text-red-200 mb-1">⚠️ Allergene:</p>
-                          <p className="text-red-100 text-xs line-clamp-2">
+                      {hoveredItem.allergens && hoveredItem.allergens.trim() !== '' && (
+                        <div className="mb-3">
+                          <p className="text-xs font-medium text-red-200 mb-2 flex items-center gap-1">
+                            ⚠️ Allergene:
+                          </p>
+                          <p className="text-red-100 text-xs leading-relaxed bg-red-900/30 p-2 rounded">
                             {hoveredItem.allergens}
                           </p>
                         </div>
                       )}
                       
-                      {hoveredItem.additives && hoveredItem.additives !== "Keine Zusatzstoffe" && (
+                      {hoveredItem.additives && hoveredItem.additives !== "Keine Zusatzstoffe" && hoveredItem.additives.trim() !== '' && (
                         <div>
-                          <p className="text-xs font-medium text-yellow-200 mb-1">🧪 Zusatzstoffe:</p>
-                          <p className="text-yellow-100 text-xs line-clamp-2">
+                          <p className="text-xs font-medium text-yellow-200 mb-2 flex items-center gap-1">
+                            🧪 Zusatzstoffe:
+                          </p>
+                          <p className="text-yellow-100 text-xs leading-relaxed bg-yellow-900/30 p-2 rounded">
                             {hoveredItem.additives}
                           </p>
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {/* Ernährungshinweise */}
+                  {(hoveredItem.vegan || hoveredItem.vegetarian || hoveredItem.glutenfree) && (
+                    <div className="bg-emerald-950/60 rounded-lg p-4 border border-emerald-500/30">
+                      <h4 className="text-sm font-semibold text-emerald-300 mb-3 flex items-center gap-2">
+                        <span className="w-3 h-3 bg-emerald-400 rounded-full"></span>
+                        Ernährungshinweise
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {hoveredItem.vegan && (
+                          <span className="bg-green-600/30 text-green-200 px-3 py-1 rounded-full text-xs border border-green-500/50 flex items-center gap-1">
+                            🌱 Vegan
+                          </span>
+                        )}
+                        {hoveredItem.vegetarian && !hoveredItem.vegan && (
+                          <span className="bg-emerald-600/30 text-emerald-200 px-3 py-1 rounded-full text-xs border border-emerald-500/50 flex items-center gap-1">
+                            🌿 Vegetarisch
+                          </span>
+                        )}
+                        {hoveredItem.glutenfree && (
+                          <span className="bg-amber-600/30 text-amber-200 px-3 py-1 rounded-full text-xs border border-amber-500/50 flex items-center gap-1">
+                            🌾 Glutenfrei
+                          </span>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
