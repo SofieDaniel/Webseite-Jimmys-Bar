@@ -516,6 +516,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully tested GET /api/admin/newsletter/subscribers endpoint with authenticated request. The endpoint returns a list of newsletter subscribers with all required fields including subscription status and properly formatted date fields. The response is a valid JSON array containing the subscribers."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the GET /api/admin/newsletter/subscribers endpoint is working correctly. The endpoint returns a valid JSON array of newsletter subscribers. Currently the array is empty, but the endpoint is working correctly and would return subscribers if they were created."
 
   - task: "Newsletter - POST /api/newsletter/subscribe"
     implemented: true
