@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const Kontakt = () => {
-  const [pageData, setPageData] = useState(null);
-  const [locationsData, setLocationsData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,63 +11,12 @@ const Kontakt = () => {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    loadPageData();
-    loadLocationsData();
-  }, []);
-
-  const loadPageData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/kontakt-page`);
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Loaded kontakt page data:', data);
-        setPageData(data);
-      } else {
-        throw new Error('Failed to load contact page data');
-      }
-    } catch (error) {
-      console.error('Error loading contact page:', error);
-      setError('Fehler beim Laden der Seite. Bitte versuchen Sie es später erneut.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadLocationsData = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/standorte-enhanced`);
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Loaded locations data for contact:', data);
-        
-        // Parse JSON strings if needed
-        if (typeof data.neustadt === 'string') {
-          try {
-            data.neustadt = JSON.parse(data.neustadt);
-          } catch (e) {
-            console.warn('Failed to parse neustadt JSON:', e);
-            data.neustadt = {};
-          }
-        }
-        
-        if (typeof data.grossenbrode === 'string') {
-          try {
-            data.grossenbrode = JSON.parse(data.grossenbrode);
-          } catch (e) {
-            console.warn('Failed to parse grossenbrode JSON:', e);
-            data.grossenbrode = {};
-          }
-        }
-        
-        setLocationsData(data);
-      }
-    } catch (error) {
-      console.error('Error loading locations data:', error);
-    }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -83,187 +28,77 @@ const Kontakt = () => {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/contact`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
       });
 
       if (response.ok) {
         setMessage('Vielen Dank für Ihre Nachricht! Wir melden uns bald bei Ihnen.');
-        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
       } else {
         setMessage('Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.');
       }
     } catch (error) {
+      console.error('Error submitting contact form:', error);
       setMessage('Verbindungsfehler. Bitte versuchen Sie es später erneut.');
     } finally {
       setSubmitting(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
-        <div className="text-warm-beige text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-warm-beige mx-auto mb-4"></div>
-          <p className="text-xl">Lade Kontakt-Seite...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
-        <div className="text-red-400 text-center max-w-md mx-auto">
-          <p className="text-xl mb-4">{error}</p>
-          <button
-            onClick={loadPageData}
-            className="bg-warm-beige text-dark-brown px-6 py-3 rounded-lg hover:bg-light-beige transition-colors"
-          >
-            Erneut versuchen
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!pageData) {
-    return (
-      <div className="min-h-screen bg-dark-brown flex items-center justify-center">
-        <div className="text-warm-beige text-center">
-          <p className="text-xl">Keine Daten verfügbar</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-dark-brown">
-      {/* Header Section */}
-      <div className="relative bg-cover bg-center" style={{backgroundImage: `url('${pageData.header_background || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96'}')`}}>
-        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+      {/* Header Section mit spanischem Hintergrundbild */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-dark-brown via-medium-brown to-dark-brown">
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80')"
+          }}
+        ></div>
         <div className="relative z-10 pt-24 pb-16">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-6xl font-serif text-warm-beige mb-4 tracking-wide drop-shadow-text">
-              {pageData.page_title || 'Kontakt'}
-            </h1>
-            <p className="text-xl text-light-beige font-light tracking-wide drop-shadow-text">
-              {pageData.page_subtitle || 'Nehmen Sie Kontakt mit uns auf'}
-            </p>
+            <div className="max-w-4xl mx-auto">
+              <h1 className="text-6xl md:text-7xl font-serif text-warm-beige mb-6 tracking-wide drop-shadow-lg">
+                Kontakt
+              </h1>
+              <div className="bg-dark-brown/40 backdrop-blur-sm rounded-xl p-6 border border-warm-beige/30">
+                <p className="text-xl md:text-2xl text-light-beige font-light leading-relaxed">
+                  Wir freuen uns auf Ihre Nachricht
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Main Content - Nur Kontaktformular */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
-          {/* Contact Information */}
-          <div>
-            <h2 className="text-3xl font-serif text-warm-beige mb-8">
-              {pageData.locations_section_title || 'Besuchen Sie uns'}
-            </h2>
-            
-            {/* Dynamic Locations from CMS */}
-            {locationsData && locationsData.neustadt && (
-              <div className="bg-medium-brown rounded-lg border border-warm-brown p-6 mb-6">
-                <h3 className="text-xl font-serif text-warm-beige mb-4">{locationsData.neustadt.name}</h3>
-                <div className="space-y-3 text-light-beige">
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">📍</span>
-                    {locationsData.neustadt.address}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">📞</span>
-                    {locationsData.neustadt.phone}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">✉️</span>
-                    {locationsData.neustadt.email}
-                  </p>
-                  
-                  {/* Opening Hours */}
-                  {locationsData.neustadt.opening_hours && (
-                    <div className="mt-4">
-                      <h4 className="text-warm-beige font-medium mb-2">
-                        {pageData.opening_hours_title || 'Öffnungszeiten'}:
-                      </h4>
-                      <div className="text-sm space-y-1">
-                        {Object.entries(locationsData.neustadt.opening_hours).map(([day, hours]) => (
-                          <div key={day} className="flex justify-between">
-                            <span>{day}:</span>
-                            <span>{hours}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Location 2 */}
-            {locationsData && locationsData.grossenbrode && (
-              <div className="bg-medium-brown rounded-lg border border-warm-brown p-6 mb-6">
-                <h3 className="text-xl font-serif text-warm-beige mb-4">{locationsData.grossenbrode.name}</h3>
-                <div className="space-y-3 text-light-beige">
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">📍</span>
-                    {locationsData.grossenbrode.address}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">📞</span>
-                    {locationsData.grossenbrode.phone}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="text-warm-beige mr-3">✉️</span>
-                    {locationsData.grossenbrode.email}
-                  </p>
-                  
-                  {/* Opening Hours */}
-                  {locationsData.grossenbrode.opening_hours && (
-                    <div className="mt-4">
-                      <h4 className="text-warm-beige font-medium mb-2">
-                        {pageData.opening_hours_title || 'Öffnungszeiten'}:
-                      </h4>
-                      <div className="text-sm space-y-1">
-                        {Object.entries(locationsData.grossenbrode.opening_hours).map(([day, hours]) => (
-                          <div key={day} className="flex justify-between">
-                            <span>{day}:</span>
-                            <span>{hours}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Additional Information */}
-            {pageData.additional_info && (
-              <div className="text-light-beige bg-dark-brown p-4 rounded-lg border border-warm-brown">
-                <p className="text-sm">{pageData.additional_info}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Contact Form */}
-          <div>
-            <h2 className="text-3xl font-serif text-warm-beige mb-8">
-              {pageData.contact_form_title || 'Schreiben Sie uns'}
-            </h2>
-            
-            {pageData.contact_form_subtitle && (
-              <p className="text-light-beige mb-6">
-                {pageData.contact_form_subtitle}
+        <div className="max-w-4xl mx-auto">
+          
+          {/* Kontaktformular */}
+          <div className="bg-medium-brown/50 rounded-xl p-8 border border-warm-beige/20 shadow-2xl">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-serif text-warm-beige mb-4">Schreiben Sie uns</h2>
+              <p className="text-light-beige">
+                Haben Sie Fragen zu unserer Speisekarte, möchten Sie eine größere Gruppe anmelden oder 
+                haben andere Anliegen? Wir antworten schnell und persönlich.
               </p>
-            )}
-            
+            </div>
+
             {message && (
               <div className={`mb-6 p-4 rounded-lg ${
                 message.includes('Vielen Dank') 
-                  ? 'bg-green-600 text-white' 
-                  : 'bg-red-600 text-white'
+                  ? 'bg-green-100 border border-green-300 text-green-800' 
+                  : 'bg-red-100 border border-red-300 text-red-800'
               }`}>
                 {message}
               </div>
@@ -272,73 +107,139 @@ const Kontakt = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-warm-beige font-medium mb-2">Name *</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-warm-beige mb-2">
+                    Name *
+                  </label>
                   <input
                     type="text"
-                    required
+                    id="name"
+                    name="name"
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige"
-                    placeholder="Ihr Name"
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 bg-dark-brown/50 border border-warm-beige/30 rounded-lg text-light-beige placeholder-gray-400 focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300"
+                    placeholder="Ihr vollständiger Name"
                   />
                 </div>
+                
                 <div>
-                  <label className="block text-warm-beige font-medium mb-2">E-Mail *</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-warm-beige mb-2">
+                    E-Mail *
+                  </label>
                   <input
                     type="email"
-                    required
+                    id="email"
+                    name="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige"
-                    placeholder="ihre@email.de"
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 bg-dark-brown/50 border border-warm-beige/30 rounded-lg text-light-beige placeholder-gray-400 focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300"
+                    placeholder="ihre.email@beispiel.de"
                   />
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-warm-beige font-medium mb-2">Telefon</label>
+                  <label htmlFor="phone" className="block text-sm font-medium text-warm-beige mb-2">
+                    Telefon
+                  </label>
                   <input
                     type="tel"
+                    id="phone"
+                    name="phone"
                     value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige"
-                    placeholder="Ihre Telefonnummer"
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-dark-brown/50 border border-warm-beige/30 rounded-lg text-light-beige placeholder-gray-400 focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300"
+                    placeholder="+49 123 456789"
                   />
                 </div>
+                
                 <div>
-                  <label className="block text-warm-beige font-medium mb-2">Betreff *</label>
-                  <input
-                    type="text"
-                    required
+                  <label htmlFor="subject" className="block text-sm font-medium text-warm-beige mb-2">
+                    Betreff *
+                  </label>
+                  <select
+                    id="subject"
+                    name="subject"
                     value={formData.subject}
-                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                    className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige"
-                    placeholder="Betreff Ihrer Nachricht"
-                  />
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 bg-dark-brown/50 border border-warm-beige/30 rounded-lg text-light-beige focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300"
+                  >
+                    <option value="">Betreff wählen</option>
+                    <option value="allgemeine-anfrage">Allgemeine Anfrage</option>
+                    <option value="gruppenbuchung">Gruppenbuchung</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="beschwerden">Beschwerden</option>
+                    <option value="kooperation">Kooperation</option>
+                    <option value="sonstiges">Sonstiges</option>
+                  </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-warm-beige font-medium mb-2">Nachricht *</label>
+                <label htmlFor="message" className="block text-sm font-medium text-warm-beige mb-2">
+                  Nachricht *
+                </label>
                 <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
                   required
                   rows={6}
-                  value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
-                  className="w-full bg-medium-brown border border-warm-brown rounded-lg px-4 py-3 text-light-beige placeholder-gray-400 focus:outline-none focus:border-warm-beige resize-none"
-                  placeholder="Ihre Nachricht an uns..."
-                />
+                  className="w-full px-4 py-3 bg-dark-brown/50 border border-warm-beige/30 rounded-lg text-light-beige placeholder-gray-400 focus:ring-2 focus:ring-warm-beige focus:border-transparent transition-all duration-300 resize-vertical"
+                  placeholder="Teilen Sie uns mit, wie wir Ihnen helfen können..."
+                ></textarea>
               </div>
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full bg-warm-beige text-dark-brown py-3 px-6 rounded-lg font-medium hover:bg-light-beige disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {submitting ? 'Wird gesendet...' : 'Nachricht senden'}
-              </button>
+              <div className="text-center">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
+                    submitting
+                      ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
+                      : 'bg-warm-beige text-dark-brown hover:bg-orange-500 hover:text-white shadow-lg hover:shadow-xl'
+                  }`}
+                >
+                  {submitting ? 'Wird gesendet...' : 'Nachricht senden'}
+                </button>
+              </div>
             </form>
+
+            {/* Zusätzliche Kontakt-Info */}
+            <div className="mt-12 pt-8 border-t border-warm-beige/20">
+              <div className="text-center">
+                <h3 className="text-xl font-serif text-warm-beige mb-4">Weitere Kontaktmöglichkeiten</h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="bg-dark-brown/50 rounded-lg p-4">
+                    <div className="flex items-center justify-center mb-2">
+                      <span className="text-warm-beige text-2xl">📞</span>
+                    </div>
+                    <h4 className="font-semibold text-warm-beige mb-1">Telefon</h4>
+                    <p className="text-light-beige text-sm">+49 4561 123456</p>
+                  </div>
+                  
+                  <div className="bg-dark-brown/50 rounded-lg p-4">
+                    <div className="flex items-center justify-center mb-2">
+                      <span className="text-warm-beige text-2xl">📧</span>
+                    </div>
+                    <h4 className="font-semibold text-warm-beige mb-1">E-Mail</h4>
+                    <p className="text-light-beige text-sm">info@jimmys-tapasbar.de</p>
+                  </div>
+                  
+                  <div className="bg-dark-brown/50 rounded-lg p-4">
+                    <div className="flex items-center justify-center mb-2">
+                      <span className="text-warm-beige text-2xl">⏰</span>
+                    </div>
+                    <h4 className="font-semibold text-warm-beige mb-1">Antwortzeit</h4>
+                    <p className="text-light-beige text-sm">Innerhalb von 24h</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
