@@ -187,7 +187,7 @@ const Speisekarte = () => {
           <div className="flex-1">
                 {Object.entries(groupedItems).map(([category, items]) => (
                   <div key={category} className="mb-12">
-                    <div className="sticky top-20 z-20 bg-dark-brown/95 backdrop-blur-sm py-4 mb-8 border-b border-warm-beige/30">
+                    <div className="bg-dark-brown/95 backdrop-blur-sm py-4 mb-8 border-b border-warm-beige/30">
                       <h3 className="text-3xl font-serif text-warm-beige text-center tracking-wide">
                         {categoryMapping[category] || category}
                       </h3>
