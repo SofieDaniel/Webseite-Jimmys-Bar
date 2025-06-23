@@ -41,17 +41,17 @@ const Impressum = () => {
                 <div className="space-y-4">
                   <div className="bg-dark-brown/50 rounded-lg p-4">
                     <h3 className="text-lg font-semibold text-warm-beige mb-2">Geschäftsführung</h3>
-                    <p className="text-light-beige">Jimmy Rodríguez</p>
+                    <p className="text-light-beige">Ravinder Pal Singh</p>
                   </div>
                   
                   <div className="bg-dark-brown/50 rounded-lg p-4">
                     <h3 className="text-lg font-semibold text-warm-beige mb-2">Adresse</h3>
-                    <p className="text-light-beige">Strandstraße 1, 18225 Kühlungsborn</p>
+                    <p className="text-light-beige">Am Strande 21 Promenade<br/>23730 Neustadt in Holstein</p>
                   </div>
                   
                   <div className="bg-dark-brown/50 rounded-lg p-4">
                     <h3 className="text-lg font-semibold text-warm-beige mb-2">Telefon</h3>
-                    <p className="text-light-beige">+49 38293 12345</p>
+                    <p className="text-light-beige">+49 4561 123456</p>
                   </div>
                   
                   <div className="bg-dark-brown/50 rounded-lg p-4">
