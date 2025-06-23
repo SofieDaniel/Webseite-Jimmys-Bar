@@ -679,6 +679,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Verified the fix for the JavaScript error in Speisekarte.js. The issue was that the backend was sending prices as strings (from MySQL VARCHAR/DECIMAL fields), but the frontend was trying to call .toFixed() directly on these strings. The fix adds parseFloat() to convert the strings to numbers before calling .toFixed(), preventing the 'TypeError: item.price.toFixed is not a function' error. API testing confirms the menu items endpoint is working correctly and returning 84+ menu items with prices as strings, which are now properly handled by the frontend."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested the MouseOver functionality on the Speisekarte page. When hovering over 'Gambas al Ajillo', a popup appears with detailed information including: detailed description ('Frische Garnelen in bestem Olivenöl...'), origin ('Andalusien'), and allergens ('Krustentiere'). The vegetarian indicator (🌿) is correctly displayed for 'Patatas Bravas'. The MouseOver functionality is working as expected, providing users with comprehensive dish information on hover."
 
   - task: "Verify Über uns Page"
     implemented: true
