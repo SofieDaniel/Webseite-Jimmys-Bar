@@ -121,8 +121,8 @@ backend:
         comment: "Successfully tested the review submission functionality. The database schema mismatch has been fixed. Created a new review with customer name 'Elena Rodríguez', 5-star rating, and Spanish comment. The review was correctly stored with is_approved=false. Also verified that GET /api/reviews works with both approved_only=true and approved_only=false parameters. The pending reviews endpoint GET /api/admin/reviews/pending correctly returns unapproved reviews, and the review approval endpoint PUT /api/reviews/{id}/approve successfully approves reviews."
   
   - task: "CMS Navigation/Footer/Buttons functionality"
-    implemented: false
-    working: false
+    implemented: true
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
@@ -131,6 +131,9 @@ backend:
       - working: false
         agent: "main"
         comment: "User reported that Navigation/Footer/Buttons CMS functions are still not working. Need to investigate and fix these CMS endpoints."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/cms/website-texts/navigation, GET /api/cms/website-texts/footer, and GET /api/cms/website-texts/buttons endpoints. All endpoints return the expected data with proper formatting. The navigation endpoint returns text for home, locations, menu, reviews, about, contact, privacy, and imprint. The footer endpoint returns text for opening hours title, contact title, follow us title, and copyright. The buttons endpoint returns text for menu button, locations button, contact button, reserve button, and order button."
 
 backend:
   - task: "Fix JSON datetime serialization in backup functions"
