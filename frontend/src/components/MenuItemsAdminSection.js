@@ -10,9 +10,9 @@ const MenuItemsAdminSection = () => {
 
   // Categories for dropdown - using actual DB categories
   const categories = [
-    'Inicio / Vorspeisen', 'Salate', 'Tapa Paella', 'Tapas Vegetarian', 'Tapas de Pollo', 'Tapas de Carne', 
-    'Tapas de Pescado', 'Kroketten', 'Pasta', 'Pizza', 'Für den kleinen und großen Hunger', 'Dessert & Eis', 
-    'Heißgetränke & Tee', 'Softdrinks', 'Spanische Getränke'
+    'inicio', 'salat', 'kleiner salat', 'tapa paella', 'tapas vegetarian', 'tapas de pollo', 'tapas de carne', 
+    'tapas de pescado', 'kroketten', 'pasta', 'pizza', 'für den kleinen und großen hunger', 'dessert', 'heledos',
+    'heißgetränke', 'softgetränke', 'cocktails alkoholfrei', 'cocktails mit alkohol', 'spanische getränke'
   ];
 
   const loadMenuItems = async () => {
