@@ -6,9 +6,9 @@ import uuid
 from decimal import Decimal
 
 def import_complete_menu():
-    """Importiert die komplette neue Speisekarte - alle 207+ Artikel"""
+    """Importiert die komplette neue Speisekarte - alle 207+ Artikel mit vollständigen Beschreibungen"""
     
-    # ALLE Menü-Artikel (vollständige Liste)
+    # ALLE Menü-Artikel (vollständige Liste mit allen Positionen)
     all_menu_items = [
         # Vorspeisen / Inicio (1-11)
         {"name": "Aioli", "description": "Knoblauchsauce mit Öl", "price": 3.50, "category": "Vorspeisen / Inicio", "allergens": "Eier", "origin": "Spanien"},
