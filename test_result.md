@@ -438,7 +438,7 @@ backend:
 
   - task: "Review Management - GET /api/admin/reviews/pending"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -453,6 +453,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Could not test the pending reviews endpoint because authentication is failing. This endpoint needs to be retested after the authentication issue is fixed."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/admin/reviews/pending endpoint with authenticated request. The endpoint returns a list of pending reviews that are correctly marked as not approved. All reviews contain the required fields including properly formatted date field."
 
   - task: "Contact Messages - POST /api/contact"
     implemented: true
