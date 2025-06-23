@@ -244,6 +244,8 @@ async def update_standorte_enhanced(content_data: dict, current_user: User = Dep
 
 @api_router.put("/cms/ueber-uns-enhanced")
 async def update_ueber_uns_enhanced(content_data: dict, current_user: User = Depends(get_current_user)):
+    """Update about us content"""
+    # In a real implementation, this would save to database
     return {"message": "Über uns content updated successfully", "data": content_data}
 
 @api_router.get("/cms/website-texts/{section}")
