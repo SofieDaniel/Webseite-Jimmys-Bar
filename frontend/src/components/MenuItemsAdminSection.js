@@ -8,13 +8,11 @@ const MenuItemsAdminSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showForm, setShowForm] = useState(false);
 
-  // Categories for dropdown
+  // Categories for dropdown - using actual DB categories
   const categories = [
-    'Vorspeisen', 'Salate', 'Paella', 'Vegetarisch', 'Hähnchen', 'Fleisch', 
-    'Fisch', 'Kroketten', 'Pasta', 'Pizza', 'Snacks', 'Dessert', 
-    'Heißgetränke', 'Softdrinks', 'Limonaden', 'Säfte', 'Schorlen', 
-    'Aperitifs', 'Bier', 'Weine', 'Shots', 'Gin', 'Whiskey', 'Brandy', 
-    'Cocktails', 'Sangria'
+    'Inicio / Vorspeisen', 'Salate', 'Tapa Paella', 'Tapas Vegetarian', 'Tapas de Pollo', 'Tapas de Carne', 
+    'Tapas de Pescado', 'Kroketten', 'Pasta', 'Pizza', 'Für den kleinen und großen Hunger', 'Dessert & Eis', 
+    'Heißgetränke & Tee', 'Softdrinks', 'Spanische Getränke'
   ];
 
   const loadMenuItems = async () => {
