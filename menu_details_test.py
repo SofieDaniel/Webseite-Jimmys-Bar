@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 # Load the frontend .env file
 load_dotenv("/app/frontend/.env")
-BACKEND_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://c53382d7-59d0-4fa1-aaec-ed317f668344.preview.emergentagent.com")
+BACKEND_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://7bcc5b41-6547-4004-a46e-faaaaa1394d0.preview.emergentagent.com")
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 print(f"Using backend URL: {BACKEND_URL}")
