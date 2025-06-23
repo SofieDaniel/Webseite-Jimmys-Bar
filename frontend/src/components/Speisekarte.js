@@ -233,15 +233,6 @@ const Speisekarte = () => {
                                 </span>
                               </div>
                             </div>
-                            
-                            {/* Verfügbarkeit */}
-                            {!item.is_available && (
-                              <div className="text-center py-2">
-                                <span className="text-red-400 text-sm font-medium">
-                                  Derzeit nicht verfügbar
-                                </span>
-                              </div>
-                            )}
                           </div>
                         </div>
                       ))}
