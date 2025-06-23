@@ -687,14 +687,17 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix Enhanced Delivery Section"
-    - "Fix Standorte Page"
-    - "Verify Speisekarte Page"
-    - "Verify Über uns Page"
-    - "Fix Navigation Section Text Readability"
-    - "Fix CMS Login Functionality"
+    - "Authentication - POST /api/auth/login"
+    - "Authentication - GET /api/auth/me"
+    - "CMS About Endpoints"
+    - "Review Management - GET /api/reviews"
+    - "Review Management - GET /api/admin/reviews/pending"
+    - "Contact Messages - GET /api/admin/contact"
+    - "User Management - GET /api/users"
   stuck_tasks:
-    - "Fix CMS Login Functionality"
+    - "Authentication - POST /api/auth/login"
+    - "CMS About Endpoints"
+    - "Review Management - GET /api/reviews"
   test_all: false
   test_priority: "high_first"
 
