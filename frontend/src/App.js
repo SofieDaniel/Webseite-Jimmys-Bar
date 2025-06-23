@@ -25,7 +25,7 @@ import Home from './components/Home';
 import Locations from './components/Locations'; // Updated component
 import UeberUns from './components/UeberUns';
 import Speisekarte from './components/Speisekarte';
-import Bewertungen from './components/Bewertungen';
+import GoogleReviews from './components/GoogleReviews';
 import Kontakt from './components/Kontakt';
 import Impressum from './components/Impressum';
 import Datenschutz from './components/Datenschutz';
