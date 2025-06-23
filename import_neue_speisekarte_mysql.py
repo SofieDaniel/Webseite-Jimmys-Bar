@@ -8,9 +8,9 @@ from decimal import Decimal
 def get_mysql_connection():
     return pymysql.connect(
         host=os.environ.get('MYSQL_HOST', 'localhost'),
-        user=os.environ.get('MYSQL_USER', 'jimmy_user'),
-        password=os.environ.get('MYSQL_PASSWORD', 'jimmy2024'),
-        database=os.environ.get('MYSQL_DATABASE', 'jimmys_tapasbar'),
+        user=os.environ.get('MYSQL_USER', 'root'),
+        password=os.environ.get('MYSQL_PASSWORD', ''),
+        database=os.environ.get('MYSQL_DATABASE', 'jimmys_tapas_bar'),
         charset='utf8mb4',
         cursorclass=pymysql.cursors.DictCursor
     )
