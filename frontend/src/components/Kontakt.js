@@ -70,8 +70,8 @@ const Kontakt = () => {
               <h1 className="text-6xl md:text-7xl font-serif text-warm-beige mb-6 tracking-wide drop-shadow-lg">
                 Kontakt
               </h1>
-              <div className="bg-dark-brown/40 backdrop-blur-sm rounded-xl p-6 border border-warm-beige/30">
-                <p className="text-xl md:text-2xl text-light-beige font-light leading-relaxed">
+              <div className="bg-dark-brown/80 backdrop-blur-sm rounded-xl p-6 border border-warm-beige/30">
+                <p className="text-xl md:text-2xl text-white font-semibold leading-relaxed drop-shadow-lg">
                   Wir freuen uns auf Ihre Nachricht
                 </p>
               </div>
