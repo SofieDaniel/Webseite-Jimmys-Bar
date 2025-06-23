@@ -805,8 +805,10 @@ test_plan:
     - "Newsletter - GET /api/admin/newsletter/subscribers"
     - "Newsletter - POST /api/newsletter/subscribe"
     - "Fix CMS Login Functionality"
+    - "Verify Speisekarte Page"
   stuck_tasks: 
     - "Fix CMS Login Functionality"
+    - "Verify Speisekarte Page"
   test_all: false
   test_priority: "high_first"
 
