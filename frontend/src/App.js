@@ -1905,8 +1905,8 @@ const router = createBrowserRouter([
         element: <ErrorBoundary><Speisekarte /></ErrorBoundary>
       },
       {
-        path: "bewertungen",
-        element: <ErrorBoundary><Bewertungen /></ErrorBoundary>
+        path: "google-bewertungen",
+        element: <ErrorBoundary><GoogleReviews /></ErrorBoundary>
       },
       {
         path: "ueber-uns",
