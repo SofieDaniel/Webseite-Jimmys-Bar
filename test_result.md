@@ -531,6 +531,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Successfully tested POST /api/newsletter/subscribe endpoint. The endpoint allows users to subscribe to the newsletter by providing their email address. The response contains a success message and the subscriber is added to the database. Verified that the subscriber appears in the admin subscribers list."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the POST /api/newsletter/subscribe endpoint is working correctly. Successfully subscribed a test email to the newsletter and confirmed that it was added to the subscribers list. The endpoint returns a success message and properly handles the subscription process."
 
   - task: "User Management - GET /api/users"
     implemented: true
