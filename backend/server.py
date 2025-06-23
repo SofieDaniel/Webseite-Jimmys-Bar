@@ -483,6 +483,43 @@ async def get_contact_messages(current_user: User = Depends(get_current_user)):
     finally:
         conn.close()
 
+@api_router.post("/contact")
+async def submit_contact_form(contact_data: dict):
+    conn = get_mysql_connection()
+    try:
+        cursor = conn.cursor()
+        # Versuche Tabelle zu erstellen falls sie nicht existiert
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS contact_messages (
+                id VARCHAR(36) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                phone VARCHAR(50),
+                subject VARCHAR(255) NOT NULL,
+                message TEXT NOT NULL,
+                date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                status VARCHAR(50) DEFAULT 'new'
+            )
+        """)
+        
+        cursor.execute("""
+            INSERT INTO contact_messages (id, name, email, phone, subject, message)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (
+            str(uuid.uuid4()), 
+            contact_data.get("name"), 
+            contact_data.get("email"),
+            contact_data.get("phone", ""),
+            contact_data.get("subject"),
+            contact_data.get("message")
+        ))
+        conn.commit()
+        return {"message": "Contact form submitted successfully"}
+    except Exception as e:
+        return {"message": "Contact form submission failed", "error": str(e)}
+    finally:
+        conn.close()
+
 @api_router.post("/newsletter/subscribe")
 async def newsletter_subscribe(email_data: dict):
     conn = get_mysql_connection()
