@@ -275,18 +275,27 @@ const Locations = () => {
             </div>
           </div>
 
-          {/* Inhaber-Info Section */}
+          {/* Spanisches Sprichwort Section */}
           <div className="mt-16 text-center">
             <div className="bg-medium-brown/30 rounded-xl p-8 border border-warm-beige/20">
-              <h3 className="text-2xl font-serif text-warm-beige mb-4">Willkommen bei Jimmy's Tapas-Bar</h3>
-              <p className="text-light-beige leading-relaxed max-w-3xl mx-auto mb-4">
-                Unser Inhaber <strong className="text-warm-beige">Ravinder Pal Singh</strong> begrüßt Sie herzlich 
-                in unseren beiden Standorten an der Ostsee. Erleben Sie authentische spanische Küche mit Blick aufs Meer - 
-                täglich von 12:00 bis 22:00 Uhr geöffnet.
-              </p>
-              <p className="text-light-beige/80 text-sm">
-                Beide Standorte bieten ein einzigartiges Erlebnis direkt an der malerischen Ostseeküste.
-              </p>
+              <h3 className="text-2xl font-serif text-warm-beige mb-6">Bienvenidos a Jimmy's Tapas-Bar</h3>
+              
+              <div className="max-w-4xl mx-auto space-y-6">
+                <div className="bg-dark-brown/40 rounded-lg p-6">
+                  <p className="text-xl text-warm-beige font-serif mb-2 italic">
+                    "El buen comer y el buen beber, hacen la vida placer"
+                  </p>
+                  <p className="text-lg text-light-beige">
+                    "Gutes Essen und gutes Trinken machen das Leben zum Vergnügen"
+                  </p>
+                </div>
+                
+                <p className="text-light-beige leading-relaxed">
+                  Unser Inhaber <strong className="text-warm-beige">Ravinder Pal Singh</strong> lädt Sie herzlich ein, 
+                  die Vielfalt der spanischen Küche an der Ostsee zu entdecken. Erleben Sie authentische Tapas 
+                  und mediterrane Spezialitäten in einzigartiger Strandatmosphäre.
+                </p>
+              </div>
             </div>
           </div>
         </div>
