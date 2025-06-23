@@ -399,7 +399,7 @@ async def get_reviews(approved_only: bool = True):
     try:
         cursor = await conn.cursor(aiomysql.DictCursor)
         if approved_only:
-            await cursor.execute("SELECT * FROM reviews WHERE approved = TRUE ORDER BY created_at DESC LIMIT 1000")
+            await cursor.execute("SELECT * FROM reviews WHERE is_approved = TRUE ORDER BY created_at DESC LIMIT 1000")
         else:
             await cursor.execute("SELECT * FROM reviews ORDER BY created_at DESC LIMIT 1000")
         reviews = await cursor.fetchall()
