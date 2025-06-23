@@ -1051,16 +1051,65 @@ const CookieManagementSection = () => {
     auto_accept_after: 0
   });
 
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadCookieSettings();
+  }, []);
+
+  const loadCookieSettings = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/cookie-settings`);
+      if (response.ok) {
+        const data = await response.json();
+        setCookieSettings(data.cookieSettings || cookieSettings);
+        setBannerSettings(data.bannerSettings || bannerSettings);
+      } else {
+        setError('Fehler beim Laden der Cookie-Einstellungen');
+      }
+    } catch (error) {
+      console.error('Error loading cookie settings:', error);
+      setError('Verbindungsfehler beim Laden');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const saveCookieSettings = async () => {
     setSaving(true);
-    setTimeout(() => {
+    setSuccess('');
+    setError('');
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cms/cookie-settings`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          cookieSettings,
+          bannerSettings
+        })
+      });
+
+      if (response.ok) {
+        setSuccess('Cookie-Einstellungen erfolgreich gespeichert!');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Fehler beim Speichern der Cookie-Einstellungen');
+      }
+    } catch (error) {
+      console.error('Error saving cookie settings:', error);
+      setError('Verbindungsfehler beim Speichern');
+    } finally {
       setSaving(false);
-      setSuccess('Cookie-Einstellungen erfolgreich gespeichert!');
-      setTimeout(() => setSuccess(''), 3000);
-    }, 1000);
+    }
   };
 
   return (
