@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HomeContentEditor from './components/HomeContentEditor';
 import WebsiteTextsEditor from './components/WebsiteTextsEditor';
+import MenuItemsAdminSection from './components/MenuItemsAdminSection';
 
 // Content Management Section - FIXED VERSION
 export const ContentSection = ({ user, token, apiCall }) => {
