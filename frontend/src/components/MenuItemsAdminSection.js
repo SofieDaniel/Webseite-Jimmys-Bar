@@ -226,8 +226,8 @@ const MenuItemForm = ({ item, categories, onSave, onCancel }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-medium-brown rounded-xl border border-warm-brown p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <h3 className="text-xl font-serif text-warm-beige mb-6">
+      <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-4xl max-h-[80vh] overflow-y-auto">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">
           {item ? 'Gericht bearbeiten' : 'Neues Gericht hinzufügen'}
         </h3>
 
