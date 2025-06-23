@@ -792,7 +792,7 @@ test_plan:
 
 agent_communication:
   - agent: "main"
-    message: "🔧 CRITICAL FIX: Fixed the review submission database schema mismatch. The issue was that the GET /reviews endpoint was using 'approved' column while the database actually has 'is_approved' column. Changed line 402 from 'WHERE approved = TRUE' to 'WHERE is_approved = TRUE' to match the actual database schema shown in database_setup.sql line 29. This should resolve the 'Unknown column 'is_approved' in 'INSERT INTO'' error that was preventing users from submitting reviews. Need to test review submission functionality and also investigate the non-functional Navigation/Footer/Buttons CMS functionality."
+    message: "✅ MENU ITEMS VOLLSTÄNDIG IMPORTIERT: Erfolgreich alle 124 Menü-Artikel in die MySQL-Datenbank importiert. Backend-Validierung bestätigt: alle 124 Artikel sind verfügbar, korrekt nach Kategorien gruppiert (15 Kategorien von 'Inicio/Vorspeisen' bis 'Spanische Getränke'), CMS-Login funktioniert mit admin/jimmy2024, alle CMS-Endpunkte arbeiten korrekt. CRUD-Operationen für Menü-Management vollständig getestet und funktional. Das ursprüngliche Problem mit nur 5 statt 124 Menü-Artikeln ist behoben."
   - agent: "testing"
     message: "✅ Verified that all CMS endpoints are working correctly after MySQL migration. The endpoints are correctly transforming the MySQL data to match the expected format for the frontend. The homepage endpoint includes both raw data fields and structured objects, the locations endpoint includes the empty locations array, and the about endpoint includes both values_data and values array. The menu items endpoint is also working correctly, returning all menu items with the required fields."
   - agent: "testing"
