@@ -107,15 +107,18 @@ user_problem_statement: "Jimmy's v7 - Fix review submission error: Users can't s
 backend:
   - task: "Fix review submission database schema mismatch"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Fixed GET /reviews endpoint to use 'is_approved' instead of 'approved' to match the database schema. The database schema shows the column is named 'is_approved' (line 29 in database_setup.sql), but the GET endpoint was incorrectly using 'approved'. This mismatch was causing inconsistencies between read and write operations."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested the review submission functionality. The database schema mismatch has been fixed. Created a new review with customer name 'Elena Rodríguez', 5-star rating, and Spanish comment. The review was correctly stored with is_approved=false. Also verified that GET /api/reviews works with both approved_only=true and approved_only=false parameters. The pending reviews endpoint GET /api/admin/reviews/pending correctly returns unapproved reviews, and the review approval endpoint PUT /api/reviews/{id}/approve successfully approves reviews."
   
   - task: "CMS Navigation/Footer/Buttons functionality"
     implemented: false
