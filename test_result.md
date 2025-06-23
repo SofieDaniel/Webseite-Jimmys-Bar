@@ -672,7 +672,7 @@ frontend:
     implemented: true
     working: true
     file: "/app/frontend/src/components/Speisekarte.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -691,6 +691,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Successfully tested the MouseOver functionality on the Speisekarte page. When hovering over 'Gambas al Ajillo', a popup appears with detailed information including: detailed description ('Frische Garnelen in bestem Olivenöl...'), origin ('Andalusien'), and allergens ('Krustentiere'). The vegetarian indicator (🌿) is correctly displayed for 'Patatas Bravas'. The MouseOver functionality is working as expected, providing users with comprehensive dish information on hover."
+      - working: false
+        agent: "testing"
+        comment: "Attempted to test the Speisekarte page but encountered routing issues. The application is not properly handling the /speisekarte route. When navigating to /speisekarte, the application shows the homepage instead of the menu items. The issue appears to be in the routing logic in App.js. The API endpoint /api/menu/items is working correctly and returns all 124 menu items, but the frontend is not displaying them due to the routing issues. The fix for the JavaScript error in Speisekarte.js (adding parseFloat() to convert strings to numbers before calling .toFixed()) has been implemented, but cannot be verified due to the routing issues."
 
   - task: "Verify Über uns Page"
     implemented: true
