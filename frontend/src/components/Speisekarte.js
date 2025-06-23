@@ -116,13 +116,12 @@ const Speisekarte = () => {
     ? menuItems 
     : menuItems.filter(item => item.category === selectedCategory);
 
-  // Group items by category for display
-  const groupedItems = filteredItems.reduce((acc, item) => {
-    const category = item.category;
-    if (!acc[category]) {
-      acc[category] = [];
+  // Group items by category for display with custom order
+  const groupedItems = categoryOrder.reduce((acc, category) => {
+    const itemsInCategory = filteredItems.filter(item => item.category === category);
+    if (itemsInCategory.length > 0) {
+      acc[category] = itemsInCategory;
     }
-    acc[category].push(item);
     return acc;
   }, {});
 
