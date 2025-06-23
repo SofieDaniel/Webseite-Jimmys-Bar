@@ -396,18 +396,20 @@ const Speisekarte = () => {
                 </div>
               </div>
             ) : (
-              <div className="bg-gradient-to-br from-warm-beige/10 to-orange-500/10 border-2 border-dashed border-warm-beige/30 rounded-xl p-8 text-center">
-                <div className="text-warm-beige/60 mb-4">
-                  <div className="w-16 h-16 mx-auto bg-warm-beige/10 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">🍽️</span>
+              <div className="bg-gradient-to-br from-amber-900/20 to-orange-900/20 border-2 border-dashed border-amber-600/40 rounded-xl p-8 text-center backdrop-blur-sm">
+                <div className="text-amber-400/70 mb-6">
+                  <div className="w-20 h-20 mx-auto bg-amber-600/20 rounded-full flex items-center justify-center border-2 border-amber-500/30">
+                    <span className="text-4xl">🍽️</span>
                   </div>
                 </div>
-                <h3 className="text-warm-beige font-medium mb-2">Detaillierte Gericht-Informationen</h3>
-                <p className="text-warm-beige/70 text-sm">
-                  Bewegen Sie die Maus über ein Gericht<br/>
-                  um detaillierte Beschreibungen,<br/>
-                  Zutaten, Herkunft, Zubereitung<br/>
-                  und Allergie-Informationen zu sehen
+                <h3 className="text-amber-200 font-serif text-lg mb-3 font-semibold">Gericht-Details</h3>
+                <p className="text-amber-300/80 text-sm leading-relaxed">
+                  <strong>Bewegen Sie die Maus über ein Gericht</strong><br/>
+                  um detaillierte Informationen zu sehen:<br/><br/>
+                  🌍 <span className="text-amber-200">Herkunft & Tradition</span><br/>
+                  🥘 <span className="text-amber-200">Zutaten & Zubereitung</span><br/>
+                  ⚠️ <span className="text-amber-200">Allergene & Zusatzstoffe</span><br/>
+                  🌱 <span className="text-amber-200">Ernährungshinweise</span>
                 </p>
               </div>
             )}
