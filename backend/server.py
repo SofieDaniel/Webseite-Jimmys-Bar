@@ -1994,8 +1994,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# CRITICAL CMS ENDPOINTS
-@api_router.get("/cms/standorte-enhanced")
+# Include the router in the main app
+app.include_router(api_router)
 async def get_standorte_enhanced():
     """Get enhanced standorte content"""
     try:
