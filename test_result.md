@@ -230,9 +230,9 @@ backend:
 
   - task: "Authentication - POST /api/auth/login"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -242,12 +242,15 @@ backend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the authentication endpoint is working correctly after MySQL migration. Successfully authenticated with admin credentials (username='admin', password='jimmy2024') and received a valid JWT token."
+      - working: false
+        agent: "testing"
+        comment: "Authentication endpoint is returning a 401 Unauthorized error with the credentials username='admin', password='jimmy2024'. This suggests that either the credentials have changed or there's an issue with the authentication system."
 
   - task: "Authentication - GET /api/auth/me"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -257,6 +260,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the user profile endpoint is working correctly after MySQL migration. Successfully retrieved user profile using the JWT token. Response contains all required user fields (id, username, email, role, is_active, created_at, last_login)."
+      - working: false
+        agent: "testing"
+        comment: "Could not test the user profile endpoint because authentication is failing. This endpoint needs to be retested after the authentication issue is fixed."
 
   - task: "CMS Homepage Endpoints"
     implemented: true
@@ -308,9 +314,9 @@ backend:
 
   - task: "CMS About Endpoints"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: false
     status_history:
@@ -329,6 +335,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "After detailed testing, found that the GET /api/cms/about endpoint is working correctly. The response includes both the 'values_data' field and the 'values' array that the frontend expects. The endpoint is correctly transforming the MySQL data to match the expected format."
+      - working: false
+        agent: "testing"
+        comment: "The GET /api/cms/about endpoint is returning a 500 Internal Server Error. This suggests there's an issue with the endpoint implementation or database connection."
 
   - task: "CMS Legal Pages Endpoints"
     implemented: true
@@ -374,24 +383,30 @@ backend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the review creation endpoint is working correctly after MySQL migration. Successfully created a new review with customer name 'Elena Rodríguez', 5-star rating, and Spanish comment. The response contains all required fields including properly formatted date field, and the review is correctly marked as not approved by default."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested POST /api/reviews endpoint. Created a new review with customer name 'Elena Rodríguez', 5-star rating, and Spanish comment. The response contains all required fields including properly formatted date field, and the review is correctly marked as not approved by default."
 
   - task: "Review Management - GET /api/reviews"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: true
         agent: "testing"
         comment: "Successfully retrieved reviews with the approved_only parameter set to false. Response is a valid JSON array containing 3 reviews. All reviews contain the required fields including properly formatted date field."
+      - working: false
+        agent: "testing"
+        comment: "The GET /api/reviews endpoint is returning a 500 Internal Server Error. This suggests there's an issue with the endpoint implementation or database connection."
 
   - task: "Review Management - GET /api/admin/reviews/pending"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -401,6 +416,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the pending reviews endpoint is working correctly after MySQL migration. Successfully retrieved 2 pending reviews with authenticated request. All reviews are correctly marked as not approved, and the response contains all required fields."
+      - working: false
+        agent: "testing"
+        comment: "Could not test the pending reviews endpoint because authentication is failing. This endpoint needs to be retested after the authentication issue is fixed."
 
   - task: "Contact Messages - POST /api/contact"
     implemented: true
@@ -416,12 +434,15 @@ backend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the contact message creation endpoint is working correctly after MySQL migration. Successfully created a new contact message with name 'Carlos Rodríguez', email, phone, subject, and message content. The response contains all required fields including properly formatted date field, and the message is correctly marked as not read and not responded by default."
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested POST /api/contact endpoint. Created a new contact message with name 'Carlos Rodríguez', email, phone, subject, and message content. The response contains all required fields including properly formatted date field, and the message is correctly marked as not read and not responded by default."
 
   - task: "Contact Messages - GET /api/admin/contact"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -431,12 +452,15 @@ backend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the contact messages endpoint is working correctly after MySQL migration. Successfully retrieved 3 contact messages with authenticated request. The response contains all required fields including read status."
+      - working: false
+        agent: "testing"
+        comment: "Could not test the contact messages endpoint because authentication is failing. This endpoint needs to be retested after the authentication issue is fixed."
 
   - task: "User Management - GET /api/users"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -446,6 +470,57 @@ backend:
       - working: true
         agent: "testing"
         comment: "Confirmed that the users endpoint is working correctly after MySQL migration. Successfully retrieved 2 users with authenticated admin request. The response contains all required user fields including role and active status."
+      - working: false
+        agent: "testing"
+        comment: "Could not test the users endpoint because authentication is failing. This endpoint needs to be retested after the authentication issue is fixed."
+
+  - task: "CMS Standorte Enhanced Endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/cms/standorte-enhanced endpoint. Returns standorte-enhanced content with page title, subtitle, header background, and location data for Neustadt and Großenbrode. All required fields are present and properly formatted. Neustadt location includes address (Strandstraße 12, 23730 Neustadt in Holstein), phone (+49 4561 123456), email (neustadt@jimmys-tapasbar.de), opening hours, and features. Großenbrode location includes address (Strandpromenade 8, 23775 Großenbrode), phone (+49 4367 987654), email (grossenbrode@jimmys-tapasbar.de), opening hours, and features."
+
+  - task: "CMS Ueber Uns Enhanced Endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/cms/ueber-uns-enhanced endpoint. Returns enhanced about page content with page title, subtitle, header background, Jimmy's data, values section, and team section. All required fields are present and properly formatted. Jimmy's data includes name (Jimmy Rodríguez), image, story paragraphs, and quote. Values section includes title (Unsere Werte) and three values (Qualität, Gastfreundschaft, Lebensfreude) with titles, descriptions, and images. Team section includes title and team members with names, positions, descriptions, and images."
+
+  - task: "CMS Kontakt Page Endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/cms/kontakt-page endpoint. Returns contact page content with page title (Kontakt), subtitle, header background, contact form title (Schreiben Sie uns), contact form subtitle, locations section title (Unsere Standorte), opening hours title, and additional info. All required fields are present and properly formatted."
+
+  - task: "CMS Bewertungen Page Endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested GET /api/cms/bewertungen-page endpoint. Returns reviews page content with page title (Bewertungen & Feedback), subtitle, header background, reviews section title (Kundenbewertungen), feedback section title (Ihr Feedback), and feedback note. All required fields are present and properly formatted."
 
 frontend:
   - task: "Fix Enhanced Delivery Section"
