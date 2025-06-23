@@ -47,10 +47,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-serif text-warm-beige mb-6 tracking-wide">{footerTexts.opening_hours_title}</h3>
             <div className="space-y-2 text-light-beige text-sm">
-              <p>Mo-Do: 16:00 - 23:00</p>
-              <p>Fr: 16:00 - 24:00</p>
-              <p>Sa: 12:00 - 24:00</p>
-              <p>So: 12:00 - 23:00</p>
+              <p>Täglich: 12:00 - 22:00</p>
             </div>
           </div>
 
