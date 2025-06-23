@@ -126,7 +126,7 @@ const AboutAdminSection = () => {
               type="text"
               value={aboutData.jimmy.name}
               onChange={(e) => updateJimmy('name', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
             />
           </div>
           
@@ -136,7 +136,7 @@ const AboutAdminSection = () => {
               type="text"
               value={aboutData.jimmy.title}
               onChange={(e) => updateJimmy('title', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
             />
           </div>
           
@@ -146,7 +146,7 @@ const AboutAdminSection = () => {
               type="url"
               value={aboutData.jimmy.image}
               onChange={(e) => updateJimmy('image', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
             />
           </div>
           
@@ -183,7 +183,7 @@ const AboutAdminSection = () => {
               type="text"
               value={aboutData.leidenschaft.title}
               onChange={(e) => updateLeidenschaft('title', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
             />
           </div>
           
@@ -193,7 +193,7 @@ const AboutAdminSection = () => {
               type="text"
               value={aboutData.leidenschaft.subtitle}
               onChange={(e) => updateLeidenschaft('subtitle', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
             />
           </div>
           
@@ -204,7 +204,7 @@ const AboutAdminSection = () => {
                 value={aboutData.leidenschaft.intro}
                 onChange={(e) => updateLeidenschaft('intro', e.target.value)}
                 rows={2}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
               />
             </div>
             
@@ -214,7 +214,7 @@ const AboutAdminSection = () => {
                 value={aboutData.leidenschaft.text1}
                 onChange={(e) => updateLeidenschaft('text1', e.target.value)}
                 rows={2}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
               />
             </div>
             
@@ -224,7 +224,7 @@ const AboutAdminSection = () => {
                 value={aboutData.leidenschaft.text2}
                 onChange={(e) => updateLeidenschaft('text2', e.target.value)}
                 rows={2}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
               />
             </div>
             
@@ -234,7 +234,7 @@ const AboutAdminSection = () => {
                 value={aboutData.leidenschaft.text3}
                 onChange={(e) => updateLeidenschaft('text3', e.target.value)}
                 rows={2}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
               />
             </div>
             
@@ -244,7 +244,7 @@ const AboutAdminSection = () => {
                 value={aboutData.leidenschaft.text4}
                 onChange={(e) => updateLeidenschaft('text4', e.target.value)}
                 rows={2}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
               />
             </div>
             
@@ -254,7 +254,7 @@ const AboutAdminSection = () => {
                 value={aboutData.leidenschaft.text5}
                 onChange={(e) => updateLeidenschaft('text5', e.target.value)}
                 rows={2}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
               />
             </div>
           </div>
@@ -277,7 +277,7 @@ const AboutAdminSection = () => {
                     type="text"
                     value={member.name}
                     onChange={(e) => updateTeamMember(index, 'name', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                   />
                 </div>
                 
@@ -287,7 +287,7 @@ const AboutAdminSection = () => {
                     type="text"
                     value={member.position}
                     onChange={(e) => updateTeamMember(index, 'position', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                   />
                 </div>
                 
@@ -297,7 +297,7 @@ const AboutAdminSection = () => {
                     type="url"
                     value={member.image}
                     onChange={(e) => updateTeamMember(index, 'image', e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                   />
                 </div>
                 
@@ -307,7 +307,7 @@ const AboutAdminSection = () => {
                     value={member.description}
                     onChange={(e) => updateTeamMember(index, 'description', e.target.value)}
                     rows={3}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
                   />
                 </div>
               </div>
