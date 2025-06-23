@@ -291,7 +291,7 @@ const AboutAdminSection = () => {
               rows={3}
               className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900"
             />
-          </div>
+        </div>
     </div>
   );
 };
