@@ -1150,6 +1150,151 @@ def test_unauthorized_access():
         
     return all_passed
 
+def test_menu_categories():
+    """Test GET /api/menu/items endpoint for category distribution"""
+    print("\n🧪 Testing GET /api/menu/items endpoint for category distribution...")
+    
+    # Expected categories with minimum counts
+    expected_categories = {
+        "inicio": 11,
+        "salat": 4,
+        "tapas vegetarian": 17,
+        "cocktails alkoholfrei": 5,
+        "cocktails mit alkohol": 15,
+        "heißgetränke": 3,
+        "spanische getränke": 3
+    }
+    
+    # Specific drinks to check
+    specific_drinks = ["Mojito", "Sangria Tinto", "Cappuccino"]
+    
+    try:
+        # Make GET request
+        response = requests.get(f"{API_BASE_URL}/menu/items")
+        
+        # Check if response is successful
+        if response.status_code == 200:
+            print("✅ Successfully retrieved menu items")
+        else:
+            print(f"❌ Failed to retrieve menu items. Status code: {response.status_code}")
+            return False
+        
+        # Check if response is valid JSON
+        try:
+            data = response.json()
+            print(f"✅ Response is valid JSON with {len(data)} menu items")
+            
+            # Check if the total number of menu items is at least 141
+            if len(data) >= 141:
+                print(f"✅ Total menu items count ({len(data)}) meets or exceeds the expected 141 items")
+            else:
+                print(f"❌ Total menu items count ({len(data)}) is less than expected (141)")
+                return False
+                
+        except json.JSONDecodeError:
+            print("❌ Response is not valid JSON")
+            return False
+        
+        # Check if response is a list
+        if not isinstance(data, list):
+            print("❌ Response is not a list")
+            return False
+        
+        # Count items by category (case-insensitive)
+        categories = {}
+        for item in data:
+            cat = item['category'].lower()
+            if cat in categories:
+                categories[cat] += 1
+            else:
+                categories[cat] = 1
+        
+        # Count unique categories
+        unique_categories = len(categories)
+        if unique_categories >= 19:
+            print(f"✅ Found {unique_categories} unique categories (expected at least 19)")
+        else:
+            print(f"❌ Found only {unique_categories} unique categories (expected at least 19)")
+            return False
+        
+        # Print category distribution
+        print("\n📊 Menu items by category:")
+        cat_table = []
+        for cat, count in sorted(categories.items(), key=lambda x: x[1], reverse=True):
+            cat_table.append([cat, count])
+        print(tabulate(cat_table, headers=["Category", "Count"], tablefmt="grid"))
+        
+        # Check specific category counts
+        print("\n📊 Checking specific category counts:")
+        all_categories_valid = True
+        for cat, expected_count in expected_categories.items():
+            # Find the actual category (case-insensitive)
+            actual_count = 0
+            for actual_cat, count in categories.items():
+                if actual_cat.lower() == cat.lower():
+                    actual_count = count
+                    break
+            
+            if actual_count >= expected_count:
+                print(f"  ✅ {cat}: {actual_count} items (expected at least {expected_count})")
+            else:
+                print(f"  ❌ {cat}: {actual_count} items (expected at least {expected_count})")
+                all_categories_valid = False
+        
+        if not all_categories_valid:
+            print("❌ Some categories don't have the expected minimum number of items")
+            return False
+        
+        # Check for specific drinks
+        print("\n📊 Checking for specific drinks:")
+        found_drinks = {}
+        for drink in specific_drinks:
+            found = False
+            drink_data = None
+            for item in data:
+                if item["name"].lower() == drink.lower():
+                    found = True
+                    drink_data = item
+                    break
+            found_drinks[drink] = (found, drink_data)
+        
+        all_drinks_found = True
+        for drink, (found, drink_data) in found_drinks.items():
+            if found:
+                print(f"  ✅ {drink} - Found")
+                # Check for detailed_description, allergens, origin
+                if drink_data.get("detailed_description"):
+                    print(f"    ✅ Has detailed description: {drink_data['detailed_description'][:50]}...")
+                else:
+                    print(f"    ❌ Missing detailed description")
+                    all_drinks_found = False
+                
+                if drink_data.get("allergens"):
+                    print(f"    ✅ Has allergens info: {drink_data['allergens']}")
+                else:
+                    print(f"    ❌ Missing allergens info")
+                    all_drinks_found = False
+                
+                if drink_data.get("origin"):
+                    print(f"    ✅ Has origin info: {drink_data['origin']}")
+                else:
+                    print(f"    ❌ Missing origin info")
+                    all_drinks_found = False
+            else:
+                print(f"  ❌ {drink} - Not found")
+                all_drinks_found = False
+        
+        if not all_drinks_found:
+            print("❌ Some specific drinks are missing or incomplete")
+            return False
+        
+        print("\n✅ All category and drink checks passed successfully")
+        return True
+    
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error connecting to menu/items endpoint: {e}")
+        return False
+
 def test_spanish_dishes():
     """Test GET /api/menu/items endpoint for specific Spanish dishes"""
     print("\n🧪 Testing GET /api/menu/items endpoint for Spanish dishes...")
