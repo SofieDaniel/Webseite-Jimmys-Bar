@@ -60,50 +60,20 @@ const Footer = () => {
             <nav className="space-y-3">
               <Link to="/speisekarte" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">Speisekarte</Link>
               <Link to="/standorte" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">Standorte</Link>
-              <Link to="/bewertungen" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">Bewertungen</Link>
+              <Link to="/google-bewertungen" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">Bewertungen</Link>
               <Link to="/kontakt" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">Kontakt</Link>
             </nav>
           </div>
 
-          {/* Newsletter */}
+          {/* Social Media / Follow Us */}
           <div>
-            <h3 className="text-xl font-serif text-warm-beige mb-6 tracking-wide">Newsletter</h3>
-            <p className="text-light-beige text-sm mb-4">Bleiben Sie informiert über neue Gerichte und Events</p>
-            <form className="space-y-3" onSubmit={async (e) => {
-              e.preventDefault();
-              const email = e.target.email.value;
-              if (email) {
-                try {
-                  const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/newsletter/subscribe`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                  });
-                  if (response.ok) {
-                    alert('Erfolgreich für Newsletter angemeldet!');
-                    e.target.reset();
-                  } else {
-                    alert('Fehler bei der Anmeldung');
-                  }
-                } catch (error) {
-                  alert('Verbindungsfehler');
-                }
-              }
-            }}>
-              <input
-                type="email"
-                name="email"
-                placeholder="E-Mail-Adresse"
-                required
-                className="w-full px-3 py-2 bg-medium-brown border border-warm-brown rounded text-light-beige placeholder-gray-400 focus:ring-2 focus:ring-warm-beige focus:border-transparent"
-              />
-              <button
-                type="submit"
-                className="w-full bg-warm-beige text-dark-brown py-2 rounded font-medium hover:bg-light-beige transition-colors"
-              >
-                Anmelden
-              </button>
-            </form>
+            <h3 className="text-xl font-serif text-warm-beige mb-6 tracking-wide">{footerTexts.follow_us_title}</h3>
+            <p className="text-light-beige text-sm mb-4">Folgen Sie uns für aktuelle Neuigkeiten</p>
+            <div className="space-y-3">
+              <a href="#" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">📘 Facebook</a>
+              <a href="#" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">📷 Instagram</a>
+              <a href="https://www.google.com/search?q=Jimmys+Tapas+Bar+-+Neustadt+in+Holstein" target="_blank" rel="noopener noreferrer" className="block text-light-beige hover:text-warm-beige transition-colors text-sm">🌟 Google Bewertungen</a>
+            </div>
           </div>
         </div>
 
