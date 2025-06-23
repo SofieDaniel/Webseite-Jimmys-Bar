@@ -114,87 +114,89 @@ const MenuItemsAdminSection = () => {
           </button>
         </div>
 
-      {/* Filters */}
-      <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="Suchen nach Name oder Beschreibung..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="">Alle Kategorien</option>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
+        {/* Filters */}
+        <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Suchen nach Name oder Beschreibung..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">Alle Kategorien</option>
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
 
-      {/* Items List */}
-      <div className="bg-white rounded-lg shadow-sm">
-        <div className="p-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Gerichte ({filteredItems.length})
-          </h3>
-        </div>
-        <div className="space-y-0 max-h-[70vh] overflow-y-auto">
-        {filteredItems.map(item => (
-          <div key={item.id} className="border-b border-gray-200 p-4 hover:bg-gray-50 transition-colors">
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <h3 className="text-gray-900 font-semibold text-lg">{item.name}</h3>
-                <p className="text-gray-700 text-sm mb-2">{item.description}</p>
-                <div className="flex items-center gap-4 text-xs text-gray-600">
-                  <span>Kategorie: {item.category}</span>
-                  <span>Preis: {item.price}€</span>
-                  <div className="flex gap-1">
-                    {item.vegan && <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">🌱 Vegan</span>}
-                    {item.vegetarian && !item.vegan && <span className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded text-xs">🌿 Vegetarisch</span>}
-                    {item.glutenfree && <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded text-xs">🌾 Glutenfrei</span>}
+        {/* Items List */}
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="p-4 border-b border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Gerichte ({filteredItems.length})
+            </h3>
+          </div>
+          <div className="space-y-0 max-h-[70vh] overflow-y-auto">
+            {filteredItems.map(item => (
+              <div key={item.id} className="border-b border-gray-200 p-4 hover:bg-gray-50 transition-colors">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="text-gray-900 font-semibold text-lg">{item.name}</h3>
+                    <p className="text-gray-700 text-sm mb-2">{item.description}</p>
+                    <div className="flex items-center gap-4 text-xs text-gray-600">
+                      <span>Kategorie: {item.category}</span>
+                      <span>Preis: {item.price}€</span>
+                      <div className="flex gap-1">
+                        {item.vegan && <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">🌱 Vegan</span>}
+                        {item.vegetarian && !item.vegan && <span className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded text-xs">🌿 Vegetarisch</span>}
+                        {item.glutenfree && <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded text-xs">🌾 Glutenfrei</span>}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        setEditingItem(item);
+                        setShowForm(true);
+                      }}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                    >
+                      Bearbeiten
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                    >
+                      Löschen
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    setEditingItem(item);
-                    setShowForm(true);
-                  }}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors"
-                >
-                  Bearbeiten
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors"
-                >
-                  Löschen
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Form Modal */}
-      {showForm && (
-        <MenuItemForm
-          item={editingItem}
-          categories={categories}
-          onSave={handleSave}
-          onCancel={() => {
-            setShowForm(false);
-            setEditingItem(null);
-          }}
-        />
-      )}
+        {/* Form Modal */}
+        {showForm && (
+          <MenuItemForm
+            item={editingItem}
+            categories={categories}
+            onSave={handleSave}
+            onCancel={() => {
+              setShowForm(false);
+              setEditingItem(null);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };
@@ -209,7 +211,6 @@ const MenuItemForm = ({ item, categories, onSave, onCancel }) => {
     origin: item?.origin || '',
     allergens: item?.allergens || '',
     additives: item?.additives || '',
-    preparation_method: item?.preparation_method || '',
     ingredients: item?.ingredients || '',
     vegan: item?.vegan || false,
     vegetarian: item?.vegetarian || false,
