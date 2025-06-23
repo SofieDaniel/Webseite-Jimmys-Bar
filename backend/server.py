@@ -351,22 +351,22 @@ async def get_standorte_enhanced():
         "neustadt": {
             "name": "Neustadt in Holstein",
             "address": "Am Strande 21 Promenade, 23730 Neustadt in Holstein",
-            "phone": "+49 4561 123456",
-            "email": "neustadt@jimmys-tapasbar.de",
+            "phone": "015735256793",
+            "email": "info@jimmys-tapasbar.de",
             "opening_hours": {
-                "Montag": "12:00 - 22:00", "Dienstag": "12:00 - 22:00", "Mittwoch": "12:00 - 22:00",
-                "Donnerstag": "12:00 - 22:00", "Freitag": "12:00 - 22:00", "Samstag": "12:00 - 22:00", "Sonntag": "12:00 - 22:00"
+                "Montag": "16:00 - 23:00", "Dienstag": "16:00 - 23:00", "Mittwoch": "16:00 - 23:00",
+                "Donnerstag": "16:00 - 23:00", "Freitag": "16:00 - 24:00", "Samstag": "12:00 - 24:00", "Sonntag": "12:00 - 23:00"
             },
             "features": ["Direkte Strandlage", "Große Terrasse", "Familienfreundlich", "Parkplatz kostenlos"]
         },
         "grossenbrode": {
             "name": "Großenbrode",
             "address": "Südstrand 54 Promenade, 23755 Großenbrode",
-            "phone": "+49 4367 987654",
-            "email": "grossenbrode@jimmys-tapasbar.de",
+            "phone": "015782226373",
+            "email": "info@jimmys-tapasbar.de",
             "opening_hours": {
-                "Montag": "12:00 - 22:00", "Dienstag": "12:00 - 22:00", "Mittwoch": "12:00 - 22:00",
-                "Donnerstag": "12:00 - 22:00", "Freitag": "12:00 - 22:00", "Samstag": "12:00 - 22:00", "Sonntag": "12:00 - 22:00"
+                "Montag": "16:00 - 23:00", "Dienstag": "16:00 - 23:00", "Mittwoch": "16:00 - 23:00",
+                "Donnerstag": "16:00 - 23:00", "Freitag": "16:00 - 24:00", "Samstag": "12:00 - 24:00", "Sonntag": "12:00 - 23:00"
             },
             "features": ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"]
         }
