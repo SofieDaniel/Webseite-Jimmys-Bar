@@ -95,7 +95,7 @@ const Impressum = () => {
                 23730 Neustadt in Holstein</p>
 
                 <h3 className="text-xl font-serif text-warm-beige mt-6 mb-3">Kontaktmöglichkeiten</h3>
-                <p><strong>Telefon:</strong> +49 4561 123456<br/>
+                <p><strong>Telefon:</strong> 015735256793<br/>
                 <strong>E-Mail-Adresse:</strong> info@jimmys-tapasbar.de</p>
 
                 <h3 className="text-xl font-serif text-warm-beige mt-6 mb-3">Verantwortlich für den Inhalt</h3>
