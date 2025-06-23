@@ -115,28 +115,36 @@ const MenuItemsAdminSection = () => {
         </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Suchen nach Name oder Beschreibung..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
-        />
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="bg-dark-brown border border-warm-brown rounded-lg px-4 py-2 text-light-beige"
-        >
-          <option value="">Alle Kategorien</option>
-          {categories.map(cat => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
-        </select>
+      <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            placeholder="Suchen nach Name oder Beschreibung..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Alle Kategorien</option>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Items List */}
-      <div className="space-y-4 max-h-96 overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-sm">
+        <div className="p-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Gerichte ({filteredItems.length})
+          </h3>
+        </div>
+        <div className="space-y-0 max-h-[70vh] overflow-y-auto">
         {filteredItems.map(item => (
           <div key={item.id} className="bg-dark-brown rounded-lg p-4 border border-warm-brown">
             <div className="flex justify-between items-start">
