@@ -798,16 +798,31 @@ const EUComplianceSection = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-32">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">🇪🇺 EU-Compliance & DSGVO</h1>
         <p className="text-gray-600">Datenschutz-Grundverordnung und EU-Rechtskonformität</p>
+        <code className="text-sm text-gray-600">GET/PUT /api/cms/eu-compliance</code>
       </div>
 
       {success && (
         <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
           {success}
+        </div>
+      )}
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          {error}
         </div>
       )}
 
