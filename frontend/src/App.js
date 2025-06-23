@@ -332,7 +332,7 @@ const NavigationSection = () => {
     { id: 'home', name: 'Startseite', url: '/', active: true },
     { id: 'locations', name: 'Standorte', url: '/standorte', active: true },
     { id: 'menu', name: 'Speisekarte', url: '/speisekarte', active: true },
-    { id: 'reviews', name: 'Bewertungen', url: '/bewertungen', active: true },
+    { id: 'reviews', name: 'Bewertungen', url: '/google-bewertungen', active: true },
     { id: 'about', name: 'Über uns', url: '/ueber-uns', active: true },
     { id: 'contact', name: 'Kontakt', url: '/kontakt', active: true }
   ]);
