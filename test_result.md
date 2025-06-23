@@ -806,7 +806,6 @@ test_plan:
     - "Complete Menu Import Validation (125 items)"
   stuck_tasks: 
     - "Fix CMS Login Functionality"
-    - "Verify Speisekarte Page"
   test_all: false
   test_priority: "high_first"
 
