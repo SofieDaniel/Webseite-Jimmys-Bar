@@ -1984,6 +1984,241 @@ async def get_system_info(current_user: User = Depends(get_admin_user)):
             "environment": "Production"
         }
 
+# CRITICAL CMS ENDPOINTS
+@api_router.get("/cms/standorte-enhanced")
+async def get_standorte_enhanced():
+    """Get enhanced standorte content"""
+    try:
+        content = await db.standorte_enhanced.find_one()
+        
+        if not content:
+            # Create default content
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Unsere Standorte",
+                "page_subtitle": "Besuchen Sie uns an der malerischen Ostseeküste",
+                "header_background": "https://images.unsplash.com/photo-1571197119738-26123cb0d22f",
+                "neustadt": {
+                    "name": "Neustadt in Holstein",
+                    "address": "Strandstraße 12, 23730 Neustadt in Holstein",
+                    "phone": "+49 4561 123456",
+                    "email": "neustadt@jimmys-tapasbar.de",
+                    "opening_hours": {
+                        "Montag": "17:00 - 23:00",
+                        "Dienstag": "17:00 - 23:00",
+                        "Mittwoch": "17:00 - 23:00",
+                        "Donnerstag": "17:00 - 23:00",
+                        "Freitag": "17:00 - 00:00",
+                        "Samstag": "17:00 - 00:00",
+                        "Sonntag": "17:00 - 23:00"
+                    },
+                    "features": ["Direkte Strandlage", "Große Terrasse", "Familienfreundlich", "Parkplatz kostenlos"]
+                },
+                "grossenbrode": {
+                    "name": "Großenbrode",
+                    "address": "Strandpromenade 8, 23775 Großenbrode",
+                    "phone": "+49 4367 987654",
+                    "email": "grossenbrode@jimmys-tapasbar.de",
+                    "opening_hours": {
+                        "Montag": "17:00 - 22:00",
+                        "Dienstag": "17:00 - 22:00",
+                        "Mittwoch": "17:00 - 22:00",
+                        "Donnerstag": "17:00 - 22:00",
+                        "Freitag": "17:00 - 23:00",
+                        "Samstag": "17:00 - 23:00",
+                        "Sonntag": "17:00 - 22:00"
+                    },
+                    "features": ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"]
+                },
+                "info_section": {
+                    "anreise_parken": {
+                        "title": "Anreise & Parken",
+                        "description": "Kostenlose Parkplätze direkt am Restaurant verfügbar",
+                        "image": "https://images.unsplash.com/photo-1496442226666"
+                    },
+                    "oeffnungszeiten": {
+                        "title": "Öffnungszeiten",
+                        "description": "Täglich geöffnet. Warme Küche bis 22:00 Uhr",
+                        "image": "https://images.unsplash.com/photo-1501139083538"
+                    },
+                    "familienfreundlich": {
+                        "title": "Familienfreundlich",
+                        "description": "Spezielle Kinderkarte und Spielbereich vorhanden",
+                        "image": "https://images.unsplash.com/photo-1414235077428"
+                    }
+                },
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.standorte_enhanced.insert_one(default_content)
+            content = default_content
+        
+        # Remove MongoDB ObjectId
+        if '_id' in content:
+            del content['_id']
+            
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving standorte-enhanced content: {str(e)}")
+
+@api_router.get("/cms/ueber-uns-enhanced")
+async def get_ueber_uns_enhanced():
+    """Get enhanced über uns content"""
+    try:
+        content = await db.ueber_uns_enhanced.find_one()
+        
+        if not content:
+            # Create default content
+            default_content = {
+                "id": str(uuid.uuid4()),
+                "page_title": "Über uns",
+                "page_subtitle": "Lernen Sie Jimmy's Tapas Bar kennen",
+                "header_background": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5",
+                "jimmy": {
+                    "name": "Jimmy Rodríguez",
+                    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+                    "story_paragraph1": "Seit der Gründung im Jahr 2015 steht Jimmy's Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.",
+                    "story_paragraph2": "Unsere Leidenschaft gilt den traditionellen Rezepten und frischen Zutaten, die wir täglich mit Liebe zubereiten.",
+                    "quote": "Gutes Essen bringt Menschen zusammen und schafft unvergessliche Momente."
+                },
+                "values_section": {
+                    "title": "Unsere Werte",
+                    "values": [
+                        {
+                            "title": "Qualität",
+                            "description": "Wir verwenden nur die besten Zutaten für unsere Gerichte.",
+                            "icon": "⭐"
+                        },
+                        {
+                            "title": "Gastfreundschaft", 
+                            "description": "Bei uns sollen Sie sich wie zu Hause fühlen.",
+                            "icon": "❤️"
+                        },
+                        {
+                            "title": "Authentizität",
+                            "description": "Wir bleiben den traditionellen spanischen Rezepten treu.",
+                            "icon": "🇪🇸"
+                        }
+                    ]
+                },
+                "team_section": {
+                    "title": "Unser Team",
+                    "team_members": [
+                        {
+                            "name": "Jimmy Rodríguez",
+                            "position": "Küchenchef & Inhaber",
+                            "description": "Jimmy bringt über 20 Jahre Erfahrung in der mediterranen Küche mit.",
+                            "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
+                        },
+                        {
+                            "name": "Maria González",
+                            "position": "Sous Chef",
+                            "description": "Spezialistin für authentische Tapas und Paellas.",
+                            "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80"
+                        }
+                    ]
+                },
+                "updated_at": datetime.utcnow(),
+                "updated_by": "system"
+            }
+            
+            await db.ueber_uns_enhanced.insert_one(default_content)
+            content = default_content
+        
+        if '_id' in content:
+            del content['_id']
+            
+        return content
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving ueber-uns-enhanced content: {str(e)}")
+
+@api_router.get("/delivery/info")
+async def get_delivery_info():
+    """Get delivery information"""
+    try:
+        info = await db.delivery_info.find_one({"is_active": True})
+        
+        if not info:
+            # Create default delivery info
+            default_info = {
+                "id": str(uuid.uuid4()),
+                "delivery_time_min": 30,
+                "delivery_time_max": 45,
+                "minimum_order_value": 15.00,
+                "delivery_fee": 2.50,
+                "available_locations": {
+                    "neustadt": {"name": "Neustadt", "available": True},
+                    "grossenbrode": {"name": "Großenbrode", "available": True}
+                },
+                "is_active": True,
+                "updated_by": "system",
+                "updated_at": datetime.utcnow()
+            }
+            
+            await db.delivery_info.insert_one(default_info)
+            info = default_info
+        
+        return {
+            "delivery_time": f"{info['delivery_time_min']}-{info['delivery_time_max']} min",
+            "minimum_order_value": f"{info['minimum_order_value']:.2f}",
+            "delivery_fee": f"{info['delivery_fee']:.2f}",
+            "available_locations": info.get('available_locations', {})
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving delivery info: {str(e)}")
+
+@api_router.get("/cms/website-texts/{section}")
+async def get_website_texts(section: str):
+    """Get website texts for navigation, footer, buttons"""
+    try:
+        texts = await db.website_texts.find_one({"section": section})
+        
+        if not texts:
+            # Create default texts based on section
+            default_texts = {"section": section}
+            
+            if section == "navigation":
+                default_texts["navigation"] = {
+                    "home": "Startseite",
+                    "locations": "Standorte", 
+                    "menu": "Speisekarte",
+                    "reviews": "Bewertungen",
+                    "about": "Über uns",
+                    "contact": "Kontakt",
+                    "privacy": "Datenschutz",
+                    "imprint": "Impressum"
+                }
+            elif section == "footer":
+                default_texts["footer"] = {
+                    "opening_hours_title": "Öffnungszeiten",
+                    "contact_title": "Kontakt",
+                    "follow_us_title": "Folgen Sie uns",
+                    "copyright": "© 2024 Jimmy's Tapas Bar. Alle Rechte vorbehalten."
+                }
+            elif section == "buttons":
+                default_texts["buttons"] = {
+                    "menu_button": "Zur Speisekarte",
+                    "locations_button": "Unsere Standorte",
+                    "contact_button": "Kontakt aufnehmen",
+                    "reserve_button": "Tisch reservieren",
+                    "order_button": "Jetzt bestellen"
+                }
+            
+            default_texts["id"] = str(uuid.uuid4())
+            default_texts["updated_at"] = datetime.utcnow()
+            default_texts["updated_by"] = "system"
+            
+            await db.website_texts.insert_one(default_texts)
+            texts = default_texts
+        
+        if '_id' in texts:
+            del texts['_id']
+            
+        return texts
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving website texts: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
