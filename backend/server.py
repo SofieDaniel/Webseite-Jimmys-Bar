@@ -1518,6 +1518,110 @@ async def create_newsletter_campaign(campaign_data: dict, current_user: User = D
     except Exception as e:
         raise HTTPException(status_code=500, detail="Fehler beim Erstellen der Newsletter-Kampagne")
 
+# MISSING CMS ENDPOINTS - SOFORTIGE REPARATUR
+@api_router.get("/cms/standorte-enhanced")
+async def get_standorte_enhanced():
+    return {
+        "page_title": "Unsere Standorte",
+        "page_subtitle": "Besuchen Sie uns an der malerischen Ostseeküste",
+        "neustadt": {
+            "name": "Neustadt in Holstein",
+            "address": "Strandstraße 12, 23730 Neustadt in Holstein",
+            "phone": "+49 4561 123456",
+            "email": "neustadt@jimmys-tapasbar.de",
+            "opening_hours": {
+                "Montag": "17:00 - 23:00",
+                "Dienstag": "17:00 - 23:00",
+                "Mittwoch": "17:00 - 23:00",
+                "Donnerstag": "17:00 - 23:00",
+                "Freitag": "17:00 - 00:00",
+                "Samstag": "17:00 - 00:00",
+                "Sonntag": "17:00 - 23:00"
+            },
+            "features": ["Direkte Strandlage", "Große Terrasse", "Familienfreundlich", "Parkplatz kostenlos"]
+        },
+        "grossenbrode": {
+            "name": "Großenbrode",
+            "address": "Strandpromenade 8, 23775 Großenbrode",
+            "phone": "+49 4367 987654",
+            "email": "grossenbrode@jimmys-tapasbar.de",
+            "opening_hours": {
+                "Montag": "17:00 - 22:00",
+                "Dienstag": "17:00 - 22:00",
+                "Mittwoch": "17:00 - 22:00",
+                "Donnerstag": "17:00 - 22:00",
+                "Freitag": "17:00 - 23:00",
+                "Samstag": "17:00 - 23:00",
+                "Sonntag": "17:00 - 22:00"
+            },
+            "features": ["Panorama-Meerblick", "Ruhige Lage", "Romantische Atmosphäre", "Sonnenuntergänge"]
+        }
+    }
+
+@api_router.get("/cms/kontakt-page")
+async def get_kontakt_page():
+    return {
+        "page_title": "Kontakt",
+        "page_subtitle": "Wir freuen uns auf Ihren Besuch",
+        "contact_form_title": "Schreiben Sie uns",
+        "contact_form_subtitle": "Haben Sie Fragen oder möchten Sie einen Tisch reservieren?",
+        "locations_section_title": "Unsere Standorte",
+        "opening_hours_title": "Öffnungszeiten",
+        "additional_info": "Wir sind täglich für Sie da."
+    }
+
+@api_router.get("/cms/ueber-uns-enhanced")
+async def get_ueber_uns_enhanced():
+    return {
+        "page_title": "Über uns",
+        "page_subtitle": "Lernen Sie Jimmy's Tapas Bar kennen",
+        "jimmy": {
+            "name": "Jimmy Rodríguez",
+            "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+            "story_paragraph1": "Seit der Gründung im Jahr 2015 steht Jimmy's Tapas Bar für authentische mediterrane Küche an der deutschen Ostseeküste.",
+            "story_paragraph2": "Unsere Leidenschaft gilt den traditionellen Rezepten und frischen Zutaten, die wir täglich mit Liebe zubereiten.",
+            "quote": "Gutes Essen bringt Menschen zusammen und schafft unvergessliche Momente."
+        },
+        "values_section": {
+            "title": "Unsere Werte",
+            "values": [
+                {
+                    "title": "Qualität",
+                    "description": "Wir verwenden nur die besten Zutaten für unsere Gerichte.",
+                    "icon": "⭐"
+                },
+                {
+                    "title": "Gastfreundschaft", 
+                    "description": "Bei uns sollen Sie sich wie zu Hause fühlen.",
+                    "icon": "❤️"
+                },
+                {
+                    "title": "Authentizität",
+                    "description": "Wir bleiben den traditionellen spanischen Rezepten treu.",
+                    "icon": "🇪🇸"
+                }
+            ]
+        }
+    }
+
+@api_router.post("/contact")
+async def create_contact_message(message_data: dict):
+    # Store contact message in database
+    contact_message = {
+        "id": str(uuid.uuid4()),
+        "name": message_data.get("name"),
+        "email": message_data.get("email"),
+        "phone": message_data.get("phone"),
+        "subject": message_data.get("subject"),
+        "message": message_data.get("message"),
+        "date": datetime.utcnow(),
+        "is_read": False,
+        "responded": False
+    }
+    
+    await db.contact_messages.insert_one(contact_message)
+    return {"message": "Contact message sent successfully"}
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
