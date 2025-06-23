@@ -219,7 +219,7 @@ const Kontakt = () => {
                       <span className="text-warm-beige text-2xl">📞</span>
                     </div>
                     <h4 className="font-semibold text-warm-beige mb-1">Telefon</h4>
-                    <p className="text-light-beige text-sm">+49 4561 123456</p>
+                    <p className="text-light-beige text-sm">015735256793</p>
                   </div>
                   
                   <div className="bg-dark-brown/50 rounded-lg p-4">
