@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 
 # Use localhost for testing
-BACKEND_URL = "http://localhost:8001"
+BACKEND_URL = "http://localhost:8002"
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 print(f"Using backend URL: {BACKEND_URL}")
